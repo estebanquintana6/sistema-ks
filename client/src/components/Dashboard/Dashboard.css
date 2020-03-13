@@ -1,0 +1,27 @@
+.topnav-right {
+    float: right;
+  }
+
+  .buttons {
+    width: 100%;
+    table-layout: fixed;
+  }
+  .buttons tr {
+    display: flex;
+  }
+  .buttons tr td {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  button {
+    flex: 1;
+  }
+
+  .bg-blue {
+    background-color: #447abd;
+  }
+
+  .bg-dark-blue{
+    background-color: #202844;
+  }

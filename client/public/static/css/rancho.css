@@ -1,0 +1,220 @@
+/* General */
+* {
+  font-family: "roboto", Times, serif;
+}
+
+/* Colors */
+
+.p-primary {
+  color: #002655;
+}
+
+.p-secondary {
+  color: #00B2C1;
+}
+
+.p-link {
+  color: #002655;
+}
+
+.p-success {
+  color: #01CB6A;
+}
+
+.p-warning {
+  color: #FFCB46;
+}
+
+.p-error {
+  color: #FF5656;
+}
+
+.p-text {
+  color: #212121;
+}
+
+/* Backgrounds */
+.p-background {
+  background-color: #FAFAFA;
+}
+
+.p-primary-background {
+  background-color: #002655;
+}
+
+.p-white-background {
+  background-color: white;
+}
+
+/* Nav */
+.nav-tabs {
+  font-weight: bold;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  background-color: #00B2C1;
+  color: #FAFAFA !important;
+}
+
+.nav-tabs .nav-link{
+  color: black !important;
+}
+
+/*Jumbotron, should go on sidebar css*/
+.qr-jumbotron-padding {
+    padding: 1rem 1rem;
+}
+
+@media (min-width: 576px){
+  .jumbotron {
+    padding: 2rem 1rem !important;
+  }
+}
+
+
+/* Buttons */
+.p-button { /* keep? */
+  width: 100% !important;
+}
+.p-primary-btn {
+  background-color: #002655 !important;
+  border: solid #002655 !important;
+}
+
+.p-secondary-btn {
+  background-color: #00B2C1 !important;
+  border: solid #00B2C1 !important;
+}
+
+.p-warning-btn {
+  background-color: #FFCB46 !important;
+  border: solid #FFCB46 !important;
+}
+
+.p-error-btn {
+  background-color: #FF5656 !important;
+  border: solid #FF5656 !important;
+}
+
+
+.btn-primary {
+  background-color: #002655;
+  border-color: #002655;
+}
+
+.btn-danger {
+  background-color: #B71D1A;
+  border-color: #B71D1A;
+}
+
+
+/* Table */
+.table td, .table th{
+  border-top: 0px solid #dee2e6 !important;
+}
+
+.table thead th {
+  color: #00B2C1 !important;
+}
+
+
+/* Text */
+
+.p-primary-text{
+  color: #212121;
+  font-size: 16px;
+}
+
+.p-secondary-text{
+  color: #575757;
+  font-size: 16px;
+}
+
+.p-secondary-small-text{
+  color: #575757;
+  font-size: 14px;
+}
+
+.p-bold-text{
+  font-weight: bold;
+  color: #212121;
+  font-size: 16px;
+}
+
+.responsive-text {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Headers*/
+.p-h1 {
+  font-weight: bold;
+
+  text-align: center;
+  font-size: 48px;
+}
+.p-h2 {
+  font-weight: bold;
+  text-align: center;
+  font-size: 36px;
+}
+.p-h3 {
+  font-weight: bold;
+  text-align: center;
+  font-size: 28px;
+}
+.p-h4 {
+  font-weight: bold;
+  text-align: center;
+  font-size: 18px;
+}
+
+.clickable{
+  cursor: pointer; 
+}
+
+.floating-right {
+  width:80px;
+  height:auto;
+  padding:5px 2px;
+  text-align:center;
+  top:20%;
+  position:absolute;
+  right:0;
+}
+
+.header{
+  background-image:url("../img/portfolio/header.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: block;
+}
+
+.swal-modal{
+  width:50% !important;
+}
+
+/* Divider icon */
+.dividerIcon {
+  width: 60%;
+  height: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.dividerCertification {
+  width: 30%;
+  height: 30%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+@media (min-width: 992px){
+  .masthead {
+    padding-top: calc(16rem + 104px) !important;
+    padding-bottom: 17rem !important;
+  }
+}

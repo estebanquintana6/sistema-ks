@@ -1,0 +1,20 @@
+@media(min-width: 768px) {
+    .login-div{
+        margin-top: 25%;
+    }
+}
+
+@media(max-width: 768px) {
+    .login-div{
+        margin-top: 50%;
+    }
+}
+
+.login-image{
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}

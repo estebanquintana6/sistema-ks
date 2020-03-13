@@ -1,0 +1,64 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@date-io/date-fns": "^2.1.0",
+    "@material-ui/core": "^4.9.0",
+    "@material-ui/pickers": "^3.2.10",
+    "@sweetalert/with-react": "^0.1.1",
+    "axios": "^0.18.0",
+    "classnames": "^2.2.6",
+    "date-fns": "^2.9.0",
+    "file-saver": "^2.0.2",
+    "google-map-react": "^1.1.4",
+    "install": "^0.13.0",
+    "is-empty": "^1.2.0",
+    "jwt-decode": "^2.2.0",
+    "lodash.clonedeep": "^4.5.0",
+    "match-sorter": "^4.0.2",
+    "mdbreact": "^4.18.1",
+    "moment": "^2.24.0",
+    "namor": "^2.0.2",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-bootstrap": "1.0.0-beta.10",
+    "react-data-table-component": "^6.2.1",
+    "react-dom": "^16.6.3",
+    "react-filterable-table": "^0.3.434",
+    "react-json-table": "^0.1.1",
+    "react-live-clock": "^3.1.0",
+    "react-redux": "^5.1.1",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.1.1",
+    "react-select": "1.2.1",
+    "react-table": "6.5.3",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^5.0.0",
+    "sweetalert": "^2.1.2",
+    "xlsx": "^0.15.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "proxy": "http://server:4000",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+.products-buttons-div{
+    margin: auto;
+}
+.visible {
+  visibility: visible;
+}
+.invisible {
+  visibility: hidden;
+}
