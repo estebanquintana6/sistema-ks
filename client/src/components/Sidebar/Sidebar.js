@@ -20,22 +20,26 @@ class Sidebar extends Component {
                     </ul>
                 </li>
                 <li>
-                    <a href="#">About</a>
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Pages</a>
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Auto</a>
                     <ul className="collapse list-unstyled" id="pageSubmenu">
                         <li>
-                            <a href="#">Page 1</a>
+                            <a href="#">Registro de seguro</a>
                         </li>
                         <li>
-                            <a href="#">Page 2</a>
-                        </li>
-                        <li>
-                            <a href="#">Page 3</a>
+                            <a href="#">Panel de seguro</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#">Portfolio</a>
+                    <a href="#autoSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Gastos médicos</a>
+                    <ul className="collapse list-unstyled" id="autoSubmenu">
+                        <li>
+                            <a href="#">Registro de seguro</a>
+                        </li>
+                        <li>
+                            <a href="#">Panel de seguro</a>
+                        </li>
+                    </ul>
                 </li>
                 <li>
                     <a href="#">Contact</a>
