@@ -47,8 +47,7 @@ class Dashboard extends Component {
     this.props.history.push("/admin");
   }
 
-  render() {
-    const user = this.props.auth.user;
+  selectForm = () => {
     let selected;
 
     switch(this.state.selectedForm){
@@ -62,14 +61,23 @@ class Dashboard extends Component {
         selected = <SecomReport></SecomReport>;
         break;
       case "reportesC":
-        selected = <ClientsReport></ClientsReport>
+        selected = <ClientsReport></ClientsReport>;
         break;
       case "reportesR":
-        selected = <ReferidosReport></ReferidosReport>
+        selected = <ReferidosReport></ReferidosReport>;
         break;
       default:
         selected = <></>
     }
+
+    return selected;
+  } 
+
+  render() {
+    const user = this.props.auth.user;
+
+    let selected = this.selectForm();
+
     let content = null;
 
     if(this.state.selectedForm === "reportesC"){
@@ -135,6 +143,7 @@ class Dashboard extends Component {
               </table>
             </Col>
           </Row>
+
           <div>
             {content}
           </div>

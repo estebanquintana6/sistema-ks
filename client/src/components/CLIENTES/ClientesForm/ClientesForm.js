@@ -42,7 +42,7 @@ class ClientesForm extends Component {
 
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
-      };
+    };
 
 
     onRazonsocialChange = e => {

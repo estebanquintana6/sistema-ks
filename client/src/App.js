@@ -50,9 +50,8 @@ class App extends Component {
                   <Route  path="/recover" component={RecoverPassword} />
                   <Route  path="/reset/:user/:id" component={ResetPassword} />
 
-                  <PrivateRoute path="/dashboard" component={Dashboard} />
+                  <PrivateRoute path="/dashboard" component={Dashboard} />                  
                   <PrivateRoute path="/admin" component={AdminPanel} />
-
                 </Switch>
               </div>
         </Layout>
