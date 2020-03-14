@@ -37,7 +37,7 @@ getPorCerrar = (obj) => {
 
             let value = obj[key];
             let status = obj[statusKey];
-            if(status !== "Venta"){                
+            if(status !== "Venta"){
                 products.push({
                     producto: value,
                     status: status
@@ -55,7 +55,7 @@ getPorCerrar = (obj) => {
     }
 
     return {
-        products, 
+        products,
         cerrados
     };
 }
@@ -68,7 +68,7 @@ router.post("/save", (req, res) => {
         if(err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
         const userEmail = decoded.email;
         const clientForm = body.clientData;
-        
+
         let products = getProducts(clientForm);
         let productosPendientes = getPorCerrar(clientForm);
 
@@ -101,7 +101,7 @@ router.post("/save", (req, res) => {
                 res.status(500).json({ error });
             });
 
-            
+
         });
         let referido;
 
@@ -148,13 +148,13 @@ router.post("/save", (req, res) => {
         }
 
         res.json({ message: 'Forma de cliente guardada.' });
-    
+
      });
 });
 
 router.post("/update", (req, res) => {
     const body = req.body;
-    const token = body.token;  
+    const token = body.token;
     const clientData = body.clientData;
     const id = body.id;
 
@@ -172,14 +172,13 @@ router.post("/update", (req, res) => {
                     res.status(201).json({message: "Elemento modificado"});
                 });
             }
-            
         });
     });
 });
 
 router.post("/delete", (req, res) => {
     const body = req.body;
-    const token = body.token;  
+    const token = body.token;
     const id = body.id;
 
     jwt.verify(token, secretKey, function(err, decoded) {
@@ -202,7 +201,7 @@ router.post("/delete", (req, res) => {
 router.post("/fetch", (req, res) => {
     const body = req.body;
     const token = body.token;
-    
+
     jwt.verify(token, secretKey, function(err, decoded) {
         if (err) {
             return res.status(401).json({ email: "no permissions" });
@@ -217,7 +216,7 @@ router.post("/fetch", (req, res) => {
 router.post("/referals", (req, res) => {
     const body = req.body;
     const token = body.token;
-    
+
     jwt.verify(token, secretKey, function(err, decoded) {
         if (err) {
             return res.status(401).json({ email: "no permissions" });
