@@ -2,14 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 //Package imports
-import {
-  Button,
-  Col,
+import { 
   Container,
-  Form,
-  FormControl,
-  Nav,
-  Navbar,
   Row,
 } from 'react-bootstrap';
 //redux
@@ -17,11 +11,8 @@ import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
 import { logoutUser } from "../../actions/authActions";
 
-import ClientesForm from "../Clients/ClientesForm/ClientesForm";
-import SecomForm from "../SECOM/SecomForm/SecomForm";
-import SecomReport from "../SECOM/SecomReport/SecomReport";
-import ClientsReport from "../Clients/ClientsReport/ClientsReport";
-import ReferidosReport from "../ReferidosReport/ReferidosReport";
+import Sidebar from "../Sidebar/Sidebar";
+import Navbar from "../Navbar/Navbar";
 
 import "./Dashboard.css";
 
@@ -34,11 +25,6 @@ class Dashboard extends Component {
     };
   }
 
-  onLogoutClick = e => {
-    e.preventDefault();
-    this.props.logoutUser();
-  };
-
   chooseForm = (e, key) => {
     this.setState({selectedForm: key})
   }
@@ -47,40 +33,34 @@ class Dashboard extends Component {
     this.props.history.push("/admin");
   }
 
-  clientsPage = (e) => {
-    this.props.history.push('/clientes');
-  }
-
   render() {
-    const user = this.props.auth.user
+    const user = this.props.auth.user;
+
     return (
-      <Col sm={12}>
-        <Navbar bg="light">
-          <Navbar.Brand href="#home">
-            <img
-              src="static/img/texto.png"
-              height="50"
-              alt="logo"
-              className="d-inline-block align-top"
-            />
-          </Navbar.Brand>
-        </Navbar>
-        <Navbar collapseOnSelect expand="lg" className="bg-blue" variant="dark">
-          <Navbar.Brand href="#home">{user.name} {user.last_name}</Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link onClick={this.onLogoutClick}>Cerrar sesion</Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-          { user.role === "admin" &&
-          <Form inline>
-            <Button onClick={this.adminPage}>Ir a panel de admin</Button>
-          </Form>
-          }
-          <Button onClick={this.clientsPage}>Clientes</Button>
-        </Navbar>
-      </Col>
+      <div class="wrapper">
+        <Sidebar></Sidebar>
+        <div id="content">
+            <Navbar></Navbar>
+            <h2>Collapsible Sidebar Using Bootstrap 4</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+            <div class="line"></div>
+
+            <h2>Lorem Ipsum Dolor</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+            <div class="line"></div>
+
+            <h2>Lorem Ipsum Dolor</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+            <div class="line"></div>
+
+            <h3>Lorem Ipsum Dolor</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+    </div>
     );
   }
 }
