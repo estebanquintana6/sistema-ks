@@ -28,10 +28,7 @@ const UserSchema = new Schema({
   role: {
     type: String,
     default: "user"
-  },
-  clients: [{ type: Schema.Types.ObjectId, ref: 'Clients' }],
-  secoms: [{ type: Schema.Types.ObjectId, ref: 'Secom' }],
-  referidos: [{ type: Schema.Types.ObjectId, ref: 'Referidos' }]
+  }
 });
 
 

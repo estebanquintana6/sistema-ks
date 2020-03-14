@@ -13,6 +13,8 @@ import Login from "./components/auth/Login/Login";
 import Register from "./components/auth/Register/Register";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./components/Dashboard/Dashboard";
+import ClientsReport from './components/Clients/ClientsReport/ClientsReport'
+import ClientesForm from './components/Clients/ClientesForm/ClientesForm'
 import Layout from "./components/Layout/Layout";
 import AdminPanel from "./components/Admin/AdminPanel";
 
@@ -48,8 +50,10 @@ class App extends Component {
                   <Route  exact path="/register" component={Register} />
                   <Route  path="/login" component={Login} />
                   <Route  path="/recover" component={RecoverPassword} />
-                  <Route  path="/reset/:user/:id" component={ResetPassword} />
+                  <Route  path="/reset/:user/:id" component={ResetPassword}/>
 
+                  <PrivateRoute path="/clientes" component={ClientsReport}/>
+                  <PrivateRoute path="/clientes/add" component={ClientesForm}/>
                   <PrivateRoute path="/dashboard" component={Dashboard} />
                   <PrivateRoute path="/admin" component={AdminPanel} />
 

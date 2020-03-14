@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 //Package imports
-import { 
+import {
   Button,
-  Col, 
+  Col,
   Container,
   Form,
   FormControl,
-  Nav, 
+  Nav,
   Navbar,
   Row,
 } from 'react-bootstrap';
@@ -17,10 +17,10 @@ import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
 import { logoutUser } from "../../actions/authActions";
 
-import ClientesForm from "../CLIENTES/ClientesForm/ClientesForm";
+import ClientesForm from "../Clients/ClientesForm/ClientesForm";
 import SecomForm from "../SECOM/SecomForm/SecomForm";
 import SecomReport from "../SECOM/SecomReport/SecomReport";
-import ClientsReport from "../CLIENTES/ClientsReport/ClientsReport";
+import ClientsReport from "../Clients/ClientsReport/ClientsReport";
 import ReferidosReport from "../ReferidosReport/ReferidosReport";
 
 import "./Dashboard.css";
@@ -47,45 +47,12 @@ class Dashboard extends Component {
     this.props.history.push("/admin");
   }
 
+  clientsPage = (e) => {
+    this.props.history.push('/clientes');
+  }
+
   render() {
-    const user = this.props.auth.user;
-    let selected;
-
-    switch(this.state.selectedForm){
-      case "clientes":
-        selected = <ClientesForm></ClientesForm>;
-        break;
-      case "secom":
-        selected = <SecomForm></SecomForm>;
-        break;
-      case "reportesS":
-        selected = <SecomReport></SecomReport>;
-        break;
-      case "reportesC":
-        selected = <ClientsReport></ClientsReport>
-        break;
-      case "reportesR":
-        selected = <ReferidosReport></ReferidosReport>
-        break;
-      default:
-        selected = <></>
-    }
-    let content = null;
-
-    if(this.state.selectedForm === "reportesC"){
-      content = (<Container fluid>
-                  <Row className="mt-4">
-                      {selected}
-                  </Row>
-                  </Container>);      
-    } else {
-      content = (<Container>
-        <Row className="mt-4">
-            {selected}
-        </Row>
-        </Container>);      
-    }
-
+    const user = this.props.auth.user
     return (
       <Col sm={12}>
         <Navbar bg="light">
@@ -111,33 +78,8 @@ class Dashboard extends Component {
             <Button onClick={this.adminPage}>Ir a panel de admin</Button>
           </Form>
           }
+          <Button onClick={this.clientsPage}>Clientes</Button>
         </Navbar>
-        <Row className="mt-4 justify-content-md-center">
-            <Col md="5">
-              <table className="buttons">
-                <tr>
-                  <td>
-                    <Button type="button" onClick={(e) => this.chooseForm(e, "clientes")}>CLIENTES</Button>
-                  </td>
-                  <td>
-                    <Button type="button" onClick={(e) => this.chooseForm(e, "secom")}>SECOM</Button>
-                  </td>
-                  <td>
-                    <Button type="button" onClick={(e) => this.chooseForm(e, "reportesC")}>Reportes CLIENTES</Button>
-                  </td>
-                  <td>
-                    <Button type="button" onClick={(e) => this.chooseForm(e, "reportesS")}>Reportes SECOM</Button>
-                  </td>
-                  <td>
-                    <Button type="button" onClick={(e) => this.chooseForm(e, "reportesR")}>Referidos</Button>
-                  </td>
-                </tr>
-              </table>
-            </Col>
-          </Row>
-          <div>
-            {content}
-          </div>
       </Col>
     );
   }

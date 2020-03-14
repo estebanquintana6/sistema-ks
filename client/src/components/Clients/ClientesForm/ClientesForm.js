@@ -9,12 +9,12 @@ import { connect } from "react-redux";
 import MomentUtils from "@date-io/moment";
 import moment from "moment";
 
-import { 
-    Form, 
+import {
+    Form,
     Col,
     Row,
     Button} from 'react-bootstrap';
-    
+
 import Grid from '@material-ui/core/Grid';
 import {
     MuiPickersUtilsProvider,
@@ -71,7 +71,7 @@ class ClientesForm extends Component {
         this.setState({ [e.target.id]: e.target.value });
       };
 
-    
+
 
     onBirthdayDate = (date) => {
         this.setState({ cumpleanos : date });
@@ -109,7 +109,7 @@ class ClientesForm extends Component {
         });
 
         let newState = this.state;
-        
+
         delete newState[last];
 
         this.setState(newState);
@@ -124,7 +124,7 @@ class ClientesForm extends Component {
         });
 
         let newState = this.state;
-        
+
         delete newState[last];
 
         this.setState(newState);
@@ -168,7 +168,7 @@ class ClientesForm extends Component {
                                         <option></option>
                                         <option value="Fisica">Persona fisica</option>
                                         <option value="Moral">Persona moral</option>
-                                </Form.Control>                            
+                                </Form.Control>
                             </Form.Group>
 
                             </Form.Row>
@@ -190,7 +190,7 @@ class ClientesForm extends Component {
                             </Form.Row>
 
                             <h5>Direccion</h5>
-                            
+
                             <Form.Row>
                                 <Form.Group as={Col} md="8" controlId="calle">
                                     <Form.Label>Calle</Form.Label>
@@ -250,7 +250,7 @@ class ClientesForm extends Component {
                                         <option value="Veracruz">Veracruz</option>
                                         <option value="Yucatan">Yucatan</option>
                                         <option value="Zacatecas">Zacatecas</option>
-                                    </Form.Control>                                      
+                                    </Form.Control>
                                 </Form.Group>
                             </Form.Row>
                             <h5>Personales</h5>
@@ -259,7 +259,7 @@ class ClientesForm extends Component {
                                     <Form.Row>
                                         <Col md="4">
                                         <Form.Label>Fecha de nacimiento</Form.Label>
-        
+
                                         <MuiPickersUtilsProvider utils={MomentUtils}>
                                             <Grid container justify="space-around">
                                                 <DatePicker
@@ -296,9 +296,9 @@ class ClientesForm extends Component {
                                                     <option>Empleado</option>
                                                     <option>Independiente</option>
                                                     <option>Desempleado</option>
-                                                </Form.Control>                                
+                                                </Form.Control>
                                         </Form.Group>
-                                    </Form.Row> 
+                                    </Form.Row>
                                 </>
                             }
                             <Form.Row>
@@ -307,23 +307,23 @@ class ClientesForm extends Component {
                                         <Form.Control as="select" onChange={this.onChange} placeholder="...">                                            <option></option>
                                             <option>Si</option>
                                             <option>No</option>
-                                        </Form.Control>                                
+                                        </Form.Control>
                                 </Form.Group>
                                 <Form.Group as={Col} md="4" controlId="segurovida">
                                     <Form.Label>Seguro de Vida</Form.Label>
                                         <Form.Control as="select" onChange={this.onChange} placeholder="...">                                            <option></option>
                                             <option>Si</option>
                                             <option>No</option>
-                                        </Form.Control>                                
+                                        </Form.Control>
                                 </Form.Group>
                                 <Form.Group as={Col} md="4" controlId="afore">
                                     <Form.Label>Afore</Form.Label>
                                         <Form.Control as="select" onChange={this.onChange} placeholder="...">                                            <option></option>
                                             <option>Si</option>
                                             <option>No</option>
-                                        </Form.Control>                                
+                                        </Form.Control>
                                 </Form.Group>
-                            </Form.Row>   
+                            </Form.Row>
                         </Col>
                         <Col className="ml-4">
                             <h5>Contacto</h5>
@@ -369,7 +369,7 @@ class ClientesForm extends Component {
                                                     <option value="BAJO COSTO">Bajo costo</option>
                                                     <option value="AFORE">Afore</option>
                                                     <option value="OTRO">Otro</option>
-                                                </Form.Control>                                                 
+                                                </Form.Control>
                                             </Form.Group>
                                         )
                                     })}
@@ -405,7 +405,7 @@ class ClientesForm extends Component {
                                                         <option value="BAJO COSTO">Bajo costo</option>
                                                         <option value="AFORE">Afore</option>
                                                         <option value="OTRO">Otro</option>
-                                                    </Form.Control>                                                  
+                                                    </Form.Control>
                                                 </Form.Group>
                                                 <Form.Group as={Col} md="4" controlId={"status" + value}>
                                                     <Form.Label>Status</Form.Label>
@@ -414,7 +414,7 @@ class ClientesForm extends Component {
                                                         <option>Venta</option>
                                                         <option>Posible venta</option>
                                                         <option>No venta</option>
-                                                    </Form.Control>                                    
+                                                    </Form.Control>
                                                 </Form.Group>
                                             </Form.Row>
                                             )
@@ -487,7 +487,7 @@ ClientesForm.propTypes = {
     auth: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired
   };
-  
+
   const mapStateToProps = state => ({
     auth: state.auth,
     errors: state.errors

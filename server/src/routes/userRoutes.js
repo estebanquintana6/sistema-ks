@@ -156,8 +156,8 @@ router.post("/recover", (req, res) => {
         subject: "Recuperacion de contraseña", // Subject line
         html: "<b>Hola " + user.name + "!</b><br/><p>Para recuperar tu contraseña del sistema OMSeguros haz click en el siguiente link:</p>" + recoverLink // html body
       };
-    
-    
+
+
       transporter.sendMail(mailOptions, (error) => {
         if (error) {
           res.status(500).json({message: "Error mandando mail"});
@@ -192,7 +192,7 @@ router.post("/changePassword", (req, res) => {
       resetPasswordToken: token,
       userId: user._id
     }).then((reset) => {
-      if(reset){        
+      if(reset){
         if(reset.expire > moment.now() ){
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(password, salt, (err, hash) => {
