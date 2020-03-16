@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 
 import RecoverPassword from './components/RecoverPassword/RecoverPassword';
-import ResetPassword from  "./components/ResetPassword/ResetPassword"
+import ResetPassword from "./components/ResetPassword/ResetPassword"
 import Login from "./components/auth/Login/Login";
 import Register from "./components/auth/Register/Register";
 import PrivateRoute from "./components/private-route/PrivateRoute";
@@ -37,23 +37,23 @@ if (localStorage.jwtToken) {
     window.location.href = "./login";
   }
 }
+const isUserAuthenticated = () => store.getState().isAuthenticated
 class App extends Component {
   render() {
     return (
       <Provider store={store}>
         <Layout>
-              <div className="App">
-                <Switch>
-                  <Route exact path="/" component={Login} />
-                  <Route  exact path="/register" component={Register} />
-                  <Route  path="/login" component={Login} />
-                  <Route  path="/recover" component={RecoverPassword} />
-                  <Route  path="/reset/:user/:id" component={ResetPassword} />
+          <div className="App">
+            <Switch>
+              <PrivateRoute exact path="/" component={isUserAuthenticated() ? Login : Dashboard} />
+              <Route exact path="/register" component={Register} />
+              <Route path="/login" component={Login} />
+              <Route path="/recover" component={RecoverPassword} />
+              <Route path="/reset/:user/:id" component={ResetPassword} />
 
-                  <PrivateRoute path="/dashboard" component={Dashboard} />                  
-                  <PrivateRoute path="/admin" component={AdminPanel} />
-                </Switch>
-              </div>
+              <PrivateRoute path="/dashboard" component={Dashboard} />
+            </Switch>
+          </div>
         </Layout>
       </Provider>
     )

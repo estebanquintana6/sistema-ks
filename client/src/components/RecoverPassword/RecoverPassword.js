@@ -53,22 +53,22 @@ class RecoverPassword extends Component {
     const { errors } = this.state;
     return (
       <>
-    <div className="row justify-content-center">
-      <div className="col-xl-8 col-lg-12 col-md-9">
-        <div className="card o-hidden border-0 shadow-lg my-5">
-          <div className="card-body p-0">
-            <div className="row">
-              <div className="col-lg-6 d-none d-lg-block">
-                <img src="static/img/Imago.png" alt="loginimage" width={"50%"} className="login-image"></img>
-              </div>
-              <div className="col-lg-6">
-                <div className="p-5">
-                  <div className="text-center">
-                    <h1 className="h4 text-gray-900 mb-4">Recupera tu contraseña</h1>
+        <div className="row justify-content-center">
+          <div className="col-xl-8 col-lg-12 col-md-9">
+            <div className="card o-hidden border-0 shadow-lg my-5">
+              <div className="card-body p-0">
+                <div className="row">
+                  <div className="col-lg-6 d-none d-lg-block">
+                    <img src="static/img/Imago.png" alt="loginimage" width={"50%"} className="login-image"></img>
                   </div>
-                  <Form className="user" noValidate onSubmit={this.onSubmit}>
-                    <div className="form-group">
-                      <Form.Control
+                  <div className="col-lg-6">
+                    <div className="p-5">
+                      <div className="text-center">
+                        <h1 className="h4 text-gray-900 mb-4">Recupera tu contraseña</h1>
+                      </div>
+                      <Form className="user" noValidate onSubmit={this.onSubmit}>
+                        <div className="form-group">
+                          <Form.Control
                             onChange={this.onChange}
                             value={this.state.email}
                             error={errors.email}
@@ -79,22 +79,22 @@ class RecoverPassword extends Component {
                               invalid: errors.email || errors.emailnotfound
                             })}
                           />
+                        </div>
+                        <Button variant="btn btn-primary btn-user btn-block" type="submit">Enviar correo</Button>
+                      </Form>
+                      <hr />
+                      <div className="text-center">
+                        <Link to="/login">Inicia sesion</Link>
+                        <br></br>
+                        <Link to="/register">Crea una cuenta</Link>
+                      </div>
                     </div>
-                    <Button variant="btn btn-primary btn-user btn-block" type="submit">Enviar correo</Button>
-                  </Form>
-                  <hr/>
-                  <div className="text-center">
-                  <Link to="/login">Inicia sesion</Link>
-                  <br></br>
-                  <Link to="/register">Crea una cuenta</Link>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
       </>
     );
   }

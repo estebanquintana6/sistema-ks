@@ -21,13 +21,13 @@ class Login extends Component {
   componentDidMount() {
     // If logged in and user navigates to Login page, should redirect them to dashboard
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/dashboard");
+      this.props.history.push("/");
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/dashboard");
+      this.props.history.push("/");
     }
 
     if (nextProps.errors) {
@@ -56,22 +56,22 @@ class Login extends Component {
     const { errors } = this.state;
     return (
       <>
-    <div className="row justify-content-center">
-      <div className="col-xl-8 col-lg-12 col-md-9">
-        <div className="card o-hidden border-0 shadow-lg my-5">
-          <div className="card-body p-0">
-            <div className="row">
-              <div className="col-lg-6 d-none d-lg-block">
-                <img src="static/img/Imago.png" alt="loginimage" width={"50%"} className="login-image"></img>
-              </div>
-              <div className="col-lg-6">
-                <div className="p-5">
-                  <div className="text-center">
-                    <h1 className="h4 text-gray-900 mb-4">Bienvenido!</h1>
+        <div className="row justify-content-center">
+          <div className="col-xl-8 col-lg-12 col-md-9">
+            <div className="card o-hidden border-0 shadow-lg my-5">
+              <div className="card-body p-0">
+                <div className="row">
+                  <div className="col-lg-6 d-none d-lg-block">
+                    <img src="static/img/Imago.png" alt="loginimage" width={"50%"} className="login-image"></img>
                   </div>
-                  <Form className="user" noValidate onSubmit={this.onSubmit}>
-                    <div className="form-group">
-                      <Form.Control
+                  <div className="col-lg-6">
+                    <div className="p-5">
+                      <div className="text-center">
+                        <h1 className="h4 text-gray-900 mb-4">Bienvenido!</h1>
+                      </div>
+                      <Form className="user" noValidate onSubmit={this.onSubmit}>
+                        <div className="form-group">
+                          <Form.Control
                             onChange={this.onChange}
                             value={this.state.email}
                             error={errors.email}
@@ -82,9 +82,9 @@ class Login extends Component {
                               invalid: errors.email || errors.emailnotfound
                             })}
                           />
-                    </div>
-                    <div className="form-group">
-                      <Form.Control
+                        </div>
+                        <div className="form-group">
+                          <Form.Control
                             onChange={this.onChange}
                             value={this.state.password}
                             error={errors.password}
@@ -96,23 +96,23 @@ class Login extends Component {
                             })}
                           />
                           {errors.passwordincorrect}
-                    </div>
-                    <Button variant="btn btn-primary btn-user btn-block" type="submit">Iniciar sesión</Button>
-                  </Form>
-                  <hr/>
-                  <div className="text-center">
-                  <Link to="/register">Crea una cuenta</Link>
-                  <br></br>
-                  <Link to="/recover">Recupera tu contraseña</Link>
+                        </div>
+                        <Button variant="btn btn-primary btn-user btn-block" type="submit">Iniciar sesión</Button>
+                      </Form>
+                      <hr />
+                      <div className="text-center">
+                        <Link to="/register">Crea una cuenta</Link>
+                        <br></br>
+                        <Link to="/recover">Recupera tu contraseña</Link>
 
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
       </>
     );
   }
