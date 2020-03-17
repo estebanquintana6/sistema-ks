@@ -2,26 +2,26 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
-import { listUsers } from "../../actions/userActions";
-import { changeRol, deleteUser } from "../../actions/adminActions";
+import { listUsers } from "../../../actions/userActions";
+import { changeRol, deleteUser } from "../../../actions/adminActions";
 
 import swal from '@sweetalert/with-react';
 
 import {
-  Button,
   Col,
-  Container,
   Row
 } from 'react-bootstrap';
 
 
 import ReactTable from "react-table";
 
-import "./AdminPanel.css";
+import UserModal from "../UserModal/UserModal";
+
+import "./UserPanel.css";
 import "react-table/react-table.css";
 
 
-class AdminPanel extends Component {
+class UserPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,29 +93,11 @@ class AdminPanel extends Component {
 
   openModificationModal(user) {
     swal({
-      content:
-        <Container>
-          <Row className="mt-4">
-            <h5 className="text-center">{user.email}</h5>
-            <table className="buttons">
-              <tr>
-                {user.role === "user" &&
-                  <td>
-                    <Button onClick={this.changeRol.bind(this, user._id, "admin", user.name)}>HACER ADMIN</Button>
-                  </td>
-                }
-                {user.role === "admin" &&
-                  <td>
-                    <Button onClick={this.changeRol.bind(this, user._id, "user", user.name)}>HACER USUARIO</Button>
-                  </td>
-                }
-                <td>
-                  <Button variant="danger" onClick={this.deleteUser.bind(this, user._id, user.name)}>ELIMINAR</Button>
-                </td>
-              </tr>
-            </table>
-          </Row>
-        </Container>,
+      content:<UserModal 
+        user={user} 
+        changeRol={this.changeRol}
+        deleteUser={this.deleteUser}>  
+        </UserModal>,
       buttons: false
     });
   }
@@ -162,7 +144,7 @@ class AdminPanel extends Component {
         <Row className="mt-4 justify-content-md-center">
           <Row>
             <Col md={12}>
-              <h2 className="text-center">Usuarios registrados</h2>
+              <h2 className="text-center">Panel de usuarios</h2>
             </Col>
             <Col md={12}>
               <p className="text-center">Instrucciones: Haz click para poder eliminar o cambiar el rol de un usuario</p>
@@ -223,7 +205,7 @@ class AdminPanel extends Component {
   }
 }
 
-AdminPanel.propTypes = {
+UserPanel.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   loginUser: PropTypes.func.isRequired,
   listUsers: PropTypes.func.isRequired,
@@ -239,4 +221,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { listUsers, changeRol, deleteUser }
-)(AdminPanel);
+)(UserPanel);

@@ -33,7 +33,7 @@ class Sidebar extends Component {
                         <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Usuarios</a>
                         <ul className="collapse list-unstyled" id="pageSubmenu">
                             <li>
-                                <a href="#">Panel de usuarios</a>
+                                <a onClick={() => this.goToPage('/dashboard/users')}>Panel de usuarios</a>
                             </li>
                         </ul>
                     </li>}
@@ -70,7 +70,7 @@ class Sidebar extends Component {
                     </li>
                     { this.isUserAdmin() &&
                         <li>
-                            <a onClick={() => this.goToPage('/dashboard/admin')} className="article">Panel de administrador</a>
+                            <a onClick={() => this.goToPage('/dashboard')} className="article">Panel de administrador</a>
                         </li>
                     }
                 </ul>
