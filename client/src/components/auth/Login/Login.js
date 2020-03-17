@@ -58,65 +58,65 @@ class Login extends Component {
     const { errors } = this.state;
     return (
       <>
-      <div className="limiter">
-        <div className="container-login100">
-          <div className="wrap-login100 p-t-50 p-b-90 p-l-15 p-r-15">
-            <Form className="login100-form validate-form flex-sb flex-w" onSubmit={this.onSubmit}>
-              <span className="login100-form-title p-b-51">
-                KS Seguros
-              </span>
+        <div className="limiter">
+          <div className="container-login100">
+            <div className="wrap-login100 p-t-50 p-b-90 p-l-15 p-r-15">
+              <Form className="login100-form validate-form flex-sb flex-w" onSubmit={this.onSubmit}>
+                <span className="login100-form-title p-b-51">
+                  KS Seguros
+                </span>
 
-              <div className="wrap-input100 validate-input m-b-16" data-validate = "Username is required">
-                <input 
-                  className="input100" 
-                  type="text" 
-                  name="username" 
-                  placeholder="Username"
-                  id="email"
-                  onChange={this.onChange}
-                />
-                <span className="focus-input100"></span>
-              </div>
-              {errors.email}
-              {errors.emailnotfound}
+                <div className="wrap-input100 validate-input m-b-16" data-validate = "Username is required">
+                  <input 
+                    className="input100" 
+                    type="text" 
+                    name="username" 
+                    placeholder="Username"
+                    id="email"
+                    onChange={this.onChange}
+                  />
+                  <span className="focus-input100"></span>
+                </div>
+                {errors.email}
+                {errors.emailnotfound}
 
-              <div className="wrap-input100 validate-input m-b-16" data-validate = "Password is required">
-                <input 
-                  className="input100" 
-                  type="password" 
-                  name="pass" 
-                  placeholder="Password"
-                  id="password"
-                  onChange={this.onChange}
-                />
-                <span className="focus-input100"></span>
-              </div>
-              {errors.passwordincorrect}
-              <div className="flex-sb-m w-full p-t-3 p-b-24">
-                <div className="contact100-form-checkbox">
-                  <input className="input-checkbox100" id="ckb1" type="checkbox" name="remember-me"/>
-                  <label className="label-checkbox100" htmlFor="ckb1">
-                    Recuérdame
-                  </label>
+                <div className="wrap-input100 validate-input m-b-16" data-validate = "Password is required">
+                  <input 
+                    className="input100" 
+                    type="password" 
+                    name="pass" 
+                    placeholder="Password"
+                    id="password"
+                    onChange={this.onChange}
+                  />
+                  <span className="focus-input100"></span>
+                </div>
+                {errors.passwordincorrect}
+                <div className="flex-sb-m w-full p-t-3 p-b-24">
+                  <div className="contact100-form-checkbox">
+                    <input className="input-checkbox100" id="ckb1" type="checkbox" name="remember-me"/>
+                    <label className="label-checkbox100" htmlFor="ckb1">
+                      Recuérdame
+                    </label>
+                  </div>
+
+                  <div>
+                    <p onClick={this.toRecoverPassword} className="txt1">
+                      Recuperar contraseña
+                    </p>
+                  </div>
                 </div>
 
-                <div>
-                  <p onClick={this.toRecoverPassword} className="txt1">
-                    Recuperar contraseña
-                  </p>
+                <div className="container-login100-form-btn m-t-17">
+                  <button className="login100-form-btn" type="submit">
+                    Iniciar sesión
+                  </button>
                 </div>
-              </div>
 
-              <div className="container-login100-form-btn m-t-17">
-                <button className="login100-form-btn" type="submit">
-                  Iniciar sesión
-                </button>
-              </div>
-
-            </Form>
+              </Form>
+            </div>
           </div>
         </div>
-	    </div>
       </>
     );
   }

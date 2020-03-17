@@ -2,10 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { recoverPassword } from "../../actions/recoverPassword"
-import classnames from "classnames";
 
-import { Link } from "react-router-dom";
-import { Button, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
 class RecoverPassword extends Component {
   constructor() {
@@ -35,6 +33,10 @@ class RecoverPassword extends Component {
     }
   }
 
+  toLogin = () => {
+    this.props.history.push("/login");
+  }
+
   onChange = e => {
     this.setState({ [e.target.id]: e.target.value });
   };
@@ -53,48 +55,43 @@ class RecoverPassword extends Component {
     const { errors } = this.state;
     return (
       <>
-    <div className="row justify-content-center">
-      <div className="col-xl-8 col-lg-12 col-md-9">
-        <div className="card o-hidden border-0 shadow-lg my-5">
-          <div className="card-body p-0">
-            <div className="row">
-              <div className="col-lg-6 d-none d-lg-block">
-                <img src="static/img/Imago.png" alt="loginimage" width={"50%"} className="login-image"></img>
-              </div>
-              <div className="col-lg-6">
-                <div className="p-5">
-                  <div className="text-center">
-                    <h1 className="h4 text-gray-900 mb-4">Recupera tu contraseña</h1>
-                  </div>
-                  <Form className="user" noValidate onSubmit={this.onSubmit}>
-                    <div className="form-group">
-                      <Form.Control
-                            onChange={this.onChange}
-                            value={this.state.email}
-                            error={errors.email}
-                            placeholder="Email"
-                            id="email"
-                            type="email"
-                            className={classnames("form-control form-control-user", {
-                              invalid: errors.email || errors.emailnotfound
-                            })}
-                          />
-                    </div>
-                    <Button variant="btn btn-primary btn-user btn-block" type="submit">Enviar correo</Button>
-                  </Form>
-                  <hr/>
-                  <div className="text-center">
-                  <Link to="/login">Inicia sesion</Link>
-                  <br></br>
-                  <Link to="/register">Crea una cuenta</Link>
+      <div className="limiter">
+          <div className="container-login100">
+            <div className="wrap-login100 p-t-50 p-b-90 p-l-15 p-r-15">
+              <Form className="login100-form validate-form flex-sb flex-w" onSubmit={this.onSubmit}>
+                <span className="login100-form-title p-b-51">
+                  Recuperar contraseña
+                </span>
+
+                <div className="wrap-input100 validate-input m-b-16" data-validate = "Username is required">
+                  <input 
+                    className="input100" 
+                    type="text" 
+                    name="username" 
+                    placeholder="Email"
+                    id="email"
+                    onChange={this.onChange}
+                  />
+                  <span className="focus-input100"></span>
+                </div>
+                <div className="flex-sb-m w-full p-t-3 p-b-24">
+                  <div>
+                    <p onClick={this.toLogin} className="txt1">
+                      Iniciar sesión
+                    </p>
                   </div>
                 </div>
-              </div>
+
+                <div className="container-login100-form-btn m-t-17">
+                  <button className="login100-form-btn" type="submit">
+                    Enviar email
+                  </button>
+                </div>
+
+              </Form>
             </div>
           </div>
         </div>
-      </div>
-    </div>
       </>
     );
   }
