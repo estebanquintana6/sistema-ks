@@ -1,7 +1,4 @@
 import axios from "axios";
-import swal from '@sweetalert/with-react';
-import React from "react";
-
 
 export const registerClient = (clientData, history) => dispatch => {
   const token = localStorage.getItem("jwtToken");

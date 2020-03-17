@@ -2,22 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
-import { loginUser } from "../../actions/authActions";
-import { logoutUser } from "../../actions/authActions";
 import { listUsers } from "../../actions/userActions";
 import { changeRol, deleteUser } from "../../actions/adminActions";
 
 import swal from '@sweetalert/with-react';
 
-
-//Package imports
 import {
   Button,
   Col,
   Container,
-  Form,
-  Nav,
-  Navbar,
   Row
 } from 'react-bootstrap';
 
@@ -141,17 +134,6 @@ class AdminPanel extends Component {
     return {};
   }
 
-
-
-  onLogoutClick = e => {
-    e.preventDefault();
-    this.props.logoutUser();
-  };
-
-  chooseForm = (e, key) => {
-    this.setState({ selectedForm: key })
-  }
-
   onFilteredChangeCustom = (value, accessor) => {
     let filtered = this.state.filtered;
     let insertNewFilter = 1;
@@ -174,38 +156,9 @@ class AdminPanel extends Component {
     this.setState({ filtered: filtered });
   };
 
-  userPage = (e) => {
-    this.props.history.push("/dashboard");
-  }
-
   render() {
-    const user = this.props.auth.user;
     const { data } = this.state;
     return (
-      <Col sm={12}>
-        <Navbar bg="light">
-          <Navbar.Brand href="#home">
-            <img
-              src="static/img/texto.png"
-              height="50"
-              alt="logo"
-              className="d-inline-block align-top"
-            />
-          </Navbar.Brand>
-        </Navbar>
-        <Navbar collapseOnSelect expand="lg" className="bg-dark-blue" variant="dark">
-          <Navbar.Brand href="#home">Administrador: {user.name} {user.last_name}</Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link onClick={this.onLogoutClick}>Cerrar sesion</Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-          <Form inline>
-            <Button variant="success" className="bg-blue" onClick={this.userPage}>Ir a panel de usuario</Button>
-          </Form>
-        </Navbar>
-
         <Row className="mt-4 justify-content-md-center">
           <Row>
             <Col md={12}>
@@ -266,7 +219,6 @@ class AdminPanel extends Component {
             </ReactTable>
           </Col>
         </Row>
-      </Col>
     );
   }
 }
@@ -286,5 +238,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { loginUser, logoutUser, listUsers, changeRol, deleteUser }
+  { listUsers, changeRol, deleteUser }
 )(AdminPanel);

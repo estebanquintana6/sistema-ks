@@ -1,4 +1,6 @@
-import React, { Component } from "react"
+import React, { Component } from "react";
+
+import "./Sidebar.css";
 
 class Sidebar extends Component {
     isUserAdmin = () => {
@@ -16,7 +18,7 @@ class Sidebar extends Component {
                     <h3>KS Seguros</h3>
                 </div>
                 <ul className="list-unstyled components">
-                    <li className="active">
+                    <li>
                         <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Clientes</a>
                         <ul className="collapse list-unstyled" id="homeSubmenu">
                             <li>
@@ -66,9 +68,11 @@ class Sidebar extends Component {
                     <li>
                         <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" className="download">Perfil</a>
                     </li>
-                    <li>
-                        <a href="https://bootstrapious.com/p/bootstrap-sidebar" className="article">Panel de administrador</a>
-                    </li>
+                    { this.isUserAdmin() &&
+                        <li>
+                            <a onClick={() => this.goToPage('/dashboard/admin')} className="article">Panel de administrador</a>
+                        </li>
+                    }
                 </ul>
             </nav>
         );

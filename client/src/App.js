@@ -14,7 +14,6 @@ import Register from "./components/auth/Register/Register";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Layout from "./components/Layout/Layout";
-import AdminPanel from "./components/Admin/AdminPanel";
 
 import "./App.css";
 
@@ -38,6 +37,7 @@ if (localStorage.jwtToken) {
   }
 }
 const isUserAuthenticated = () => store.getState().isAuthenticated
+
 class App extends Component {
   render() {
     return (
