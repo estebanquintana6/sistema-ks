@@ -2,10 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../../../actions/authActions";
-import classnames from "classnames";
 
-import { Link } from "react-router-dom";
-import { Button, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import "./Login.css";
 
 class Login extends Component {
@@ -37,6 +35,10 @@ class Login extends Component {
     }
   }
 
+  toRecoverPassword = () => {
+    this.props.history.push("/recover");
+  }
+
   onChange = e => {
     this.setState({ [e.target.id]: e.target.value });
   };
@@ -56,63 +58,65 @@ class Login extends Component {
     const { errors } = this.state;
     return (
       <>
-    <div className="row justify-content-center">
-      <div className="col-xl-8 col-lg-12 col-md-9">
-        <div className="card o-hidden border-0 shadow-lg my-5">
-          <div className="card-body p-0">
-            <div className="row">
-              <div className="col-lg-6 d-none d-lg-block">
-                <img src="static/img/Imago.png" alt="loginimage" width={"50%"} className="login-image"></img>
-              </div>
-              <div className="col-lg-6">
-                <div className="p-5">
-                  <div className="text-center">
-                    <h1 className="h4 text-gray-900 mb-4">Bienvenido!</h1>
-                  </div>
-                  <Form className="user" noValidate onSubmit={this.onSubmit}>
-                    <div className="form-group">
-                      <Form.Control
-                            onChange={this.onChange}
-                            value={this.state.email}
-                            error={errors.email}
-                            placeholder="Email"
-                            id="email"
-                            type="email"
-                            className={classnames("form-control form-control-user", {
-                              invalid: errors.email || errors.emailnotfound
-                            })}
-                          />
-                    </div>
-                    <div className="form-group">
-                      <Form.Control
-                            onChange={this.onChange}
-                            value={this.state.password}
-                            error={errors.password}
-                            placeholder="Contraseña"
-                            id="password"
-                            type="password"
-                            className={classnames("form-control form-control-user", {
-                              invalid: errors.password || errors.passwordincorrect
-                            })}
-                          />
-                          {errors.passwordincorrect}
-                    </div>
-                    <Button variant="btn btn-primary btn-user btn-block" type="submit">Iniciar sesión</Button>
-                  </Form>
-                  <hr/>
-                  <div className="text-center">
-                  <Link to="/register">Crea una cuenta</Link>
-                  <br></br>
-                  <Link to="/recover">Recupera tu contraseña</Link>
+        <div className="limiter">
+          <div className="container-login100">
+            <div className="wrap-login100 p-t-50 p-b-90 p-l-15 p-r-15">
+              <Form className="login100-form validate-form flex-sb flex-w" onSubmit={this.onSubmit}>
+                <span className="login100-form-title p-b-51">
+                  KS Seguros
+                </span>
 
+                <div className="wrap-input100 validate-input m-b-16" data-validate = "Username is required">
+                  <input 
+                    className="input100" 
+                    type="text" 
+                    name="username" 
+                    placeholder="Username"
+                    id="email"
+                    onChange={this.onChange}
+                  />
+                  <span className="focus-input100"></span>
+                </div>
+                {errors.email}
+                {errors.emailnotfound}
+
+                <div className="wrap-input100 validate-input m-b-16" data-validate = "Password is required">
+                  <input 
+                    className="input100" 
+                    type="password" 
+                    name="pass" 
+                    placeholder="Password"
+                    id="password"
+                    onChange={this.onChange}
+                  />
+                  <span className="focus-input100"></span>
+                </div>
+                {errors.passwordincorrect}
+                <div className="flex-sb-m w-full p-t-3 p-b-24">
+                  <div className="contact100-form-checkbox">
+                    <input className="input-checkbox100" id="ckb1" type="checkbox" name="remember-me"/>
+                    <label className="label-checkbox100" htmlFor="ckb1">
+                      Recuérdame
+                    </label>
+                  </div>
+
+                  <div>
+                    <p onClick={this.toRecoverPassword} className="txt1">
+                      Recuperar contraseña
+                    </p>
                   </div>
                 </div>
-              </div>
+
+                <div className="container-login100-form-btn m-t-17">
+                  <button className="login100-form-btn" type="submit">
+                    Iniciar sesión
+                  </button>
+                </div>
+
+              </Form>
             </div>
           </div>
         </div>
-      </div>
-    </div>
       </>
     );
   }

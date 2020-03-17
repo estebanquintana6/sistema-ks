@@ -77,7 +77,7 @@ router.post("/login", (req, res) => {
   User.findOne({ email }).then(user => {
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ emailnotfound: "Email not found" });
+      return res.status(404).json({ emailnotfound: "El email no existe" });
     }
 
     // Check password
@@ -123,7 +123,7 @@ router.post("/recover", (req, res) => {
   User.findOne({ email }).then(user => {
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ emailnotfound: "Email no existe" });
+      return res.status(404).json({ errors: {email: "Email no existe" }});
     }
 
     ResetPassword.find({userId: user.id, status: 0}).remove().exec();
