@@ -1,14 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Row } from 'react-bootstrap'
+import { Container, Row } from 'react-bootstrap'
 import { connect } from "react-redux";
 import { getClients, updateClient, deleteClient } from "../../../actions/registerClient";
 import { ExportClientCSV } from "../../ExportCSV/ExportCSV";
+import swal from '@sweetalert/with-react';
+
+import ClientForm from "../ClientsForm/ClientsForm";
+
 
 import "react-select/dist/react-select.css";
-
 // Import React Table
 import ReactTable from "react-table";
+
 
 import "react-table/react-table.css";
 import "./ClientsReport.css";
@@ -59,15 +63,27 @@ class ClientsReport extends Component {
   };
 
   addClient = e => {
-    this.props.history.push('/dashboard/clientes/new')
+    swal({
+      title: `Registro de cliente`,
+      text: "Captura los datos del nuevo cliente",
+      content: <ClientForm></ClientForm>,
+      buttons: true,
+    })
+    //this.props.history.push('/dashboard/clientes/new')
   }
 
   render() {
     const { data } = this.state;
     return (
       <React.Fragment>
-        <Row><h2>Clientes</h2></Row>
-        <Row><Button onClick={this.addClient} className={'pullRight'}>Agregar cliente</Button></Row>
+        <Row>
+          <h2>Clientes</h2>
+        </Row>
+        <Container className="mt-4">
+          <Row>
+            <a onClick={this.addClient} className="btn-primary">Registrar nuevo</a>
+          </Row>
+        </Container>
         <br />
         <div className="full-width">
           <ReactTable
