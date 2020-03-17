@@ -10,14 +10,9 @@ export const registerClient = (clientData, history) => dispatch => {
     clientData
   }
 
-  axios
+  return axios
     .post("/api/clients/save", data)
     .then(res => {
-      swal({
-        icon: "success",
-        content: <h2>Cliente guardado</h2>,
-      });
-      history.push('/dashboard/clientes')
       return res;
     }).catch(err => {
       return err;

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Container, Row } from 'react-bootstrap'
 import { connect } from "react-redux";
-import { getClients, updateClient, deleteClient } from "../../../actions/registerClient";
+import { getClients, updateClient, deleteClient, registerClient } from "../../../actions/registerClient";
 import { ExportClientCSV } from "../../ExportCSV/ExportCSV";
 import swal from '@sweetalert/with-react';
 
@@ -61,13 +61,34 @@ class ClientsReport extends Component {
 
     this.setState({ filtered: filtered });
   };
+  
+  registerClient = (clientData) => {
+    this.props.registerClient(
+                  clientData, 
+                  this.props.history)
+                .then((response) => {
+                  const {status} = response;
+                  if(status === 200){
+                    swal({
+                      icon: "success",
+                      content: <h2>Cliente guardado</h2>,
+                    });                  
+                  } else {
+                    swal({
+                      icon: "error",
+                      content: <h2>Error al guardar al cliente</h2>,
+                    });
+                  }
+                  this.refresh();
+                });
+  }
 
   addClient = e => {
     swal({
       title: `Registro de cliente`,
       text: "Captura los datos del nuevo cliente",
-      content: <ClientForm></ClientForm>,
-      buttons: true,
+      content: <ClientForm save={this.registerClient}></ClientForm>,
+      buttons: false
     })
     //this.props.history.push('/dashboard/clientes/new')
   }
@@ -173,5 +194,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getClients, updateClient, deleteClient }
+  { getClients, updateClient, deleteClient, registerClient }
 )(ClientsReport);

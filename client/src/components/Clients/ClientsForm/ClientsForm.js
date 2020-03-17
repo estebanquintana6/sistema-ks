@@ -2,15 +2,11 @@ import 'date-fns';
 
 import React, { Component } from "react";
 
-import { registerClient } from "../../../actions/registerClient";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-
 import {
+  Button,
   Form,
   Col,
   Row,
-  Button
 } from 'react-bootstrap';
 import "./ClientsForm.css"
 import "moment/locale/es";
@@ -27,7 +23,7 @@ class ClientsForm extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    this.props.registerClient(this.state, this.props.history);
+    this.props.save(this.state);
   }
 
   getPersonTypeId = () => {
@@ -66,7 +62,7 @@ class ClientsForm extends Component {
                     <Form.Label>Telefono</Form.Label>
                     <Form.Control required onChange={this.onChange} />
                   </Form.Group>
-                  <Form.Group as={Col} md="8" controlId="email" className={this.state.showRazonSocial}>
+                  <Form.Group as={Col} controlId="email" className={this.state.showRazonSocial}>
                     <Form.Label>Correo</Form.Label>
                     <Form.Control required onChange={this.onChange} />
                   </Form.Group>
@@ -89,6 +85,7 @@ class ClientsForm extends Component {
                 </Form.Row>
               </Col>
             </Row>
+            <Button variant="primary" type="submit">Guardar</Button>
           </Form>
     );
   }
