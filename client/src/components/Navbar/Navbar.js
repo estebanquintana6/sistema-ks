@@ -10,9 +10,9 @@ class Navbar extends Component {
 
     onLogoutClick = e => {
         e.preventDefault();
-        this.props.logoutUser();
+        this.props.logoutUser(this.props.history);
     }
-        
+
     render() {
         return (
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -52,4 +52,4 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     { logoutUser }
-  )(Navbar);
+)(Navbar);

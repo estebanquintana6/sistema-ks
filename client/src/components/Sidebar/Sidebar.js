@@ -1,33 +1,43 @@
 import React, { Component } from "react"
-import PropTypes from "prop-types";
-
-import { connect } from "react-redux";
-
 
 class Sidebar extends Component {
-    render() {
-        const user = this.props.auth.user;
+    isUserAdmin = () => {
+        return this.props.user.role === 'admin'
+    }
 
+    goToPage = (route) => {
+        this.props.history.push(route);
+    }
+
+    render() {
         return (
             <nav id="sidebar">
                 <div className="sidebar-header">
                     <h3>KS Seguros</h3>
                 </div>
                 <ul className="list-unstyled components">
-                    <li>
-                        <a href="#clienteSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Clientes</a>
-                        <ul className="collapse list-unstyled" id="clienteSubmenu">
+                    <li className="active">
+                        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Clientes</a>
+                        <ul className="collapse list-unstyled" id="homeSubmenu">
                             <li>
-                                <a href="#">Registro de clientes</a>
+                                <a onClick={() => this.goToPage('/dashboard/clientes')}>Registro de clientes</a>
                             </li>
                             <li>
                                 <a href="#">Panel de clientes</a>
                             </li>
                         </ul>
                     </li>
+                    {this.isUserAdmin() && <li>
+                        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Usuarios</a>
+                        <ul className="collapse list-unstyled" id="pageSubmenu">
+                            <li>
+                                <a href="#">Panel de usuarios</a>
+                            </li>
+                        </ul>
+                    </li>}
                     <li>
-                        <a href="#autoSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Auto</a>
-                        <ul className="collapse list-unstyled" id="autoSubmenu">
+                        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Auto</a>
+                        <ul className="collapse list-unstyled" id="pageSubmenu">
                             <li>
                                 <a href="#">Registro de seguro</a>
                             </li>
@@ -37,8 +47,8 @@ class Sidebar extends Component {
                         </ul>
                     </li>
                     <li>
-                        <a href="#medicoSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Gastos médicos</a>
-                        <ul className="collapse list-unstyled" id="medicoSubmenu">
+                        <a href="#autoSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Gastos médicos</a>
+                        <ul className="collapse list-unstyled" id="autoSubmenu">
                             <li>
                                 <a href="#">Registro de seguro</a>
                             </li>
@@ -54,29 +64,15 @@ class Sidebar extends Component {
 
                 <ul className="list-unstyled CTAs">
                     <li>
-                        <a href="#" className="download">Perfil</a>
+                        <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" className="download">Perfil</a>
                     </li>
-                    { user.role === "admin" &&
                     <li>
-                        <a href="/admin" className="article">Panel de administrador</a>
+                        <a href="https://bootstrapious.com/p/bootstrap-sidebar" className="article">Panel de administrador</a>
                     </li>
-                    }
                 </ul>
             </nav>
         );
     }
-    }
+}
 
-Sidebar.propTypes = {
-    auth: PropTypes.object.isRequired
-};
-
-const mapStateToProps = state => ({
-    auth: state.auth,
-    errors: state.errors
-});
-  
-export default connect(
-    mapStateToProps,
-    {}
-)(Sidebar);
+export default Sidebar;

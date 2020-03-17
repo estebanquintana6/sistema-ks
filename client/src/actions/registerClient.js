@@ -3,7 +3,7 @@ import swal from '@sweetalert/with-react';
 import React from "react";
 
 
-export const registerClient = (clientData) => dispatch => {
+export const registerClient = (clientData, history) => dispatch => {
   const token = localStorage.getItem("jwtToken");
   const data = {
     token,
@@ -17,7 +17,7 @@ export const registerClient = (clientData) => dispatch => {
         icon: "success",
         content: <h2>Cliente guardado</h2>,
       });
-
+      history.push('/dashboard/clientes')
       return res;
     }).catch(err => {
       return err;
@@ -30,7 +30,7 @@ export const getClients = () => dispatch => {
   const token = localStorage.getItem("jwtToken");
 
   return axios
-    .post("/api/clients/fetch", {token})
+    .get("/api/clients/fetch", { token })
     .then((res) => {
       return res.data
     }).catch(err => {
@@ -53,7 +53,7 @@ export const updateClient = (id, clientData) => dispatch => {
       return res;
     }).catch(err => {
       return err;
-    });  
+    });
 }
 
 export const deleteClient = (id) => dispatch => {
@@ -68,6 +68,6 @@ export const deleteClient = (id) => dispatch => {
       return res;
     }).catch(err => {
       return err;
-  });  
+    });
 
 }
