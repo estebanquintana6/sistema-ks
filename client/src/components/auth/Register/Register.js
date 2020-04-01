@@ -60,111 +60,108 @@ class Register extends Component {
     const { errors } = this.state;
 
     return (
-      <div className="row justify-content-center">
-        <div className="col-xl-8 col-lg-12 col-md-9">
-          <div className="card o-hidden border-0 shadow-lg my-5">
-            <div className="card-body p-0">
-              <div className="row">
-                <div className="col-lg-6 d-none d-lg-block">
-                  <img src="static/img/Imago.png" alt="loginimage" width={"50%"} className="login-image"></img>
-                </div>
-                <div className="col-lg-6">
-                  <div className="p-5">
-                    <div className="text-center">
-                      <h1 className="h4 text-gray-900 mb-4">Registro de usuario</h1>
-                    </div>
-                    <Form noValidate onSubmit={this.onSubmit}>
-                      <Row>
-                        <Col md="6">
+      <>
+        <div className="limiter">
+          <div className="container-login100">
+            <div className="wrap-register100 p-t-50 p-b-90 p-l-15 p-r-15">
+              <Form 
+                className="login100-form validate-form flex-sb flex-w" 
+                onSubmit={this.onSubmit}
+                autocomplete="off">
+                <span className="login100-form-title p-b-51">
+                  Registro
+                </span>
+                <input id="username" style={{display:"none"}} type="text" name="fakeusernameremembered"/>
+                <input id="password" style={{display:"none"}} type="password" name="fakepasswordremembered"></input>
 
-                          <Form.Label className="p-secondary-small-text" >Nombre</Form.Label>
-                          <Form.Control
-                            onChange={this.onChange}
-                            value={this.state.name}
-                            error={errors.name}
-                            id="name"
-                            type="text"
-                            className={classnames("", {
-                              invalid: errors.name
-                            })}
-                          />
-                          <span className="red-text">{errors.name}</span>
-                        </Col>
-                        <Col md="6">
-
-                          <Form.Label className="p-secondary-small-text">Apellidos</Form.Label>
-                          <Form.Control
-                            onChange={this.onChange}
-                            value={this.state.last_name}
-                            error={errors.last_name}
-                            id="last_name"
-                            type="text"
-                            className={classnames("", {
-                              invalid: errors.last_name
-                            })}
-                          />
-                        </Col>
-                      </Row>
-                      <span className="red-text">{errors.last_name}</span>
-                      <Form.Label className="p-secondary-small-text">Email</Form.Label>
-                      <Form.Control
+                  <div className="col-md-6">
+                    <div className="wrap-input100 validate-input m-b-16" data-validate = "Nombre es requerido">
+                      <input 
+                        className="input100" 
+                        type="text"
+                        name="name"
+                        placeholder="Nombre"
+                        id="name"
                         onChange={this.onChange}
-                        value={this.state.email}
-                        error={errors.email}
-                        id="email"
-                        type="email"
-                        className={classnames("", {
-                          invalid: errors.email
-                        })}
                       />
-                      <span className="red-text">{errors.email}</span>
-                      <Row>
-                        <Col md="6">
-                          <Form.Label className="p-secondary-small-text">Contraseña</Form.Label>
-                          <Form.Control
-                            onChange={this.onChange}
-                            value={this.state.password}
-                            error={errors.password}
-                            id="password"
-                            type="password"
-                            className={classnames("", {
-                              invalid: errors.password
-                            })}
-                          />
-                          <span className="red-text">{errors.password}</span>
-                        </Col>
-                        <Col md="6">
-                          <Form.Label className="p-secondary-small-text">Confirma tu contraseña</Form.Label>
-                          <Form.Control
-                            onChange={this.onChange}
-                            value={this.state.password2}
-                            error={errors.password2}
-                            id="password2"
-                            type="password"
-                            className={classnames("", {
-                              invalid: errors.password2
-                            })}
-                          />
-                          <span className="red-text">{errors.password2}</span>
-                        </Col>
-                      </Row>
-                      <Col>
-                        <Button className="portero-primary-btn btn-block mt-3" type="submit">Registrar</Button>
-                      </Col>
-                    </Form>
+                      <span className="focus-input100"></span>
+                    </div>
+                    {errors.name}
+                  </div>
 
-                    <hr />
-                    <div className="text-center">
-                      <Link to="/login">Iniciar sesion</Link>
-                      <br></br>
+                  <div className="col-md-6">
+                    <div className="wrap-input100 validate-input m-b-16" data-validate = "Apellido es requerido">
+                      <input 
+                        className="input100" 
+                        type="text" 
+                        name="last_name"
+                        placeholder="Apellidos"
+                        id="last_name"
+                        onChange={this.onChange}
+                      />
+                      <span className="focus-input100"></span>
+                    </div>
+                    {errors.last_name}
+                  </div>
+                  
+                  <div className="col-md-12">
+                    <div className="wrap-input100 validate-input m-b-16" data-validate = "Email es requerido">
+                      <input 
+                        className="input100" 
+                        type="email" 
+                        name="email" 
+                        placeholder="Email"
+                        id="email"
+                        autocomplete="nope"
+                        onChange={this.onChange}
+                      />
+                      <span className="focus-input100"></span>
+                    </div>
+                    {errors.email}
+                  </div>
+
+                  <div className="col-md-6">
+                    <div className="wrap-input100 validate-input m-b-16" data-validate = "Contraseña requerida">
+                      <input 
+                        className="input100" 
+                        type="password" 
+                        name="password" 
+                        placeholder="Password"
+                        id="password"
+                        autocomplete="new-password"                        
+                        onChange={this.onChange}
+                      />
+                      <span className="focus-input100"></span>
+                      {errors.password}
                     </div>
                   </div>
+
+                  <div className="col-md-6">
+                  <div className="wrap-input100 validate-input m-b-16" data-validate = "Contraseña requerida">
+                      <input 
+                        className="input100" 
+                        type="password" 
+                        name="password2" 
+                        placeholder="Confirmar contraseña"
+                        id="password2"
+                        onChange={this.onChange}
+                      />
+                      <span className="focus-input100"></span>
+                      {errors.password}
+                    </div>
+                  </div>
+
+                <div className="container-login100-form-btn m-t-17">
+                  <button className="login100-form-btn" type="submit">
+                    Registro
+                  </button>
                 </div>
-              </div>
+
+              </Form>
             </div>
           </div>
         </div>
-      </div>
+        </>
     );
   }
 }
