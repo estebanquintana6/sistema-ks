@@ -93,11 +93,11 @@ class UserPanel extends Component {
 
   openModificationModal(user) {
     swal({
-      content:<UserModal 
-        user={user} 
+      content: <UserModal
+        user={user}
         changeRol={this.changeRol}
-        deleteUser={this.deleteUser}>  
-        </UserModal>,
+        deleteUser={this.deleteUser}>
+      </UserModal>,
       buttons: false
     });
   }
@@ -141,66 +141,66 @@ class UserPanel extends Component {
   render() {
     const { data } = this.state;
     return (
-        <Row className="mt-4 justify-content-md-center">
-          <Row>
-            <Col md={12}>
-              <h2 className="text-center">Panel de usuarios</h2>
-            </Col>
-            <Col md={12}>
-              <p className="text-center">Instrucciones: Haz click para poder eliminar o cambiar el rol de un usuario</p>
-            </Col>
-          </Row>
+      <Row className="mt-4 justify-content-md-center">
+        <Row>
           <Col md={12}>
-            <ReactTable
-              data={data}
-              filterable
-              filtered={this.state.filtered}
-              onFilteredChange={(filtered, column, value) => {
-                this.onFilteredChangeCustom(value, column.id || column.accessor);
-              }}
-              defaultFilterMethod={(filter, row, column) => {
-                const id = filter.pivotId || filter.id;
-                if (typeof filter.value === "object") {
-                  return row[id] !== undefined
-                    ? filter.value.indexOf(row[id]) > -1
-                    : true;
-                } else {
-                  if (row[id] !== undefined) {
-                    return row[id] !== undefined
-                      ? String(row[id]).indexOf(filter.value) > -1
-                      : true;
-                  }
-                }
-              }}
-              columns={[
-                {
-                  Header: "Datos",
-                  columns: [
-                    {
-                      Header: "Rol",
-                      accessor: "role"
-                    },
-                    {
-                      Header: "Nombre",
-                      accessor: "name"
-                    },
-                    {
-                      Header: "Apellidos",
-                      accessor: "last_name"
-                    },
-                    {
-                      Header: "Email",
-                      accessor: "email"
-                    },
-                  ]
-                }
-              ]}
-              defaultPageSize={10}
-              className="-striped -highlight"
-              getTrProps={this.getTrProps}>
-            </ReactTable>
+            <h2 className="text-center">Panel de usuarios</h2>
+          </Col>
+          <Col md={12}>
+            <p className="text-center">Instrucciones: Haz click para poder eliminar o cambiar el rol de un usuario</p>
           </Col>
         </Row>
+        <Col md={12}>
+          <ReactTable
+            data={data}
+            filterable
+            filtered={this.state.filtered}
+            onFilteredChange={(filtered, column, value) => {
+              this.onFilteredChangeCustom(value, column.id || column.accessor);
+            }}
+            defaultFilterMethod={(filter, row, column) => {
+              const id = filter.pivotId || filter.id;
+              if (typeof filter.value === "object") {
+                return row[id] !== undefined
+                  ? filter.value.indexOf(row[id]) > -1
+                  : true;
+              } else {
+                if (row[id] !== undefined) {
+                  return row[id] !== undefined
+                    ? String(row[id]).indexOf(filter.value) > -1
+                    : true;
+                }
+              }
+            }}
+            columns={[
+              {
+                Header: "Datos",
+                columns: [
+                  {
+                    Header: "Rol",
+                    accessor: "role"
+                  },
+                  {
+                    Header: "Nombre",
+                    accessor: "name"
+                  },
+                  {
+                    Header: "Apellidos",
+                    accessor: "last_name"
+                  },
+                  {
+                    Header: "Email",
+                    accessor: "email"
+                  },
+                ]
+              }
+            ]}
+            defaultPageSize={10}
+            className="-striped -highlight"
+            getTrProps={this.getTrProps}>
+          </ReactTable>
+        </Col>
+      </Row>
     );
   }
 }

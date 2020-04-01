@@ -31,10 +31,9 @@ export const getClients = () => dispatch => {
 }
 
 
-export const updateClient = (id, clientData) => dispatch => {
+export const updateClient = (clientData) => dispatch => {
   const token = localStorage.getItem("jwtToken");
   const data = {
-    id,
     token,
     clientData
   }

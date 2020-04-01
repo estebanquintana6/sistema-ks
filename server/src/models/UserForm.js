@@ -9,7 +9,7 @@ const UserSchema = new Schema({
     uppercase: true
   },
   last_name: {
-    type:String,
+    type: String,
     required: true,
     uppercase: true
   },

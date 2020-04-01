@@ -5,12 +5,12 @@ var Client = new Schema({
   name: {
     type: String,
     required: true,
-    uppercase: true
+    uppercase: false
   },
   last_name: {
     type: String,
     required: false,
-    uppercase: true
+    uppercase: false
   },
   telephone: {
     type: String,
@@ -20,7 +20,7 @@ var Client = new Schema({
   email: {
     type: String,
     required: true,
-    uppercase: true
+    uppercase: false
   },
   rfc: {
     type: String,
@@ -31,12 +31,12 @@ var Client = new Schema({
   languages: {
     type: String,
     required: true,
-    uppercase: true
+    uppercase: false
   },
   person_type: {
     type: String,
     required: true,
-    uppercase: true
+    uppercase: false
   },
   created_at: {
     type: Date,

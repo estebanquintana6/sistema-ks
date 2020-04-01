@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
-import ClientsReport from '../Clients/ClientsReport/ClientsReport'
+import ClientsPanel from '../Clients/ClientsPanel/ClientsPanel'
 import ClientsForm from '../Clients/ClientsForm/ClientsForm'
 import AdminPanel from "../Users/UserPanel/UserPanel";
 
@@ -45,14 +45,14 @@ class Dashboard extends Component {
           <Navbar history={this.props.history}></Navbar>
           <Switch>
             <Route exact path="/dashboard/clientes">
-              <ClientsReport history={this.props.history}></ClientsReport>
+              <ClientsPanel history={this.props.history}></ClientsPanel>
             </Route>
             <Route path="/dashboard/clientes/new">
               <ClientsForm history={this.props.history}></ClientsForm>
             </Route>
-            { user.role === "admin" &&
+            {user.role === "admin" &&
               <Route path="/dashboard/users">
-                  <AdminPanel history={this.props.history}></AdminPanel>
+                <AdminPanel history={this.props.history}></AdminPanel>
               </Route>
             }
           </Switch>

@@ -37,20 +37,17 @@ router.post("/update", (req, res) => {
   const body = req.body;
   const token = body.token;
   const clientData = body.clientData;
-  const id = body.id;
-
-  jwt.verify(token, secretKey, function (err, decoded) {
+  const id = clientData._id;
+  jwt.verify(token, secretKey, function (err, _) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
     }
-    const userEmail = decoded.email;
-    User.findOne({ email: userEmail }).then((user) => {
-      const exists = user.clients.includes(id);
-      if (exists) {
-        let doc = Client.findById(id);
-        doc.update(clientData).then((err, result) => {
+    Client.findOne({ _id: id }).then((client) => {
+      if (client) {
+        let doc = Client.findById(client.id);
+        doc.updateOne(clientData).then((err, _) => {
           if (err) res.status(500);
-          res.status(201).json({ message: "Elemento modificado" });
+          res.status(200).json({ message: "Elemento modificado" });
         });
       }
     });
@@ -63,12 +60,9 @@ router.post("/delete", (req, res) => {
   const id = body.id;
 
   jwt.verify(token, secretKey, function (err, decoded) {
-    if (err) {
-      return res.status(401).json({ email: "no permissions" });
-    }
-    const userEmail = decoded.email;
-    User.findOne({ email: userEmail }).then((user) => {
-      const exists = user.clients.includes(id);
+    if (err) return res.status(401).json({ email: "no permissions" });
+    Client.findOne({ _id: id }).then((client) => {
+      const exists = client;
       if (exists) {
         Client.deleteOne({ _id: id }).then((err, result) => {
           if (err) res.status(500);
