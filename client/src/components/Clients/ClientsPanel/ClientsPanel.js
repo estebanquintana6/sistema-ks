@@ -6,7 +6,8 @@ import { getClients, updateClient, deleteClient, registerClient } from "../../..
 import { ExportClientCSV } from "../../ExportCSV/ExportCSV";
 import swal from '@sweetalert/with-react';
 
-import ClientForm from "../ClientsForm/ClientsForm";
+import ClientsForm from "../ClientsForm/ClientsForm";
+import ClientModal from '../ClientModal/ClientModal'
 
 
 import "react-select/dist/react-select.css";
@@ -15,10 +16,10 @@ import ReactTable from "react-table";
 
 
 import "react-table/react-table.css";
-import "./ClientsReport.css";
+import "./ClientsPanel.css";
 
 
-class ClientsReport extends Component {
+class ClientsPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -61,36 +62,103 @@ class ClientsReport extends Component {
 
     this.setState({ filtered: filtered });
   };
-  
+
   registerClient = (clientData) => {
     this.props.registerClient(
-                  clientData, 
-                  this.props.history)
-                .then((response) => {
-                  const {status} = response;
-                  if(status === 200){
-                    swal({
-                      icon: "success",
-                      content: <h2>Cliente guardado</h2>,
-                    });                  
-                  } else {
-                    swal({
-                      icon: "error",
-                      content: <h2>Error al guardar al cliente</h2>,
-                    });
-                  }
-                  this.refresh();
-                });
+      clientData,
+      this.props.history)
+      .then((response) => {
+        const { status } = response;
+        if (status === 200) {
+          swal({
+            icon: "success",
+            content: <h2>Cliente guardado</h2>,
+          });
+        } else {
+          swal({
+            icon: "error",
+            content: <h2>Error al guardar al cliente</h2>,
+          });
+        }
+        this.refresh();
+      });
+  }
+
+  updateClient = (clientData) => {
+    this.props.updateClient(
+      clientData)
+      .then((response) => {
+        const { status } = response;
+        if (status === 200) {
+          swal({
+            icon: "success",
+            content: <h2>Cliente actualizado</h2>,
+          });
+        } else {
+          swal({
+            icon: "error",
+            content: <h2>Error al guardar al cliente</h2>,
+          });
+        }
+        this.refresh();
+      });
   }
 
   addClient = e => {
     swal({
       title: `Registro de cliente`,
       text: "Captura los datos del nuevo cliente",
-      content: <ClientForm save={this.registerClient}></ClientForm>,
+      content: <ClientsForm save={this.registerClient}></ClientsForm>,
       buttons: false
     })
-    //this.props.history.push('/dashboard/clientes/new')
+  }
+
+  getTrProps = (state, rowInfo, instance) => {
+    if (rowInfo) {
+      return {
+        style: {
+          cursor: "pointer"
+        },
+        onClick: (e) => {
+          this.openModificationModal(rowInfo.original);
+        }
+      }
+    }
+    return {};
+  }
+
+  openModificationModal(client) {
+    swal({
+      content: <ClientModal
+        client={client}
+        updateClient={this.updateClient}
+        deleteClient={this.deleteClient}>
+      </ClientModal>,
+      buttons: false
+    });
+  }
+
+  deleteClient = (id, name, e) => {
+    swal({
+      title: `¿Estas seguro de querer eliminar a ${name}?`,
+      text: "Una vez eliminado ya no podras recuperarlo!",
+      icon: "warning",
+      buttons: true,
+      sucessMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          this.confirmDelete(id);
+          swal("Puf! Tu usuario se ha eliminado!", {
+            icon: "success",
+          });
+          this.refresh();
+        }
+      });
+  }
+
+  confirmDelete = (id) => {
+    this.props.deleteClient(id);
   }
 
   render() {
@@ -116,7 +184,7 @@ class ClientsReport extends Component {
             }}
             defaultFilterMethod={(filter, row, column) => {
               if (filter.id !== "email") {
-                filter.value = filter.value.toUpperCase();
+                filter.value = filter.value
               }
               const id = filter.pivotId || filter.id;
               if (typeof filter.value === "object") {
@@ -158,16 +226,13 @@ class ClientsReport extends Component {
                   Header: "RFC/Razon social",
                   id: "rfc",
                   accessor: d => d.rfc
-                },
-                {
-                  Header: "Opciones",
-                  id: "options",
                 }
               ]
             }
             ]}
             defaultPageSize={10}
             className="-striped -highlight"
+            getTrProps={this.getTrProps}
           />
           <div className="row">
             <div className="col-md-4 center mt-4">
@@ -181,7 +246,7 @@ class ClientsReport extends Component {
   }
 }
 
-ClientsReport.propTypes = {
+ClientsPanel.propTypes = {
   getClients: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
@@ -195,4 +260,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { getClients, updateClient, deleteClient, registerClient }
-)(ClientsReport);
+)(ClientsPanel);
