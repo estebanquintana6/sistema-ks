@@ -60,7 +60,7 @@ class ClientsForm extends Component {
   }
 
   createContact = () => {
-    let contacts = [...this.state.contacts];
+    const contacts = [...this.state.contacts];
     contacts.push({
       name: "",
       telephone: ""
@@ -69,7 +69,7 @@ class ClientsForm extends Component {
   }
 
   deleteContact = (index) => {
-    let contacts = [...this.state.contacts];
+    const contacts = [...this.state.contacts];
     contacts.splice(index, 1);
     this.setState({contacts});
   }
