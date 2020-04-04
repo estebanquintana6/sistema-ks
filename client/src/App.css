@@ -24,3 +24,7 @@ a.btn-primary{
 a.btn-primary:active{
 top:0.1em;
 }
+
+.width-800pt {
+    width: 800pt;
+}
