@@ -12,9 +12,6 @@ import "./ClientModal.css";
 import swal from '@sweetalert/with-react';
 
 class ClientModal extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   editUser = () => {
     const { client } = this.props;

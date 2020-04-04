@@ -183,7 +183,7 @@ class ClientsForm extends Component {
                           <Form.Control required onChange={(e) => {this.onChangeContactTelephone(index, e)}} value={this.state.contacts[index].telephone} />
                         </Form.Group>
                         <Col md="3">
-                          <Button variant="danger" onClick={() => {this.deleteContact(index)}}><i className="fa fa-trash"/></Button>
+                          <Button variant="danger" className="align-center" onClick={() => {this.deleteContact(index)}}><i className="fa fa-trash"/></Button>
                         </Col>
                       </Form.Row> 
                     );
