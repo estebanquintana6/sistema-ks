@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
 import { registerUser } from "../../../actions/authActions";
 
-import classnames from "classnames";
 import "./Register.css";
 
 class Register extends Component {

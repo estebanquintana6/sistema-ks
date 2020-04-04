@@ -108,6 +108,7 @@ class ClientsPanel extends Component {
     swal({
       title: `Registro de cliente`,
       text: "Captura los datos del nuevo cliente",
+      className: "width-800pt", 
       content: <ClientsForm save={this.registerClient}></ClientsForm>,
       buttons: false
     })
