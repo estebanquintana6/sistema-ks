@@ -47,8 +47,8 @@ class Dashboard extends Component {
             <Route exact path="/dashboard/clientes">
               <ClientsPanel history={this.props.history}></ClientsPanel>
             </Route>
-            <Route path="/dashboard/clientes/new">
-              <ClientsForm history={this.props.history}></ClientsForm>
+            <Route exact path="/dashboard/admin">
+              <ClientsPanel history={this.props.history}></ClientsPanel>
             </Route>
             {user.role === "admin" &&
               <Route path="/dashboard/users">

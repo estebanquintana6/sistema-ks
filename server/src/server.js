@@ -7,6 +7,7 @@ const users = require("./routes/userRoutes");
 const clients = require("./routes/clientsRoutes");
 const secom = require("./routes/secomRoutes");
 const token = require("./routes/tokenRoutes");
+const initializeDb = require('./createInsuranceTypes')
 
 const app = express();
 const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/test";
@@ -38,7 +39,10 @@ db.on("error", err => {
   console.log("Trying again");
   setTimeout(() => conn(), 5000);
 });
-db.once("open", () => console.log("Successfully connected to mongo"));
+db.once("open", () => {
+  initializeDb();
+  console.log("Successfully connected to mongo");
+});
 
 
 // Passport middleware
