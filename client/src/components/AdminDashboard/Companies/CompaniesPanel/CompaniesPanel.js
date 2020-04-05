@@ -9,7 +9,7 @@ import "./CompaniesPanel.css";
 import ReactTable from "react-table";
 import CompanyModal from '../CompanyModal/CompanyModal'
 import CompanyForm from '../CompanyForm/CompanyForm'
-import { getCompanies, updateCompany, registerCompany, deleteCompany } from '../../../actions/companyActions'
+import { getCompanies, updateCompany, registerCompany, deleteCompany } from '../../../../actions/companyActions'
 
 
 class CompaniesPanel extends Component {

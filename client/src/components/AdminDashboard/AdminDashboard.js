@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Row, Col, Container, Button } from 'react-bootstrap'
+import { Row, Col, Container } from 'react-bootstrap'
 import "react-select/dist/react-select.css";
 import "react-table/react-table.css";
 import "./AdminDashboard.css";
-import InsuranceTypesPanel from "./InsuranceTypesPanel/InsuranceTypesPanel";
-import CompaniesPanel from "./CompaniesPanel/CompaniesPanel";
+import InsuranceTypesPanel from "./InsuranceType/InsuranceTypesPanel/InsuranceTypesPanel";
+import CompaniesPanel from "./Companies/CompaniesPanel/CompaniesPanel";
 
 
 class AdminDashboard extends Component {

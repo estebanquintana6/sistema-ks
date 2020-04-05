@@ -49,26 +49,27 @@ class InsuranceTypesComponent extends Component {
   }
 
   render() {
-    console.log('INSURANCE TYPE', this.props.insuranceType)
     const { insuranceType } = this.props
-    return (<Card>
-      <Card.Header>
-        <h5 onClick={this.toggleDetail}>{insuranceType.name}</h5>
-        {this.state.addingCompany === true ?
-          <select id="newCompany" onChange={this.addCompany}>
-            <option>-</option>
-            {this.assignableCompanies().map((company, index) => <option key={index} value={company._id}>{company.name}</option>)}
-          </select> :
-          <Button onClick={this.toggleAddingCompany}>Agregar Aseguradora</Button>
-        }
-      </Card.Header>
-      <ListGroup>
-        {insuranceType.companies.map((company, index) =>
-          this.state.detailed &&
-          <ListGroup.Item key={index}>{company.name} <Button onClick={this.deleteCompany.bind(this, company._id)}>Agregar Aseguradora</Button></ListGroup.Item>)
-        }
-      </ListGroup>
-    </Card>)
+    return (
+      <Card>
+        <Card.Header>
+          <h5 onClick={this.toggleDetail}>{insuranceType.name}</h5>
+          {this.state.addingCompany === true ?
+            <select id="newCompany" onChange={this.addCompany}>
+              <option>-</option>
+              {this.assignableCompanies().map((company, index) => <option key={index} value={company._id}>{company.name}</option>)}
+            </select> :
+            <Button onClick={this.toggleAddingCompany}>Agregar Aseguradora</Button>
+          }
+        </Card.Header>
+        <ListGroup>
+          {insuranceType.companies.map((company, index) =>
+            this.state.detailed &&
+            <ListGroup.Item key={index}>{company.name} <Button onClick={this.deleteCompany.bind(this, company._id)}>Agregar Aseguradora</Button></ListGroup.Item>)
+          }
+        </ListGroup>
+      </Card>
+    )
   }
 }
 

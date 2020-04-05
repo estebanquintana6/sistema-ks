@@ -1,14 +1,20 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+
 import { connect } from "react-redux";
-import { Row, Col, Container, Button } from 'react-bootstrap'
 import swal from '@sweetalert/with-react';
+
+
+import InsuranceTypeComponent from "../InsuranceTypeComponent/InsuranceTypeComponent";
+
+import { Row, Col, Container, Button } from 'react-bootstrap'
+
+import { getInsuranceTypes, addCompanyToInsuranceType, deleteCompanyFromInsuranceType } from '../../../../actions/insuranceTypesActions'
+import { getCompanies } from '../../../../actions/companyActions';
+
 import "react-select/dist/react-select.css";
 import "react-table/react-table.css";
 import "./InsuranceTypesPanel.css";
-import InsuranceTypeComponent from "./InsuranceTypeComponent/InsuranceTypeComponent";
-import { getInsuranceTypes, addCompanyToInsuranceType, deleteCompanyFromInsuranceType } from '../../../actions/insuranceTypesActions'
-import { getCompanies } from '../../../actions/companyActions'
 
 class InsuranceTypesPanel extends Component {
   constructor(props) {
@@ -77,9 +83,21 @@ class InsuranceTypesPanel extends Component {
 
 
   render() {
-    return (<React.Fragment>
-      {this.state.data.map((insuranceType, index) => <InsuranceTypeComponent addCompany={this.addCompany} deleteCompany={this.deleteCompany} companies={this.state.companies} key={index} insuranceType={insuranceType}></InsuranceTypeComponent>)}
-    </React.Fragment>)
+    return (
+      <React.Fragment>
+      { this.state.data.map((insuranceType, index) => {
+        return (<InsuranceTypeComponent 
+          addCompany={this.addCompany} 
+          deleteCompany={this.deleteCompany} 
+          companies={this.state.companies} 
+          key={index} 
+          insuranceType={insuranceType}>
+
+        </InsuranceTypeComponent>)
+        })
+      }
+      </React.Fragment>
+    )
   }
 }
 
