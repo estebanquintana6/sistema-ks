@@ -7,7 +7,7 @@ import swal from '@sweetalert/with-react';
 
 import InsuranceTypeComponent from "../InsuranceTypeComponent/InsuranceTypeComponent";
 
-import { Row, Col, Container, Button } from 'react-bootstrap'
+import { Row } from 'react-bootstrap'
 
 import { getInsuranceTypes, addCompanyToInsuranceType, deleteCompanyFromInsuranceType } from '../../../../actions/insuranceTypesActions'
 import { getCompanies } from '../../../../actions/companyActions';
@@ -85,17 +85,19 @@ class InsuranceTypesPanel extends Component {
   render() {
     return (
       <React.Fragment>
-      { this.state.data.map((insuranceType, index) => {
-        return (<InsuranceTypeComponent 
-          addCompany={this.addCompany} 
-          deleteCompany={this.deleteCompany} 
-          companies={this.state.companies} 
-          key={index} 
-          insuranceType={insuranceType}>
+        <Row>
+          { this.state.data.map((insuranceType, index) => {
+            return (<InsuranceTypeComponent 
+              addCompany={this.addCompany} 
+              deleteCompany={this.deleteCompany} 
+              companies={this.state.companies} 
+              key={index} 
+              insuranceType={insuranceType}>
 
-        </InsuranceTypeComponent>)
-        })
-      }
+            </InsuranceTypeComponent>)
+            })
+          }
+        </Row>
       </React.Fragment>
     )
   }
