@@ -130,11 +130,11 @@ class ClientsForm extends Component {
                 </Form.Row>
 
                 <Form.Row>
-                  <Form.Group as={Col} controlId="telephone" className={this.state.showRazonSocial}>
+                  <Form.Group as={Col} md="4" controlId="telephone" className={this.state.showRazonSocial}>
                     <Form.Label>Teléfono</Form.Label>
                     <Form.Control required onChange={this.onChange} value={this.state.telephone} />
                   </Form.Group>
-                  <Form.Group as={Col} controlId="email" className={this.state.showRazonSocial}>
+                  <Form.Group as={Col} md="8" controlId="email" className={this.state.showRazonSocial}>
                     <Form.Label>Correo</Form.Label>
                     <Form.Control required onChange={this.onChange} value={this.state.email} />
                   </Form.Group>
