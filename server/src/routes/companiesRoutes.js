@@ -3,7 +3,6 @@ var router = express.Router();
 const jwt = require("jsonwebtoken");
 
 const Company = require("../models/CompanyForm");
-const InsuranceType = require("../models/InsuranceTypeForm");
 const secretKey = require("../config/config")
 
 router.post("/save", (req, res) => {
@@ -12,10 +11,13 @@ router.post("/save", (req, res) => {
 
   jwt.verify(token, secretKey, function (err, _) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
-    const companyForm = body.clientData;
+    const companyForm = body.companyData;
     const company = new Company(companyForm);
-    company.save().then(() => null);
-    res.json({ message: 'Aseguradora guardada.' });
+    company.save().then((result) => {
+      res.json({ message: 'Aseguradora guardada.' });
+    }).catch((error) => {
+      res.status(500).json({ error });
+    });
   });
 });
 
@@ -29,7 +31,7 @@ router.post("/update", (req, res) => {
 
     Company.findOne({ _id: id }).then((company) => {
       if (!company) return res.status(404).json({ message: "Aseguradora no encontrada" });
-      let doc = Company.findById(client.id);
+      let doc = Company.findById(company.id);
       doc.updateOne(companyData).then((err, _) => {
         if (err) res.status(500);
         res.status(200).json({ message: "Elemento modificado" });
@@ -38,11 +40,30 @@ router.post("/update", (req, res) => {
   });
 });
 
+
+router.post("/delete", (req, res) => {
+  const body = req.body;
+  const token = body.token;
+  const id = body.id;
+
+  jwt.verify(token, secretKey, function (err, decoded) {
+    if (err) return res.status(401).json({ email: "no permissions" });
+    Company.findOne({ _id: id }).then((company) => {
+      const exists = company;
+      if (exists) {
+        Company.deleteOne({ _id: id }).then((err, result) => {
+          if (err) res.status(500);
+          res.status(201).json({ message: "Elemento eliminado" });
+        });
+      }
+    });
+  });
+});
+
 router.get("/fetch", (req, res) => {
   const token = req.headers.authorization;
   jwt.verify(token, secretKey, function (err) {
     if (err) return res.status(401).json({ email: "no permissions" });
-
     // This is the way I found to make a get all from model.
     Company.find({}).then((companies) => {
       res.json({ companies });

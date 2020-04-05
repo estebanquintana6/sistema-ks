@@ -8,7 +8,7 @@ export const addCompanyToInsuranceType = (companyData, insuranceTypeId) => dispa
   }
 
   return axios
-    .post(`/api/insuranceTypes/${insuranceTypeId}`, data)
+    .post(`/api/insurance_types/${insuranceTypeId}`, data)
     .then(res => {
       return res;
     }).catch(err => {
@@ -22,7 +22,7 @@ export const getInsuranceTypes = () => dispatch => {
   const token = localStorage.getItem("jwtToken");
 
   return axios
-    .get("/api/insuranceTypes/fetch", { token })
+    .get("/api/insurance_types/fetch", { token })
     .then((res) => {
       return res.data
     }).catch(err => {
@@ -32,12 +32,8 @@ export const getInsuranceTypes = () => dispatch => {
 
 export const deleteCompanyFromInsuranceType = (insuranceTypeId, companyId) => dispatch => {
   const token = localStorage.getItem("jwtToken");
-  const data = {
-    id,
-    token
-  }
   return axios
-    .post(`/api/insuranceTypes/${insuranceTypeId}/delete/${companyId}`, data)
+    .post(`/api/insurance_types/${insuranceTypeId}/delete/${companyId}`, { token })
     .then(res => {
       return res;
     }).catch(err => {

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const registerCompany = (companyData, history) => dispatch => {
+export const registerCompany = (companyData) => dispatch => {
   const token = localStorage.getItem("jwtToken");
   const data = {
     token,
@@ -18,7 +18,7 @@ export const registerCompany = (companyData, history) => dispatch => {
 };
 
 
-export const getCompaniess = () => dispatch => {
+export const getCompanies = () => dispatch => {
   const token = localStorage.getItem("jwtToken");
 
   return axios

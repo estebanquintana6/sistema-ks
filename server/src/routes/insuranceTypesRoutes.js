@@ -8,23 +8,21 @@ const secretKey = require("../config/config")
 
 // agregar una aseguradora a un ramo
 router.post("/:id", (req, res) => {
+  const token = req.headers.authorization;
   const body = req.body;
-  const companyName = body.name;
+  const companyId = body.companyData._id;
+
+  console.log('COMPANY ID', body, companyId)
 
   jwt.verify(token, secretKey, function (err, _) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
-
-    Company.findOne({ name: companyName })
-      .then((company) => {
-        return InsuranceType.findOneAndUpdate({ _id: req.params.id }, { $push: { reviews: company._id } }, { new: true });
-      }).then((insuranceType) => {
-        // If we were able to successfully update a Product, send it back to the client
-        res.json(insuranceType)
-      })
-      .catch((err) => {
-        // If an error occurred, send it to the client
-        res.json(err)
-      });
+    InsuranceType.findOneAndUpdate({ _id: req.params.id }, { $push: { companies: companyId } }, { new: true }).then((insuranceType) => {
+      // If we were able to successfully update a Product, send it back to the client
+      res.json(insuranceType)
+    }).catch((err) => {
+      // If an error occurred, send it to the client
+      res.json(err)
+    });
   });
 });
 
@@ -45,7 +43,7 @@ router.get("/fetch", (req, res) => {
 // borrar una aseguradora de un ramo
 router.post("/:id/delete/:company_id", (req, res) => {
   const body = req.body;
-  const token = body.token;
+  const token = req.headers.authorization;
 
   jwt.verify(token, secretKey, function (err, _) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });

@@ -1,69 +1,59 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
+import { Row, Col, Container, Button } from 'react-bootstrap'
 import "react-select/dist/react-select.css";
 import "react-table/react-table.css";
 import "./AdminDashboard.css";
+import InsuranceTypesPanel from "./InsuranceTypesPanel/InsuranceTypesPanel";
+import CompaniesPanel from "./CompaniesPanel/CompaniesPanel";
 
 
 class AdminDashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      insuranceTypes: []
     };
   }
 
-  async componentDidMount() {
-  }
-
-  refresh = () => {
-    this.props.getClients().then(data => {
-      this.setState({ data: data.clients });
-    });
-  }
-
-  onFilteredChangeCustom = (value, accessor) => {
-    let filtered = this.state.filtered;
-    let insertNewFilter = 1;
-
-    if (filtered.length) {
-      filtered.forEach((filter, i) => {
-        if (filter["id"] === accessor) {
-          if (value === "" || !value.length) filtered.splice(i, 1);
-          else filter["value"] = value;
-
-          insertNewFilter = 0;
-        }
-      });
-    }
-
-    if (insertNewFilter) {
-      filtered.push({ id: accessor, value: value });
-    }
-
-    this.setState({ filtered: filtered });
-  };
-
-  getTrProps = (state, rowInfo, instance) => {
-    if (rowInfo) {
-      return {
-        style: {
-          cursor: "pointer"
-        },
-        onClick: (e) => {
-          this.openModificationModal(rowInfo.original);
-        }
-      }
-    }
-    return {};
-  }
 
   render() {
     const { data } = this.state;
     return (
       <React.Fragment>
-        <h2>Admin</h2>
+        <Container>
+          <h2>Panel de Administrador</h2>
+          <br></br>
+          <Row>
+            <Col md="12" className="pull-right profile-right-section">
+              <Row className="profile-right-section-row">
+                <Col md="12">
+                  <Row>
+                    <Col md="12">
+                      <ul className="nav nav-tabs" role="tablist">
+                        <li className="nav-item">
+                          <a className="nav-link active" href="#i-types" role="tab" data-toggle="tab"><i className="fas fa-building"></i> Ramos</a>
+                        </li>
+                        <li className="nav-item">
+                          <a className="nav-link" href="#companies" role="tab" data-toggle="tab"><i className="fas fa-user-tie"></i> Aseguradoras</a>
+                        </li>
+                      </ul>
+                      <div className="tab-content">
+                        <div role="tabpanel" className="tab-pane fade show active" id="i-types">
+                          <InsuranceTypesPanel></InsuranceTypesPanel>
+                        </div>
+                        <div role="tabpanel" className="tab-pane fade" id="companies">
+                          <CompaniesPanel></CompaniesPanel>
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Container>
       </React.Fragment>
     );
   }
