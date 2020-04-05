@@ -73,6 +73,7 @@ class RecoverPassword extends Component {
                     onChange={this.onChange}
                   />
                   <span className="focus-input100"></span>
+                  {errors.email}
                 </div>
                 <div className="flex-sb-m w-full p-t-3 p-b-24">
                   <div>

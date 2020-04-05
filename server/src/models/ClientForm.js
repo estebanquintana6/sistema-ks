@@ -38,6 +38,15 @@ var Client = new Schema({
     required: true,
     uppercase: false
   },
+  comments: {
+    type: String,
+    required: false,
+    uppercase: false
+  },
+  contacts: {
+    type: Array,
+    required: false
+  },
   created_at: {
     type: Date,
     default: Date.now

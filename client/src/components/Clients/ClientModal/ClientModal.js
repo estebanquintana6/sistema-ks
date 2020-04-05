@@ -4,45 +4,67 @@ import {
   Button,
   Container,
   Row,
+  Form,
   Col
 } from 'react-bootstrap';
 import ClientsForm from "../ClientsForm/ClientsForm";
 
-class ClientModal extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      edit: null
-    }
-  }
+import "./ClientModal.css";
+import swal from '@sweetalert/with-react';
 
-  editUser = () => {
-    this.setState({ edit: true })
-  }
+class ClientModal extends Component {
 
   render() {
     const { client } = this.props;
     return (
       < Container >
-        {
-          this.state.edit ? <ClientsForm client={client} edit={this.state.edit} updateClient={this.props.updateClient} ></ClientsForm> :
             <React.Fragment>
-              <Row className="mt-4">
-                <Col>
-                  <h5 className="text-center">{client.name + ' ' + client.last_name}</h5>
-                </Col>
-              </Row>
-              <br></br>
-              <Row>
-                <Col>
-                  <Button variant="info" onClick={this.editUser}>Editar</Button>
-                </Col>
-                <Col>
-                  <Button variant="danger" onClick={this.props.deleteClient.bind(this, client._id, client.name)}>ELIMINAR</Button>
-                </Col>
-              </Row>
+              <Container>
+                <Row>
+                  <Col md="12" className="pull-right profile-right-section">
+                      <Row className="profile-right-section-row">
+                          <Col md="12">
+                              <Row>
+                                  <Col md="12">
+                                    <ul class="nav nav-tabs" role="tablist">
+                                      <li class="nav-item">
+                                        <a class="nav-link active" href="#profile" role="tab" data-toggle="tab"><i class="fas fa-user-circle"></i>Personales</a>
+                                      </li>
+                                      <li class="nav-item">
+                                        <a class="nav-link" href="#buzz" role="tab" data-toggle="tab"><i class="fas fa-info-circle"></i>Anexos</a>
+                                      </li>
+                                      <li class="nav-item">
+                                        <a class="nav-link" href="#deleteTab" role="tab" data-toggle="tab"><i class="fas fa-exclamation-triangle"></i>Eliminar</a>
+                                      </li>    
+                                    </ul>
+                                    <div class="tab-content">
+                                      <div role="tabpanel" class="tab-pane fade show active" id="profile">
+                                        <ClientsForm
+                                          client={client}
+                                          edit={true}
+                                          updateClient={this.props.updateClient}>
+                                        </ClientsForm>
+                                      </div>
+                                      <div role="tabpanel" class="tab-pane fade" id="buzz">
+                                        
+                                      </div>
+                                      <div role="tabpanel" class="tab-pane fade" id="deleteTab">
+                                        <Row className="mt-4">
+                                          <Col>
+                                            <Button className="panel-btn" variant="danger" onClick={this.props.deleteClient.bind(this, client._id, client.name)}>ELIMINAR</Button>
+                                          </Col>
+                                        </Row>
+                                      </div>
+                                    </div>
+                                  </Col>
+                              </Row>
+                          </Col>
+                      </Row>
+                  </Col>
+                </Row>
+              </Container>
             </React.Fragment>
-        }</Container >
+        </Container >
     )
   }
 }
