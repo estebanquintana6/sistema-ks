@@ -174,15 +174,15 @@ class ClientsForm extends Component {
                   {this.state.contacts.map((value, index) => {
                     return (
                       <Form.Row>
-                        <Form.Group as={Col} md="5" className={this.state.comments}>
+                        <Form.Group as={Col} md="6" className={this.state.comments}>
                           <Form.Label>Nombre</Form.Label>
                           <Form.Control required onChange={(e) => {this.onChangeContactName(index, e)}} value={this.state.contacts[index].name} />
                         </Form.Group>
-                        <Form.Group as={Col} md="4" className={this.state.comments}>
+                        <Form.Group as={Col} md="5" className={this.state.comments}>
                           <Form.Label>Teléfono</Form.Label>
                           <Form.Control required onChange={(e) => {this.onChangeContactTelephone(index, e)}} value={this.state.contacts[index].telephone} />
                         </Form.Group>
-                        <Col md="3">
+                        <Col md="1">
                           <Button variant="danger" className="align-center" onClick={() => {this.deleteContact(index)}}><i className="fa fa-trash"/></Button>
                         </Col>
                       </Form.Row> 
