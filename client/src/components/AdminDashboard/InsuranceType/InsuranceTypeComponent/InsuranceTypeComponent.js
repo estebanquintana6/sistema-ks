@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { Col, Button, Card, ListGroup, ListGroupItem } from 'react-bootstrap'
+import { 
+        Card, 
+        Col, 
+        Button, 
+        Form,
+        ListGroup, 
+        ListGroupItem } from 'react-bootstrap'
 
 import { connect } from "react-redux";
 import { differenceBy } from 'lodash'
@@ -33,10 +39,13 @@ class InsuranceTypesComponent extends Component {
       title: `Ramo de ${insuranceType.name}`,
       icon: "info",
       content: 
-        <select id="newCompany" onChange={this.addCompany}>
-          <option>-</option>
+        <Form.Group controlId="newCompany" onChange={this.addCompany}>
+          <Form.Label>Aseguradoras</Form.Label>
+          <Form.Control as="select">
+          <option></option>
           {this.assignableCompanies().map((company, index) => <option key={index} value={company._id}>{company.name}</option>)}
-        </select>,
+          </Form.Control>
+        </Form.Group>,
       buttons: false
     })
   }
