@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import ClientsPanel from '../Clients/ClientsPanel/ClientsPanel'
 import ClientsForm from '../Clients/ClientsForm/ClientsForm'
 import AdminPanel from "../Users/UserPanel/UserPanel";
+import AdminDashboard from '../AdminDashboard/AdminDashboard'
 
 
 //redux
@@ -48,7 +49,7 @@ class Dashboard extends Component {
               <ClientsPanel history={this.props.history}></ClientsPanel>
             </Route>
             <Route exact path="/dashboard/admin">
-              <ClientsPanel history={this.props.history}></ClientsPanel>
+              <AdminDashboard history={this.props.history}></AdminDashboard>
             </Route>
             {user.role === "admin" &&
               <Route path="/dashboard/users">

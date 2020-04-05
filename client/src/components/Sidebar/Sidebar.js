@@ -67,7 +67,7 @@ class Sidebar extends Component {
                     </li>
                     {this.isUserAdmin() &&
                         <li>
-                            <a onClick={() => this.goToPage('/dashboard')} className="article">Panel de administrador</a>
+                            <a onClick={() => this.goToPage('/dashboard/admin')} className="article">Panel de administrador</a>
                         </li>
                     }
                 </ul>
