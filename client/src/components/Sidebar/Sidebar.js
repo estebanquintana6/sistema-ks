@@ -70,7 +70,7 @@ class Sidebar extends Component {
 
                 <ul className="list-unstyled CTAs">
                     <li>
-                        <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" className="download">Perfil</a>
+                        <a href="#" className="download">Perfil</a>
                     </li>
                     {this.isUserAdmin() &&
                         <li>
