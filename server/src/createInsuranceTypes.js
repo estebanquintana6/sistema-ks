@@ -17,6 +17,7 @@ const initializeDb = () => {
     createInsuranceType('Vida')
     createInsuranceType('Auto')
     createInsuranceType('Daños')
+    createInsuranceType('Transporte')
 }
 
 module.exports = initializeDb

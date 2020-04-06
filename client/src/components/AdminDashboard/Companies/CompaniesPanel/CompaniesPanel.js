@@ -156,7 +156,8 @@ class CompaniesPanel extends Component {
 
   render() {
     const { data } = this.state;
-    return (<React.Fragment>
+    return (
+    <Container className="mt-4">
       <Row>
         <h2>Aseguradoras</h2>
       </Row>
@@ -210,7 +211,7 @@ class CompaniesPanel extends Component {
         </div>
 
       </div>
-    </React.Fragment>)
+    </Container>)
   }
 }
 
