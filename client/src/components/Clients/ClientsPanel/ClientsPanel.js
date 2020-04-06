@@ -187,7 +187,7 @@ class ClientsPanel extends Component {
             }}
             defaultFilterMethod={(filter, row, column) => {
               if (filter.id !== "email") {
-                filter.value = filter.value
+                filter.value = filter.value.toUpperCase();
               }
               const id = filter.pivotId || filter.id;
               if (typeof filter.value === "object") {

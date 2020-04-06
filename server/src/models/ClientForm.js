@@ -5,12 +5,12 @@ var Client = new Schema({
   name: {
     type: String,
     required: true,
-    uppercase: false
+    uppercase: true
   },
   last_name: {
     type: String,
     required: false,
-    uppercase: false
+    uppercase: true
   },
   telephone: {
     type: String,
