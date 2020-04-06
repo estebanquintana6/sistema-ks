@@ -39,11 +39,13 @@ var InsuranceSchema = new Schema({
   },
   payment_type: {
     type: String,
+    enum: ['ANUAL', 'SEMESTRAL', 'TRIMESTRAL', 'MENSUAL'],
     required: true,
     uppercase: true
   },
   currency: {
     type: String,
+    enum: ['PESO', 'DOLAR'],
     required: true,
     uppercase: true
   },
