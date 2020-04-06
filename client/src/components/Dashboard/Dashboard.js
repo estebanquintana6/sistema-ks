@@ -3,7 +3,6 @@ import { Route, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
 import ClientsPanel from '../Clients/ClientsPanel/ClientsPanel'
 import ClientsForm from '../Clients/ClientsForm/ClientsForm'
-import AdminPanel from "../Users/UserPanel/UserPanel";
 import AdminDashboard from '../AdminDashboard/AdminDashboard'
 
 
@@ -51,11 +50,6 @@ class Dashboard extends Component {
             <Route exact path="/dashboard/admin">
               <AdminDashboard history={this.props.history}></AdminDashboard>
             </Route>
-            {user.role === "admin" &&
-              <Route path="/dashboard/users">
-                <AdminPanel history={this.props.history}></AdminPanel>
-              </Route>
-            }
           </Switch>
         </div>
       </div>

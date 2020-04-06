@@ -7,16 +7,21 @@ import "react-table/react-table.css";
 import "./AdminDashboard.css";
 import InsuranceTypesPanel from "./InsuranceType/InsuranceTypesPanel/InsuranceTypesPanel";
 import CompaniesPanel from "./Companies/CompaniesPanel/CompaniesPanel";
+import UserPanel from "../Users/UserPanel/UserPanel";
 
 
 class AdminDashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      insuranceTypes: []
+      insuranceTypes: [],
+      change: 0
     };
   }
 
+  update = () => {
+    this.setState({ change: Number(this.state.change) + 1 })
+  }
 
   render() {
     const { data } = this.state;
@@ -32,19 +37,25 @@ class AdminDashboard extends Component {
                   <Row>
                     <Col md="12">
                       <ul className="nav nav-tabs" role="tablist">
-                        <li className="nav-item">
+                        <li className="nav-item" onClick={this.update}>
                           <a className="nav-link active" href="#i-types" role="tab" data-toggle="tab"><i className="fas fa-building"></i> Ramos</a>
                         </li>
                         <li className="nav-item">
                           <a className="nav-link" href="#companies" role="tab" data-toggle="tab"><i className="fas fa-user-tie"></i> Aseguradoras</a>
                         </li>
+                        <li className="nav-item">
+                          <a className="nav-link" href="#users" role="tab" data-toggle="tab"><i className="fas fa-users"></i> Usuarios</a>
+                        </li>
                       </ul>
                       <div className="tab-content">
                         <div role="tabpanel" className="tab-pane fade show active" id="i-types">
-                          <InsuranceTypesPanel></InsuranceTypesPanel>
+                          <InsuranceTypesPanel change={this.state.change}></InsuranceTypesPanel>
                         </div>
                         <div role="tabpanel" className="tab-pane fade" id="companies">
                           <CompaniesPanel></CompaniesPanel>
+                        </div>
+                        <div role="tabpanel" className="tab-pane fade" id="users">
+                          <UserPanel></UserPanel>
                         </div>
                       </div>
                     </Col>

@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { 
-        Card, 
-        Col, 
-        Button, 
-        Form,
-        ListGroup, 
-        ListGroupItem } from 'react-bootstrap'
+import {
+  Card,
+  Col,
+  Button,
+  Form,
+  ListGroup,
+  ListGroupItem
+} from 'react-bootstrap'
 
 import { connect } from "react-redux";
 import { differenceBy } from 'lodash'
@@ -38,12 +39,12 @@ class InsuranceTypesComponent extends Component {
     swal({
       title: `Ramo de ${insuranceType.name}`,
       icon: "info",
-      content: 
+      content:
         <Form.Group controlId="newCompany" onChange={this.addCompany}>
           <Form.Label>Aseguradoras</Form.Label>
           <Form.Control as="select">
-          <option></option>
-          {this.assignableCompanies().map((company, index) => <option key={index} value={company._id}>{company.name}</option>)}
+            <option></option>
+            {this.assignableCompanies().map((company, index) => <option key={index} value={company._id}>{company.name}</option>)}
           </Form.Control>
         </Form.Group>,
       buttons: false
@@ -93,10 +94,10 @@ class InsuranceTypesComponent extends Component {
           </Card.Body>
           <Card.Footer>
             <Button variant="info" className="float-right" onClick={this.toggleAddingCompany.bind(this, insuranceType)}>
-              <i class="fa fa-plus" aria-hidden="true"></i>
+              <i className="fa fa-plus" aria-hidden="true"></i>
             </Button>
           </Card.Footer>
-        </Card> 
+        </Card>
       </Col>
     )
   }

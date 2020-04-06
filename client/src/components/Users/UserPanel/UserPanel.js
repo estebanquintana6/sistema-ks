@@ -32,9 +32,6 @@ class UserPanel extends Component {
   }
 
   async componentDidMount() {
-    if (this.props.auth.user.role !== "admin") {
-      this.props.history.push("/");
-    }
     this.getUsers();
   }
 
@@ -206,8 +203,6 @@ class UserPanel extends Component {
 }
 
 UserPanel.propTypes = {
-  logoutUser: PropTypes.func.isRequired,
-  loginUser: PropTypes.func.isRequired,
   listUsers: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired

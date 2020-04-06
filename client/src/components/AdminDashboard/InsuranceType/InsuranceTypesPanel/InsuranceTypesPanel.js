@@ -21,12 +21,24 @@ class InsuranceTypesPanel extends Component {
     super(props);
     this.state = {
       data: [],
-      companies: []
+      companies: [],
+      update: null
     };
   }
 
-  async componentDidMount() {
+  componentDidUpdate(prevProps) {
+    if (this.props.change !== prevProps.change) {
+      this.refresh();
+      this.refreshCompanies();
+    }
+  }
+
+  componentDidMount() {
     this.refresh();
+    this.refreshCompanies();
+  }
+
+  refreshCompanies = () => {
     this.props.getCompanies().then(data => {
       this.setState({ companies: data.companies });
     });
@@ -72,8 +84,8 @@ class InsuranceTypesPanel extends Component {
           swal("Tu aseguradora se ha eliminado del ramo!", {
             icon: "success",
           });
-          this.refresh();
         }
+        this.refresh();
       });
   }
 
@@ -86,16 +98,16 @@ class InsuranceTypesPanel extends Component {
     return (
       <React.Fragment>
         <Row>
-          { this.state.data.map((insuranceType, index) => {
-            return (<InsuranceTypeComponent 
-              addCompany={this.addCompany} 
-              deleteCompany={this.deleteCompany} 
-              companies={this.state.companies} 
-              key={index} 
+          {this.state.data.map((insuranceType, index) => {
+            return (<InsuranceTypeComponent
+              addCompany={this.addCompany}
+              deleteCompany={this.deleteCompany}
+              companies={this.state.companies}
+              key={index}
               insuranceType={insuranceType}>
 
             </InsuranceTypeComponent>)
-            })
+          })
           }
         </Row>
       </React.Fragment>
