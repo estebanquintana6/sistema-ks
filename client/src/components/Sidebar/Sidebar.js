@@ -30,9 +30,6 @@ class Sidebar extends Component {
                         <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Auto</a>
                         <ul className="collapse list-unstyled" id="pageSubmenu">
                             <li>
-                                <a href="#">Registro de seguro</a>
-                            </li>
-                            <li>
                                 <a href="#">Panel de seguro</a>
                             </li>
                         </ul>
@@ -41,21 +38,39 @@ class Sidebar extends Component {
                         <a href="#autoSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Gastos médicos</a>
                         <ul className="collapse list-unstyled" id="autoSubmenu">
                             <li>
-                                <a href="#">Registro de seguro</a>
+                                <a href="#">Panel de seguro</a>
                             </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#danosSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Daños</a>
+                        <ul className="collapse list-unstyled" id="danosSubmenu">
                             <li>
                                 <a href="#">Panel de seguro</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="#">Contact</a>
+                        <a href="#vidaSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Vida</a>
+                        <ul className="collapse list-unstyled" id="vidaSubmenu">
+                            <li>
+                                <a href="#">Panel de seguro</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#transportesSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Transporte</a>
+                        <ul className="collapse list-unstyled" id="transportesSubmenu">
+                            <li>
+                                <a href="#">Panel de seguro</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
 
                 <ul className="list-unstyled CTAs">
                     <li>
-                        <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" className="download">Perfil</a>
+                        <a href="#" className="download">Perfil</a>
                     </li>
                     {this.isUserAdmin() &&
                         <li>
