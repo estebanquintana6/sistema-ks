@@ -26,14 +26,6 @@ class Sidebar extends Component {
                             </li>
                         </ul>
                     </li>
-                    {this.isUserAdmin() && <li>
-                        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Usuarios</a>
-                        <ul className="collapse list-unstyled" id="pageSubmenu">
-                            <li>
-                                <a onClick={() => this.goToPage('/dashboard/users')}>Panel de usuarios</a>
-                            </li>
-                        </ul>
-                    </li>}
                     <li>
                         <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Auto</a>
                         <ul className="collapse list-unstyled" id="pageSubmenu">
@@ -67,7 +59,7 @@ class Sidebar extends Component {
                     </li>
                     {this.isUserAdmin() &&
                         <li>
-                            <a onClick={() => this.goToPage('/dashboard')} className="article">Panel de administrador</a>
+                            <a onClick={() => this.goToPage('/dashboard/admin')} className="article">Panel de administrador</a>
                         </li>
                     }
                 </ul>
