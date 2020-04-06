@@ -68,6 +68,11 @@ var InsuranceSchema = new Schema({
     required: false,
     uppercase: false
   },
+  payment_status: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
   // campos unicos de seguros de auto
   cis: {
     type: String,
