@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Row, Col, Container, Button } from 'react-bootstrap'
+import { Row, Container } from 'react-bootstrap'
 import swal from '@sweetalert/with-react';
-import "react-select/dist/react-select.css";
-import "react-table/react-table.css";
-import "./CompaniesPanel.css";
+
 import ReactTable from "react-table";
 import CompanyModal from '../CompanyModal/CompanyModal'
 import CompanyForm from '../CompanyForm/CompanyForm'
 import { getCompanies, updateCompany, registerCompany, deleteCompany } from '../../../../actions/companyActions'
 
+import "react-select/dist/react-select.css";
+import "react-table/react-table.css";
+import "./CompaniesPanel.css";
 
 class CompaniesPanel extends Component {
   constructor(props) {
