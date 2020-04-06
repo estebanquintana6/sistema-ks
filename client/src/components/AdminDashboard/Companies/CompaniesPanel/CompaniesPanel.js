@@ -97,8 +97,9 @@ class CompaniesPanel extends Component {
 
   addCompany = e => {
     swal({
-      title: `Registro de Companye`,
-      text: "Captura los datos del nuevo Companye",
+      title: `Registro de aseguradora`,
+      icon: "info",
+      text: "Captura el nombre de la aseguradora",
       content: <CompanyForm save={this.registerCompany}></CompanyForm>,
       buttons: false
     })

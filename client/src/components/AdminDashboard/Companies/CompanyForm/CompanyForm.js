@@ -50,7 +50,7 @@ class CompanyForm extends Component {
         <Row>
           <Col>
             <Form.Row>
-              <Form.Group as={Col} md="6" controlId="name">
+              <Form.Group as={Col} md="12" controlId="name">
                 <Form.Label>Nombre de aseguradora</Form.Label>
                 <Form.Control required onChange={this.onChange} value={this.state.name} />
               </Form.Group>

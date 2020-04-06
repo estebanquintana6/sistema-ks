@@ -6,7 +6,10 @@ import {
   Row,
   Col
 } from 'react-bootstrap';
+
 import CompanyForm from "../CompanyForm/CompanyForm";
+
+import "./CompanyModal.css";
 
 class CompanyModal extends Component {
   constructor(props) {
@@ -35,10 +38,10 @@ class CompanyModal extends Component {
               <br></br>
               <Row>
                 <Col>
-                  <Button variant="info" onClick={this.editCompany}>Editar</Button>
+                  <Button variant="info" className="option-button" onClick={this.editCompany}>EDITAR</Button>
                 </Col>
                 <Col>
-                  <Button variant="danger" onClick={this.props.deleteCompany.bind(this, company._id, company.name)}>ELIMINAR</Button>
+                  <Button variant="danger" className="option-button" onClick={this.props.deleteCompany.bind(this, company._id, company.name)}>ELIMINAR</Button>
                 </Col>
               </Row>
             </React.Fragment>
