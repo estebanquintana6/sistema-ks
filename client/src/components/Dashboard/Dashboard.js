@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import AdminDashboard from '../AdminDashboard/AdminDashboard';
 import InsuranceForm from '../Insurances/InsuranceForm/InsuranceForm';
-
+import ClientsPanel from '../Clients/ClientsPanel/ClientsPanel';
 //redux
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
@@ -45,6 +45,9 @@ class Dashboard extends Component {
           <Switch>
             <Route exact path="/dashboard/admin">
               <AdminDashboard history={this.props.history}></AdminDashboard>
+            </Route>
+            <Route exact path="/dashboard/clientes">
+              <ClientsPanel history={this.props.history}></ClientsPanel>
             </Route>
             <Route exact path="/dashboard/autos">
               <InsuranceForm history={this.props.history} type="AUTOS"></InsuranceForm>

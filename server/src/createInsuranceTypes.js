@@ -13,11 +13,11 @@ const createInsuranceType = (name) => {
     })
 }
 const initializeDb = () => {
-    createInsuranceType('Gastos Médicos Mayores')
-    createInsuranceType('Vida')
-    createInsuranceType('Auto')
-    createInsuranceType('Daños')
-    createInsuranceType('Transporte')
+    createInsuranceType('GMM')
+    createInsuranceType('VIDA')
+    createInsuranceType('AUTO')
+    createInsuranceType('DAÑOS')
+    createInsuranceType('TRANSPORTE')
 }
 
 module.exports = initializeDb

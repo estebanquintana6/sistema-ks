@@ -49,7 +49,7 @@ var InsuranceSchema = new Schema({
     required: true,
     uppercase: true
   },
-  contact: {
+  contacts: {
     type: Array,
     required: false
   },
