@@ -17,6 +17,10 @@ class InsuranceForm extends Component {
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
+
+    isCarInsurance = () => {
+        return this.props.type === "AUTOS";
+    }
     
     render() {
         console.log(this.props.type);
@@ -106,7 +110,7 @@ class InsuranceForm extends Component {
                             </Form.Row>
                         </Col>
                         <Col>
-                        {this.props.type === "Autos" && 
+                        {this.isCarInsurance() && 
                             <>
                                 <Row>
                                     <h5 className="swal-title form-title align-left">DATOS AUTO</h5>

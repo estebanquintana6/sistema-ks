@@ -47,10 +47,10 @@ class Dashboard extends Component {
               <AdminDashboard history={this.props.history}></AdminDashboard>
             </Route>
             <Route exact path="/dashboard/autos">
-              <InsuranceForm history={this.props.history} type="Autos"></InsuranceForm>
+              <InsuranceForm history={this.props.history} type="AUTOS"></InsuranceForm>
             </Route>
             <Route exact path="/dashboard/danos">
-              <InsuranceForm history={this.props.history} type="Daños"></InsuranceForm>
+              <InsuranceForm history={this.props.history} type="DANOS"></InsuranceForm>
             </Route>
           </Switch>
         </div>
