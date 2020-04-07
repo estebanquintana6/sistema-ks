@@ -24,6 +24,10 @@ class Login extends Component {
     }
   }
 
+  toRegister = () => {
+    this.props.history.push("/register");
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
       this.props.history.push("/dashboard");
@@ -114,6 +118,11 @@ class Login extends Component {
                   </button>
                 </div>
 
+                <div className="container-login100-form-btn m-t-17">
+                  <button className="login100-form-btn purple-button" onClick={this.toRegister}>
+                    Registro
+                  </button>
+                </div>
               </Form>
             </div>
           </div>
