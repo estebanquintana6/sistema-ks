@@ -164,7 +164,7 @@ class UserPanel extends Component {
               } else {
                 if (row[id] !== undefined) {
                   return row[id] !== undefined
-                    ? String(row[id]).indexOf(filter.value) > -1
+                    ? String(row[id]).indexOf(String(filter.value).toLocaleLowerCase()) > -1
                     : true;
                 }
               }
