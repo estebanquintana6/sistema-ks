@@ -24,7 +24,6 @@ class AdminDashboard extends Component {
   }
 
   render() {
-    const { data } = this.state;
     return (
       <React.Fragment>
         <Container>

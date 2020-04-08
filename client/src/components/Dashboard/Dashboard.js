@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
-import ClientsPanel from '../Clients/ClientsPanel/ClientsPanel'
-import ClientsForm from '../Clients/ClientsForm/ClientsForm'
-import AdminDashboard from '../AdminDashboard/AdminDashboard'
 
-
+import AdminDashboard from '../AdminDashboard/AdminDashboard';
+import InsuranceForm from '../Insurances/InsuranceForm/InsuranceForm';
+import ClientsPanel from '../Clients/ClientsPanel/ClientsPanel';
 //redux
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
@@ -44,11 +43,17 @@ class Dashboard extends Component {
         <div id="content" className={'container'}>
           <Navbar history={this.props.history}></Navbar>
           <Switch>
+            <Route exact path="/dashboard/admin">
+              <AdminDashboard history={this.props.history}></AdminDashboard>
+            </Route>
             <Route exact path="/dashboard/clientes">
               <ClientsPanel history={this.props.history}></ClientsPanel>
             </Route>
-            <Route exact path="/dashboard/admin">
-              <AdminDashboard history={this.props.history}></AdminDashboard>
+            <Route exact path="/dashboard/autos">
+              <InsuranceForm history={this.props.history} type="AUTOS"></InsuranceForm>
+            </Route>
+            <Route exact path="/dashboard/danos">
+              <InsuranceForm history={this.props.history} type="DANOS"></InsuranceForm>
             </Route>
           </Switch>
         </div>
