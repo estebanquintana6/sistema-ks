@@ -100,7 +100,7 @@ class CompaniesPanel extends Component {
     swal({
       title: `Registro de aseguradora`,
       icon: "info",
-      text: "Captura el nombre de la aseguradora",
+      text: "Captura la información de la aseguradora",
       content: <CompanyForm save={this.registerCompany}></CompanyForm>,
       buttons: false
     })
@@ -157,61 +157,61 @@ class CompaniesPanel extends Component {
   render() {
     const { data } = this.state;
     return (
-    <Container className="mt-4">
-      <Row>
-        <h2>Aseguradoras</h2>
-      </Row>
       <Container className="mt-4">
         <Row>
-          <a onClick={this.addCompany} className="btn-primary">Registrar nueva</a>
+          <h2>Aseguradoras</h2>
         </Row>
-      </Container>
-      <br />
-      <div className="full-width">
-        <ReactTable
-          data={data}
-          filterable
-          filtered={this.state.filtered}
-          onFilteredChange={(filtered, column, value) => {
-            this.onFilteredChangeCustom(value, column.id || column.accessor);
-          }}
-          defaultFilterMethod={(filter, row, column) => {
-            const id = filter.pivotId || filter.id;
-            if (typeof filter.value === "object") {
-              return row[id] !== undefined
-                ? filter.value.indexOf(row[id]) > -1
-                : true;
-            } else {
-              if (row[id] !== undefined) {
+        <Container className="mt-4">
+          <Row>
+            <a onClick={this.addCompany} className="btn-primary">Registrar nueva</a>
+          </Row>
+        </Container>
+        <br />
+        <div className="full-width">
+          <ReactTable
+            data={data}
+            filterable
+            filtered={this.state.filtered}
+            onFilteredChange={(filtered, column, value) => {
+              this.onFilteredChangeCustom(value, column.id || column.accessor);
+            }}
+            defaultFilterMethod={(filter, row, column) => {
+              const id = filter.pivotId || filter.id;
+              if (typeof filter.value === "object") {
                 return row[id] !== undefined
-                  ? String(row[id]).indexOf(filter.value) > -1
+                  ? filter.value.indexOf(row[id]) > -1
                   : true;
+              } else {
+                if (row[id] !== undefined) {
+                  return row[id] !== undefined
+                    ? String(row[id]).indexOf(filter.value) > -1
+                    : true;
+                }
               }
+            }}
+            columns={[{
+              Header: "Datos",
+              columns: [
+                {
+                  Header: "Nombre",
+                  id: "name",
+                  accessor: d => d.name
+                },
+              ]
             }
-          }}
-          columns={[{
-            Header: "Datos",
-            columns: [
-              {
-                Header: "Nombre",
-                id: "name",
-                accessor: d => d.name
-              },
-            ]
-          }
-          ]}
-          defaultPageSize={10}
-          className="-striped -highlight"
-          getTrProps={this.getTrProps}
-        />
-        <div className="row">
-          <div className="col-md-4 center mt-4">
-            {/* <ExportCSV csvData={this.state.data} fileName="reporteAseguradoras" /> */}
+            ]}
+            defaultPageSize={10}
+            className="-striped -highlight"
+            getTrProps={this.getTrProps}
+          />
+          <div className="row">
+            <div className="col-md-4 center mt-4">
+              {/* <ExportCSV csvData={this.state.data} fileName="reporteAseguradoras" /> */}
+            </div>
           </div>
-        </div>
 
-      </div>
-    </Container>)
+        </div>
+      </Container>)
   }
 }
 
