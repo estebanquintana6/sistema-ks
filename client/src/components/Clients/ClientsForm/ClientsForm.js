@@ -16,7 +16,7 @@ class ClientsForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      contacts: [{name: "", telephone: ""}]
+      contacts: [{ name: "", telephone: "" }]
     };
   }
 
@@ -39,24 +39,24 @@ class ClientsForm extends Component {
     this.setState({ [e.target.id]: e.target.value });
   }
 
-  onChangeContactName = (index, e) => {      
-      let contacts = [...this.state.contacts];
-      let contact = {...contacts[index]};
+  onChangeContactName = (index, e) => {
+    let contacts = [...this.state.contacts];
+    let contact = { ...contacts[index] };
 
-      contact.name = e.target.value;
+    contact.name = e.target.value;
 
-      contacts[index] = contact;
-      this.setState({contacts});
+    contacts[index] = contact;
+    this.setState({ contacts });
   }
 
-  onChangeContactTelephone = (index, e) => {      
+  onChangeContactTelephone = (index, e) => {
     let contacts = [...this.state.contacts];
-    let contact = {...contacts[index]};
+    let contact = { ...contacts[index] };
 
     contact.telephone = e.target.value;
 
     contacts[index] = contact;
-    this.setState({contacts});
+    this.setState({ contacts });
   }
 
   createContact = () => {
@@ -65,13 +65,13 @@ class ClientsForm extends Component {
       name: "",
       telephone: ""
     })
-    this.setState({contacts});
+    this.setState({ contacts });
   }
 
   deleteContact = (index) => {
     const contacts = [...this.state.contacts];
     contacts.splice(index, 1);
-    this.setState({contacts});
+    this.setState({ contacts });
   }
 
 
@@ -155,10 +155,10 @@ class ClientsForm extends Component {
                     </Form.Control>
                   </Form.Group>
                 </Form.Row>
-                  <Form.Group as={Col} controlId="comments" className={this.state.comments}>
-                    <Form.Label>Comentarios</Form.Label>
-                    <Form.Control as="textarea" onChange={this.onChange} value={this.state.comments} />
-                  </Form.Group>
+                <Form.Group as={Col} controlId="comments" className={this.state.comments}>
+                  <Form.Label>Comentarios</Form.Label>
+                  <Form.Control as="textarea" onChange={this.onChange} value={this.state.comments} />
+                </Form.Group>
 
 
               </Col>
@@ -171,23 +171,23 @@ class ClientsForm extends Component {
                     <Button variant="info" onClick={this.createContact}>AGREGAR</Button>
                   </Col>
                 </Row>
-                  {this.state.contacts.map((value, index) => {
-                    return (
-                      <Form.Row>
-                        <Form.Group as={Col} md="6">
-                          <Form.Label>Nombre</Form.Label>
-                          <Form.Control required onChange={(e) => {this.onChangeContactName(index, e)}} value={this.state.contacts[index].name} />
-                        </Form.Group>
-                        <Form.Group as={Col} md="5">
-                          <Form.Label>Teléfono</Form.Label>
-                          <Form.Control required onChange={(e) => {this.onChangeContactTelephone(index, e)}} value={this.state.contacts[index].telephone} />
-                        </Form.Group>
-                        <Col md="1">
-                          <Button variant="danger" className="align-center" onClick={() => {this.deleteContact(index)}}><i className="fa fa-trash"/></Button>
-                        </Col>
-                      </Form.Row> 
-                    );
-                  })}
+                {this.state.contacts.map((value, index) => {
+                  return (
+                    <Form.Row>
+                      <Form.Group as={Col} md="6">
+                        <Form.Label>Nombre</Form.Label>
+                        <Form.Control required onChange={(e) => { this.onChangeContactName(index, e) }} value={this.state.contacts[index].name} />
+                      </Form.Group>
+                      <Form.Group as={Col} md="5">
+                        <Form.Label>Teléfono</Form.Label>
+                        <Form.Control required onChange={(e) => { this.onChangeContactTelephone(index, e) }} value={this.state.contacts[index].telephone} />
+                      </Form.Group>
+                      <Col md="1">
+                        <Button variant="danger" className="align-center" onClick={() => { this.deleteContact(index) }}><i className="fa fa-trash" /></Button>
+                      </Col>
+                    </Form.Row>
+                  );
+                })}
               </Col>
             </Row>
           </Container>
