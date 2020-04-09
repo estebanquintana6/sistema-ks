@@ -16,7 +16,7 @@ class ClientsForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      contacts: [{ name: "", telephone: "" }]
+      contacts: [{ name: "", telephone: "", email: "" }]
     };
   }
 
@@ -59,11 +59,20 @@ class ClientsForm extends Component {
     this.setState({ contacts });
   }
 
+  onChangeContactEmail = (index, e) => {
+    let contacts = [...this.state.contacts];
+    let contact = { ...contacts[index] };
+    contact.email = e.target.value;
+    contacts[index] = contact;
+    this.setState({ contacts });
+  }
+
   createContact = () => {
     const contacts = [...this.state.contacts];
     contacts.push({
       name: "",
-      telephone: ""
+      telephone: "",
+      email: ""
     })
     this.setState({ contacts });
   }
@@ -103,7 +112,7 @@ class ClientsForm extends Component {
         <Form id="clientForm" onSubmit={this.onSubmit}>
           <Container>
             <Row>
-              <Col md="6">
+              <Col md="5">
                 <Row>
                   <h5 className="swal-title form-title align-left">DATOS DEL CONTRATANTE</h5>
                 </Row>
@@ -120,12 +129,8 @@ class ClientsForm extends Component {
 
                 <Form.Row>
                   <Form.Group as={Col} md={this.state.nameSize} controlId="name">
-                    <Form.Label>Nombre(s)</Form.Label>
+                    <Form.Label>Cliente</Form.Label>
                     <Form.Control required onChange={this.onChange} value={this.state.name} />
-                  </Form.Group>
-                  <Form.Group as={Col} controlId="last_name" className={this.state.showRazonSocial}>
-                    <Form.Label>Apellido(s)</Form.Label>
-                    <Form.Control required onChange={this.onChange} value={this.state.last_name} />
                   </Form.Group>
                 </Form.Row>
 
@@ -162,7 +167,7 @@ class ClientsForm extends Component {
 
 
               </Col>
-              <Col md="6">
+              <Col md="7">
                 <Row>
                   <h5 className="swal-title form-title align-left">CONTACTO(S)</h5>
                 </Row>
@@ -173,19 +178,25 @@ class ClientsForm extends Component {
                 </Row>
                 {this.state.contacts.map((value, index) => {
                   return (
-                    <Form.Row>
-                      <Form.Group as={Col} md="6">
-                        <Form.Label>Nombre</Form.Label>
-                        <Form.Control required onChange={(e) => { this.onChangeContactName(index, e) }} value={this.state.contacts[index].name} />
-                      </Form.Group>
-                      <Form.Group as={Col} md="5">
-                        <Form.Label>Teléfono</Form.Label>
-                        <Form.Control required onChange={(e) => { this.onChangeContactTelephone(index, e) }} value={this.state.contacts[index].telephone} />
-                      </Form.Group>
-                      <Col md="1">
-                        <Button variant="danger" className="align-center" onClick={() => { this.deleteContact(index) }}><i className="fa fa-trash" /></Button>
-                      </Col>
-                    </Form.Row>
+                    <React.Fragment>
+                      <Form.Row>
+                        <Form.Group as={Col} md="4">
+                          <Form.Label>Nombre</Form.Label>
+                          <Form.Control required onChange={(e) => { this.onChangeContactName(index, e) }} value={this.state.contacts[index].name} />
+                        </Form.Group>
+                        <Form.Group as={Col} md="4">
+                          <Form.Label>Email</Form.Label>
+                          <Form.Control required onChange={(e) => { this.onChangeContactEmail(index, e) }} value={this.state.contacts[index].email} />
+                        </Form.Group>
+                        <Form.Group as={Col} md="3">
+                          <Form.Label>Teléfono</Form.Label>
+                          <Form.Control required onChange={(e) => { this.onChangeContactTelephone(index, e) }} value={this.state.contacts[index].telephone} />
+                        </Form.Group>
+                        <Col md="1">
+                          <Button variant="danger" className="align-center" onClick={() => { this.deleteContact(index) }}><i className="fa fa-trash" /></Button>
+                        </Col>
+                      </Form.Row>
+                    </React.Fragment>
                   );
                 })}
               </Col>

@@ -7,11 +7,6 @@ var Client = new Schema({
     required: true,
     uppercase: true
   },
-  last_name: {
-    type: String,
-    required: false,
-    uppercase: true
-  },
   telephone: {
     type: String,
     required: true,
