@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Container, Row } from 'react-bootstrap'
 import { connect } from "react-redux";
-import { getClients, updateClient, deleteClient, registerClient } from "../../../actions/registerClient";
+import { createInsurance } from "../../../actions/insuraceActions";
 import { ExportClientCSV } from "../../ExportCSV/ExportCSV";
 import swal from '@sweetalert/with-react';
 
@@ -41,7 +41,7 @@ class InsurancePanel extends Component {
   }
 
   submitInsurance = (data) => {
-    console.log(data);
+    this.props.createInsurance(data);
   }
 
   onFilteredChangeCustom = (value, accessor) => {
@@ -194,5 +194,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getClients, updateClient, deleteClient, registerClient }
+  { createInsurance }
 )(InsurancePanel);
