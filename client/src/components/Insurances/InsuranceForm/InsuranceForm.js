@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import {
+    Button,
     Col,
     Form,
     Row,
@@ -12,7 +13,7 @@ class InsuranceForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            contacts: [{name: "", telephone: ""}],
+            insurance_type: this.props.type,
             invoices: []
         };    
     }
@@ -61,9 +62,34 @@ class InsuranceForm extends Component {
         return this.props.type === "AUTOS";
     }
 
+    onChangeInvoice = (index, e) => {
+        let invoices = [...this.state.invoices];
+        let invoice = { ...invoices[index] };
+    
+        invoice.invoice = e.target.value;
+    
+        invoices[index] = invoice;
+        this.setState({ invoices });
+      }
+    
+    onChangeInvoiceDate = (index, e) => {
+        let invoices = [...this.state.invoices];
+        let invoice = { ...invoices[index] };
+
+        invoice.due_date = e.target.value;
+
+        invoices[index] = invoice;
+        this.setState({ invoices });
+    }
+
+    onSubmit = e => {
+        e.preventDefault();
+        this.props.save(this.state)
+    }
+
     render() {
         return (
-            <Form>
+            <Form onSubmit={this.onSubmit}>
                 <Row>
                     <Col md="12" className="pull-right profile-right-section">
                         <Row className="profile-right-section-row">
@@ -215,15 +241,17 @@ class InsuranceForm extends Component {
                                         <Form.Row>
                                             <Form.Group as={Col} md="6">
                                             <Form.Label>Recibo</Form.Label>
-                                            <Form.Control required  value={this.state.invoices[index].invoice} />
+                                            <Form.Control required onChange={(e) => { this.onChangeInvoice(index, e) }} value={this.state.invoices[index].invoice} />
                                             </Form.Group>
                                             <Form.Group as={Col} md="5">
                                             <Form.Label>Fecha de pago</Form.Label>
-                                            <Form.Control required type="date" value={this.state.invoices[index].due_date} />
+                                            <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(index, e) }} value={this.state.invoices[index].due_date} />
                                             </Form.Group>
                                         </Form.Row> 
                                         );
                                     })}
+
+                            <Button variant="primary" type="submit">Guardar</Button>
                         </div>
                       </div>
                       </Col>

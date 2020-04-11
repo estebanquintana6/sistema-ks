@@ -40,6 +40,10 @@ class InsurancePanel extends Component {
     });
   }
 
+  submitInsurance = (data) => {
+    console.log(data);
+  }
+
   onFilteredChangeCustom = (value, accessor) => {
     let filtered = this.state.filtered;
     let insertNewFilter = 1;
@@ -80,7 +84,11 @@ class InsurancePanel extends Component {
   addInsurance(variant) {
     console.log(variant);
     swal({
-      content: <InsuranceForm type={variant}></InsuranceForm>,
+      content: 
+      <InsuranceForm 
+        type={variant}
+        save={this.submitInsurance}>
+        </InsuranceForm>,
       className: "width-800pt-100h"
     });
   }
