@@ -91,7 +91,7 @@ class InsurancePanel extends Component {
     return (
       <React.Fragment>
         <Row>
-          <h2>Pólizas</h2>
+          <h2>Pólizas {variant}</h2>
         </Row>
         <Container className="mt-4">
           <Row>
