@@ -29,15 +29,15 @@ class InsurancePanel extends Component {
   }
 
   async componentDidMount() {
-    this.props.getClients().then(data => {
+    /*this.props.getClients().then(data => {
       this.setState({ data: data.clients });
-    });
+    });*/
   }
 
   refresh = () => {
-    this.props.getClients().then(data => {
+    /*this.props.getClients().then(data => {
       this.setState({ data: data.clients });
-    });
+    });*/
   }
 
   submitInsurance = (data) => {
