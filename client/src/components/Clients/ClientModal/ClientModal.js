@@ -4,13 +4,11 @@ import {
   Button,
   Container,
   Row,
-  Form,
   Col
 } from 'react-bootstrap';
 import ClientsForm from "../ClientsForm/ClientsForm";
 
 import "./ClientModal.css";
-import swal from '@sweetalert/with-react';
 
 class ClientModal extends Component {
 

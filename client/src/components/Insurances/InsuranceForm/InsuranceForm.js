@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 
 import {
-    Button,
     Col,
-    Container,
     Form,
     Row,
   } from 'react-bootstrap';
@@ -45,6 +43,8 @@ class InsuranceForm extends Component {
             case "MENSUAL":
                 num_invoces = 12;
                 break;
+            default:
+                num_invoces = 0;
         }
 
         for(let i = 0; i<num_invoces; i++){
@@ -61,21 +61,6 @@ class InsuranceForm extends Component {
         return this.props.type === "AUTOS";
     }
 
-    createContact = () => {
-        const contacts = [...this.state.contacts];
-        contacts.push({
-          name: "",
-          telephone: ""
-        })
-        this.setState({contacts});
-    }
-
-    deleteContact = (index) => {
-        const contacts = [...this.state.contacts];
-        contacts.splice(index, 1);
-        this.setState({contacts});
-    }
-    
     render() {
         return (
             <Form>
@@ -90,11 +75,6 @@ class InsuranceForm extends Component {
                         <li className="nav-item" onClick={this.update}>
                           <a className="nav-link active" href="#i-types" role="tab" data-toggle="tab"><i className="fas fa-building"></i>Generales</a>
                         </li>
-                        {this.isCarInsurance() && 
-                            <li className="nav-item">
-                            <a className="nav-link" href="#cars" role="tab" data-toggle="tab"><i className="fas fa-car"></i>Auto</a>
-                            </li>
-                        }
                         <li className="nav-item">
                           <a className="nav-link" href="#invoices" role="tab" data-toggle="tab"><i className="fas fa-receipt"></i> Recibos</a>
                         </li>
@@ -113,7 +93,7 @@ class InsuranceForm extends Component {
                                             </Form.Control>
                                         </Form.Group>
                                         <Form.Group as={Col} md="6" controlId="rfc">
-                                            <Form.Label>RFC del contratante (Opcional)</Form.Label>
+                                            <Form.Label>RFC del contratante</Form.Label>
                                             <Form.Control required onChange={this.onChange} value={this.state.rfc}>
                                             </Form.Control>
                                         </Form.Group>
@@ -123,14 +103,22 @@ class InsuranceForm extends Component {
                                         <h5 className="swal-title form-title align-left">PÓLIZA</h5>
                                     </Row>
                                     <Form.Row>
-                                        <Form.Group as={Col} md="4" controlId="insurance_company">
+                                        <Form.Group as={Col} md="6" controlId="insurance_company">
                                             <Form.Label>Aseguradora</Form.Label>
                                             <Form.Control required onChange={this.onChange} value={this.state.insurance_company}>
                                             </Form.Control>
                                         </Form.Group>
-                                        <Form.Group as={Col} md="4" controlId="policy">
+                                        <Form.Group as={Col} md="6" controlId="policy">
                                             <Form.Label>No. de póliza</Form.Label>
                                             <Form.Control required onChange={this.onChange} value={this.state.policy}>
+                                            </Form.Control>
+                                        </Form.Group>
+                                    </Form.Row>
+
+                                    <Form.Row>
+                                        <Form.Group as={Col} md="4" controlId="begin_date">
+                                            <Form.Label>F. Inicio Poliza</Form.Label>
+                                            <Form.Control required type="date" onChange={this.onChange} value={this.state.begin_date}>
                                             </Form.Control>
                                         </Form.Group>
                                         <Form.Group as={Col} md="4" controlId="due_date">
@@ -138,7 +126,13 @@ class InsuranceForm extends Component {
                                             <Form.Control required type="date" onChange={this.onChange} value={this.state.due_date}>
                                             </Form.Control>
                                         </Form.Group>
+                                        <Form.Group as={Col} md="4" controlId="pay_due_date">
+                                            <Form.Label>F. Vencimiento Pago</Form.Label>
+                                            <Form.Control required type="date" onChange={this.onChange} value={this.state.pay_due_date}>
+                                            </Form.Control>
+                                        </Form.Group>
                                     </Form.Row>
+
                                     <hr></hr>
                                     <Form.Row>
                                         <Form.Group as={Col} md="4" controlId="bounty">
@@ -165,37 +159,40 @@ class InsuranceForm extends Component {
                                             </Form.Control>
                                         </Form.Group>
                                     </Form.Row>
+                                    { this.isCarInsurance() && 
+                                        <>
+                                            <Row>
+                                                <h5 className="swal-title form-title align-left">DATOS AUTO</h5>
+                                            </Row>
+                                            <Form.Row>
+                                                <Form.Group as={Col} md="6" controlId="cis">
+                                                        <Form.Label>CIS</Form.Label>
+                                                        <Form.Control required onChange={this.onChange} value={this.state.cis}>
+                                                        </Form.Control>
+                                                    </Form.Group>
+                                                <Form.Group as={Col} md="6" controlId="car_model">
+                                                        <Form.Label>Modelo</Form.Label>
+                                                        <Form.Control required  onChange={this.onChange} value={this.state.car_model}>
+                                                        </Form.Control>
+                                                </Form.Group>
+                                            </Form.Row>
 
+                                            <Form.Row>
+                                                <Form.Group as={Col} md="6" controlId="car_description">
+                                                        <Form.Label>Descripción</Form.Label>
+                                                        <Form.Control required onChange={this.onChange} value={this.state.car_description}>
+                                                        </Form.Control>
+                                                    </Form.Group>
+                                                <Form.Group as={Col} md="6" controlId="car_series_number">
+                                                        <Form.Label>No. Serie</Form.Label>
+                                                        <Form.Control required  onChange={this.onChange} value={this.state.car_series_number}>
+                                                    </Form.Control>
+                                                </Form.Group>
+                                            </Form.Row>
+                                        </>
+                                    }
                                 </Col>
                                 <Col>
-                                    <Row>
-                                        <h5 className="swal-title form-title align-left">CONTACTO</h5>
-                                    </Row>
-
-                                    <Row className="pt-1 pb-2">
-                                        <Col md="12 text-center">
-                                            <Button variant="info" onClick={this.createContact}><i className="fa fa-plus"></i></Button>
-                                        </Col>
-                                    </Row>
-
-                                    {this.state.contacts.map((value, index) => {
-                                        return (
-                                        <Form.Row>
-                                            <Form.Group as={Col} md="6">
-                                            <Form.Label>Nombre</Form.Label>
-                                            <Form.Control required onChange={(e) => {this.onChangeContactName(index, e)}} value={this.state.contacts[index].name} />
-                                            </Form.Group>
-                                            <Form.Group as={Col} md="5">
-                                            <Form.Label>Teléfono</Form.Label>
-                                            <Form.Control required onChange={(e) => {this.onChangeContactTelephone(index, e)}} value={this.state.contacts[index].telephone} />
-                                            </Form.Group>
-                                            <Col md="1">
-                                            <Button variant="danger" className="align-center bottom-button" onClick={() => {this.deleteContact(index)}}><i className="fa fa-trash"/></Button>
-                                            </Col>
-                                        </Form.Row> 
-                                        );
-                                    })}
-
                                     <Row>
                                         <h5 className="swal-title form-title align-left">COMENTARIOS</h5>
                                     </Row>
@@ -207,40 +204,6 @@ class InsuranceForm extends Component {
                                 </Col>
                             </Row>
                         </div>
-                        { this.isCarInsurance() && 
-                            <div role="tabpanel" className="tab-pane fade" id="cars">
-                                <>
-                                    <Row>
-                                        <h5 className="swal-title form-title align-left">DATOS AUTO</h5>
-                                    </Row>
-                                    <Form.Row>
-                                        <Form.Group as={Col} md="6" controlId="cis">
-                                                <Form.Label>CIS</Form.Label>
-                                                <Form.Control required onChange={this.onChange} value={this.state.cis}>
-                                                </Form.Control>
-                                            </Form.Group>
-                                        <Form.Group as={Col} md="6" controlId="car_model">
-                                                <Form.Label>Modelo</Form.Label>
-                                                <Form.Control required  onChange={this.onChange} value={this.state.car_model}>
-                                                </Form.Control>
-                                        </Form.Group>
-                                    </Form.Row>
-
-                                    <Form.Row>
-                                        <Form.Group as={Col} md="6" controlId="car_description">
-                                                <Form.Label>Descripción</Form.Label>
-                                                <Form.Control required onChange={this.onChange} value={this.state.car_description}>
-                                                </Form.Control>
-                                            </Form.Group>
-                                        <Form.Group as={Col} md="6" controlId="car_series_number">
-                                                <Form.Label>No. Serie</Form.Label>
-                                                <Form.Control required  onChange={this.onChange} value={this.state.car_series_number}>
-                                            </Form.Control>
-                                        </Form.Group>
-                                    </Form.Row>
-                                </>
-                            </div>
-                        }
 
                         <div role="tabpanel" className="tab-pane fade" id="invoices">
                             <Row>
