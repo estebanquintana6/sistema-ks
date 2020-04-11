@@ -49,18 +49,14 @@ var InsuranceSchema = new Schema({
     required: true,
     uppercase: true
   },
-  contacts: {
-    type: Array,
-    required: false
-  },
   email: {
     type: String,
-    required: true,
+    required: false,
     uppercase: false
   },
   telephone: {
     type: String,
-    required: true,
+    required: false,
     uppercase: true
   },
   comments: {
