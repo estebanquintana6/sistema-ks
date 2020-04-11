@@ -82,14 +82,16 @@ class InsurancePanel extends Component {
   }
 
   addInsurance(variant) {
-    console.log(variant);
     swal({
+      title: `Registro de póliza de ${variant}`,
+      text: "Captura los datos de la nueva póliza",
       content: 
       <InsuranceForm 
         type={variant}
         save={this.submitInsurance}>
         </InsuranceForm>,
-      className: "width-800pt-100h"
+      className: "width-800pt-100h",
+      buttons: false
     });
   }
 

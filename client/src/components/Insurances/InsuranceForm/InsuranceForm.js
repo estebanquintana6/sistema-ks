@@ -185,7 +185,9 @@ class InsuranceForm extends Component {
                                             </Form.Control>
                                         </Form.Group>
                                     </Form.Row>
-                                    { this.isCarInsurance() && 
+                                </Col>
+                                <Col>
+                                { this.isCarInsurance() && 
                                         <>
                                             <Row>
                                                 <h5 className="swal-title form-title align-left">DATOS AUTO</h5>
@@ -217,8 +219,6 @@ class InsuranceForm extends Component {
                                             </Form.Row>
                                         </>
                                     }
-                                </Col>
-                                <Col>
                                     <Row>
                                         <h5 className="swal-title form-title align-left">COMENTARIOS</h5>
                                     </Row>
