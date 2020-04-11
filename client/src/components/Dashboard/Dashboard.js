@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import AdminDashboard from '../AdminDashboard/AdminDashboard';
-import InsuranceForm from '../Insurances/InsuranceForm/InsuranceForm';
+import InsurancePanel from '../Insurances/InsurancePanel/InsurancePanel';
 import ClientsPanel from '../Clients/ClientsPanel/ClientsPanel';
 //redux
 import { connect } from "react-redux";
@@ -50,10 +50,19 @@ class Dashboard extends Component {
               <ClientsPanel history={this.props.history}></ClientsPanel>
             </Route>
             <Route exact path="/dashboard/autos">
-              <InsuranceForm history={this.props.history} type="AUTOS"></InsuranceForm>
+              <InsurancePanel history={this.props.history} variant="AUTOS"></InsurancePanel>
+            </Route>
+            <Route exact path="/dashboard/vida">
+              <InsurancePanel history={this.props.history} variant="VIDA"></InsurancePanel>
+            </Route>
+            <Route exact path="/dashboard/gm">
+              <InsurancePanel history={this.props.history} variant="GM"></InsurancePanel>
+            </Route>
+            <Route exact path="/dashboard/transporte">
+              <InsurancePanel history={this.props.history} variant="TRANSPORTE"></InsurancePanel>
             </Route>
             <Route exact path="/dashboard/danos">
-              <InsuranceForm history={this.props.history} type="DANOS"></InsuranceForm>
+              <InsurancePanel history={this.props.history} variant="DANOS"></InsurancePanel>
             </Route>
           </Switch>
         </div>

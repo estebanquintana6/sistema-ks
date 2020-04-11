@@ -30,7 +30,7 @@ class Sidebar extends Component {
                         <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Auto</a>
                         <ul className="collapse list-unstyled" id="pageSubmenu">
                             <li>
-                                <a href="#">Panel de seguro</a>
+                                <a onClick={() => this.goToPage('/dashboard/autos')}>Panel de seguro</a>
                             </li>
                         </ul>
                     </li>
@@ -38,7 +38,7 @@ class Sidebar extends Component {
                         <a href="#autoSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Gastos médicos</a>
                         <ul className="collapse list-unstyled" id="autoSubmenu">
                             <li>
-                                <a href="#">Panel de seguro</a>
+                                <a onClick={() => this.goToPage('/dashboard/gm')}>Panel de seguro</a>
                             </li>
                         </ul>
                     </li>
@@ -46,7 +46,7 @@ class Sidebar extends Component {
                         <a href="#danosSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Daños</a>
                         <ul className="collapse list-unstyled" id="danosSubmenu">
                             <li>
-                                <a href="#">Panel de seguro</a>
+                                <a onClick={() => this.goToPage('/dashboard/danos')}>Panel de seguro</a>
                             </li>
                         </ul>
                     </li>
@@ -54,7 +54,7 @@ class Sidebar extends Component {
                         <a href="#vidaSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Vida</a>
                         <ul className="collapse list-unstyled" id="vidaSubmenu">
                             <li>
-                                <a href="#">Panel de seguro</a>
+                                <a onClick={() => this.goToPage('/dashboard/vida')}>Panel de seguro</a>
                             </li>
                         </ul>
                     </li>
@@ -62,7 +62,7 @@ class Sidebar extends Component {
                         <a href="#transportesSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Transporte</a>
                         <ul className="collapse list-unstyled" id="transportesSubmenu">
                             <li>
-                                <a href="#">Panel de seguro</a>
+                                <a onClick={() => this.goToPage('/dashboard/transporte')}>Panel de seguro</a>
                             </li>
                         </ul>
                     </li>
