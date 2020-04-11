@@ -8,7 +8,7 @@ export const createInsurance = (insuranceData, insuranceTypeId) => dispatch => {
   }
 
   return axios
-    .post(`/api/insurances/`, data)
+    .post(`/api/insurances/save`, data)
     .then(res => {
       return res;
     }).catch(err => {
