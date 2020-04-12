@@ -21,10 +21,12 @@ class InsuranceModal extends Component {
 
   editInsurance = (insurance) => {
     swal({
-      title: `Editar aseguradora`,
+      title: `Editar seguro`,
+      text: `Modifica los campos del seguro`,
       icon: "info",
       content: <InsuranceForm insurance={this.props.insurance} clients={this.props.clients} companies={this.props.companies} edit={true} updateInsurance={this.props.updateInsurance} ></InsuranceForm>,
-      buttons: false
+      buttons: false,
+      className: "width-800pt"
     })
   }
 
