@@ -18,6 +18,7 @@ class InsuranceForm extends Component {
       insurance_type: this.props.type,
       invoices: [],
       begin_date: moment().format('YYYY-MM-DD'),
+      due_date: moment().format('YYYY-MM-DD'),
       pay_due_date: moment().format('YYYY-MM-DD')
     };
   }

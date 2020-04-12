@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const createInsurance = (insuranceData, insuranceTypeId) => dispatch => {
+export const createInsurance = (insuranceData) => dispatch => {
   const token = localStorage.getItem("jwtToken");
   const data = {
     token,

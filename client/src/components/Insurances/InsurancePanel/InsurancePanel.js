@@ -65,9 +65,6 @@ class InsurancePanel extends Component {
     });
   }
 
-  submitInsurance = (data) => {
-    this.props.createInsurance(data);
-  }
 
   onFilteredChangeCustom = (value, accessor) => {
     let filtered = this.state.filtered;
@@ -130,7 +127,7 @@ class InsurancePanel extends Component {
           type={variant}
           clients={this.state.clients}
           companies={this.state.companies}
-          save={this.submitInsurance}
+          save={this.registerInsurance}
           updateInsurance={this.updateInsurance}
           deleteInsurance={this.deleteInsurance}
         >
@@ -141,9 +138,7 @@ class InsurancePanel extends Component {
   }
 
   registerInsurance = (insuranceData) => {
-    this.props.registerInsurance(
-      insuranceData,
-      this.props.history)
+    this.props.createInsurance(insuranceData)
       .then((response) => {
         const { status } = response;
         if (status === 200) {
