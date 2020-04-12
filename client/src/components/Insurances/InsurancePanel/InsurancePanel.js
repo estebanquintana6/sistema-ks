@@ -2,11 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Container, Row } from 'react-bootstrap'
 import { connect } from "react-redux";
-import { createInsurance } from "../../../actions/insuraceActions";
+import { createInsurance, deleteInsurance, updateInsurance, getInsurances } from "../../../actions/insuraceActions";
+import { getClients } from "../../../actions/registerClient";
+import { getCompanies } from "../../../actions/companyActions";
 import { ExportClientCSV } from "../../ExportCSV/ExportCSV";
 import swal from '@sweetalert/with-react';
 
 import InsuranceForm from "../InsuranceForm/InsuranceForm";
+import InsuranceModal from "../InsuranceModal/InsuranceModal";
 
 
 import "react-select/dist/react-select.css";
@@ -16,6 +19,7 @@ import ReactTable from "react-table";
 
 import "react-table/react-table.css";
 import "./InsurancePanel.css";
+import moment from 'moment'
 
 
 class InsurancePanel extends Component {
@@ -24,25 +28,43 @@ class InsurancePanel extends Component {
     this.state = {
       filtered: [],
       select2: undefined,
-      data: []
+      data: [],
+      clients: [],
+      companies: []
     };
   }
 
   async componentDidMount() {
-    /*this.props.getClients().then(data => {
-      this.setState({ data: data.clients });
-    });*/
+    this.prepareClientsForForm();
+    this.prepareCompaniesForForm();
+    this.refresh();
+  }
+
+  async componentDidUpdate(prevProps) {
+    if (this.props.variant !== prevProps.variant) {
+      // si cambia el tipo de seguro que estamos viendo
+      this.refresh()
+    }
   }
 
   refresh = () => {
-    /*this.props.getClients().then(data => {
-      this.setState({ data: data.clients });
-    });*/
+    this.props.getInsurances(this.props.variant).then(data => {
+      this.setState({ data: data.insurances });
+    });
   }
 
-  submitInsurance = (data) => {
-    this.props.createInsurance(data);
+  prepareClientsForForm = () => {
+    this.props.getClients().then(data => {
+      this.setState({ clients: data.clients });
+    });
   }
+
+  prepareCompaniesForForm = () => {
+    this.props.getCompanies().then(data => {
+      this.setState({ companies: data.companies });
+    });
+  }
+
 
   onFilteredChangeCustom = (value, accessor) => {
     let filtered = this.state.filtered;
@@ -81,18 +103,100 @@ class InsurancePanel extends Component {
     return {};
   }
 
+  openModificationModal(insurance) {
+    swal({
+      content: <InsuranceModal
+        insurance={insurance}
+        clients={this.state.clients}
+        companies={this.state.companies}
+        updateInsurance={this.updateInsurance}
+        deleteInsurance={this.deleteInsurance}>
+      </InsuranceModal>,
+      buttons: false,
+      title: `${insurance.client.name} ${insurance.policy}`,
+      className: "width-800pt"
+    });
+  }
+
   addInsurance(variant) {
     swal({
       title: `Registro de póliza de ${variant}`,
       text: "Captura los datos de la nueva póliza",
-      content: 
-      <InsuranceForm 
-        type={variant}
-        save={this.submitInsurance}>
+      content:
+        <InsuranceForm
+          type={variant}
+          clients={this.state.clients}
+          companies={this.state.companies}
+          save={this.registerInsurance}
+          updateInsurance={this.updateInsurance}
+          deleteInsurance={this.deleteInsurance}
+        >
         </InsuranceForm>,
       className: "width-800pt-100h",
       buttons: false
     });
+  }
+
+  registerInsurance = (insuranceData) => {
+    this.props.createInsurance(insuranceData)
+      .then((response) => {
+        const { status } = response;
+        if (status === 200) {
+          swal({
+            icon: "success",
+            content: <h2>Poliza guardada</h2>,
+          });
+        } else {
+          swal({
+            icon: "error",
+            content: <h2>Error al guardar la poliza</h2>,
+          });
+        }
+        this.refresh();
+      });
+  }
+
+  updateInsurance = (insuranceData) => {
+    this.props.updateInsurance(
+      insuranceData)
+      .then((response) => {
+        const { status } = response;
+        if (status === 200) {
+          swal({
+            icon: "success",
+            content: <h2>Poliza Actualizada</h2>,
+          });
+        } else {
+          swal({
+            icon: "error",
+            content: <h2>Error al guardar la poliza</h2>,
+          });
+        }
+        this.refresh();
+      });
+  }
+
+  deleteInsurance = (id, name, e) => {
+    swal({
+      title: `¿Estas seguro de querer eliminar a ${name}?`,
+      text: "Una vez eliminado ya no podras recuperarlo!",
+      icon: "warning",
+      buttons: true,
+      sucessMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          this.confirmDelete(id);
+          swal("Puf! Tu poliza se ha eliminado!", {
+            icon: "success",
+          });
+          this.refresh();
+        }
+      });
+  }
+
+  confirmDelete = (id) => {
+    this.props.deleteInsurance(id);
   }
 
   render() {
@@ -138,29 +242,39 @@ class InsurancePanel extends Component {
               Header: "Datos",
               columns: [
                 {
-                  Header: "Nombre",
-                  id: "name",
-                  accessor: d => d.name
-                },
-                {
-                  Header: "Apellido",
-                  id: "last_name",
-                  accessor: d => d.last_name
-                },
-                {
-                  Header: "Telefono",
-                  id: "telephone",
-                  accessor: d => d.telephone
-                },
-                {
-                  Header: "Correo",
-                  id: "email",
-                  accessor: d => d.email
-                },
-                {
-                  Header: "RFC/Razon social",
+                  Header: "RFC Cliente",
                   id: "rfc",
-                  accessor: d => d.rfc
+                  accessor: d => d.client.rfc
+                },
+                {
+                  Header: "Cliente",
+                  id: "client",
+                  accessor: d => d.client.name
+                },
+                {
+                  Header: "Aseguradora",
+                  id: "insurance_company",
+                  accessor: d => d.insurance_company.name
+                },
+                {
+                  Header: "Poliza",
+                  id: "policy",
+                  accessor: d => d.policy
+                },
+                {
+                  Header: "Fecha inicio",
+                  id: "begin_date",
+                  accessor: d => moment(d.begin_date).format('YYYY-MM-DD')
+                },
+                {
+                  Header: "Fecha pago",
+                  id: "pay_due_date",
+                  accessor: d => moment(d.pay_due_date).format('YYYY-MM-DD')
+                },
+                {
+                  Header: "Fecha vto.",
+                  id: "due_date",
+                  accessor: d => moment(d.due_date).format('YYYY-MM-DD')
                 }
               ]
             }
@@ -182,7 +296,6 @@ class InsurancePanel extends Component {
 }
 
 InsurancePanel.propTypes = {
-  getClients: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -194,5 +307,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { createInsurance }
+  { getClients, getCompanies, createInsurance, deleteInsurance, updateInsurance, getInsurances }
 )(InsurancePanel);

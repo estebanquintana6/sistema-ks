@@ -8,9 +8,9 @@ var InsuranceSchema = new Schema({
   client: {
     type: Schema.Types.ObjectId,
     ref: 'Clients',
-    required: false
+    required: true
   },
-  client_name: {
+  comments: {
     type: String,
     required: true,
     uppercase: true
@@ -19,6 +19,11 @@ var InsuranceSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Companies',
     required: true
+  },
+  invoices: {
+    type: Object,
+    ref: 'Invoices',
+    required: false
   },
   insurance_type: {
     type: String,
@@ -29,7 +34,15 @@ var InsuranceSchema = new Schema({
     required: true,
     uppercase: true
   },
+  begin_date: {
+    type: Date,
+    required: true
+  },
   due_date: {
+    type: Date,
+    required: true
+  },
+  pay_due_date: {
     type: Date,
     required: true
   },
@@ -72,35 +85,27 @@ var InsuranceSchema = new Schema({
   // campos unicos de seguros de auto
   cis: {
     type: String,
-    required: function() {
-        this.insurance_type == "Auto"
-    },
+    required: () => this.insurance_type === "Auto",
     uppercase: true,
     default: null
   },
   car_model: {
     type: String,
-    required: function() {
-        this.insurance_type === "Auto"
-    },
+    required: () => this.insurance_type === "Auto",
     uppercase: true,
     default: null
   },
   car_description: {
     type: String,
-    required: function() {
-        this.insurance_type === "Auto"
-    },
+    required: () => this.insurance_type === "Auto",
     uppercase: true,
-    default: null 
+    default: null
   },
   car_series_number: {
     type: String,
-    required: function() {
-        this.insurance_type === "Auto"
-    },
+    required: () => this.insurance_type === "Auto",
     uppercase: true,
-    default: null 
+    default: null
   }
 });
 
