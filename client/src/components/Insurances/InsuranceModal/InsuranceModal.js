@@ -25,7 +25,7 @@ class InsuranceModal extends Component {
       text: `Modifica los campos del seguro`,
       content: <InsuranceForm insurance={this.props.insurance} clients={this.props.clients} companies={this.props.companies} edit={true} updateInsurance={this.props.updateInsurance} ></InsuranceForm>,
       buttons: false,
-      className: "width-800pt"
+      className: "width-800pt-100h"
     })
   }
 

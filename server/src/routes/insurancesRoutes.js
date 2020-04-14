@@ -109,6 +109,13 @@ router.post("/:id/delete", (req, res) => {
       if (exists) {
         Insurance.deleteOne({ _id: req.params.id }).then((err, result) => {
           if (err) res.status(500);
+
+          Invoice.find({insurance: req.params.id}).then((invoices, err) => {
+            invoices.map(invoice => {
+              Invoice.findByIdAndDelete(invoice._id).exec();
+            })
+          })
+
           res.status(201).json({ message: "Elemento eliminado" });
         });
       }
