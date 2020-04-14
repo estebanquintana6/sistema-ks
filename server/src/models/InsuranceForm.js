@@ -20,11 +20,11 @@ var InsuranceSchema = new Schema({
     ref: 'Companies',
     required: true
   },
-  invoices: {
-    type: Object,
+  invoices: [{
+    type: Schema.Types.ObjectId,
     ref: 'Invoices',
     required: false
-  },
+  }],
   insurance_type: {
     type: String,
     required: true
