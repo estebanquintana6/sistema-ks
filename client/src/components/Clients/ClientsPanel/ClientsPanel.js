@@ -136,7 +136,7 @@ class ClientsPanel extends Component {
         deleteClient={this.deleteClient}>
       </ClientModal>,
       buttons: false,
-      title: `${client.name} ${client.last_name}`,
+      title: `${client.name}`,
       className: "width-800pt"
     });
   }
