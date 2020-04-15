@@ -1,2 +1,4 @@
+import moment from 'moment'
 
-changeLocation = (history, route) => history.push(route);
+export const formatShortDate = (date) => moment(date).format('YYYY-MM-DD')
+export const changeLocation = (history, route) => history.push(route);

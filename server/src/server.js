@@ -10,6 +10,7 @@ const token = require("./routes/tokenRoutes");
 const insuranceTypes = require('./routes/insuranceTypesRoutes')
 const companies = require('./routes/companiesRoutes')
 const insurances = require('./routes/insurancesRoutes')
+const tasks = require('./routes/tasksRoutes')
 const initializeDb = require('./createInsuranceTypes')
 
 const app = express();
@@ -64,6 +65,7 @@ app.use("/api/token", token);
 app.use('/api/insurance_types', insuranceTypes)
 app.use('/api/companies', companies)
 app.use('/api/insurances', insurances)
+app.use('/api/tasks', tasks)
 
 const port = process.env.PORT || 5000;
 
