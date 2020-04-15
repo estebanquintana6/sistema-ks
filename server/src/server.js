@@ -13,6 +13,7 @@ const insurances = require('./routes/insurancesRoutes')
 const initializeDb = require('./createInsuranceTypes')
 
 const app = express();
+const regular_jobs = require('./node_regular_job')
 const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/test";
 
 // Bodyparser middleware
@@ -47,9 +48,10 @@ db.once("open", () => {
   console.log("Successfully connected to mongo");
 });
 
-
 // Passport middleware
 app.use(passport.initialize());
+
+let j = regular_jobs.j;
 
 // Passport config
 require("./config/passport")(passport);
