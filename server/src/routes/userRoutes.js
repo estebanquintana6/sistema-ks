@@ -89,7 +89,8 @@ router.post("/login", (req, res) => {
           name: user.name,
           last_name: user.last_name,
           email: user.email,
-          role: user.role
+          role: user.role,
+          id: user._id
         };
 
         // Sign token
@@ -220,7 +221,7 @@ router.post("/list", (req, res) => {
   jwt.verify(token, secretKey, function(err, decoded) {
     if(err) res.status(402);
     const role = decoded.role;
-    if(role === "admin"){
+    if(role){
       User.find({ email: {$ne: decoded.email} }).select(["-password", "-referidos", "-secoms", "-clients"]).then((users) => {
         res.status(200).json(users);
       });
