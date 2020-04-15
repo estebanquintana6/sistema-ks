@@ -211,11 +211,6 @@ class ClientsPanel extends Component {
                   accessor: d => d.name
                 },
                 {
-                  Header: "Apellido",
-                  id: "last_name",
-                  accessor: d => d.last_name
-                },
-                {
                   Header: "Telefono",
                   id: "telephone",
                   accessor: d => d.telephone
