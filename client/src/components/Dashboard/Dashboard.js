@@ -14,6 +14,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import Navbar from "../Navbar/Navbar";
 
 import "./Dashboard.css";
+import TaskPanel from "../Tasks/TaskPanel/TaskPanel";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -48,6 +49,9 @@ class Dashboard extends Component {
             </Route>
             <Route exact path="/dashboard/clientes">
               <ClientsPanel history={this.props.history}></ClientsPanel>
+            </Route>
+            <Route exact path="/dashboard/pendientes">
+              <TaskPanel history={this.props.history}></TaskPanel>
             </Route>
             <Route exact path="/dashboard/autos">
               <InsurancePanel history={this.props.history} variant="AUTOS"></InsurancePanel>
