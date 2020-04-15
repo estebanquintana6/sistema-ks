@@ -10,9 +10,11 @@ const token = require("./routes/tokenRoutes");
 const insuranceTypes = require('./routes/insuranceTypesRoutes')
 const companies = require('./routes/companiesRoutes')
 const insurances = require('./routes/insurancesRoutes')
+const tasks = require('./routes/tasksRoutes')
 const initializeDb = require('./createInsuranceTypes')
 
 const app = express();
+const regular_jobs = require('./node_regular_job')
 const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/test";
 
 // Bodyparser middleware
@@ -47,9 +49,10 @@ db.once("open", () => {
   console.log("Successfully connected to mongo");
 });
 
-
 // Passport middleware
 app.use(passport.initialize());
+
+let j = regular_jobs.j;
 
 // Passport config
 require("./config/passport")(passport);
@@ -62,6 +65,7 @@ app.use("/api/token", token);
 app.use('/api/insurance_types', insuranceTypes)
 app.use('/api/companies', companies)
 app.use('/api/insurances', insurances)
+app.use('/api/tasks', tasks)
 
 const port = process.env.PORT || 5000;
 

@@ -67,6 +67,14 @@ class Sidebar extends Component {
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="#pendientesSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Pendientes</a>
+                        <ul className="collapse list-unstyled" id="pendientesSubmenu">
+                            <li>
+                                <a onClick={() => this.goToPage('/dashboard/pendientes')}>Panel de pendientes</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
 
                 <ul className="list-unstyled CTAs">
