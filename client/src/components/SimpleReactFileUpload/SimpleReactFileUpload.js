@@ -1,5 +1,6 @@
 import React from 'react'
-import axios, { post } from 'axios';
+import { bulkData } from '../../actions/bulkActions';
+import { connect } from "react-redux";
 
 import XLSX from "xlsx";
 
@@ -26,21 +27,29 @@ class SimpleReactFileUpload extends React.Component {
     this.setState({file:e.target.files[0]})
   }
 
+  createTranslationTable = (jsonEntry) => {
+    const translationTable = {}
+    const originalKeys = Object.keys(jsonEntry)
+    originalKeys.forEach((key, index) => {
+      translationTable[key] = this.props.resultKeys[index]
+    })
+    return translationTable
+  }
+
   fileUpload(file){
     var reader = new FileReader();
-
+    const self = this
     reader.onload = function(){
       const data = reader.result;
-
       const workbook = XLSX.read(data, {type: 'binary'});
 
       var sheet_name_list = workbook.SheetNames;
 
       let excelJson = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
-      
+      self.setState({jsonInfo: excelJson})
+      const translation = self.createTranslationTable(excelJson[0])
+      self.props.bulkData(excelJson, 'clients', translation)
     };
-
-    
     reader.readAsBinaryString(file);
   }
 
@@ -58,5 +67,12 @@ class SimpleReactFileUpload extends React.Component {
 }
 
 
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
 
-export default SimpleReactFileUpload
+export default connect(
+  mapStateToProps,
+  { bulkData }
+)(SimpleReactFileUpload);

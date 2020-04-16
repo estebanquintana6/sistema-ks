@@ -238,7 +238,7 @@ class ClientsPanel extends Component {
             <div className="col-md-4 center mt-4">
               <ExportClientCSV csvData={this.state.data} fileName="reporteClientes" />
             </div>
-            <SimpleReactFileUpload></SimpleReactFileUpload>
+            <SimpleReactFileUpload resultKeys={['number', 'client', 'due_date', 'policy', 'product', 'currency', 'total', 'status']}></SimpleReactFileUpload>
           </div>
 
         </div>
