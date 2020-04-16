@@ -14,6 +14,8 @@ import "react-select/dist/react-select.css";
 // Import React Table
 import ReactTable from "react-table";
 
+import SimpleReactFileUpload from "../../SimpleReactFileUpload/SimpleReactFileUpload";
+
 
 import "react-table/react-table.css";
 import "./ClientsPanel.css";
@@ -236,6 +238,7 @@ class ClientsPanel extends Component {
             <div className="col-md-4 center mt-4">
               <ExportClientCSV csvData={this.state.data} fileName="reporteClientes" />
             </div>
+            <SimpleReactFileUpload></SimpleReactFileUpload>
           </div>
 
         </div>
