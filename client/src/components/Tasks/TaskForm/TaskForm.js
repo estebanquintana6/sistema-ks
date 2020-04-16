@@ -50,7 +50,7 @@ class TaskForm extends Component {
           <Col md={6}>
             <Form.Row>
               <Form.Group as={Col} md="12" controlId="title">
-                <Form.Label>Titulo de pendiente</Form.Label>
+                <Form.Label>Mensaje</Form.Label>
                 <Form.Control required onChange={this.onChange} value={this.state.title} />
               </Form.Group>
             </Form.Row>
