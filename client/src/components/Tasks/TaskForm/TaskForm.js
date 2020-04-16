@@ -58,7 +58,7 @@ class TaskForm extends Component {
         </Row>
         <Row>
         <Col md={4}>
-              <Form.Group as={Col} md="12" controlId="status">
+              <Form.Group controlId="status">
                 <Form.Label>Estatus</Form.Label>
                 <Form.Control required as="select" onChange={this.onChange} value={this.state.status}>
                   <option></option>
@@ -70,7 +70,7 @@ class TaskForm extends Component {
               </Form.Group>
           </Col>
           <Col md={4}>
-            <Form.Group as={Col} controlId="assignee">
+            <Form.Group controlId="assignee">
               <Form.Label>Asignado a:</Form.Label>
               <Form.Control required as="select" onChange={this.onChange} value={this.state.assignee && this.state.assignee._id}>
                 <option></option>
@@ -79,7 +79,7 @@ class TaskForm extends Component {
             </Form.Group>
           </Col>
           <Col md={4}>
-          <Form.Group as={Col} controlId="due_date">
+          <Form.Group controlId="due_date">
             <Form.Label>Fecha de entrega</Form.Label>
             <Form.Control type="date" onChange={this.onChange} value={this.formatDate(this.state.due_date)}>
             </Form.Control>
