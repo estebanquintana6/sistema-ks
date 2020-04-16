@@ -1,13 +1,17 @@
 import React from 'react'
 import axios, { post } from 'axios';
 
+import XLSX from "xlsx";
+
 class SimpleReactFileUpload extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state ={
+    
+    this.state = {
       file:null
     }
+
     this.onFormSubmit = this.onFormSubmit.bind(this)
     this.onChange = this.onChange.bind(this)
     this.fileUpload = this.fileUpload.bind(this)
@@ -24,13 +28,20 @@ class SimpleReactFileUpload extends React.Component {
 
   fileUpload(file){
     var reader = new FileReader();
+
     reader.onload = function(){
-      var text = reader.result;
-      var node = document.getElementById('output');
-      node.innerText = text;
-      console.log(reader.result.substring(0, 200));
+      const data = reader.result;
+
+      const workbook = XLSX.read(data, {type: 'binary'});
+
+      var sheet_name_list = workbook.SheetNames;
+
+      let excelJson = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+      
     };
-    console.log(reader.readAsText(file));
+
+    
+    reader.readAsBinaryString(file);
   }
 
   render() {
@@ -41,9 +52,6 @@ class SimpleReactFileUpload extends React.Component {
           <input type="file" onChange={this.onChange} />
           <button type="submit">Upload</button>
         </form>
-        <div id='output'>
-        ...
-        </div>
       </>
    )
   }
