@@ -34,13 +34,10 @@ class TaskPanel extends Component {
   }
 
   getAssignedTo = (task, who) => {
-    console.log(who)
-    console.log(who === "me")
     if(who === "me") {
       return task.assignee.email === this.props.auth.user.email;
     } else {
       return task.assignee.email !== this.props.auth.user.email;
-
     }
 }
 
@@ -113,8 +110,6 @@ class TaskPanel extends Component {
   }
 
   openModificationModal(task) {
-    console.log(task); 
-    console.log(this.state);
     swal({
       content: <TaskModal
         task={task}
@@ -156,10 +151,7 @@ class TaskPanel extends Component {
 
 
   render() {
-
     const { data } = this.state;
-    console.log(data);
-
     let { filter } = this.state;
 
     return (
