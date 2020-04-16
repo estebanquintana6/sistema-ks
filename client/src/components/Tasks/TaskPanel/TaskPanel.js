@@ -109,7 +109,7 @@ class TaskPanel extends Component {
           deleteTask={this.deleteTask}
         >
         </TaskForm>,
-      className: "width-800pt-100h",
+      className: "panel-width",
       buttons: false
     });
   }
