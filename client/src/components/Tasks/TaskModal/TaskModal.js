@@ -34,12 +34,6 @@ class TaskModal extends Component {
     return (
       < Container >
         <React.Fragment>
-          <Row className="mt-4">
-            <Col>
-              <h5 className="text-center">Pendiente</h5>
-            </Col>
-          </Row>
-          <br></br>
           <Row>
             <Col>
               <Button variant="info" className="option-button" onClick={this.editTask.bind(this, task)}>EDITAR</Button>

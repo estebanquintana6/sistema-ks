@@ -136,7 +136,7 @@ class ClientsPanel extends Component {
         deleteClient={this.deleteClient}>
       </ClientModal>,
       buttons: false,
-      title: `${client.name} ${client.last_name}`,
+      title: `${client.name}`,
       className: "width-800pt"
     });
   }
@@ -209,11 +209,6 @@ class ClientsPanel extends Component {
                   Header: "Nombre",
                   id: "name",
                   accessor: d => d.name
-                },
-                {
-                  Header: "Apellido",
-                  id: "last_name",
-                  accessor: d => d.last_name
                 },
                 {
                   Header: "Telefono",
