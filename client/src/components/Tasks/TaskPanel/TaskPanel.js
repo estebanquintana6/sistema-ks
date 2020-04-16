@@ -29,8 +29,13 @@ class TaskPanel extends Component {
   }
 
   async componentDidMount() {
+    this.interval = setInterval(() => this.refresh(), 2000);
     this.prepareUsersForForm();
     this.refresh();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   getAssignedTo = (task, who) => {
