@@ -17,9 +17,9 @@ class InsuranceForm extends Component {
     this.state = {
       insurance_type: this.props.type,
       invoices: [],
-      begin_date: moment().format('YYYY-MM-DD'),
-      due_date: moment().format('YYYY-MM-DD'),
-      pay_due_date: moment().format('YYYY-MM-DD')
+      begin_date: moment().startOf('day').format('YYYY-MM-DD'),
+      due_date: moment().startOf('day').format('YYYY-MM-DD'),
+      pay_due_date: moment().startOf('day').format('YYYY-MM-DD')
     };
   }
 
@@ -68,7 +68,7 @@ class InsuranceForm extends Component {
   }
 
   onInvoicesChange = e => {
-    let num_invoces = 0;
+    let num_invoices = 0;
     let invoices = [];
 
     this.setState({
@@ -78,26 +78,33 @@ class InsuranceForm extends Component {
 
     switch (e.target.value) {
       case "ANUAL":
-        num_invoces = 1;
+        num_invoices = 1;
         break;
       case "SEMESTRAL":
-        num_invoces = 2;
+        num_invoices = 2;
         break;
       case "TRIMESTRAL":
-        num_invoces = 4;
+        num_invoices = 4;
         break;
       case "MENSUAL":
-        num_invoces = 12;
+        num_invoices = 12;
         break;
       default:
-        num_invoces = 0;
+        num_invoices = 0;
     }
 
-    for (let i = 0; i < num_invoces; i++) {
+    const jump = num_invoices === 0 ? 12 / 1 : 12/num_invoices;
+
+    const startGenDate = this.state.due_date;
+
+    let prevDate = startGenDate
+    for (let i = 0; i < num_invoices; i++) {
       invoices.push({
         invoice: "",
-        due_date: ""
+        due_date: moment(newDate||prevDate).format('YYYY-MM-DD')
       });
+      let newDate = moment(prevDate).clone().startOf('day').add(jump, 'months')
+      prevDate = moment(newDate).clone().startOf('day')
     }
 
     this.setState({ invoices });
