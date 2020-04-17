@@ -17,9 +17,12 @@ import "react-select/dist/react-select.css";
 import ReactTable from "react-table";
 
 
+
 import "react-table/react-table.css";
 import "./InsurancePanel.css";
+
 import moment from 'moment'
+import {formatShortDate} from '../../component-utils'
 
 
 class InsurancePanel extends Component {
@@ -264,17 +267,17 @@ class InsurancePanel extends Component {
                 {
                   Header: "Fecha inicio",
                   id: "begin_date",
-                  accessor: d => moment(d.begin_date).format('YYYY-MM-DD')
+                  accessor: d => formatShortDate(d.begin_date)
                 },
                 {
                   Header: "Fecha pago",
                   id: "pay_due_date",
-                  accessor: d => moment(d.pay_due_date).format('YYYY-MM-DD')
+                  accessor: d => formatShortDate(d.pay_due_date)
                 },
                 {
                   Header: "Fecha vto.",
                   id: "due_date",
-                  accessor: d => moment(d.due_date).format('YYYY-MM-DD')
+                  accessor: d => formatShortDate(d.due_date)
                 }
               ]
             }
