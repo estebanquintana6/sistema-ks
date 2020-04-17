@@ -13,7 +13,9 @@ import { cloneDeep } from 'lodash'
 class TaskForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      assignee: []
+    };
   }
 
   componentDidMount() {
@@ -32,6 +34,21 @@ class TaskForm extends Component {
     this.setState({ [e.target.id]: e.target.value });
   };
 
+  addAsignee = e => {
+    let { assignee } = this.state;
+    assignee.push(e.target.value);
+    this.setState({assignee});
+    document.getElementById(e.target.id).value = "";
+  }
+
+  getUserName = (id) => {
+    let user = this.props.users.filter((user) => {
+      return user._id === id
+    });
+    console.log(user);
+    if(user.length > 0) return user[0].name;
+  }
+
   onSubmit = e => {
     e.preventDefault();
     if (!this.state.edit) {
@@ -41,11 +58,15 @@ class TaskForm extends Component {
     this.props.updateTask(this.state)
   }
 
+
   formatDate = (date) => moment(date).format('YYYY-MM-DD')
 
   render() {
     return (
       <Form id="taskForm" onSubmit={this.onSubmit}>
+        <Row>
+          <h5 className="swal-title form-title align-left">GENERALES</h5>
+        </Row>
         <Row>
           <Col md={12}>
             <Form.Row>
@@ -57,7 +78,7 @@ class TaskForm extends Component {
           </Col>
         </Row>
         <Row>
-        <Col md={4}>
+        <Col>
               <Form.Group controlId="status">
                 <Form.Label>Estatus</Form.Label>
                 <Form.Control required as="select" onChange={this.onChange} value={this.state.status}>
@@ -69,21 +90,38 @@ class TaskForm extends Component {
                 </Form.Control>
               </Form.Group>
           </Col>
-          <Col md={4}>
-            <Form.Group controlId="assignee">
-              <Form.Label>Asignado a:</Form.Label>
-              <Form.Control required as="select" onChange={this.onChange} value={this.state.assignee && this.state.assignee._id}>
-                <option></option>
-                {this.props.users.map((user, index) => <option value={user._id} key={index}>{user.name}</option>)}
-              </Form.Control>
-            </Form.Group>
-          </Col>
-          <Col md={4}>
+          <Col>
           <Form.Group controlId="due_date">
             <Form.Label>Fecha de entrega</Form.Label>
             <Form.Control type="date" onChange={this.onChange} value={this.formatDate(this.state.due_date)}>
             </Form.Control>
           </Form.Group>
+          </Col>
+        </Row>
+        <Row>
+          <h5 className="swal-title form-title align-left">ASGINADOS</h5>
+        </Row>
+        <Row>
+          <Col>
+              <Form.Group controlId="assignee">
+                <Form.Label>Asignado a:</Form.Label>
+                <Form.Control as="select" onChange={this.addAsignee}>
+                  <option></option>
+                  {this.props.users.filter((user) => {
+                                      return !this.state.assignee.includes(user._id)
+                                    })
+                                    .map((user, index) => 
+                                        <option value={user._id} key={index}>{user.name}</option>
+                                    )}
+                </Form.Control>
+              </Form.Group>
+          </Col>
+          <Col>
+          <ul class="list-group">
+            {this.state.assignee.map((user) => {
+              return <li class="list-group-item">{this.getUserName(user)}</li>
+            })}
+          </ul>
           </Col>
         </Row>
         <Button variant="primary" type="submit">Guardar</Button>
