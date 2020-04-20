@@ -116,13 +116,10 @@ class TaskForm extends Component {
                   <Form.Control as="select" onChange={this.addAsignee.bind(this, index)} value={this.state.assignee[index]}>
                     <option></option>
                     {this.props.users.map((user, index) => 
-                                          <option 
-                                                  selected={this.getActive.bind(assignee, user)} 
-                                                  value={user._id} 
-                                                  key={index}>{user.name}
-                                          </option>
-                                      )
-                    }
+                      <option value={user._id}>
+                        {user.name}
+                      </option>
+                    )}
                   </Form.Control>
                 </Form.Group>
               );
