@@ -17,27 +17,41 @@ class InsuranceForm extends Component {
     this.state = {
       insurance_type: this.props.type,
       invoices: [],
-      begin_date: moment().format('YYYY-MM-DD'),
-      due_date: moment().format('YYYY-MM-DD'),
-      pay_due_date: moment().format('YYYY-MM-DD')
+      begin_date: moment().startOf('day').format('YYYY-MM-DD'),
+      due_date: moment().startOf('day').format('YYYY-MM-DD'),
+      pay_due_date: moment().startOf('day').format('YYYY-MM-DD'),
+      company_abbreviations: {}
     };
   }
 
   componentDidMount() {
-    if (!this.props.edit) return;
-    // prepare the insurance data to be rendered in every field
+    if (this.props.edit) {
+      // prepare the insurance data to be rendered in every field
     this.prepareInsuranceForForm()
+    } else{
+    this.composeCompanyAbbreviations()}
+  }
+
+  composeCompanyAbbreviations = () => {
+    if(!this.props.companies) return
+    let resObj = {}
+    this.props.companies.forEach((company) => {
+      resObj[company.name] = company.abbreviations
+    })
+    this.setState({company_abbreviations: resObj})
   }
 
   prepareInsuranceForForm = () => {
     const auxObj = cloneDeep(this.props.insurance)
     auxObj['edit'] = this.props['edit']
     this.setState(auxObj)
+    this.composeCompanyAbbreviations()
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.insurance_company !== this.state.insurance_company) {
       this.selectCompanyAndUpdateDays()
+      this.composeCompanyAbbreviations()
     }
 
     if (prevState.begin_date !== this.state.begin_date) {
@@ -68,7 +82,7 @@ class InsuranceForm extends Component {
   }
 
   onInvoicesChange = e => {
-    let num_invoces = 0;
+    let num_invoices = 0;
     let invoices = [];
 
     this.setState({
@@ -78,26 +92,33 @@ class InsuranceForm extends Component {
 
     switch (e.target.value) {
       case "ANUAL":
-        num_invoces = 1;
+        num_invoices = 1;
         break;
       case "SEMESTRAL":
-        num_invoces = 2;
+        num_invoices = 2;
         break;
       case "TRIMESTRAL":
-        num_invoces = 4;
+        num_invoices = 4;
         break;
       case "MENSUAL":
-        num_invoces = 12;
+        num_invoices = 12;
         break;
       default:
-        num_invoces = 0;
+        num_invoices = 0;
     }
 
-    for (let i = 0; i < num_invoces; i++) {
+    const jump = num_invoices === 0 ? 12 / 1 : 12/num_invoices;
+
+    const startGenDate = this.state.due_date;
+
+    let prevDate = startGenDate
+    for (let i = 0; i < num_invoices; i++) {
       invoices.push({
         invoice: "",
-        due_date: ""
+        due_date: moment(newDate||prevDate).format('YYYY-MM-DD')
       });
+      let newDate = moment(prevDate).clone().startOf('day').add(jump, 'months')
+      prevDate = moment(newDate).clone().startOf('day')
     }
 
     this.setState({ invoices });
@@ -129,16 +150,26 @@ class InsuranceForm extends Component {
 
   onSubmit = e => {
     e.preventDefault();
+    const formattedObject = {...this.state, policy: (this.props.edit ? '' :this.state.abbreviation) + this.state.policy}
     // if im not editing the client, create one
     if (!this.state.edit) {
-      this.props.save(this.state);
+      this.props.save(formattedObject);
       return;
     }
-    // const newClientData = this.prepareClientDataForSave(this.state)
-    this.props.updateInsurance(this.state)
+    this.props.updateInsurance(formattedObject)
   }
 
   formatDate = (date) => moment(date).format('YYYY-MM-DD')
+
+  companyOptions = () => {
+    return this.state.company_abbreviations[this.filterInsuranceCompany()] || []
+  }
+
+  filterInsuranceCompany = () => {
+    if (!this.state.insurance_company || !this.props.companies) return;
+    const lookup = this.props.edit ? this.state.insurance_company._id : this.state.insurance_company
+    return this.props.companies.find(company => company._id === lookup).name
+  }
 
   render() {
     return (
@@ -169,7 +200,7 @@ class InsuranceForm extends Component {
                         <Form.Label>Contratante</Form.Label>
                         <Form.Control required as="select" onChange={this.onChange} value={this.state.client && this.state.client._id}>
                           <option></option>
-                          {this.props.clients.map((client) => client && <option value={client._id}>{`${client.name} ${client.rfc}`}</option>)}
+                          {this.props.clients.map((client) => client && <option key={client._id} value={client._id}>{`${client.name} ${client.rfc}`}</option>)}
                         </Form.Control>
                       </Form.Group>
                     </Form.Row>
@@ -178,13 +209,23 @@ class InsuranceForm extends Component {
                       <h5 className="swal-title form-title align-left">PÓLIZA</h5>
                     </Row>
                     <Form.Row>
-                      <Form.Group as={Col} md="6" controlId="insurance_company">
+                      <Form.Group as={Col} md="12" controlId="insurance_company">
                         <Form.Label>Aseguradora</Form.Label>
                         <Form.Control required as="select" onChange={this.onChange} value={this.state.insurance_company && this.state.insurance_company._id}>
                           <option></option>
                           {this.props.companies.map((company) => <option value={company._id}>{`${company.name}`}</option>)}
                         </Form.Control>
                       </Form.Group>
+                    </Form.Row>
+
+                    <Form.Row>
+                      {! this.props.edit &&<Form.Group as={Col} md="6" controlId="abbreviation">
+                        <Form.Label>Clave</Form.Label>
+                        <Form.Control required as="select" onChange={this.onChange} value={this.state.abbreviation}>
+                          <option></option>
+                          {this.companyOptions().map((abbr) => <option value={abbr.name}>{abbr.name}</option>)}
+                        </Form.Control>
+                      </Form.Group>}
                       <Form.Group as={Col} md="6" controlId="policy">
                         <Form.Label>No. de póliza</Form.Label>
                         <Form.Control required onChange={this.onChange} value={this.state.policy}>
