@@ -72,7 +72,6 @@ class TaskForm extends Component {
   formatDate = (date) => moment(date).format('YYYY-MM-DD')
 
   render() {
-    console.log(this.state.assignee);
     return (
       <Form id="taskForm" onSubmit={this.onSubmit}>
         <Row>
@@ -110,19 +109,21 @@ class TaskForm extends Component {
           <Row>
           <Col>
               {this.state.assignee.map((assignee, index) => {
-              return (
-                <Form.Group controlId="assignee">
-                  <Form.Label>Asignado a:</Form.Label>
-                  <Form.Control as="select" onChange={this.addAsignee.bind(this, index)} value={this.state.assignee[index]}>
-                    <option></option>
-                    {this.props.users.map((user, index) => 
-                      <option value={user._id}>
-                        {user.name}
-                      </option>
-                    )}
-                  </Form.Control>
-                </Form.Group>
-              );
+                return (
+                  <Form.Group controlId={`assignee${index}`}>
+                    <Form.Label>Asignado a:</Form.Label>
+                    <Form.Control as="select" onChange={this.addAsignee.bind(this, index)} value={assignee._id}>
+                      <option></option>
+                      {this.props.users.map((user, index) => {
+                        console.log(assignee._id, user._id);
+                        console.log(assignee._id === user._id);
+                        return (<option value={user._id} selected={assignee._id === user._id}>
+                          {user.name}
+                        </option>);
+                      })}
+                    </Form.Control>
+                  </Form.Group>
+                );
               })}
           </Col>
           <Col>
