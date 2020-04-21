@@ -1,56 +1,74 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
-import { Button, Col, Container, Card, Row } from 'react-bootstrap'
-
+import { Container } from 'react-bootstrap'
 import swal from '@sweetalert/with-react';
-
+import { Row } from 'react-bootstrap'
 import { getTasks, registerTask, deleteTask, updateTask } from '../../../actions/taskAction'
 import { listUsers } from '../../../actions/userActions'
 
-import TaskModal from "../TaskModal/TaskModal";
-import TaskForm from "../TaskForm/TaskForm";
-
-
 import "react-select/dist/react-select.css";
 import "react-table/react-table.css";
+import ReactTable from "react-table";
 import "./TaskPanel.css";
-
+import TaskModal from "../TaskModal/TaskModal";
+import TaskForm from "../TaskForm/TaskForm";
+import {formatShortDate} from '../../component-utils'
 
 class TaskPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      filter: "me",
+      filtered: [],
+      select2: undefined,
       data: [],
       users: [],
     };
   }
 
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.change !== prevProps.change) {
+  //     this.refresh();
+  //   }
+  // }
+
   async componentDidMount() {
-    this.interval = setInterval(() => this.refresh(), 2000);
     this.prepareUsersForForm();
     this.refresh();
+    this.interval = setInterval(() => this.refresh(), 2000);
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
   }
 
-  getAssignedTo = (task, who) => {
-    if(who === "me") {
-      return task.assignee.email === this.props.auth.user.email;
-    } else {
-      return task.assignee.email !== this.props.auth.user.email;
-    }
-}
-
   refresh = () => {
     this.props.getTasks().then(data => {
       this.setState({ data: data.tasks });
     });
   }
+
+  onFilteredChangeCustom = (value, accessor) => {
+    let filtered = this.state.filtered;
+    let insertNewFilter = 1;
+
+    if (filtered.length) {
+      filtered.forEach((filter, i) => {
+        if (filter["id"] === accessor) {
+          if (value === "" || !value.length) filtered.splice(i, 1);
+          else filter["value"] = value;
+
+          insertNewFilter = 0;
+        }
+      });
+    }
+
+    if (insertNewFilter) {
+      filtered.push({ id: accessor, value: value });
+    }
+
+    this.setState({ filtered: filtered });
+  };
 
   prepareUsersForForm = () => {
     this.props.listUsers().then(data => {
@@ -109,9 +127,23 @@ class TaskPanel extends Component {
           deleteTask={this.deleteTask}
         >
         </TaskForm>,
-      className: "panel-width",
+      className: "width-800pt-100h",
       buttons: false
     });
+  }
+
+  getTrProps = (state, rowInfo, instance) => {
+    if (rowInfo) {
+      return {
+        style: {
+          cursor: "pointer"
+        },
+        onClick: (e) => {
+          this.openModificationModal(rowInfo.original);
+        }
+      }
+    }
+    return {};
   }
 
   openModificationModal(task) {
@@ -150,15 +182,9 @@ class TaskPanel extends Component {
     this.props.deleteTask(taskId);
   }
 
-  changeFilter = (who) => {
-    this.setState({filter: who})
-  }
-
 
   render() {
     const { data } = this.state;
-    let { filter } = this.state;
-
     return (
       <React.Fragment>
         <Row>
@@ -168,36 +194,80 @@ class TaskPanel extends Component {
           <Row>
             <a onClick={this.addTask} className="btn-primary">Registrar nuevo</a>
           </Row>
-
-          <Row className="justify-content-md-center">
-            <Button variant="primary" className="mr-3" onClick={this.changeFilter.bind(this, "me")}>ASIGNADOS</Button>{' '}
-            <Button variant="secondary" onClick={this.changeFilter.bind(this, "other")}>ENVIADOS</Button>{' '}
-          </Row>
         </Container>
         <br />
         <div className="full-width">
-          <Row>
-        { data.filter((task) => {
-          return this.getAssignedTo(task, filter)
-        }).map((task, index) => {
-          return (<Col md="4"><Card>
-            <Card.Header><h5>{`${task.status}`}</h5></Card.Header>
-            <Card.Body>
-              <blockquote className="blockquote mb-0">
-                <p>
-                  {' '}{`${task.title}`}{' '}
-                </p>
-                <footer className="blockquote-footer">
-                {`${task.initiator.name}  ${task.initiator.last_name}`}
-                </footer>
-              </blockquote>
-            </Card.Body>
-            <Card.Footer>
-              <Button onClick={this.openModificationModal.bind(this, task)}>Modificar</Button>
-            </Card.Footer>
-          </Card></Col>);
-        })}
-        </Row>
+          <ReactTable
+            data={data}
+            filterable
+            filtered={this.state.filtered}
+            onFilteredChange={(filtered, column, value) => {
+              this.onFilteredChangeCustom(value, column.id || column.accessor);
+            }}
+            defaultFilterMethod={(filter, row, column) => {
+              const id = filter.pivotId || filter.id;
+              if (typeof filter.value === "object") {
+                return row[id] !== undefined
+                  ? filter.value.indexOf(row[id]) > -1
+                  : true;
+              } else {
+                if (row[id] !== undefined) {
+                  return row[id] !== undefined
+                    ? String(row[id]).indexOf(filter.value) > -1
+                    : true;
+                }
+              }
+            }}
+            columns={[{
+              Header: "Datos",
+              columns: [
+                {
+                  Header: "Nombre",
+                  id: "title",
+                  accessor: d => d.title
+                },
+                {
+                  Header: "Estatus",
+                  id: "status",
+                  accessor: d => d.status
+                },
+                {
+                  Header: "Responsables",
+                  id: "assignee",
+                  accessor: d => {
+                    let list = d.assignee.map((assignee) => {
+                      return assignee.name;
+                    })
+                    return list.toString()
+                  }
+                },
+                {
+                  Header: "Creador",
+                  id: "initiator",
+                  accessor: d => d.initiator.name
+                },
+                {
+                  Header: "Fecha de creación",
+                  id: "created_date",
+                  accessor: d => formatShortDate(d.created_date)
+                },
+                {
+                  Header: "Fecha límite",
+                  id: "due_date",
+                  accessor: d => formatShortDate(d.due_date)
+                }
+              ]
+            }
+            ]}
+            defaultPageSize={10}
+            className="-striped -highlight"
+            getTrProps={this.getTrProps}
+          />
+          <div className="row">
+            <div className="col-md-4 center mt-4">
+              {/* <ExportClientCSV csvData={this.state.data} fileName="reporteClientes" /> */}
+            </div>
+          </div>
         </div>
       </React.Fragment>
     );

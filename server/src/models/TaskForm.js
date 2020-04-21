@@ -26,11 +26,11 @@ var TaskSchema = new Schema({
     ref: 'users',
     required: true
   },
-  assignee: {
+  assignee: [{
     type: Schema.Types.ObjectId,
     ref: 'users',
     required: true
-  },
+  }],
 });
 
 // Create model from the schema
