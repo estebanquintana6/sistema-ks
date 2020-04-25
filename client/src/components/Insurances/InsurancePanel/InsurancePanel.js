@@ -116,8 +116,7 @@ class InsurancePanel extends Component {
         deleteInsurance={this.deleteInsurance}>
       </InsuranceModal>,
       buttons: false,
-      title: `${insurance.client.name} ${insurance.policy}`,
-      className: "width-800pt"
+      title: `Póliza: ${insurance.policy}`
     });
   }
 
