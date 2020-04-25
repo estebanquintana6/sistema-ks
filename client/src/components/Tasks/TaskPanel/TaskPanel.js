@@ -250,11 +250,6 @@ class TaskPanel extends Component {
                   Header: "Fecha de creación",
                   id: "created_date",
                   accessor: d => formatShortDate(d.created_date)
-                },
-                {
-                  Header: "Fecha límite",
-                  id: "due_date",
-                  accessor: d => formatShortDate(d.due_date)
                 }
               ]
             }
