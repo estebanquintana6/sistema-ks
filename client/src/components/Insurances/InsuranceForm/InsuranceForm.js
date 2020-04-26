@@ -10,6 +10,7 @@ import {
 import "./InsuranceForm.css";
 import moment from 'moment'
 import { cloneDeep } from 'lodash'
+import { formatShortDate } from '../../component-utils'
 
 class InsuranceForm extends Component {
   constructor(props) {
@@ -28,6 +29,7 @@ class InsuranceForm extends Component {
     if (this.props.edit) {
       // prepare the insurance data to be rendered in every field
     this.prepareInsuranceForForm()
+    console.log('THIS STATE', this.state)
     } else{
     this.composeCompanyAbbreviations()}
   }
@@ -43,6 +45,7 @@ class InsuranceForm extends Component {
 
   prepareInsuranceForForm = () => {
     const auxObj = cloneDeep(this.props.insurance)
+    console.log('AUXOBJ', auxObj)
     auxObj['edit'] = this.props['edit']
     this.setState(auxObj)
     this.composeCompanyAbbreviations()
@@ -112,6 +115,7 @@ class InsuranceForm extends Component {
     const startGenDate = this.state.due_date;
 
     let prevDate = startGenDate
+    prevDate = prevDate.split('T')[0]
     for (let i = 0; i < num_invoices; i++) {
       invoices.push({
         invoice: "",
@@ -172,7 +176,10 @@ class InsuranceForm extends Component {
     this.props.updateInsurance(formattedObject)
   }
 
-  formatDate = (date) => moment(date).format('YYYY-MM-DD')
+  formatDate = (date) => {
+    const days = date.split('T')[0]
+    return moment(days).startOf('day').format('YYYY-MM-DD')
+  }
 
   companyOptions = () => {
     return this.state.company_abbreviations[this.filterInsuranceCompany()] || []
