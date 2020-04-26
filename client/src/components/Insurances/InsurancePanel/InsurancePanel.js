@@ -286,6 +286,7 @@ class InsurancePanel extends Component {
                 {
                   Header: "Fecha inicio",
                   id: "begin_date",
+                  width: 130,
                   accessor: d => formatShortDate(d.begin_date),
                   filterable: false
                 },
