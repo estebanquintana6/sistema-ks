@@ -10,7 +10,6 @@ import {
 import "./InsuranceForm.css";
 import moment from 'moment'
 import { cloneDeep } from 'lodash'
-import { formatShortDate } from '../../component-utils'
 
 class InsuranceForm extends Component {
   constructor(props) {
@@ -18,6 +17,7 @@ class InsuranceForm extends Component {
     this.state = {
       insurance_type: this.props.type || this.props.insurance.insurance_type,
       invoices: [],
+      endorsements: [],
       begin_date: moment().startOf('day').format('YYYY-MM-DD'),
       due_date: moment().startOf('day').format('YYYY-MM-DD'),
       pay_due_date: moment().startOf('day').format('YYYY-MM-DD'),
@@ -29,7 +29,6 @@ class InsuranceForm extends Component {
     if (this.props.edit) {
       // prepare the insurance data to be rendered in every field
     this.prepareInsuranceForForm()
-    console.log('THIS STATE', this.state, this.props)
     } else{
     this.composeCompanyAbbreviations()}
   }
@@ -45,7 +44,6 @@ class InsuranceForm extends Component {
 
   prepareInsuranceForForm = () => {
     const auxObj = cloneDeep(this.props.insurance)
-    console.log('AUXOBJ', auxObj)
     auxObj['edit'] = this.props['edit']
     this.setState(auxObj)
     this.composeCompanyAbbreviations()
@@ -201,6 +199,43 @@ class InsuranceForm extends Component {
     return result
   }
 
+  createEndorsment = () => {
+    const endorsements = [...this.state.endorsements];
+
+    let today = new Date();
+
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    const yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+
+
+    endorsements.push({
+      comment: "",
+      date: today
+    })
+
+    this.setState({endorsements});
+  }
+
+  onChangeEndorsement = (index, e) => {
+    let endorsements = [...this.state.endorsements];
+    let endorsement = { ...endorsements[index] };
+
+    endorsement.comment = e.target.value;
+
+    endorsements[index] = endorsement;
+    this.setState({ endorsements });
+  }
+
+  deleteEndorsement = (index) => {
+    const endorsements = [...this.state.endorsements];
+    endorsements.splice(index, 1);
+
+    this.setState({ endorsements });
+  }
+
   render() {
     return (
       <Form onSubmit={this.onSubmit}>
@@ -217,6 +252,11 @@ class InsuranceForm extends Component {
               <li className="nav-item">
                 <a className="nav-link" href="#invoices" role="tab" data-toggle="tab"><i className="fas fa-receipt"></i> Recibos</a>
               </li>
+              {this.props.edit && 
+                <li className="nav-item">
+                  <a className="nav-link" href="#endor" role="tab" data-toggle="tab"><i className="fas fa-edit"></i>Endosos</a>
+                </li>
+              }
             </ul>
             <div className="tab-content">
               <div role="tabpanel" className="tab-pane fade show active" id="i-types">
@@ -411,6 +451,41 @@ class InsuranceForm extends Component {
                 })}
 
                 <Button variant="primary" type="submit">Guardar</Button>
+              </div>
+              <div role="tabpanel" className="tab-pane fade" id="endor">
+                <Row>
+                  <h5 className="swal-title form-title align-left">ENDOSOS</h5>
+                </Row>
+                <Row>
+                  <Col md="12">
+                    <Button variant="info" onClick={this.createEndorsment}><i className="fa fa-plus" aria-hidden="true"></i></Button>
+                  </Col>
+                </Row>
+                {this.state.endorsements.map((value, index) => {
+                    return (
+                      <Form.Row>
+                        <Form.Group as={Col} md={{span: 8}}>
+                          <Form.Label>Comentario</Form.Label>
+                          <Form.Control onChange={(e) => {this.onChangeEndorsement(index, e)}} value={this.state.endorsements[index].comment} />
+                        </Form.Group>
+                        <Form.Group as={Col} md={{span: 3}}>
+                          <Form.Label>Fecha</Form.Label>
+                          <Form.Control type="date" disabled value={this.state.endorsements[index].date} />
+                        </Form.Group>
+                        <Col md={1}>
+                          <Button 
+                            variant="danger" 
+                            className="button-margin"
+                            onClick={() => { this.deleteEndorsement(index) }}>
+                              <i className="fa fa-trash"/>
+                          </Button>
+                        </Col>
+                      </Form.Row>
+                    );
+                })}
+                <Row className="justify-content-md-center mt-3">
+                  <Button variant="primary" type="submit">Guardar</Button>
+                </Row>
               </div>
             </div>
           </Col>
