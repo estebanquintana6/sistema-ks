@@ -87,6 +87,10 @@ var InsuranceSchema = new Schema({
     required: true,
     default: false
   },
+  endorsements: {
+    type: Array,
+    required: false
+  },
   // campos unicos de seguros de auto
   cis: {
     type: String,
