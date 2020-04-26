@@ -108,7 +108,7 @@ class TaskForm extends Component {
         </Row>
 
         <Row>
-          <h5 className="swal-title form-title align-left">ASGINADOS</h5>
+          <h5 className="swal-title form-title align-left">RESPONSABLES</h5>
         </Row>
           <Row className="pt-1 pb-2">
                     <Col md="12">
