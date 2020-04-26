@@ -115,10 +115,13 @@ class InsuranceForm extends Component {
     for (let i = 0; i < num_invoices; i++) {
       invoices.push({
         invoice: "",
-        due_date: moment(newDate||prevDate).format('YYYY-MM-DD')
+        due_date: moment(newDate||prevDate).format('YYYY-MM-DD'),
+        pay_limit: moment(newDate||prevDate).format('YYYY-MM-DD')
       });
+
       let newDate = moment(prevDate).clone().startOf('day').add(jump, 'months')
       prevDate = moment(newDate).clone().startOf('day')
+
     }
 
     this.setState({ invoices });
@@ -143,6 +146,16 @@ class InsuranceForm extends Component {
     let invoice = { ...invoices[index] };
 
     invoice.due_date = e.target.value;
+
+    invoices[index] = invoice;
+    this.setState({ invoices });
+  }
+
+  onChangeInvoiceLimitDate = (index, e) => {
+    let invoices = [...this.state.invoices];
+    let invoice = { ...invoices[index] };
+
+    invoice.pay_limit = e.target.value;
 
     invoices[index] = invoice;
     this.setState({ invoices });
@@ -331,13 +344,17 @@ class InsuranceForm extends Component {
                 {this.state.invoices.map((value, index) => {
                   return (
                     <Form.Row>
-                      <Form.Group as={Col} md="6">
+                      <Form.Group as={Col} md="4">
                         <Form.Label>Recibo</Form.Label>
                         <Form.Control required onChange={(e) => { this.onChangeInvoice(index, e) }} value={this.state.invoices[index].invoice} />
                       </Form.Group>
-                      <Form.Group as={Col} md="5">
+                      <Form.Group as={Col} md="4">
                         <Form.Label>Fecha de pago</Form.Label>
-                        <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(index, e) }} value={this.state.invoices[index].due_date} />
+                        <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(index, e) }} value={this.formatDate(this.state.invoices[index].due_date)} />
+                      </Form.Group>
+                      <Form.Group as={Col} md="4">
+                        <Form.Label>Vencimiento de pago</Form.Label>
+                        <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceLimitDate(index, e) }} value={this.formatDate(this.state.invoices[index].pay_limit)} />
                       </Form.Group>
                     </Form.Row>
                   );
