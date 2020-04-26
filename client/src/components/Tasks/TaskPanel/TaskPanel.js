@@ -187,83 +187,85 @@ class TaskPanel extends Component {
     const { data } = this.state;
     return (
       <React.Fragment>
-        <Row>
-          <h2>Pendientes</h2>
-        </Row>
-        <Container className="mt-4">
-          <Row>
-            <a onClick={this.addTask} className="btn-primary">Registrar nuevo</a>
-          </Row>
-        </Container>
-        <br />
-        <div className="full-width">
-          <ReactTable
-            data={data}
-            filterable
-            filtered={this.state.filtered}
-            onFilteredChange={(filtered, column, value) => {
-              this.onFilteredChangeCustom(value, column.id || column.accessor);
-            }}
-            defaultFilterMethod={(filter, row, column) => {
-              const id = filter.pivotId || filter.id;
-              if (typeof filter.value === "object") {
-                return row[id] !== undefined
-                  ? filter.value.indexOf(row[id]) > -1
-                  : true;
-              } else {
-                if (row[id] !== undefined) {
+        <Container>
+          <Container fluid className="mt-4">
+            <Row>
+              <h2>Pendientes</h2>
+            </Row>
+            <Row className="mt-4">
+              <a onClick={this.addTask} className="btn-primary">Registrar nuevo</a>
+            </Row>
+          </Container>
+          <br />
+          <div className="full-width">
+            <ReactTable
+              data={data}
+              filterable
+              filtered={this.state.filtered}
+              onFilteredChange={(filtered, column, value) => {
+                this.onFilteredChangeCustom(value, column.id || column.accessor);
+              }}
+              defaultFilterMethod={(filter, row, column) => {
+                const id = filter.pivotId || filter.id;
+                if (typeof filter.value === "object") {
                   return row[id] !== undefined
-                    ? String(row[id]).indexOf(filter.value) > -1
+                    ? filter.value.indexOf(row[id]) > -1
                     : true;
-                }
-              }
-            }}
-            columns={[{
-              Header: "Datos",
-              columns: [
-                {
-                  Header: "Nombre",
-                  id: "title",
-                  accessor: d => d.title
-                },
-                {
-                  Header: "Estatus",
-                  id: "status",
-                  accessor: d => d.status
-                },
-                {
-                  Header: "Responsables",
-                  id: "assignee",
-                  accessor: d => {
-                    let list = d.assignee.map((assignee) => {
-                      return assignee.name;
-                    })
-                    return list.toString()
+                } else {
+                  if (row[id] !== undefined) {
+                    return row[id] !== undefined
+                      ? String(row[id]).indexOf(filter.value) > -1
+                      : true;
                   }
-                },
-                {
-                  Header: "Creador",
-                  id: "initiator",
-                  accessor: d => d.initiator.name
-                },
-                {
-                  Header: "Fecha de creación",
-                  id: "created_date",
-                  accessor: d => formatShortDate(d.created_date)
                 }
-              ]
-            }
-            ]}
-            defaultPageSize={10}
-            className="-striped -highlight"
-            getTrProps={this.getTrProps}
-          />
-          <div className="row">
-            <div className="col-md-4 center mt-4">
-              {/* <ExportClientCSV csvData={this.state.data} fileName="reporteClientes" /> */}
+              }}
+              columns={[{
+                Header: "Datos",
+                columns: [
+                  {
+                    Header: "Nombre",
+                    id: "title",
+                    accessor: d => d.title
+                  },
+                  {
+                    Header: "Estatus",
+                    id: "status",
+                    accessor: d => d.status
+                  },
+                  {
+                    Header: "Responsables",
+                    id: "assignee",
+                    accessor: d => {
+                      let list = d.assignee.map((assignee) => {
+                        return assignee.name;
+                      })
+                      return list.toString()
+                    }
+                  },
+                  {
+                    Header: "Creador",
+                    id: "initiator",
+                    accessor: d => d.initiator.name
+                  },
+                  {
+                    Header: "Fecha de creación",
+                    id: "created_date",
+                    accessor: d => formatShortDate(d.created_date)
+                  }
+                ]
+              }
+              ]}
+              defaultPageSize={10}
+              className="-striped -highlight"
+              getTrProps={this.getTrProps}
+            />
+            <div className="row">
+              <div className="col-md-4 center mt-4">
+                {/* <ExportClientCSV csvData={this.state.data} fileName="reporteClientes" /> */}
+              </div>
             </div>
           </div>
-        </div>
+        </Container>
       </React.Fragment>
     );
   }

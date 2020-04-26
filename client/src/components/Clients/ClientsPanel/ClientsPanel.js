@@ -168,77 +168,79 @@ class ClientsPanel extends Component {
     const { data } = this.state;
     return (
       <React.Fragment>
-        <Row>
-          <h2>Clientes</h2>
-        </Row>
-        <Container className="mt-4">
-          <Row>
-            <a onClick={this.addClient} className="btn-primary">Registrar nuevo</a>
-          </Row>
-        </Container>
-        <br />
-        <div className="full-width">
-          <ReactTable
-            data={data}
-            filterable
-            filtered={this.state.filtered}
-            onFilteredChange={(filtered, column, value) => {
-              this.onFilteredChangeCustom(value, column.id || column.accessor);
-            }}
-            defaultFilterMethod={(filter, row, column) => {
-              if (filter.id !== "email") {
-                filter.value = filter.value.toUpperCase();
-              }
-              const id = filter.pivotId || filter.id;
-              if (typeof filter.value === "object") {
-                return row[id] !== undefined
-                  ? filter.value.indexOf(row[id]) > -1
-                  : true;
-              } else {
-                if (row[id] !== undefined) {
+        <Container>
+          <Container fluid className="mt-4">
+            <Row>
+              <h2>Clientes</h2>
+            </Row>
+            <Row className="mt-4">
+              <a onClick={this.addClient} className="btn-primary">Registrar nuevo</a>
+            </Row>
+          </Container>
+          <br />
+          <div className="full-width">
+            <ReactTable
+              data={data}
+              filterable
+              filtered={this.state.filtered}
+              onFilteredChange={(filtered, column, value) => {
+                this.onFilteredChangeCustom(value, column.id || column.accessor);
+              }}
+              defaultFilterMethod={(filter, row, column) => {
+                if (filter.id !== "email") {
+                  filter.value = filter.value.toUpperCase();
+                }
+                const id = filter.pivotId || filter.id;
+                if (typeof filter.value === "object") {
                   return row[id] !== undefined
-                    ? String(row[id]).indexOf(filter.value) > -1
+                    ? filter.value.indexOf(row[id]) > -1
                     : true;
+                } else {
+                  if (row[id] !== undefined) {
+                    return row[id] !== undefined
+                      ? String(row[id]).indexOf(filter.value) > -1
+                      : true;
+                  }
                 }
+              }}
+              columns={[{
+                Header: "Datos",
+                columns: [
+                  {
+                    Header: "Nombre",
+                    id: "name",
+                    accessor: d => d.name
+                  },
+                  {
+                    Header: "Telefono",
+                    id: "telephone",
+                    accessor: d => d.telephone
+                  },
+                  {
+                    Header: "Correo",
+                    id: "email",
+                    accessor: d => d.email
+                  },
+                  {
+                    Header: "RFC/Razon social",
+                    id: "rfc",
+                    accessor: d => d.rfc
+                  }
+                ]
               }
-            }}
-            columns={[{
-              Header: "Datos",
-              columns: [
-                {
-                  Header: "Nombre",
-                  id: "name",
-                  accessor: d => d.name
-                },
-                {
-                  Header: "Telefono",
-                  id: "telephone",
-                  accessor: d => d.telephone
-                },
-                {
-                  Header: "Correo",
-                  id: "email",
-                  accessor: d => d.email
-                },
-                {
-                  Header: "RFC/Razon social",
-                  id: "rfc",
-                  accessor: d => d.rfc
-                }
-              ]
-            }
-            ]}
-            defaultPageSize={10}
-            className="-striped -highlight"
-            getTrProps={this.getTrProps}
-          />
-          <div className="row">
-            <div className="col-md-4 center mt-4">
-              <ExportClientCSV csvData={this.state.data} fileName="reporteClientes" />
+              ]}
+              defaultPageSize={10}
+              className="-striped -highlight"
+              getTrProps={this.getTrProps}
+            />
+            <div className="row">
+              <div className="col-md-4 center mt-4">
+                <ExportClientCSV csvData={this.state.data} fileName="reporteClientes" />
+              </div>
             </div>
-          </div>
 
-        </div>
+          </div>
+        </Container>
       </React.Fragment>
     );
   }
