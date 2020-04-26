@@ -36,7 +36,7 @@ class InsuranceModal extends Component {
         <React.Fragment>
           <Row className="mt-4">
             <Col>
-              <h5 className="text-center">{insurance.policy}</h5>
+              <h5 className="text-center">{`Cliente: ${insurance.client.name}`}</h5>
             </Col>
           </Row>
           <br></br>
