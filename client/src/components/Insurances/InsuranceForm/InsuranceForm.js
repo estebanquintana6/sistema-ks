@@ -10,6 +10,7 @@ import {
 import "./InsuranceForm.css";
 import moment from 'moment'
 import { cloneDeep } from 'lodash'
+import { formatShortDate } from '../../component-utils'
 
 class InsuranceForm extends Component {
   constructor(props) {
@@ -28,6 +29,7 @@ class InsuranceForm extends Component {
     if (this.props.edit) {
       // prepare the insurance data to be rendered in every field
     this.prepareInsuranceForForm()
+    console.log('THIS STATE', this.state)
     } else{
     this.composeCompanyAbbreviations()}
   }
@@ -43,6 +45,7 @@ class InsuranceForm extends Component {
 
   prepareInsuranceForForm = () => {
     const auxObj = cloneDeep(this.props.insurance)
+    console.log('AUXOBJ', auxObj)
     auxObj['edit'] = this.props['edit']
     this.setState(auxObj)
     this.composeCompanyAbbreviations()
@@ -112,13 +115,17 @@ class InsuranceForm extends Component {
     const startGenDate = this.state.due_date;
 
     let prevDate = startGenDate
+    prevDate = prevDate.split('T')[0]
     for (let i = 0; i < num_invoices; i++) {
       invoices.push({
         invoice: "",
-        due_date: moment(newDate||prevDate).format('YYYY-MM-DD')
+        due_date: moment(newDate||prevDate).format('YYYY-MM-DD'),
+        pay_limit: moment(newDate||prevDate).format('YYYY-MM-DD')
       });
+
       let newDate = moment(prevDate).clone().startOf('day').add(jump, 'months')
       prevDate = moment(newDate).clone().startOf('day')
+
     }
 
     this.setState({ invoices });
@@ -148,6 +155,16 @@ class InsuranceForm extends Component {
     this.setState({ invoices });
   }
 
+  onChangeInvoiceLimitDate = (index, e) => {
+    let invoices = [...this.state.invoices];
+    let invoice = { ...invoices[index] };
+
+    invoice.pay_limit = e.target.value;
+
+    invoices[index] = invoice;
+    this.setState({ invoices });
+  }
+
   onSubmit = e => {
     e.preventDefault();
     const formattedObject = {...this.state, policy: (this.props.edit ? '' :this.state.abbreviation) + this.state.policy}
@@ -159,7 +176,10 @@ class InsuranceForm extends Component {
     this.props.updateInsurance(formattedObject)
   }
 
-  formatDate = (date) => moment(date).format('YYYY-MM-DD')
+  formatDate = (date) => {
+    const days = date.split('T')[0]
+    return moment(days).startOf('day').format('YYYY-MM-DD')
+  }
 
   companyOptions = () => {
     return this.state.company_abbreviations[this.filterInsuranceCompany()] || []
@@ -331,13 +351,17 @@ class InsuranceForm extends Component {
                 {this.state.invoices.map((value, index) => {
                   return (
                     <Form.Row>
-                      <Form.Group as={Col} md="6">
+                      <Form.Group as={Col} md="4">
                         <Form.Label>Recibo</Form.Label>
                         <Form.Control required onChange={(e) => { this.onChangeInvoice(index, e) }} value={this.state.invoices[index].invoice} />
                       </Form.Group>
-                      <Form.Group as={Col} md="5">
+                      <Form.Group as={Col} md="4">
                         <Form.Label>Fecha de pago</Form.Label>
-                        <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(index, e) }} value={this.state.invoices[index].due_date} />
+                        <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(index, e) }} value={this.formatDate(this.state.invoices[index].due_date)} />
+                      </Form.Group>
+                      <Form.Group as={Col} md="4">
+                        <Form.Label>Vencimiento de pago</Form.Label>
+                        <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceLimitDate(index, e) }} value={this.formatDate(this.state.invoices[index].pay_limit)} />
                       </Form.Group>
                     </Form.Row>
                   );
