@@ -75,6 +75,14 @@ class Sidebar extends Component {
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="#invoicesSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Recibos</a>
+                        <ul className="collapse list-unstyled" id="invoicesSubmenu">
+                            <li>
+                                <a onClick={() => this.goToPage('/dashboard/invoices')}>Panel de recibos</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
 
                 <ul className="list-unstyled CTAs">

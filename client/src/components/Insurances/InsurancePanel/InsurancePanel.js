@@ -16,14 +16,12 @@ import "react-select/dist/react-select.css";
 // Import React Table
 import ReactTable from "react-table";
 
-
-
 import "react-table/react-table.css";
 import "./InsurancePanel.css";
 
-import moment from 'moment'
-import {formatShortDate} from '../../component-utils'
-import { DateRangePicker } from 'react-dates'
+import moment from 'moment';
+import {formatShortDate} from '../../component-utils';
+import { DateRangePicker } from 'react-dates';
 
 
 class InsurancePanel extends Component {

@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import AdminDashboard from '../AdminDashboard/AdminDashboard';
 import InsurancePanel from '../Insurances/InsurancePanel/InsurancePanel';
 import ClientsPanel from '../Clients/ClientsPanel/ClientsPanel';
+import InvoicesPanel from '../Invoices/InvoicesPanel/InvoicesPanel';
+
 //redux
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
@@ -67,6 +69,9 @@ class Dashboard extends Component {
             </Route>
             <Route exact path="/dashboard/danos">
               <InsurancePanel history={this.props.history} variant="DANOS"></InsurancePanel>
+            </Route>
+            <Route exact path="/dashboard/invoices">
+              <InvoicesPanel history={this.props.history}></InvoicesPanel>
             </Route>
           </Switch>
         </div>

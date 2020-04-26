@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Container, Row } from 'react-bootstrap'
+import { Container, Row } from 'react-bootstrap';
 import { connect } from "react-redux";
 import { getClients, updateClient, deleteClient, registerClient } from "../../../actions/registerClient";
 import { ExportClientCSV } from "../../ExportCSV/ExportCSV";
@@ -9,12 +9,10 @@ import swal from '@sweetalert/with-react';
 import ClientsForm from "../ClientsForm/ClientsForm";
 import ClientModal from '../ClientModal/ClientModal'
 
-
-import "react-select/dist/react-select.css";
 // Import React Table
 import ReactTable from "react-table";
 
-
+import "react-select/dist/react-select.css";
 import "react-table/react-table.css";
 import "./ClientsPanel.css";
 
