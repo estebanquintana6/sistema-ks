@@ -41,7 +41,7 @@ class Dashboard extends Component {
     return (
       <div className="wrapper">
         <Sidebar user={user} history={this.props.history}></Sidebar>
-        <div id="content" className={'container'}>
+        <div id="content">
           <Navbar history={this.props.history}></Navbar>
           <Switch>
             <Route exact path="/dashboard/admin">

@@ -215,11 +215,11 @@ class InsurancePanel extends Component {
     const { variant } = this.props;
     return (
       <React.Fragment>
-        <Row>
-          <h2>Pólizas {variant}</h2>
-        </Row>
-        <Container className="mt-4">
+        <Container fluid className="mt-4">
           <Row>
+            <h2>Pólizas {variant}</h2>
+          </Row>
+          <Row className="mt-4">
             <a onClick={this.addInsurance.bind(this, variant)} className="btn-primary">Registrar nuevo</a>
           </Row>
         </Container>
@@ -284,6 +284,7 @@ class InsurancePanel extends Component {
                   Header: "Fecha inicio",
                   id: "begin_date",
                   accessor: d => formatShortDate(d.begin_date),
+                  width: 350,
                   Filter: ({filter, onChange}) => (
                     <DateRangePicker
                       startDateId="start1"
@@ -315,6 +316,7 @@ class InsurancePanel extends Component {
                   Header: "Fecha pago",
                   id: "pay_due_date",
                   accessor: d => formatShortDate(d.pay_due_date),
+                  width: 350,
                   Filter: ({filter, onChange}) => (
                     <DateRangePicker
                       startDateId="start2"
@@ -346,6 +348,7 @@ class InsurancePanel extends Component {
                   Header: "Fecha vto.",
                   id: "due_date",
                   accessor: d => formatShortDate(d.due_date),
+                  width: 350,
                   Filter: ({filter, onChange}) => (
                     <DateRangePicker
                       startDateId="start3"
