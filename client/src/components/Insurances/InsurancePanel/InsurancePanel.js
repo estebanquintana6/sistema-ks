@@ -300,6 +300,16 @@ class InsurancePanel extends Component {
                       showClearDates={true}
                     />
                   ),
+                  filterMethod: (filter, row) => {
+                    if (filter.value.startDate === null || filter.value.endDate === null) {
+                      // Incomplet or cleared date picker
+                      return true
+                    }
+                    if (moment(row[filter.id]).isBetween(filter.value.startDate, filter.value.endDate)) {
+                      // Found row matching filter
+                      return true
+                    }
+                  }
                 },
                 {
                   Header: "Fecha pago",
@@ -321,6 +331,16 @@ class InsurancePanel extends Component {
                       showClearDates={true}
                     />
                   ),
+                  filterMethod: (filter, row) => {
+                    if (filter.value.startDate === null || filter.value.endDate === null) {
+                      // Incomplet or cleared date picker
+                      return true
+                    }
+                    if (moment(row[filter.id]).isBetween(filter.value.startDate, filter.value.endDate)) {
+                      // Found row matching filter
+                      return true
+                    }
+                  }
                 },
                 {
                   Header: "Fecha vto.",
@@ -342,6 +362,16 @@ class InsurancePanel extends Component {
                       showClearDates={true}
                     />
                   ),
+                  filterMethod: (filter, row) => {
+                    if (filter.value.startDate === null || filter.value.endDate === null) {
+                      // Incomplet or cleared date picker
+                      return true
+                    }
+                    if (moment(row[filter.id]).isBetween(filter.value.startDate, filter.value.endDate)) {
+                      // Found row matching filter
+                      return true
+                    }
+                  }
                 }
               ]
             }
