@@ -132,7 +132,7 @@ class InsuranceForm extends Component {
   }
 
   isCarInsurance = () => {
-    return this.props.type === "AUTOS" || this.props.insurance.insurance_type === "AUTOS";
+    return this.props.type === "AUTOS";
   }
 
   onChangeInvoice = (index, e) => {

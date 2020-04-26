@@ -118,6 +118,7 @@ class InsurancePanel extends Component {
   openModificationModal(insurance) {
     swal({
       content: <InsuranceModal
+        type={insurance.insurance_type}
         insurance={insurance}
         clients={this.state.clients}
         companies={this.state.companies}
