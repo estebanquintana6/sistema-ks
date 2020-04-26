@@ -21,7 +21,7 @@ var Client = new Schema({
   person_type: {
     type: String,
     required: true,
-    uppercase: false
+    uppercase: true
   },
   comments: {
     type: String,

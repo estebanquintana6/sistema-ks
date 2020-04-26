@@ -129,8 +129,8 @@ class ClientsForm extends Component {
                     <Form.Label>Tipo de persona</Form.Label>
                     <Form.Control required as="select" onChange={this.onChange} value={this.state.person_type}>
                       <option></option>
-                      <option value="Fisica">Persona fisica</option>
-                      <option value="Moral">Persona moral</option>
+                      <option value="FISICA">Persona fisica</option>
+                      <option value="MORAL">Persona moral</option>
                     </Form.Control>
                   </Form.Group>
                 </Form.Row>

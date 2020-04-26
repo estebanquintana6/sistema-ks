@@ -262,9 +262,10 @@ class InsurancePanel extends Component {
               Header: "Datos",
               columns: [
                 {
-                  Header: "RFC Cliente",
-                  id: "rfc",
-                  accessor: d => d.client.rfc
+                  Header: "Razón",
+                  id: "razon",
+                  width:100,
+                  accessor: d => d.client.person_type
                 },
                 {
                   Header: "Cliente",
