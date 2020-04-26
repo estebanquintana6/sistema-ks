@@ -94,10 +94,20 @@ var InsuranceSchema = new Schema({
     uppercase: true,
     default: null
   },
-  car_model: {
+  car_brand: {
     type: String,
     required: () => this.insurance_type === "Auto",
     uppercase: true,
+    default: null
+  },
+  car_model: {
+    type: String,
+    required: () => this.insurance_type === "Auto",
+    default: null
+  },
+  car_year: {
+    type: Number,
+    required: () => this.insurance_type === "Auto",
     default: null
   },
   car_description: {

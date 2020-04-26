@@ -16,7 +16,7 @@ class InsuranceForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      insurance_type: this.props.type,
+      insurance_type: this.props.type || this.props.insurance.insurance_type,
       invoices: [],
       begin_date: moment().startOf('day').format('YYYY-MM-DD'),
       due_date: moment().startOf('day').format('YYYY-MM-DD'),
@@ -29,7 +29,7 @@ class InsuranceForm extends Component {
     if (this.props.edit) {
       // prepare the insurance data to be rendered in every field
     this.prepareInsuranceForForm()
-    console.log('THIS STATE', this.state)
+    console.log('THIS STATE', this.state, this.props)
     } else{
     this.composeCompanyAbbreviations()}
   }
@@ -132,7 +132,7 @@ class InsuranceForm extends Component {
   }
 
   isCarInsurance = () => {
-    return this.props.type === "AUTOS";
+    return this.props.type === "AUTOS" || this.props.insurance.insurance_type === "AUTOS";
   }
 
   onChangeInvoice = (index, e) => {
@@ -177,6 +177,7 @@ class InsuranceForm extends Component {
   }
 
   formatDate = (date) => {
+    if (!date) return;
     const days = date.split('T')[0]
     return moment(days).startOf('day').format('YYYY-MM-DD')
   }
@@ -189,6 +190,15 @@ class InsuranceForm extends Component {
     if (!this.state.insurance_company || !this.props.companies) return;
     const lookup = this.props.edit ? this.state.insurance_company._id : this.state.insurance_company
     return this.props.companies.find(company => company._id === lookup).name
+  }
+
+  composeCarYears = () => {
+    const result = [];
+    const endYear = moment().add(1, 'year').startOf('year').year()
+    for(let i = 1990; i<=endYear; i++){
+      result.push(i)
+    }
+    return result
   }
 
   render() {
@@ -313,6 +323,39 @@ class InsuranceForm extends Component {
                           <Form.Group as={Col} md="6" controlId="car_model">
                             <Form.Label>Modelo</Form.Label>
                             <Form.Control required onChange={this.onChange} value={this.state.car_model}>
+                            </Form.Control>
+                          </Form.Group>
+                        </Form.Row>
+
+                        <Form.Row>
+                          <Form.Group as={Col} md="6" controlId="car_brand">
+                            <Form.Label>Marca</Form.Label>
+                            <Form.Control required as="select" onChange={this.onChange} value={this.state.car_brand}>
+                              <option></option>
+                              <option value="VOLKSWAGEN">VOLKSWAGEN</option>
+                              <option value="MITSUBISHI">MITSUBISHI</option>
+                              <option value="FORD">FORD</option>
+                              <option value="CHEVROLET">CHEVROLET</option>
+                              <option value="NISSAN">NISSAN</option>
+                              <option value="MAZDA">MAZDA</option>
+                              <option value="TOYOTA">TOYOTA</option>
+                              <option value="HYUNDAI">HYUNDAI</option>
+                              <option value="SUZUKI">SUZUKI</option>
+                              <option value="BMW">BMW</option>
+                              <option value="MERCEDES BENZ">MERCEDES BENZ</option>
+                              <option value="LINCOLN">LINCOLN</option>
+                              <option value="CADILLAC">CADILLAC</option>
+                              <option value="GENERAL MOTORS">GENERAL MOTORS</option>
+                              <option value="KIA">KIA</option>
+                              <option value="SEAT">SEAT</option>
+                              <option value="AUDI">AUDI</option>
+                            </Form.Control>
+                          </Form.Group>
+                          <Form.Group as={Col} md="6" controlId="car_year">
+                            <Form.Label>Año</Form.Label>
+                            <Form.Control required as="select" onChange={this.onChange} value={this.state.car_year}>
+                              <option></option>
+                              {this.composeCarYears().map(year => <option value={year}>{year}</option>)}
                             </Form.Control>
                           </Form.Group>
                         </Form.Row>
