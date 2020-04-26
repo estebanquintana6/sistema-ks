@@ -228,7 +228,7 @@ class TaskPanel extends Component {
                     accessor: d => d.title
                   },
                   {
-                    Header: "Estatus",
+                    Header: "Asunto",
                     id: "status",
                     accessor: d => d.status
                   },
