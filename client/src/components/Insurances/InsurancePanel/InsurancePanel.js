@@ -23,6 +23,7 @@ import "./InsurancePanel.css";
 
 import moment from 'moment'
 import {formatShortDate} from '../../component-utils'
+import { DateRangePicker } from 'react-dates'
 
 
 class InsurancePanel extends Component {
@@ -31,6 +32,12 @@ class InsurancePanel extends Component {
     this.state = {
       filtered: [],
       select2: undefined,
+      beginStartDate: moment().startOf('month'),
+      beginEndDate: moment().startOf('month'),
+      payDueDateStartDate: moment().startOf('month'),
+      payDueDateEndDate: moment().startOf('month'),
+      dueDateStartDate: moment().startOf('month'),
+      dueDateEndDate: moment().startOf('month'),
       data: [],
       clients: [],
       companies: []
@@ -70,7 +77,8 @@ class InsurancePanel extends Component {
 
 
   onFilteredChangeCustom = (value, accessor) => {
-    console.log('AAAA', value, accessor)
+    const notFilterable = ['begin_date', 'due_date', 'pay_due_date']
+    // if (Object.keys(value).includes(null)) return;
     let filtered = this.state.filtered;
     let insertNewFilter = 1;
 
@@ -85,7 +93,7 @@ class InsurancePanel extends Component {
       });
     }
 
-    if (insertNewFilter) {
+    if (insertNewFilter || notFilterable.includes(accessor)) {
       filtered.push({ id: accessor, value: value });
     }
 
@@ -225,7 +233,15 @@ class InsurancePanel extends Component {
               this.onFilteredChangeCustom(value, column.id || column.accessor);
             }}
             defaultFilterMethod={(filter, row, column) => {
-              if (filter.id !== "email") {
+              const notFilterable = ['begin_date', 'due_date', 'pay_due_date']
+
+              if(notFilterable.includes(filter.id)) {
+                const id = filter.pivotId || filter.id;
+                const res = row[id] !== undefined ? moment(row[id], 'DD/MM/YYYY').clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') :true 
+                return res
+              }
+
+              if (filter.id !== "email" && !notFilterable.includes(filter.id)) {
                 filter.value = filter.value.toUpperCase();
               }
               const id = filter.pivotId || filter.id;
@@ -268,39 +284,64 @@ class InsurancePanel extends Component {
                   Header: "Fecha inicio",
                   id: "begin_date",
                   accessor: d => formatShortDate(d.begin_date),
-                  filterMethod: (filter, row) => {
-                    console.log('filter', filter, row)
-                    if (filter.value === "all") {
-                      return true;
-                    }
-                    if (filter.value === "true") {
-                      return row[filter.id] >= 21;
-                    }
-                    return row[filter.id] < 21;
-                  },
-                  Filter: (props) =>{
-                    console.log('filter, onchange',props)
-                    return(
-                    <select
-                      onChange={event => props.onChange(event.target.value)}
-                      style={{ width: "100%" }}
-                      value={props.filter ? props.filter.value : "all"}
-                    >
-                      <option value="all">Show All</option>
-                      <option value="true">Can Drink</option>
-                      <option value="false">Can't Drink</option>
-                    </select>)
-                  }
+                  Filter: ({filter, onChange}) => (
+                    <DateRangePicker
+                      startDateId="start1"
+                      endDateId="end1"
+                      startDate={this.state.beginStartDate}
+                      endDate={this.state.beginEndDate}
+                      onDatesChange={({ startDate, endDate }) => {
+                        this.setState({ beginStartDate: startDate, beginEndDate: endDate }); 
+                        onChange({startDate, endDate});}}
+                      focusedInput={this.state.focusedInput1}
+                      onFocusChange={focusedInput => this.setState({ focusedInput1: focusedInput })}
+                      isOutsideRange={() => false}
+                      withPortal={true}
+                      showClearDates={true}
+                    />
+                  ),
                 },
                 {
                   Header: "Fecha pago",
                   id: "pay_due_date",
-                  accessor: d => formatShortDate(d.pay_due_date)
+                  accessor: d => formatShortDate(d.pay_due_date),
+                  Filter: ({filter, onChange}) => (
+                    <DateRangePicker
+                      startDateId="start2"
+                      endDateId="end2"
+                      startDate={this.state.payDueDateStartDate}
+                      endDate={this.state.payDueDateEndDate}
+                      onDatesChange={({ startDate, endDate }) => {
+                        this.setState({ payDueDateStartDate: startDate, payDueDateEndDate: endDate }); 
+                        onChange({startDate, endDate});}}
+                      focusedInput={this.state.focusedInput2}
+                      onFocusChange={focusedInput => this.setState({ focusedInput2: focusedInput })}
+                      isOutsideRange={() => false}
+                      withPortal={true}
+                      showClearDates={true}
+                    />
+                  ),
                 },
                 {
                   Header: "Fecha vto.",
                   id: "due_date",
-                  accessor: d => formatShortDate(d.due_date)
+                  accessor: d => formatShortDate(d.due_date),
+                  Filter: ({filter, onChange}) => (
+                    <DateRangePicker
+                      startDateId="start3"
+                      endDateId="end3"
+                      startDate={this.state.dueDateStartDate}
+                      endDate={this.state.dueDateEndDate}
+                      onDatesChange={({ startDate, endDate }) => {
+                        this.setState({ dueDateStartDate: startDate, dueDateEndDate: endDate }); 
+                        onChange({startDate, endDate});}}
+                      focusedInput={this.state.focusedInput3}
+                      onFocusChange={focusedInput => this.setState({ focusedInput3: focusedInput })}
+                      isOutsideRange={() => false}
+                      withPortal={true}
+                      showClearDates={true}
+                    />
+                  ),
                 }
               ]
             }
