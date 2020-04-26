@@ -285,33 +285,7 @@ class InsurancePanel extends Component {
                   Header: "Fecha inicio",
                   id: "begin_date",
                   accessor: d => formatShortDate(d.begin_date),
-                  width: 330,
-                  Filter: ({filter, onChange}) => (
-                    <DateRangePicker
-                      startDateId="start1"
-                      endDateId="end1"
-                      startDate={this.state.beginStartDate}
-                      endDate={this.state.beginEndDate}
-                      onDatesChange={({ startDate, endDate }) => {
-                        this.setState({ beginStartDate: startDate, beginEndDate: endDate }); 
-                        onChange({startDate, endDate});}}
-                      focusedInput={this.state.focusedInput1}
-                      onFocusChange={focusedInput => this.setState({ focusedInput1: focusedInput })}
-                      isOutsideRange={() => false}
-                      withPortal={true}
-                      showClearDates={true}
-                    />
-                  ),
-                  filterMethod: (filter, row) => {
-                    if (filter.value.startDate === null || filter.value.endDate === null) {
-                      // Incomplet or cleared date picker
-                      return true
-                    }
-                    if (moment(row[filter.id]).isBetween(filter.value.startDate, filter.value.endDate)) {
-                      // Found row matching filter
-                      return true
-                    }
-                  }
+                  filterable: false
                 },
                 {
                   Header: "Fecha pago",
