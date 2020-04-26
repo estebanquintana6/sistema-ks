@@ -264,7 +264,7 @@ class InsurancePanel extends Component {
                 {
                   Header: "Razón",
                   id: "razon",
-                  width:100,
+                  width: 100,
                   accessor: d => d.client.person_type
                 },
                 {
@@ -275,6 +275,7 @@ class InsurancePanel extends Component {
                 {
                   Header: "Aseguradora",
                   id: "insurance_company",
+                  width: 130,
                   accessor: d => d.insurance_company.name
                 },
                 {
