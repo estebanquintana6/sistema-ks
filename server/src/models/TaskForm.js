@@ -27,6 +27,10 @@ var TaskSchema = new Schema({
     ref: 'users',
     required: true
   }],
+  comments: {
+    type: String,
+    required: false
+  }
 });
 
 // Create model from the schema

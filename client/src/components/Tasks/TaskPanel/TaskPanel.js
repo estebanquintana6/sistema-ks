@@ -251,6 +251,11 @@ class TaskPanel extends Component {
                     Header: "Fecha de creación",
                     id: "created_date",
                     accessor: d => formatShortDate(d.created_date)
+                  },
+                  {
+                    Header: "Comentarios",
+                    id: "comments",
+                    accessor: d => d.comments
                   }
                 ]
               }

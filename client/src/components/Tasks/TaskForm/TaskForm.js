@@ -97,6 +97,15 @@ class TaskForm extends Component {
               </Form.Group>
           </Col>
         </Row>
+        <Row>
+          <Col>
+            <Form.Group controlId="comments">
+                    <Form.Label>Comentarios</Form.Label>
+                    <Form.Control required as="textarea" onChange={this.onChange} value={this.state.comments}>
+                    </Form.Control>
+              </Form.Group>
+          </Col>
+        </Row>
 
         <Row>
           <h5 className="swal-title form-title align-left">ASGINADOS</h5>
