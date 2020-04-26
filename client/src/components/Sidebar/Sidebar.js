@@ -20,6 +20,14 @@ class Sidebar extends Component {
                 </div>
                 <ul className="list-unstyled components">
                     <li>
+                        <a href="#invoicesSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Recibos</a>
+                        <ul className="collapse list-unstyled" id="invoicesSubmenu">
+                            <li>
+                                <a onClick={() => this.goToPage('/dashboard/invoices')}>Panel de recibos</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
                         <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Clientes</a>
                         <ul className="collapse list-unstyled" id="homeSubmenu">
                             <li>
@@ -72,14 +80,6 @@ class Sidebar extends Component {
                         <ul className="collapse list-unstyled" id="pendientesSubmenu">
                             <li>
                                 <a onClick={() => this.goToPage('/dashboard/pendientes')}>Panel de pendientes</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#invoicesSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Recibos</a>
-                        <ul className="collapse list-unstyled" id="invoicesSubmenu">
-                            <li>
-                                <a onClick={() => this.goToPage('/dashboard/invoices')}>Panel de recibos</a>
                             </li>
                         </ul>
                     </li>
