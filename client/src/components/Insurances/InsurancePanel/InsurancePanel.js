@@ -284,7 +284,7 @@ class InsurancePanel extends Component {
                   Header: "Fecha inicio",
                   id: "begin_date",
                   accessor: d => formatShortDate(d.begin_date),
-                  width: 350,
+                  width: 330,
                   Filter: ({filter, onChange}) => (
                     <DateRangePicker
                       startDateId="start1"
@@ -316,7 +316,7 @@ class InsurancePanel extends Component {
                   Header: "Fecha pago",
                   id: "pay_due_date",
                   accessor: d => formatShortDate(d.pay_due_date),
-                  width: 350,
+                  width: 330,
                   Filter: ({filter, onChange}) => (
                     <DateRangePicker
                       startDateId="start2"
@@ -348,7 +348,7 @@ class InsurancePanel extends Component {
                   Header: "Fecha vto.",
                   id: "due_date",
                   accessor: d => formatShortDate(d.due_date),
-                  width: 350,
+                  width: 330,
                   Filter: ({filter, onChange}) => (
                     <DateRangePicker
                       startDateId="start3"
