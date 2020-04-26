@@ -70,6 +70,7 @@ class InsurancePanel extends Component {
 
 
   onFilteredChangeCustom = (value, accessor) => {
+    console.log('AAAA', value, accessor)
     let filtered = this.state.filtered;
     let insertNewFilter = 1;
 
@@ -266,7 +267,30 @@ class InsurancePanel extends Component {
                 {
                   Header: "Fecha inicio",
                   id: "begin_date",
-                  accessor: d => formatShortDate(d.begin_date)
+                  accessor: d => formatShortDate(d.begin_date),
+                  filterMethod: (filter, row) => {
+                    console.log('filter', filter, row)
+                    if (filter.value === "all") {
+                      return true;
+                    }
+                    if (filter.value === "true") {
+                      return row[filter.id] >= 21;
+                    }
+                    return row[filter.id] < 21;
+                  },
+                  Filter: (props) =>{
+                    console.log('filter, onchange',props)
+                    return(
+                    <select
+                      onChange={event => props.onChange(event.target.value)}
+                      style={{ width: "100%" }}
+                      value={props.filter ? props.filter.value : "all"}
+                    >
+                      <option value="all">Show All</option>
+                      <option value="true">Can Drink</option>
+                      <option value="false">Can't Drink</option>
+                    </select>)
+                  }
                 },
                 {
                   Header: "Fecha pago",
