@@ -33,6 +33,34 @@ router.post("/save", (req, res) => {
   });
 });
 
+router.post("/bulk", (req, res) => {
+  const body = req.body;
+  const token = body.token;
+
+  jwt.verify(token, secretKey, function (err, _) {
+    if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
+    const allData = body.bulkData;
+    console.log('ALL DATA TO SAVE', allData)
+
+    // TO DO, Loop through all the data and save for each one
+
+    // const client = new Client(clientForm);
+    // client.save()
+    //   .then((result) => {
+    //     User.findOne({ email: userEmail }).then(user => {
+    //       user.clients.push(client);
+    //       user.save();
+    //     }).catch((error) => {
+    //       res.status(500).json({ error });
+    //     });
+
+
+    //   });
+    res.json({ message: 'Forma de cliente guardada.' });
+
+  });
+});
+
 router.post("/update", (req, res) => {
   const body = req.body;
   const token = body.token;
