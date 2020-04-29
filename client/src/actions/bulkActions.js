@@ -11,11 +11,12 @@ const replaceKeys = (translationTable, dataEntry) => {
 
 export const bulkData = (bulkData, endPoint, translationTable) => dispatch => {
   const token = localStorage.getItem("jwtToken");
-  const resultArray = bulkData.map(data => replaceKeys(translationTable, data))
+  const resultArray = bulkData.map(data => replaceKeys(translationTable, data));
   const data = {
     token,
     bulkData: resultArray
   }
+
 
   return axios
     .post(`/api/${endPoint}/bulk`, data)

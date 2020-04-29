@@ -6,6 +6,8 @@ const User = require("../models/UserForm");
 const Client = require("../models/ClientForm");
 const secretKey = require("../config/config")
 
+const { isEmpty } = require("../utils/bulkUtils");
+
 router.post("/save", (req, res) => {
   const body = req.body;
   const token = body.token;
@@ -40,22 +42,39 @@ router.post("/bulk", (req, res) => {
   jwt.verify(token, secretKey, function (err, _) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
     const allData = body.bulkData;
-    console.log('ALL DATA TO SAVE', allData)
 
-    // TO DO, Loop through all the data and save for each one
+    allData.map((clientData) => {
+      delete clientData.no;
+      
+      const contactKeys = ["contact", "correo", "tel"];
+      const contactTransformationKeys = ["name", "email", "telephone"];
 
-    // const client = new Client(clientForm);
-    // client.save()
-    //   .then((result) => {
-    //     User.findOne({ email: userEmail }).then(user => {
-    //       user.clients.push(client);
-    //       user.save();
-    //     }).catch((error) => {
-    //       res.status(500).json({ error });
-    //     });
+      let contacts = [];
 
+      for(let i = 1; i<4; i++){
+        let contact = {};
+        contactKeys.map((key, index) => {
+          let dataKey = `${key}${i}`;
+          let targetKey = contactTransformationKeys[index];
+          if(clientData[dataKey] != undefined) {
+            contact[targetKey] = clientData[dataKey]
+            delete clientData[dataKey];
+          };
+        })
+        if(!isEmpty(contact)) contacts.push(contact);
+      }
 
-    //   });
+      clientData["contacts"] = contacts;
+
+      const client = new Client(clientData);
+
+      Client.find({
+        $and: [{rfc: clientData.rfc}, {name: clientData.name}]
+      }).then((res, err) => {
+        if(isEmpty(res)) client.save();
+      })
+
+    })
     res.json({ message: 'Forma de cliente guardada.' });
 
   });

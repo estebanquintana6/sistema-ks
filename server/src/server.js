@@ -11,6 +11,8 @@ const insuranceTypes = require('./routes/insuranceTypesRoutes')
 const companies = require('./routes/companiesRoutes')
 const insurances = require('./routes/insurancesRoutes')
 const tasks = require('./routes/tasksRoutes')
+const invoices = require('./routes/invoicesRoutes');
+
 const initializeDb = require('./createInsuranceTypes')
 
 const app = express();
@@ -66,6 +68,7 @@ app.use('/api/insurance_types', insuranceTypes)
 app.use('/api/companies', companies)
 app.use('/api/insurances', insurances)
 app.use('/api/tasks', tasks)
+app.use('/api/invoices', invoices)
 
 const port = process.env.PORT || 5000;
 

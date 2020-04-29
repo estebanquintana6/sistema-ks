@@ -1,20 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Container, Row } from 'react-bootstrap'
+import { Container, Row } from 'react-bootstrap';
 import { connect } from "react-redux";
 import { getClients, updateClient, deleteClient, registerClient } from "../../../actions/registerClient";
-import { ExportClientCSV } from "../../ExportCSV/ExportCSV";
 import swal from '@sweetalert/with-react';
 
 import ClientsForm from "../ClientsForm/ClientsForm";
 import ClientModal from '../ClientModal/ClientModal'
 
-
-import "react-select/dist/react-select.css";
 // Import React Table
 import ReactTable from "react-table";
 
-import SimpleReactFileUpload from "../../SimpleReactFileUpload/SimpleReactFileUpload";
+import "react-select/dist/react-select.css";
 
 
 import "react-table/react-table.css";
@@ -176,7 +173,7 @@ class ClientsPanel extends Component {
               <h2>Clientes</h2>
             </Row>
             <Row className="mt-4">
-              <a onClick={this.addClient} className="btn-primary">Registrar nuevo</a>
+              <a onlick={this.addClient} className="btn-primary">Registrar nuevo</a>
             </Row>
           </Container>
           <br />
@@ -214,19 +211,29 @@ class ClientsPanel extends Component {
                   accessor: d => d.name
                 },
                 {
-                  Header: "Telefono",
-                  id: "telephone",
-                  accessor: d => d.telephone
+                  Header: "RFC/Razon social",
+                  id: "rfc",
+                  accessor: d => d.rfc
                 },
                 {
                   Header: "Correo",
                   id: "email",
-                  accessor: d => d.email
+                  accessor: d => d.contacts[0].email
                 },
                 {
-                  Header: "RFC/Razon social",
-                  id: "rfc",
-                  accessor: d => d.rfc
+                  Header: "Telefono",
+                  id: "telephone",
+                  accessor: d => d.contacts[0].telephone
+                },
+                {
+                  Header: "Estado",
+                  id: "state",
+                  accessor: d => d.state
+                },
+                {
+                  Header: "Ciudad",
+                  id: "city",
+                  accessor: d => d.city
                 }
               ]
             }
@@ -235,13 +242,6 @@ class ClientsPanel extends Component {
             className="-striped -highlight"
             getTrProps={this.getTrProps}
           />
-          <div className="row">
-            <div className="col-md-4 center mt-4">
-              <ExportClientCSV csvData={this.state.data} fileName="reporteClientes" />
-            </div>
-            <SimpleReactFileUpload resultKeys={['number', 'client', 'due_date', 'policy', 'product', 'currency', 'total', 'status']}></SimpleReactFileUpload>
-          </div>
-
           </div>
         </Container>
       </React.Fragment>
