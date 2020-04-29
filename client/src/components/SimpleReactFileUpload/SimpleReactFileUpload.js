@@ -4,6 +4,15 @@ import { connect } from "react-redux";
 
 import XLSX from "xlsx";
 
+import swal from '@sweetalert/with-react';
+
+
+import {
+  Button,
+  Form,
+  Row
+} from 'react-bootstrap';
+
 class SimpleReactFileUpload extends React.Component {
 
   constructor(props) {
@@ -36,6 +45,10 @@ class SimpleReactFileUpload extends React.Component {
     return translationTable
   }
 
+  goToPage = (route) => {
+    this.props.history.push(route);
+}
+
   fileUpload(file){
     var reader = new FileReader();
     const self = this
@@ -48,7 +61,11 @@ class SimpleReactFileUpload extends React.Component {
       let excelJson = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
       self.setState({jsonInfo: excelJson})
       const translation = self.createTranslationTable();
-      self.props.bulkData(excelJson, 'clients', translation)
+      self.props.bulkData(excelJson, 'clients', translation);
+      swal({
+        icon: "success",
+        content: <h2>Carga realizada</h2>
+      });
     };
     reader.readAsBinaryString(file);
   }
@@ -56,11 +73,48 @@ class SimpleReactFileUpload extends React.Component {
   render() {
     return (
       <>
-        <form onSubmit={this.onFormSubmit}>
-          <h1>File Upload</h1>
+      <Row>
+        <h2>{`Panel de carga: ${this.props.type}`}</h2>
+      </Row>
+      <Row className="mt-4">
+        <h5>Instrucciones:</h5>
+      </Row>
+      <Row>
+        <p>Haz click en el botón SELECCIONAR ARCHIVO y escoge un archivo tipo .xslx (Excel) para subirlo al sistema.</p>
+      </Row>
+      <Row className="mt-4">
+        <h5>Puntos a considerar:</h5>
+      </Row>
+      <Row className="ml-4">
+        <ul>
+          <li>1. El sistema no subirá datos en donde se repita el Nombre y RFC en un mismo cliente con el fin de evitar duplicados.</li>
+          <li>2. El sistema sólo garantiza que se lean archivos xlsx.</li>
+          <li>3. El sistema sólo leerá la primera hoja de la página de Excel. En caso de que se requiera subir los datos de las demás hojas, éstas deberán ser puestas en hojas de Excel aparte o unificarse en un solo documento de Excel.</li>
+          <li>4. El sistema deberá recibir un archivo de Excel con el formato de columnas correcto mencionado a continuación.
+          </li>
+        </ul>
+      </Row>
+
+      <Row className="mt-4">
+      <h6>Las columnas que deberá contener para este caso son: </h6>
+      </Row>
+      <Row className="ml-4">
+        <ul>
+          {this.props.originalKeys.map((key) => {
+            return (<li>{key}</li>)
+          })}
+        </ul>
+      </Row>
+      <Row className="mt-4 justify-content-md-center">
+        <Form onSubmit={this.onFormSubmit}>
+          <Form.Row>
           <input type="file" onChange={this.onChange} />
-          <button type="submit">Upload</button>
-        </form>
+          </Form.Row>
+          <Form.Row className="mt-4 justify-content-md-center">
+          <Button type="submit">SUBIR</Button>
+          </Form.Row>
+        </Form>
+      </Row>
       </>
    )
   }

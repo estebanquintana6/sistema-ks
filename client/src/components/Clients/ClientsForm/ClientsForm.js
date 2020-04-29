@@ -205,7 +205,7 @@ class ClientsForm extends Component {
               </Col>
             </Row>
           </Container>
-          <Button variant="primary" type="submit">Guardar</Button>
+          <Button className="btn-primary" type="submit">Guardar</Button>
         </Form>
       </div>
     );

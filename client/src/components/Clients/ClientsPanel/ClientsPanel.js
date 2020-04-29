@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Container, Row } from 'react-bootstrap';
 import { connect } from "react-redux";
 import { getClients, updateClient, deleteClient, registerClient } from "../../../actions/registerClient";
-import { ExportClientCSV } from "../../ExportCSV/ExportCSV";
 import swal from '@sweetalert/with-react';
 
 import ClientsForm from "../ClientsForm/ClientsForm";
@@ -13,7 +12,6 @@ import ClientModal from '../ClientModal/ClientModal'
 import ReactTable from "react-table";
 
 import "react-select/dist/react-select.css";
-import SimpleReactFileUpload from "../../SimpleReactFileUpload/SimpleReactFileUpload";
 
 
 import "react-table/react-table.css";
@@ -175,7 +173,7 @@ class ClientsPanel extends Component {
               <h2>Clientes</h2>
             </Row>
             <Row className="mt-4">
-              <a onClick={this.addClient} className="btn-primary">Registrar nuevo</a>
+              <a onlick={this.addClient} className="btn-primary">Registrar nuevo</a>
             </Row>
           </Container>
           <br />
@@ -244,17 +242,6 @@ class ClientsPanel extends Component {
             className="-striped -highlight"
             getTrProps={this.getTrProps}
           />
-          <div className="row">
-            <div className="col-md-4 center mt-4">
-              <ExportClientCSV csvData={this.state.data} fileName="reporteClientes" />
-            </div>
-            <SimpleReactFileUpload 
-              resultKeys={['no', 'person_type', 'name', 'rfc', 'contact1', 'correo1', 'tel1', 'contact2', 'correo2', 'tel2', 'contact3', 'correo3', 'tel3', 'state', 'city']}
-              originalKeys={['No', 'Tipo de persona',	'CONTRATANTE'	,'RFC'	,'Contacto',	'CORREO'	,'TEL',	'Contacto2',	'CORREO2'	,'TEL2'	,'Contacto3'	,'CORREO3'	,'TEL3'	,'ESTADO'	,'CIUDAD']}
-              >
-            </SimpleReactFileUpload>
-          </div>
-
           </div>
         </Container>
       </React.Fragment>
