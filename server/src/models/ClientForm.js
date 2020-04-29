@@ -9,13 +9,13 @@ var Client = new Schema({
   },
   rfc: {
     type: String,
-    required: true,
+    required: false,
     uppercase: true,
     uppercase: true
   },
   languages: {
     type: String,
-    required: true,
+    required: false,
     uppercase: false
   },
   person_type: {
@@ -35,6 +35,16 @@ var Client = new Schema({
   created_at: {
     type: Date,
     default: Date.now
+  },
+  state: {
+    type: String,
+    required: false,
+    uppercase: true
+  },
+  city: {
+    type: String,
+    required: false,
+    uppercase: true
   }
 }, {
   collection: 'Clients'

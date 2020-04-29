@@ -13,6 +13,9 @@ import ClientModal from '../ClientModal/ClientModal'
 import ReactTable from "react-table";
 
 import "react-select/dist/react-select.css";
+import SimpleReactFileUpload from "../../SimpleReactFileUpload/SimpleReactFileUpload";
+
+
 import "react-table/react-table.css";
 import "./ClientsPanel.css";
 
@@ -201,41 +204,56 @@ class ClientsPanel extends Component {
                   }
                 }
               }}
-              columns={[{
-                Header: "Datos",
-                columns: [
-                  {
-                    Header: "Nombre",
-                    id: "name",
-                    accessor: d => d.name
-                  },
-                  {
-                    Header: "Telefono",
-                    id: "telephone",
-                    accessor: d => d.telephone
-                  },
-                  {
-                    Header: "Correo",
-                    id: "email",
-                    accessor: d => d.email
-                  },
-                  {
-                    Header: "RFC/Razon social",
-                    id: "rfc",
-                    accessor: d => d.rfc
-                  }
-                ]
-              }
-              ]}
-              defaultPageSize={10}
-              className="-striped -highlight"
-              getTrProps={this.getTrProps}
-            />
-            <div className="row">
-              <div className="col-md-4 center mt-4">
-                <ExportClientCSV csvData={this.state.data} fileName="reporteClientes" />
-              </div>
+            columns={[{
+              Header: "Datos",
+              columns: [
+                {
+                  Header: "Nombre",
+                  id: "name",
+                  accessor: d => d.name
+                },
+                {
+                  Header: "RFC/Razon social",
+                  id: "rfc",
+                  accessor: d => d.rfc
+                },
+                {
+                  Header: "Correo",
+                  id: "email",
+                  accessor: d => d.contacts[0].email
+                },
+                {
+                  Header: "Telefono",
+                  id: "telephone",
+                  accessor: d => d.contacts[0].telephone
+                },
+                {
+                  Header: "Estado",
+                  id: "state",
+                  accessor: d => d.state
+                },
+                {
+                  Header: "Ciudad",
+                  id: "city",
+                  accessor: d => d.city
+                }
+              ]
+            }
+            ]}
+            defaultPageSize={10}
+            className="-striped -highlight"
+            getTrProps={this.getTrProps}
+          />
+          <div className="row">
+            <div className="col-md-4 center mt-4">
+              <ExportClientCSV csvData={this.state.data} fileName="reporteClientes" />
             </div>
+            <SimpleReactFileUpload 
+              resultKeys={['no', 'person_type', 'name', 'rfc', 'contact1', 'correo1', 'tel1', 'contact2', 'correo2', 'tel2', 'contact3', 'correo3', 'tel3', 'state', 'city']}
+              originalKeys={['No', 'Tipo de persona',	'CONTRATANTE'	,'RFC'	,'Contacto',	'CORREO'	,'TEL',	'Contacto2',	'CORREO2'	,'TEL2'	,'Contacto3'	,'CORREO3'	,'TEL3'	,'ESTADO'	,'CIUDAD']}
+              >
+            </SimpleReactFileUpload>
+          </div>
 
           </div>
         </Container>
