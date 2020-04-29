@@ -23,7 +23,9 @@ let url = '';
 if (process.env.NODE_ENV === 'development') {
   url = "mongodb://localhost:27017/test";
 } else {
-  url = `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_URI}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
+  url = `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_URI}:${MONGO_PORT}/${MONGO_DB}?authSource=db`;
+  console.log("HEREEEEE", url)
+
 }
 
 console.log({url});

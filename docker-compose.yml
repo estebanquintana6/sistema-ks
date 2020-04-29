@@ -31,20 +31,14 @@ services:
   ### SETUP DB CONTAINER
   ##########################
   db:
-    image: mongo
-    ports:
-      - ${MONGO_PORT}:${MONGO_PORT}
-    restart: always
+    image: mongo:latest
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - 27017:27017
     volumes:
-      # Map physical volume to virtual for data persistence
-      # On server could be /data/db
-      # For this case we will create a Docker volume and use it instead
-      # You need to run docker volume create yourproject-dbdata
-      - board-dbdata:/data/db
-# Add this to include data volume for mongo
-# Confirm this is working later
+      - mongodb_data_container:/data/db
+
 volumes:
-  board-dbdata:
+  mongodb_data_container:

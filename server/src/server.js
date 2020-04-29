@@ -19,6 +19,8 @@ const app = express();
 const regular_jobs = require('./node_regular_job')
 const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/test";
 
+console.log("MONGOURI: ", mongoUri);
+
 // Bodyparser middleware
 app.use(
   bodyParser.urlencoded({

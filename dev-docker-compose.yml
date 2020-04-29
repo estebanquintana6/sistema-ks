@@ -14,13 +14,12 @@ services:
       - 4000
     # Environment variables
     environment:
-      - MONGO_URI=mongodb://db:27017/db
+      - MONGO_URI=mongodb://root:rootpassword@db:27017/
       - PORT=4000
       - JWT_SECRET=secretsecret
       - JWT_EXPIRY=30d
       - DEBUG=worker:*
       - MORGAN=combined
-      - NODE_ENV=development
     # Port mapping
     ports:
       - 4000:4000
@@ -60,7 +59,14 @@ services:
   ### SETUP DB CONTAINER
   ##########################
   db:
-    image: mongo
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
     ports:
       - 27017:27017
-    restart: always
+    volumes:
+      - mongodb_data_container:/data/db
+
+volumes:
+  mongodb_data_container:
