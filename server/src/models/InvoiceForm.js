@@ -10,8 +10,12 @@ var InvoiceSchema = new Schema({
     required: true
   },
   due_date: {
-    type: Array,
-    required: false
+    type: Date,
+    required: true
+  },
+  pay_limit: {
+    type: Date,
+    required: true
   },
   insurance: {
     type: Schema.Types.ObjectId,

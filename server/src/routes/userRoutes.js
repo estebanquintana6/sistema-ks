@@ -222,7 +222,7 @@ router.post("/list", (req, res) => {
     if(err) res.status(402);
     const role = decoded.role;
     if(role){
-      User.find({ email: {$ne: decoded.email} }).select(["-password", "-referidos", "-secoms", "-clients"]).then((users) => {
+      User.find().select(["-password", "-referidos", "-secoms", "-clients"]).then((users) => {
         res.status(200).json(users);
       });
 

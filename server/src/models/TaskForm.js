@@ -13,10 +13,6 @@ var TaskSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  due_date: {
-    type: Date,
-    required: false
-  },
   status: {
     type: String,
     required: true
@@ -26,11 +22,15 @@ var TaskSchema = new Schema({
     ref: 'users',
     required: true
   },
-  assignee: {
+  assignee: [{
     type: Schema.Types.ObjectId,
     ref: 'users',
     required: true
-  },
+  }],
+  comments: {
+    type: String,
+    required: false
+  }
 });
 
 // Create model from the schema

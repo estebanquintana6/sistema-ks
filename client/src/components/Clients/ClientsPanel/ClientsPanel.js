@@ -170,40 +170,41 @@ class ClientsPanel extends Component {
     const { data } = this.state;
     return (
       <React.Fragment>
-        <Row>
-          <h2>Clientes</h2>
-        </Row>
-        <Container className="mt-4">
-          <Row>
-            <a onClick={this.addClient} className="btn-primary">Registrar nuevo</a>
-          </Row>
-        </Container>
-        <br />
-        <div className="full-width">
-          <ReactTable
-            data={data}
-            filterable
-            filtered={this.state.filtered}
-            onFilteredChange={(filtered, column, value) => {
-              this.onFilteredChangeCustom(value, column.id || column.accessor);
-            }}
-            defaultFilterMethod={(filter, row, column) => {
-              if (filter.id !== "email") {
-                filter.value = filter.value.toUpperCase();
-              }
-              const id = filter.pivotId || filter.id;
-              if (typeof filter.value === "object") {
-                return row[id] !== undefined
-                  ? filter.value.indexOf(row[id]) > -1
-                  : true;
-              } else {
-                if (row[id] !== undefined) {
-                  return row[id] !== undefined
-                    ? String(row[id]).indexOf(filter.value) > -1
-                    : true;
+        <Container>
+          <Container fluid className="mt-4">
+            <Row>
+              <h2>Clientes</h2>
+            </Row>
+            <Row className="mt-4">
+              <a onClick={this.addClient} className="btn-primary">Registrar nuevo</a>
+            </Row>
+          </Container>
+          <br />
+          <div className="full-width">
+            <ReactTable
+              data={data}
+              filterable
+              filtered={this.state.filtered}
+              onFilteredChange={(filtered, column, value) => {
+                this.onFilteredChangeCustom(value, column.id || column.accessor);
+              }}
+              defaultFilterMethod={(filter, row, column) => {
+                if (filter.id !== "email") {
+                  filter.value = filter.value.toUpperCase();
                 }
-              }
-            }}
+                const id = filter.pivotId || filter.id;
+                if (typeof filter.value === "object") {
+                  return row[id] !== undefined
+                    ? filter.value.indexOf(row[id]) > -1
+                    : true;
+                } else {
+                  if (row[id] !== undefined) {
+                    return row[id] !== undefined
+                      ? String(row[id]).indexOf(filter.value) > -1
+                      : true;
+                  }
+                }
+              }}
             columns={[{
               Header: "Datos",
               columns: [
@@ -241,7 +242,8 @@ class ClientsPanel extends Component {
             <SimpleReactFileUpload resultKeys={['number', 'client', 'due_date', 'policy', 'product', 'currency', 'total', 'status']}></SimpleReactFileUpload>
           </div>
 
-        </div>
+          </div>
+        </Container>
       </React.Fragment>
     );
   }

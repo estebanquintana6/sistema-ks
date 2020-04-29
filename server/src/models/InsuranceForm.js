@@ -29,6 +29,11 @@ var InsuranceSchema = new Schema({
     type: String,
     required: true
   },
+  abbreviation: {
+    type: String,
+    required: true,
+    uppercase: true
+  },
   policy: {
     type: String,
     required: true,
@@ -82,8 +87,18 @@ var InsuranceSchema = new Schema({
     required: true,
     default: false
   },
+  endorsements: {
+    type: Array,
+    required: false
+  },
   // campos unicos de seguros de auto
   cis: {
+    type: String,
+    required: () => this.insurance_type === "Auto",
+    uppercase: true,
+    default: null
+  },
+  car_brand: {
     type: String,
     required: () => this.insurance_type === "Auto",
     uppercase: true,
@@ -92,7 +107,11 @@ var InsuranceSchema = new Schema({
   car_model: {
     type: String,
     required: () => this.insurance_type === "Auto",
-    uppercase: true,
+    default: null
+  },
+  car_year: {
+    type: Number,
+    required: () => this.insurance_type === "Auto",
     default: null
   },
   car_description: {

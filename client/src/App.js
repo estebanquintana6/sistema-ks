@@ -16,6 +16,9 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import Layout from "./components/Layout/Layout";
 
 import "./App.css";
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {

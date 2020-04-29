@@ -23,7 +23,14 @@ class InsuranceModal extends Component {
     swal({
       title: `Editar seguro`,
       text: `Modifica los campos del seguro`,
-      content: <InsuranceForm insurance={this.props.insurance} clients={this.props.clients} companies={this.props.companies} edit={true} updateInsurance={this.props.updateInsurance} ></InsuranceForm>,
+      content: <InsuranceForm 
+                  type={this.props.type}
+                  insurance={this.props.insurance} 
+                  clients={this.props.clients} 
+                  companies={this.props.companies} 
+                  edit={true} 
+                  updateInsurance={this.props.updateInsurance} >
+                </InsuranceForm>,
       buttons: false,
       className: "width-800pt-100h"
     })
@@ -36,7 +43,7 @@ class InsuranceModal extends Component {
         <React.Fragment>
           <Row className="mt-4">
             <Col>
-              <h5 className="text-center">{insurance.policy}</h5>
+              <h5 className="text-center">{`Cliente: ${insurance.client.name}`}</h5>
             </Col>
           </Row>
           <br></br>

@@ -18,7 +18,8 @@ relateInsuranceToInvoice = (invoice) => {
 updateInvoice = (invoice) => {
   const update = {
     invoice: invoice.invoice,
-    due_date: invoice.due_date
+    due_date: invoice.due_date,
+    pay_limit: invoice.pay_limit
   }
   Invoice.findOneAndUpdate({_id: invoice._id}, update).exec();
 }

@@ -24,6 +24,7 @@
     "react": "^16.12.0",
     "react-bootstrap": "1.0.0-beta.10",
     "react-data-table-component": "^6.2.1",
+    "react-dates": "^21.8.0",
     "react-dom": "^16.6.3",
     "react-filterable-table": "^0.3.434",
     "react-json-table": "^0.1.1",

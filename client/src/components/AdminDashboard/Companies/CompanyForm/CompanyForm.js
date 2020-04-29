@@ -1,4 +1,3 @@
-import 'date-fns';
 import React, { Component } from "react";
 import {
   Button,
@@ -72,42 +71,44 @@ class CompanyForm extends Component {
     return (
       <Form id="companyForm" onSubmit={this.onSubmit}>
         <Row>
-          <Col md={6}>
+          <Col md={12}>
             <Form.Row>
-              <Form.Group as={Col} md="6" controlId="name">
+              <Form.Group as={Col} md={{ span: 12 }} controlId="name">
                 <Form.Label>Nombre de aseguradora</Form.Label>
                 <Form.Control required onChange={this.onChange} value={this.state.name} />
               </Form.Group>
-              <Form.Group as={Col} md="6" controlId="tolerance">
+            </Form.Row>
+            <Form.Row>
+              <Form.Group as={Col} md={{ span: 6, offset: 3 }} controlId="tolerance">
                 <Form.Label>Días de tolerancia</Form.Label>
                 <Form.Control required onChange={this.onChange} value={this.state.tolerance} type={'number'} />
               </Form.Group>
             </Form.Row>
           </Col>
-          <Col md={6}>
-            <Row>
-              <Col md="6">
-                <h5 className="swal-title form-title align-left">Claves</h5>
-              </Col>
-              <Col md="6">
-                <Button variant="info" onClick={this.createAbbreviation}>AGREGAR</Button>
-              </Col>
-            </Row>
+        </Row>
+          <Row className="justify-content-md-center">
+              <h5 className="swal-title form-title align-left">CLAVES</h5>
+          </Row>
+          <Row>
+            <Col md="12">
+              <Button variant="info" onClick={this.createAbbreviation}><i className="fa fa-plus" aria-hidden="true"></i></Button>
+            </Col>
+          </Row>
+          <Row className="justify-content-md-center">
             {this.state.abbreviations.map((value, index) => {
               return (
                 <Form.Row key={index}>
-                  <Form.Group as={Col} md="10">
-                    <Form.Label>Nombre</Form.Label>
+                  <Form.Group as={Col} md="8">
+                    <Form.Label>Clave</Form.Label>
                     <Form.Control required onChange={(e) => { this.onChangeAbbreviationName(index, e) }} value={this.state.abbreviations[index].name} />
                   </Form.Group>
-                  <Col md="1">
-                    <Button variant="danger" onClick={() => { this.deleteAbbreviation(index) }}><i className="fa fa-trash" /></Button>
+                  <Col md="4">
+                    <Button variant="danger" className="button-margin" onClick={() => { this.deleteAbbreviation(index) }}><i className="fa fa-trash"/></Button>
                   </Col>
                 </Form.Row>
               );
             })}
-          </Col>
-        </Row>
+          </Row>
         <Button variant="primary" type="submit">Guardar</Button>
       </Form>
     );
