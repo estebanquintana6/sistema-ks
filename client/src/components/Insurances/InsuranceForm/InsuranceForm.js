@@ -236,6 +236,22 @@ class InsuranceForm extends Component {
     this.setState({ endorsements });
   }
 
+  createInvoice = () => {
+    const invoices = [...this.state.invoices];
+    invoices.push({
+      invoice: "",
+      due_date: "",
+      pay_limit: ""
+    })
+    this.setState({ invoices });
+  }
+
+  deleteInvoice = (index) => {
+    const invoices = [...this.state.invoices];
+    invoices.splice(index, 1);
+    this.setState({ invoices });
+  }
+
   render() {
     return (
       <Form onSubmit={this.onSubmit}>
@@ -430,6 +446,11 @@ class InsuranceForm extends Component {
                 <Row>
                   <h5 className="swal-title form-title align-left">RECIBOS</h5>
                 </Row>
+                <Row className="pt-1 pb-2">
+                  <Col md="12">
+                    <Button variant="info" onClick={this.createInvoice}>AGREGAR</Button>
+                  </Col>
+                </Row>
 
                 {this.state.invoices.map((value, index) => {
                   return (
@@ -438,7 +459,7 @@ class InsuranceForm extends Component {
                         <Form.Label>Recibo</Form.Label>
                         <Form.Control required onChange={(e) => { this.onChangeInvoice(index, e) }} value={this.state.invoices[index].invoice} />
                       </Form.Group>
-                      <Form.Group as={Col} md="4">
+                      <Form.Group as={Col} md="3">
                         <Form.Label>Fecha de pago</Form.Label>
                         <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(index, e) }} value={this.formatDate(this.state.invoices[index].due_date)} />
                       </Form.Group>
@@ -446,6 +467,9 @@ class InsuranceForm extends Component {
                         <Form.Label>Vencimiento de pago</Form.Label>
                         <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceLimitDate(index, e) }} value={this.formatDate(this.state.invoices[index].pay_limit)} />
                       </Form.Group>
+                      <Col md="1">
+                          <Button variant="danger" className="align-center" onClick={() => { this.deleteInvoice(index) }}><i className="fa fa-trash" /></Button>
+                        </Col>
                     </Form.Row>
                   );
                 })}

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Container, Row } from 'react-bootstrap'
 
 import { connect } from "react-redux";
-import { getInvoices } from "../../../actions/invoiceActions";
+import { getInvoices, updateInvoice, deleteInvoice } from "../../../actions/invoiceActions";
 import {formatShortDate} from '../../component-utils'
 import { DateRangePicker } from 'react-dates';
 
@@ -15,6 +15,9 @@ import "react-select/dist/react-select.css";
 import "react-table/react-table.css";
 
 import moment from 'moment';
+import InvoicesForm from "../InvoicesForm/InvoicesForm";
+import InvoicesModal from "../InvoicesModal/InvoicesModal";
+import swal from '@sweetalert/with-react';
 
 
 class InvoicePanel extends Component {
@@ -66,14 +69,73 @@ class InvoicePanel extends Component {
       };
 
     getTrProps = (state, rowInfo, instance) => {
-        if (rowInfo) {
-          return {
-            style: {
-              cursor: "pointer"
-            }
+      if (rowInfo) {
+        return {
+          style: {
+            cursor: "pointer"
+          },
+          onClick: (e) => {
+            this.openModificationModal(rowInfo.original);
           }
         }
-        return {};
+      }
+      return {};
+    }
+
+    openModificationModal(invoice) {
+      console.log('inv', invoice)
+      swal({
+        content: <InvoicesModal
+          invoice={invoice}
+          updateInvoice={this.updateInvoice}
+          deleteInvoice={this.deleteInvoice}>
+        </InvoicesModal>,
+        buttons: false,
+        title: `Recibo: ${invoice.invoice}`
+      });
+    }
+
+    updateInvoice = (invoiceData) => {
+      this.props.updateInvoice(
+        invoiceData)
+        .then((response) => {
+          const { status } = response;
+          if (status === 200) {
+            swal({
+              icon: "success",
+              content: <h2>Recibo Actualizado</h2>,
+            });
+          } else {
+            swal({
+              icon: "error",
+              content: <h2>Error al guardar el recibo</h2>,
+            });
+          }
+          this.refresh();
+        });
+    }
+
+    deleteInvoice = (invoiceId, e) => {
+      swal({
+        title: `¿Estas seguro de querer eliminar el recibo?`,
+        text: "Una vez eliminado ya no podras recuperarlo!",
+        icon: "warning",
+        buttons: true,
+        sucessMode: true,
+      })
+        .then((willDelete) => {
+          if (willDelete) {
+            this.confirmDelete(invoiceId);
+            swal("Recibo eliminado!", {
+              icon: "success",
+            });
+          }
+          this.refresh();
+        });
+    }
+  
+    confirmDelete = (invoiceId) => {
+      this.props.deleteInvoice(invoiceId);
     }
 
 
@@ -160,10 +222,8 @@ class InvoicePanel extends Component {
                                       // Incomplet or cleared date picker
                                       return true
                                     }
-                                    if (moment(row[filter.id]).isBetween(filter.value.startDate, filter.value.endDate)) {
-                                      // Found row matching filter
-                                      return true
-                                    }
+                                    const res = row[filter.id] !== undefined ? moment(row[filter.id], 'DD/MM/YYYY').clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
+                                    return res
                                   }
                             },
                             {
@@ -191,10 +251,8 @@ class InvoicePanel extends Component {
                                       // Incomplet or cleared date picker
                                       return true
                                     }
-                                    if (moment(row[filter.id]).isBetween(filter.value.startDate, filter.value.endDate)) {
-                                      // Found row matching filter
-                                      return true
-                                    }
+                                    const res = row[filter.id] !== undefined ? moment(row[filter.id], 'DD/MM/YYYY').clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
+                                    return res
                                   }
                             }
                             ]
@@ -225,6 +283,6 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { getInvoices }
+    { getInvoices, updateInvoice, deleteInvoice }
 )(InvoicePanel);
   
