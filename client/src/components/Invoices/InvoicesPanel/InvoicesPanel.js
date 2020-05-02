@@ -200,6 +200,7 @@ class InvoicePanel extends Component {
                             {
                                 Header: "Fecha vto.",
                                 id: "due_date",
+                                width: 350,
                                 accessor: d => formatShortDate(d.due_date),
                                 Filter: ({filter, onChange}) => (
                                     <DateRangePicker
@@ -229,6 +230,7 @@ class InvoicePanel extends Component {
                             {
                                 Header: "Fecha vto. pago",
                                 id: "pay_limit",
+                                width: 350,
                                 accessor: d => formatShortDate(d.pay_limit),
                                 Filter: ({filter, onChange}) => (
                                     <DateRangePicker
