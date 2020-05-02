@@ -173,7 +173,7 @@ class ClientsPanel extends Component {
               <h2>Clientes</h2>
             </Row>
             <Row className="mt-4">
-              <a onlick={this.addClient} className="btn-primary">Registrar nuevo</a>
+              <a onClick={this.addClient} className="btn-primary">Registrar nuevo</a>
             </Row>
           </Container>
           <br />

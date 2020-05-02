@@ -167,11 +167,9 @@ class ClientsForm extends Component {
               <Col md="7" style={{height: '400px', overflowY: 'scroll'}}>
                 <Row>
                   <h5 className="swal-title form-title align-left">CONTACTO(S)</h5>
+                    <Button variant="info" onClick={this.createContact}>AGREGAR</Button>
                 </Row>
                 <Row className="pt-1 pb-2">
-                  <Col md="12">
-                    <Button variant="info" onClick={this.createContact}>AGREGAR</Button>
-                  </Col>
                 </Row>
                 {this.state.contacts.map((value, index) => {
                   return (

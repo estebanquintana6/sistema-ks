@@ -1,3 +1,4 @@
+var arr = require('lodash/array');
 var express = require('express');
 var router = express.Router();
 
@@ -78,19 +79,37 @@ router.post("/update", (req, res) => {
   const invoices = insuranceData.invoices;
   delete insuranceData.invoices;
 
-  invoices.map(invoice => {
-    updateInvoice(invoice);
-  })
-
-
   jwt.verify(token, secretKey, function (err, _) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
     }
     Insurance.findOne({ _id: id }).then((insurance) => {
       if (insurance) {
+        invoices.map(invoice => {
+          updateInvoice(invoice);
+        })
+        const toD = invoices.map(inv => inv._id).filter(e=>e)
+        // console.log('INVOICES', toD)
+        // console.log('SAVED INV', insurance.invoices)
+        const t = insurance.invoices.filter(e=>e).map(inv => {
+          // console.log('INV', inv, typeof(inv));
+          return String(inv)
+        })
+        const n = arr.difference(t, toD)
+        // console.log('new', n)
+        Invoice.deleteMany({_id: {$in: n}}).exec()
         let doc = Insurance.findById(insurance.id);
         doc.updateOne(insuranceData).then((err, _) => {
+          invoices.map(invoice => {
+            invoice.client = insurance.client;
+            invoice.insurance = insurance._id;
+    
+            const newInvoice = new Invoice(invoice);
+            
+            newInvoice.save().then((invoiceResponse, err) => {
+              relateInsuranceToInvoice(invoiceResponse);
+            });
+          });
           if (err) res.status(500);
           res.status(200).json({ message: "Elemento modificado" });
         });
