@@ -54,14 +54,22 @@ class SimpleReactFileUpload extends React.Component {
     const self = this
     reader.onload = function(){
       const data = reader.result;
-      const workbook = XLSX.read(data, {type: 'binary'});
+      const workbook = XLSX.read(data, {type: 'binary', raw: false, cellDates: true});
 
       var sheet_name_list = workbook.SheetNames;
 
       let excelJson = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
       self.setState({jsonInfo: excelJson})
       const translation = self.createTranslationTable();
-      self.props.bulkData(excelJson, 'clients', translation);
+      
+      let uploadUrl = "";
+      switch(self.props.type){
+        case 'CLIENTES' : uploadUrl = 'clients'; break;
+        case 'AUTOS' : uploadUrl = 'cars'; break;
+        default: uploadUrl = ""
+      }
+
+      self.props.bulkData(excelJson, uploadUrl, translation);
       swal({
         icon: "success",
         content: <h2>Carga realizada</h2>

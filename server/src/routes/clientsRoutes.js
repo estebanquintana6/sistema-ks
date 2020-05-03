@@ -6,7 +6,7 @@ const User = require("../models/UserForm");
 const Client = require("../models/ClientForm");
 const secretKey = require("../config/config")
 
-const { isEmpty } = require("../utils/bulkUtils");
+const { isEmpty, removeDiacritics } = require("../utils/bulkUtils");
 
 router.post("/save", (req, res) => {
   const body = req.body;
@@ -17,6 +17,7 @@ router.post("/save", (req, res) => {
     const userEmail = decoded.email;
     const clientForm = body.clientData;
 
+    clientForm.name = removeDiacritics(clientForm.name).trim();
 
     const client = new Client(clientForm);
     client.save()
@@ -48,6 +49,8 @@ router.post("/bulk", (req, res) => {
       
       const contactKeys = ["contact", "correo", "tel"];
       const contactTransformationKeys = ["name", "email", "telephone"];
+
+      clientData.name = removeDiacritics(clientData.name).trim();
 
       let contacts = [];
 
