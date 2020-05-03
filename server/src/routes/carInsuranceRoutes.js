@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const secretKey = require("../config/config")
 
 const Insurance = require("../models/InsuranceForm");
-const Invoice = require("../models/InvoiceForm");
 const Client = require("../models/ClientForm");
 const Company = require("../models/CompanyForm")
 
