@@ -76,8 +76,6 @@ router.post("/bulk", (req, res) => {
                 });
             });
       });
-      console.log(insertedElements);
-
     });
 });
 
