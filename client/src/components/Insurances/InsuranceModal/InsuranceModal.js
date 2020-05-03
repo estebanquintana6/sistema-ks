@@ -70,15 +70,9 @@ class InsuranceModal extends Component {
     return (
       < Container >
         <React.Fragment>
-          <Row className="mt-4">
-            <Col>
-              <h5 className="text-center">{`Cliente: ${insurance.client.name}`}</h5>
-            </Col>
-          </Row>
-          <br></br>
           <Row>
             <Col>
-              <Button variant="info" className="option-button" onClick={this.editInsurance.bind(this, insurance)}>EDITAR</Button>
+              <Button variant="info" className="option-button" onClick={this.editInsurance.bind(this, insurance)}>VER</Button>
             </Col>
             { insurance.active_status &&
             <Col>
