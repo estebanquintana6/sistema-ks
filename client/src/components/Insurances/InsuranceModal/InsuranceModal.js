@@ -58,7 +58,7 @@ class InsuranceModal extends Component {
           </Form.Group>
         </Form.Row>
         <Row className="justify-content-md-center">
-          <Button variant="warning" type="submit">Cancelar</Button>
+          <Button variant="warning" type="submit">OK</Button>
         </Row>
       </Form>,
       buttons: false
@@ -72,23 +72,24 @@ class InsuranceModal extends Component {
         <React.Fragment>
           <Row>
             <Col>
-              <Button variant="info" className="option-button" onClick={this.editInsurance.bind(this, insurance)}>VER</Button>
+              <Button variant="info" onClick={this.editInsurance.bind(this, insurance)}><i className="fas fa-eye"/></Button>
             </Col>
             { insurance.active_status &&
             <Col>
-              <Button variant="warning" className="option-button" onClick={this.cancelInsurance.bind(this, insurance)}>CANCELAR</Button>
+              <Button variant="warning" onClick={this.cancelInsurance.bind(this, insurance)}>CANCELAR</Button>
             </Col>
             }
             { !insurance.active_status && 
               <Col>
-              <Button variant="success" className="option-button" onClick={this.props.activateInsurance.bind(this, insurance)}>ACTIVAR</Button>
+              <Button variant="success" onClick={this.props.activateInsurance.bind(this, insurance)}>ACTIVAR</Button>
               </Col>            
             }
+            <Col>
+              <Button variant="danger" onClick={this.props.deleteInsurance.bind(this, insurance._id, insurance.policy)}><i className="fas fa-trash"/></Button>
+            </Col>
           </Row>
           <Row className="mt-4">
-            <Col>
-              <Button variant="danger" className="option-button" onClick={this.props.deleteInsurance.bind(this, insurance._id, insurance.policy)}>ELIMINAR</Button>
-            </Col>
+
           </Row>
         </React.Fragment>
       </Container >
