@@ -10,7 +10,6 @@ var Client = new Schema({
   rfc: {
     type: String,
     required: false,
-    uppercase: true,
     uppercase: true
   },
   languages: {
@@ -20,7 +19,7 @@ var Client = new Schema({
   },
   person_type: {
     type: String,
-    required: true,
+    required: false,
     uppercase: true
   },
   comments: {
