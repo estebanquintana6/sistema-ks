@@ -7,7 +7,7 @@ import InsurancePanel from '../Insurances/InsurancePanel/InsurancePanel';
 import ClientsPanel from '../Clients/ClientsPanel/ClientsPanel';
 import InvoicesPanel from '../Invoices/InvoicesPanel/InvoicesPanel';
 
-import ClientUploadPanel from '../Clients/ClientUploadPanel/ClientUploadPanel';
+import UploadPanel from '../UploadPanel/UploadPanel';
 //redux
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
@@ -54,13 +54,26 @@ class Dashboard extends Component {
               <ClientsPanel history={this.props.history}></ClientsPanel>
             </Route>
             <Route exact path="/dashboard/clientes/upload">
-              <ClientUploadPanel history={this.props.history}></ClientUploadPanel>
+              <UploadPanel 
+              history={this.props.history}
+              type="CLIENTES"
+              resultKeys={['no', 'person_type', 'name', 'rfc', 'contact1', 'correo1', 'tel1', 'contact2', 'correo2', 'tel2', 'contact3', 'correo3', 'tel3', 'state', 'city']}
+              originalKeys={['No', 'Tipo de persona',	'CONTRATANTE'	,'RFC'	,'Contacto',	'CORREO'	,'TEL',	'Contacto2',	'CORREO2'	,'TEL2'	,'Contacto3'	,'CORREO3'	,'TEL3'	,'ESTADO'	,'CIUDAD']}
+              ></UploadPanel>
             </Route>
             <Route exact path="/dashboard/pendientes">
               <TaskPanel history={this.props.history}></TaskPanel>
             </Route>
             <Route exact path="/dashboard/autos">
               <InsurancePanel history={this.props.history} variant="AUTOS"></InsurancePanel>
+            </Route>
+            <Route exact path="/dashboard/autos/upload">
+              <UploadPanel 
+              history={this.props.history}
+              type="AUTOS"
+              resultKeys={['insurance_company', 'client', 'policy', 'car_year', 'car_brand', 'car_description', 'due_date', 'cis', 'payment_type', 'type']}
+              originalKeys={['ASEGURADORA', 'CONTRATANTE', 'POLIZA', 'MODELO', 'MARCA', 'CARROCERIA', 'F. VENCIMIENTO', 'CIS', 'FORMA DE PAGO', 'TIPO']}
+              ></UploadPanel>
             </Route>
             <Route exact path="/dashboard/vida">
               <InsurancePanel history={this.props.history} variant="VIDA"></InsurancePanel>

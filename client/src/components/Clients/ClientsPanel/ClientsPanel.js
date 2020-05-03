@@ -163,6 +163,11 @@ class ClientsPanel extends Component {
     this.props.deleteClient(id);
   }
 
+  validateField = (field) => {
+    if(field) return field;
+    return '';
+  }
+
   render() {
     const { data } = this.state;
     return (
@@ -208,32 +213,42 @@ class ClientsPanel extends Component {
                 {
                   Header: "Nombre",
                   id: "name",
-                  accessor: d => d.name
+                  accessor: d => this.validateField(d.name)
                 },
                 {
                   Header: "RFC/Razon social",
                   id: "rfc",
-                  accessor: d => d.rfc
+                  accessor: d => this.validateField(d.rfc)
                 },
                 {
                   Header: "Correo",
                   id: "email",
-                  accessor: d => d.contacts[0].email
+                  accessor: d => {
+                    if(d.contacts[0]){
+                      return d.contacts[0].email;
+                    }
+                    return '';
+                  }
                 },
                 {
                   Header: "Telefono",
                   id: "telephone",
-                  accessor: d => d.contacts[0].telephone
+                  accessor: d => {
+                    if(d.contacts[0]){
+                      return d.contacts[0].telephone;
+                    }
+                    return '';
+                  },
                 },
                 {
                   Header: "Estado",
                   id: "state",
-                  accessor: d => d.state
+                  accessor: d => this.validateField(d.state)
                 },
                 {
                   Header: "Ciudad",
                   id: "city",
-                  accessor: d => d.city
+                  accessor: d => this.validateField(d.city)
                 }
               ]
             }

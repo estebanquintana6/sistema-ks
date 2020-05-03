@@ -12,7 +12,7 @@ var InsuranceSchema = new Schema({
   },
   comments: {
     type: String,
-    required: true,
+    required: false,
     uppercase: true
   },
   insurance_company: {
@@ -31,7 +31,7 @@ var InsuranceSchema = new Schema({
   },
   abbreviation: {
     type: String,
-    required: true,
+    required: false,
     uppercase: true
   },
   policy: {
@@ -53,7 +53,7 @@ var InsuranceSchema = new Schema({
   },
   bounty: {
     type: Number,
-    required: true
+    required: false
   },
   payment_type: {
     type: String,
@@ -64,7 +64,7 @@ var InsuranceSchema = new Schema({
   currency: {
     type: String,
     enum: ['PESO', 'DOLAR'],
-    required: true,
+    required: false,
     uppercase: true
   },
   email: {
@@ -94,35 +94,35 @@ var InsuranceSchema = new Schema({
   // campos unicos de seguros de auto
   cis: {
     type: String,
-    required: () => this.insurance_type === "Auto",
+    required: () => false,
     uppercase: true,
     default: null
   },
   car_brand: {
     type: String,
-    required: () => this.insurance_type === "Auto",
+    required: () => false,
     uppercase: true,
     default: null
   },
   car_model: {
     type: String,
-    required: () => this.insurance_type === "Auto",
+    required: () => false,
     default: null
   },
   car_year: {
     type: Number,
-    required: () => this.insurance_type === "Auto",
+    required: () => false,
     default: null
   },
   car_description: {
     type: String,
-    required: () => this.insurance_type === "Auto",
+    required: () => false,
     uppercase: true,
     default: null
   },
   car_series_number: {
     type: String,
-    required: () => this.insurance_type === "Auto",
+    required: () => false,
     uppercase: true,
     default: null
   }
