@@ -82,10 +82,15 @@ var InsuranceSchema = new Schema({
     required: false,
     uppercase: false
   },
-  payment_status: {
+  active_status: {
     type: Boolean,
     required: true,
-    default: false
+    default: true
+  },
+  cancelation_note: {
+    type: String,
+    required: false,
+    uppercase: false
   },
   endorsements: {
     type: Array,

@@ -5,6 +5,16 @@ var Schema = mongoose.Schema;
 
 // Using Schema constructor, create a ProductSchema
 var InvoiceSchema = new Schema({
+  status: {
+    type: Boolean,
+    required: true,
+    default: true
+  },
+  payment_status: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
   invoice: {
     type: String,
     required: true

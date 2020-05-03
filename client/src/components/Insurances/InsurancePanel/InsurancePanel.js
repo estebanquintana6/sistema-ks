@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Container, Row } from 'react-bootstrap'
 import { connect } from "react-redux";
-import { createInsurance, deleteInsurance, updateInsurance, getInsurances } from "../../../actions/insuraceActions";
+import { createInsurance, deleteInsurance, updateInsurance, getInsurances, cancelInsurance, activateInsurance } from "../../../actions/insuraceActions";
 import { getClients } from "../../../actions/registerClient";
 import { getCompanies } from "../../../actions/companyActions";
 import { ExportClientCSV } from "../../ExportCSV/ExportCSV";
@@ -101,9 +101,19 @@ class InsurancePanel extends Component {
 
   getTrProps = (state, rowInfo, instance) => {
     if (rowInfo) {
+      if(!rowInfo.original.active_status){
+        return {
+          style: {
+            cursor: "pointer",
+            backgroundColor: "#ccc"
+          },
+          onClick: (e) => {
+            this.openModificationModal(rowInfo.original);
+          }
+        }      }
       return {
         style: {
-          cursor: "pointer"
+          cursor: "pointer",
         },
         onClick: (e) => {
           this.openModificationModal(rowInfo.original);
@@ -121,7 +131,9 @@ class InsurancePanel extends Component {
         clients={this.state.clients}
         companies={this.state.companies}
         updateInsurance={this.updateInsurance}
-        deleteInsurance={this.deleteInsurance}>
+        deleteInsurance={this.deleteInsurance}
+        cancelInsurance={this.cancelInsurance}
+        activateInsurance={this.activateInsurance}>
       </InsuranceModal>,
       buttons: false,
       title: `Póliza: ${insurance.policy}`
@@ -186,6 +198,45 @@ class InsurancePanel extends Component {
       });
   }
 
+  cancelInsurance = (insurance, note, e) => {
+    swal({
+      title: `¿Estas seguro de querer cancelar ${insurance.policy}?`,
+      text: `Nota de cancelación: ${note}`,
+      icon: "warning",
+      buttons: true,
+      sucessMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          this.confirmCancel(insurance._id, note);
+          swal("Tu poliza se ha cancelado!", {
+            icon: "success",
+          }).then(() =>{
+            this.refresh();
+          });
+        }
+      });  
+  }
+
+  activateInsurance = (insurance, e) => {
+    swal({
+      title: `¿Estas seguro de querer activar ${insurance.policy}?`,
+      icon: "warning",
+      buttons: true,
+      sucessMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          this.confirmActivation(insurance._id);
+          swal("Tu poliza se ha activado!", {
+            icon: "success",
+          }).then(() =>{
+            this.refresh();
+          });
+        }
+      });  
+  }
+
   deleteInsurance = (id, name, e) => {
     swal({
       title: `¿Estas seguro de querer eliminar a ${name}?`,
@@ -207,6 +258,14 @@ class InsurancePanel extends Component {
 
   confirmDelete = (id) => {
     this.props.deleteInsurance(id);
+  }
+
+  confirmCancel = (id, note) => {
+    this.props.cancelInsurance(id, note);
+  }
+
+  confirmActivation = (id) => {
+    this.props.activateInsurance(id);
   }
 
   render() {
@@ -390,5 +449,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getClients, getCompanies, createInsurance, deleteInsurance, updateInsurance, getInsurances }
+  { getClients, getCompanies, createInsurance, deleteInsurance, updateInsurance, getInsurances, cancelInsurance, activateInsurance }
 )(InsurancePanel);

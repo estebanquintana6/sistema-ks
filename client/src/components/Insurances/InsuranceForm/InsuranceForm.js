@@ -258,8 +258,7 @@ class InsuranceForm extends Component {
         <Row>
           <Col md="12" className="pull-right profile-right-section">
             <Row className="justify-content-md-center">
-            <Button variant="primary" type="submit">Guardar</Button>
-
+              <Button variant="primary" type="submit">Guardar</Button>
             </Row>
           </Col>
           <Col md="12">
@@ -440,6 +439,20 @@ class InsuranceForm extends Component {
                       <Form.Label>Comentarios</Form.Label>
                       <Form.Control as="textarea" onChange={this.onChange} value={this.state.comments} />
                     </Form.Group>
+                    {!this.state.active_status && 
+                      <>
+                        <Row>
+                          <h5 className="swal-title form-title align-left">NOTA DE CANCELACIÓN</h5>
+                        </Row>
+                        <Form.Group as={Col} controlId="cancelation_note" className={this.state.cancelation_note}>
+                          <Form.Label>Nota:</Form.Label>
+                          <Form.Control as="textarea" onChange={this.onChange} value={this.state.cancelation_note} />
+                        </Form.Group>
+                      </>
+                    }
+                    <Row>
+
+                    </Row>
                   </Col>
                 </Row>
               </div>

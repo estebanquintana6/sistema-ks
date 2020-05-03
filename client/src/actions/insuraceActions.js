@@ -59,3 +59,35 @@ export const deleteInsurance = (id) => dispatch => {
       return err;
     });
 }
+
+export const cancelInsurance = (id, note) => dispatch => {
+  const token = localStorage.getItem("jwtToken");
+  const data = {
+    id,
+    note,
+    token
+  }
+  return axios
+    .post("/api/insurances/" + id + "/cancel", data)
+    .then(res => {
+      return res;
+    }).catch(err => {
+      return err;
+    });
+}
+
+export const activateInsurance = (id) => dispatch => {
+  const token = localStorage.getItem("jwtToken");
+  const data = {
+    id,
+    token
+  }
+  
+  return axios
+    .post("/api/insurances/" + id + "/activate", data)
+    .then(res => {
+      return res;
+    }).catch(err => {
+      return err;
+    });
+}

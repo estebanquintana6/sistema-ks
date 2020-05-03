@@ -119,7 +119,6 @@ router.post("/update", (req, res) => {
 });
 
 router.post("/:id/delete", (req, res) => {
-  const body = req.body;
   const token = req.headers.authorization;
 
   jwt.verify(token, secretKey, function (err, _) {
@@ -137,6 +136,57 @@ router.post("/:id/delete", (req, res) => {
           })
 
           res.status(201).json({ message: "Elemento eliminado" });
+        });
+      }
+    });
+  });
+});
+
+
+router.post("/:id/cancel", (req, res) => {
+  const body = req.body;
+  const token = req.headers.authorization;
+
+  jwt.verify(token, secretKey, function (err, _) {
+    if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
+    Insurance.findOne({ _id: req.params.id }).then((company) => {
+      const exists = company;
+      if (exists) {
+        Insurance.updateOne({ _id: req.params.id }, {active_status: false, cancelation_note: body.note}).then((err, result) => {
+          if (err) res.status(500);
+
+          Invoice.find({insurance: req.params.id}).then((invoices, err) => {
+            invoices.map(invoice => {
+              Invoice.update({_id: invoice._id}, {status: false}).exec();
+            })
+          })
+
+          res.status(201).json({ message: "Elemento cancelado" });
+        });
+      }
+    });
+  });
+});
+
+router.post("/:id/activate", (req, res) => {
+  const body = req.body;
+  const token = req.headers.authorization;
+
+  jwt.verify(token, secretKey, function (err, _) {
+    if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
+    Insurance.findOne({ _id: req.params.id }).then((company) => {
+      const exists = company;
+      if (exists) {
+        Insurance.updateOne({ _id: req.params.id }, {active_status: true, cancelation_note: ""}).then((err, result) => {
+          if (err) res.status(500);
+
+          Invoice.find({insurance: req.params.id}).then((invoices, err) => {
+            invoices.map(invoice => {
+              Invoice.update({_id: invoice._id}, {status: true}).exec();
+            })
+          })
+
+          res.status(201).json({ message: "Elemento activado" });
         });
       }
     });
