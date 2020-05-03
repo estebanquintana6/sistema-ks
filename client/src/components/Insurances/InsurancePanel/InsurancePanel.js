@@ -212,6 +212,111 @@ class InsurancePanel extends Component {
   render() {
     const { data } = this.state;
     const { variant } = this.props;
+
+    const columns = [{
+      Header: "Datos",
+      columns: [
+        {
+          Header: "Razón",
+          id: "razon",
+          width: 100,
+          accessor: d => d.client.person_type
+        },
+        {
+          Header: "Cliente",
+          id: "client",
+          accessor: d => d.client.name
+        },
+        {
+          Header: "Aseguradora",
+          id: "insurance_company",
+          width: 100,
+          accessor: d => d.insurance_company.name
+        },
+        {
+          Header: "Poliza",
+          id: "policy",
+          accessor: d => d.policy
+        },
+        {
+          Header: "Fecha inicio",
+          id: "begin_date",
+          width: 130,
+          accessor: d => formatShortDate(d.begin_date),
+          filterable: false
+        },
+        {
+          Header: "Fecha pago",
+          id: "pay_due_date",
+          accessor: d => formatShortDate(d.pay_due_date),
+          width: 300,
+          Filter: ({filter, onChange}) => (
+            <DateRangePicker
+              startDateId="start2"
+              endDateId="end2"
+              startDate={this.state.payDueDateStartDate}
+              endDate={this.state.payDueDateEndDate}
+              onDatesChange={({ startDate, endDate }) => {
+                this.setState({ payDueDateStartDate: startDate, payDueDateEndDate: endDate }); 
+                onChange({startDate, endDate});}}
+              focusedInput={this.state.focusedInput2}
+              onFocusChange={focusedInput => this.setState({ focusedInput2: focusedInput })}
+              isOutsideRange={() => false}
+              withPortal={true}
+              showClearDates={true}
+            />
+          ),
+          filterMethod: (filter, row) => {
+            if (filter.value.startDate === null || filter.value.endDate === null) {
+              // Incomplet or cleared date picker
+              return true
+            }
+            const res = row[filter.id] !== undefined ? moment(row[filter.id], 'DD/MM/YYYY').clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
+            return res
+          }
+        },
+        {
+          Header: "Fecha vto.",
+          id: "due_date",
+          accessor: d => formatShortDate(d.due_date),
+          width: 300,
+          Filter: ({filter, onChange}) => (
+            <DateRangePicker
+              startDateId="start3"
+              endDateId="end3"
+              startDate={this.state.dueDateStartDate}
+              endDate={this.state.dueDateEndDate}
+              onDatesChange={({ startDate, endDate }) => {
+                this.setState({ dueDateStartDate: startDate, dueDateEndDate: endDate }); 
+                onChange({startDate, endDate});}}
+              focusedInput={this.state.focusedInput3}
+              onFocusChange={focusedInput => this.setState({ focusedInput3: focusedInput })}
+              isOutsideRange={() => false}
+              withPortal={true}
+              showClearDates={true}
+            />
+          ),
+          filterMethod: (filter, row) => {
+            if (filter.value.startDate === null || filter.value.endDate === null) {
+              // Incomplet or cleared date picker
+              return true
+            }
+            const res = row[filter.id] !== undefined ? moment(row[filter.id], 'DD/MM/YYYY').clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
+            return res
+          }
+        }
+      ]
+    }
+    ];
+
+    if (variant === "AUTOS"){
+      columns.push({
+        Header: "No. serie",
+          id: "car_series_number",
+          accessor: d => d.car_series_number
+      })
+    }
+
     return (
       <React.Fragment>
         <Container fluid className="mt-4">
@@ -256,101 +361,7 @@ class InsurancePanel extends Component {
                 }
               }
             }}
-            columns={[{
-              Header: "Datos",
-              columns: [
-                {
-                  Header: "Razón",
-                  id: "razon",
-                  width: 100,
-                  accessor: d => d.client.person_type
-                },
-                {
-                  Header: "Cliente",
-                  id: "client",
-                  accessor: d => d.client.name
-                },
-                {
-                  Header: "Aseguradora",
-                  id: "insurance_company",
-                  width: 130,
-                  accessor: d => d.insurance_company.name
-                },
-                {
-                  Header: "Poliza",
-                  id: "policy",
-                  accessor: d => d.policy
-                },
-                {
-                  Header: "Fecha inicio",
-                  id: "begin_date",
-                  width: 130,
-                  accessor: d => formatShortDate(d.begin_date),
-                  filterable: false
-                },
-                {
-                  Header: "Fecha pago",
-                  id: "pay_due_date",
-                  accessor: d => formatShortDate(d.pay_due_date),
-                  width: 330,
-                  Filter: ({filter, onChange}) => (
-                    <DateRangePicker
-                      startDateId="start2"
-                      endDateId="end2"
-                      startDate={this.state.payDueDateStartDate}
-                      endDate={this.state.payDueDateEndDate}
-                      onDatesChange={({ startDate, endDate }) => {
-                        this.setState({ payDueDateStartDate: startDate, payDueDateEndDate: endDate }); 
-                        onChange({startDate, endDate});}}
-                      focusedInput={this.state.focusedInput2}
-                      onFocusChange={focusedInput => this.setState({ focusedInput2: focusedInput })}
-                      isOutsideRange={() => false}
-                      withPortal={true}
-                      showClearDates={true}
-                    />
-                  ),
-                  filterMethod: (filter, row) => {
-                    if (filter.value.startDate === null || filter.value.endDate === null) {
-                      // Incomplet or cleared date picker
-                      return true
-                    }
-                    const res = row[filter.id] !== undefined ? moment(row[filter.id], 'DD/MM/YYYY').clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
-                    return res
-                  }
-                },
-                {
-                  Header: "Fecha vto.",
-                  id: "due_date",
-                  accessor: d => formatShortDate(d.due_date),
-                  width: 330,
-                  Filter: ({filter, onChange}) => (
-                    <DateRangePicker
-                      startDateId="start3"
-                      endDateId="end3"
-                      startDate={this.state.dueDateStartDate}
-                      endDate={this.state.dueDateEndDate}
-                      onDatesChange={({ startDate, endDate }) => {
-                        this.setState({ dueDateStartDate: startDate, dueDateEndDate: endDate }); 
-                        onChange({startDate, endDate});}}
-                      focusedInput={this.state.focusedInput3}
-                      onFocusChange={focusedInput => this.setState({ focusedInput3: focusedInput })}
-                      isOutsideRange={() => false}
-                      withPortal={true}
-                      showClearDates={true}
-                    />
-                  ),
-                  filterMethod: (filter, row) => {
-                    if (filter.value.startDate === null || filter.value.endDate === null) {
-                      // Incomplet or cleared date picker
-                      return true
-                    }
-                    const res = row[filter.id] !== undefined ? moment(row[filter.id], 'DD/MM/YYYY').clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
-                    return res
-                  }
-                }
-              ]
-            }
-            ]}
+            columns={columns}
             defaultPageSize={10}
             className="-striped -highlight"
             getTrProps={this.getTrProps}

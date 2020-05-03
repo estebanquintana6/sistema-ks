@@ -257,7 +257,9 @@ class InsuranceForm extends Component {
       <Form onSubmit={this.onSubmit}>
         <Row>
           <Col md="12" className="pull-right profile-right-section">
-            <Row className="profile-right-section-row">
+            <Row className="justify-content-md-center">
+            <Button variant="primary" type="submit">Guardar</Button>
+
             </Row>
           </Col>
           <Col md="12">
@@ -307,14 +309,14 @@ class InsuranceForm extends Component {
                     <Form.Row>
                       {! this.props.edit &&<Form.Group as={Col} md="6" controlId="abbreviation">
                         <Form.Label>Clave</Form.Label>
-                        <Form.Control required as="select" onChange={this.onChange} value={this.state.abbreviation}>
+                        <Form.Control as="select" onChange={this.onChange} value={this.state.abbreviation}>
                           <option></option>
                           {this.companyOptions().map((abbr) => <option value={abbr.name}>{abbr.name}</option>)}
                         </Form.Control>
                       </Form.Group>}
                       <Form.Group as={Col} md="6" controlId="policy">
                         <Form.Label>No. de póliza</Form.Label>
-                        <Form.Control required onChange={this.onChange} value={this.state.policy}>
+                        <Form.Control onChange={this.onChange} value={this.state.policy}>
                         </Form.Control>
                       </Form.Group>
                     </Form.Row>
@@ -341,12 +343,12 @@ class InsuranceForm extends Component {
                     <Form.Row>
                       <Form.Group as={Col} md="4" controlId="bounty">
                         <Form.Label>Prima Total</Form.Label>
-                        <Form.Control required type="number" onChange={this.onChange} value={this.state.bounty}>
+                        <Form.Control type="number" onChange={this.onChange} value={this.state.bounty}>
                         </Form.Control>
                       </Form.Group>
                       <Form.Group as={Col} md="4" controlId="payment_type">
                         <Form.Label>Forma de pago</Form.Label>
-                        <Form.Control required as="select" onChange={this.onInvoicesChange} value={this.state.payment_type}>
+                        <Form.Control as="select" onChange={this.onInvoicesChange} value={this.state.payment_type}>
                           <option></option>
                           <option value="ANUAL">Anual</option>
                           <option value="SEMESTRAL">Semestral</option>
@@ -356,7 +358,7 @@ class InsuranceForm extends Component {
                       </Form.Group>
                       <Form.Group as={Col} md="4" controlId="currency">
                         <Form.Label>Moneda</Form.Label>
-                        <Form.Control required as="select" onChange={this.onChange} value={this.state.currency}>
+                        <Form.Control as="select" onChange={this.onChange} value={this.state.currency}>
                           <option></option>
                           <option value="PESO">Peso</option>
                           <option value="DOLAR">Dólar</option>
@@ -373,12 +375,12 @@ class InsuranceForm extends Component {
                         <Form.Row>
                           <Form.Group as={Col} md="6" controlId="cis">
                             <Form.Label>CIS</Form.Label>
-                            <Form.Control required onChange={this.onChange} value={this.state.cis}>
+                            <Form.Control onChange={this.onChange} value={this.state.cis}>
                             </Form.Control>
                           </Form.Group>
                           <Form.Group as={Col} md="6" controlId="car_model">
                             <Form.Label>Modelo</Form.Label>
-                            <Form.Control required onChange={this.onChange} value={this.state.car_model}>
+                            <Form.Control onChange={this.onChange} value={this.state.car_model}>
                             </Form.Control>
                           </Form.Group>
                         </Form.Row>
@@ -386,7 +388,7 @@ class InsuranceForm extends Component {
                         <Form.Row>
                           <Form.Group as={Col} md="6" controlId="car_brand">
                             <Form.Label>Marca</Form.Label>
-                            <Form.Control required as="select" onChange={this.onChange} value={this.state.car_brand}>
+                            <Form.Control as="select" onChange={this.onChange} value={this.state.car_brand}>
                               <option></option>
                               <option value="VOLKSWAGEN">VOLKSWAGEN</option>
                               <option value="MITSUBISHI">MITSUBISHI</option>
@@ -409,7 +411,7 @@ class InsuranceForm extends Component {
                           </Form.Group>
                           <Form.Group as={Col} md="6" controlId="car_year">
                             <Form.Label>Año</Form.Label>
-                            <Form.Control required as="select" onChange={this.onChange} value={this.state.car_year}>
+                            <Form.Control as="select" onChange={this.onChange} value={this.state.car_year}>
                               <option></option>
                               {this.composeCarYears().map(year => <option value={year}>{year}</option>)}
                             </Form.Control>
@@ -419,12 +421,12 @@ class InsuranceForm extends Component {
                         <Form.Row>
                           <Form.Group as={Col} md="6" controlId="car_description">
                             <Form.Label>Descripción</Form.Label>
-                            <Form.Control required onChange={this.onChange} value={this.state.car_description}>
+                            <Form.Control onChange={this.onChange} value={this.state.car_description}>
                             </Form.Control>
                           </Form.Group>
                           <Form.Group as={Col} md="6" controlId="car_series_number">
                             <Form.Label>No. Serie</Form.Label>
-                            <Form.Control required onChange={this.onChange} value={this.state.car_series_number}>
+                            <Form.Control onChange={this.onChange} value={this.state.car_series_number}>
                             </Form.Control>
                           </Form.Group>
                         </Form.Row>
@@ -473,8 +475,6 @@ class InsuranceForm extends Component {
                     </Form.Row>
                   );
                 })}
-
-                <Button variant="primary" type="submit">Guardar</Button>
               </div>
               <div role="tabpanel" className="tab-pane fade" id="endor">
                 <Row>
@@ -507,9 +507,6 @@ class InsuranceForm extends Component {
                       </Form.Row>
                     );
                 })}
-                <Row className="justify-content-md-center mt-3">
-                  <Button variant="primary" type="submit">Guardar</Button>
-                </Row>
               </div>
             </div>
           </Col>
