@@ -439,7 +439,7 @@ class InsuranceForm extends Component {
                       <Form.Label>Comentarios</Form.Label>
                       <Form.Control as="textarea" onChange={this.onChange} value={this.state.comments} />
                     </Form.Group>
-                    {!this.state.active_status && 
+                    {this.state.active_status === false && 
                       <>
                         <Row>
                           <h5 className="swal-title form-title align-left">NOTA DE CANCELACIÓN</h5>
