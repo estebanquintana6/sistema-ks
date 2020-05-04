@@ -47,9 +47,11 @@ router.post("/bulk", (req, res) => {
                     delete car.client;
                     delete car.insurance_company;
                     
-                    let due_date = new Date(car.due_date);
-                    let begin_date = substractYears(due_date, 1);
-                    let pay_due_date = begin_date.addDays(30);
+                    const due_date = new Date(car.due_date);
+                    const begin_date = substractYears(due_date, 1);
+                    const pay_due_date = begin_date.addDays(30);
+
+                    console.log();
                     
                     Insurance.findOne({ policy: car.policy}).then((insurance) => {
                         if(!insurance){
@@ -57,6 +59,7 @@ router.post("/bulk", (req, res) => {
                                 client: clientId,
                                 insurance_company: company._id,
                                 policy: car.policy,
+                                colective_insurance: !!car.type,
                                 payment_type: car.payment_type,
                                 insurance_type: "AUTOS",
                                 due_date: car.due_date,

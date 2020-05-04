@@ -49,8 +49,8 @@ var j = schedule.scheduleJob('*/5 * * * * *', function(){
                 else if(isToday(pay_limit)) return invoice;
             }).map((invoice) => {
                 const lang = invoice.client.languages
-                if (lang !== 'Coreano') func(invoice, users, 'Español')
-                if (lang !== 'Español') func(invoice, users, 'Coreano')
+                if (lang !== 'Coreano') //func(invoice, users, 'Español')
+                if (lang !== 'Español') //func(invoice, users, 'Coreano')
                 console.log(invoice._id);
             });
         })

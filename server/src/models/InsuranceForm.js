@@ -25,6 +25,11 @@ var InsuranceSchema = new Schema({
     ref: 'Invoices',
     required: false
   }],
+  colective_insurance: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
   insurance_type: {
     type: String,
     required: true
