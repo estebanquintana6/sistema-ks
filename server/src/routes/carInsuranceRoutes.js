@@ -50,8 +50,6 @@ router.post("/bulk", (req, res) => {
                     const due_date = new Date(car.due_date);
                     const begin_date = substractYears(due_date, 1);
                     const pay_due_date = begin_date.addDays(30);
-
-                    console.log();
                     
                     Insurance.findOne({ policy: car.policy}).then((insurance) => {
                         if(!insurance){

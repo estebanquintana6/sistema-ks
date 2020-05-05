@@ -81,6 +81,14 @@ class Dashboard extends Component {
             <Route exact path="/dashboard/gm">
               <InsurancePanel history={this.props.history} variant="GM"></InsurancePanel>
             </Route>
+            <Route exact path="/dashboard/gm/upload">
+              <UploadPanel 
+              history={this.props.history}
+              type="GMM"
+              resultKeys={['no', 'person_type', 'name', 'rfc', 'policy', 'product', 'colective_type', 'coin', 'due_date', 'receipt_type','payment_type', 'contact', 'email', 'telephone', 'insurance_company']}
+              originalKeys={['NO','TIPO DE PERSONA','CONTRATANTE','RFC','POLIZA','PRODUCTO','TIPO DE POLIZA','MONEDA','FECHA DE VENCIMIENTO','TIPO DE RECIBO','TIPO DE PAGO','CONTACTO','MAIL','TELEFONO','ASEGURADORA']}
+              ></UploadPanel>
+            </Route>
             <Route exact path="/dashboard/transporte">
               <InsurancePanel history={this.props.history} variant="TRANSPORTE"></InsurancePanel>
             </Route>
