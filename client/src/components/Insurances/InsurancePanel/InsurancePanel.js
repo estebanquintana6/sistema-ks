@@ -289,12 +289,24 @@ class InsurancePanel extends Component {
           Header: "Razón",
           id: "razon",
           width: 100,
-          accessor: d => this.validateField(d.client.person_type)
+          accessor: d => {
+            if(d.client){
+              return this.validateField(d.client.person_type)
+            } else {
+              return '';
+            }
+          }
         },
         {
           Header: "Cliente",
           id: "client",
-          accessor: d => this.validateField(d.client.name)
+          accessor: d => {
+            if(d.client){
+              this.validateField(d.client.name)
+            } else {
+              return '';
+            }
+          }
         },
         {
           Header: "Aseguradora",
