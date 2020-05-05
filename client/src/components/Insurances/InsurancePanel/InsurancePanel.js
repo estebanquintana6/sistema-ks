@@ -261,6 +261,11 @@ class InsurancePanel extends Component {
       });
   }
 
+  validateField = (field) => {
+    if(field) return field;
+    return '';
+  }
+
   confirmDelete = (id) => {
     this.props.deleteInsurance(id);
   }
@@ -284,23 +289,23 @@ class InsurancePanel extends Component {
           Header: "Razón",
           id: "razon",
           width: 100,
-          accessor: d => d.client.person_type
+          accessor: d => this.validateField(d.client.person_type)
         },
         {
           Header: "Cliente",
           id: "client",
-          accessor: d => d.client.name
+          accessor: d => this.validateField(d.client.name)
         },
         {
           Header: "Aseguradora",
           id: "insurance_company",
           width: 100,
-          accessor: d => d.insurance_company.name
+          accessor: d => this.validateField(d.insurance_company.name)
         },
         {
           Header: "Poliza",
           id: "policy",
-          accessor: d => d.policy
+          accessor: d => this.validateField(d.policy)
         },
         {
           Header: "Fecha inicio",
