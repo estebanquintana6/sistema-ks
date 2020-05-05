@@ -302,7 +302,7 @@ class InsurancePanel extends Component {
           id: "client",
           accessor: d => {
             if(d.client){
-              this.validateField(d.client.name)
+              return this.validateField(d.client.name)
             } else {
               return '';
             }
