@@ -193,4 +193,24 @@ router.post("/:id/activate", (req, res) => {
   });
 });
 
+
+router.post("/:id/payStatus", (req, res) => {
+  const token = req.headers.authorization;
+  jwt.verify(token, secretKey, function (err, _) {
+    if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
+    Insurance.findOne({ _id: req.params.id }).then((insurance) => {
+      if(insurance.pay_status === "PENDIENTE") {
+        insurance.pay_status = "PAGADO";
+        insurance.save();
+        res.status(201).json({ message: "Elemento cambiado" });
+      } else if (insurance.pay_status === "PAGADO"){
+        insurance.pay_status = "PENDIENTE";
+        insurance.save();
+        res.status(201).json({ message: "Elemento cambiado" });
+      }
+    });
+  });
+});
+
+
 module.exports = router;

@@ -71,26 +71,35 @@ class InsuranceModal extends Component {
       < Container >
         <React.Fragment>
           <Row>
-            <Col>
-              <Button variant="info" onClick={this.editInsurance.bind(this, insurance)}><i className="fas fa-eye"/></Button>
+            <Col md="12">
+              <Button variant="info" className="button-modal" onClick={this.editInsurance.bind(this, insurance)}>VER POLIZA</Button>
             </Col>
-            { insurance.active_status &&
-            <Col>
-              <Button variant="warning" onClick={this.cancelInsurance.bind(this, insurance)}>CANCELAR</Button>
+          </Row>
+
+          <Row className="mt-2">
+            <Col md="12">
+              <Button variant="success" className="button-modal" onClick={this.props.changePayStatus.bind(this, insurance)}>CAMBIAR STATUS PAGO</Button>
+            </Col>  
+          </Row>
+          <Row className="mt-2">
+          { insurance.active_status &&
+            <Col md="12">
+              <Button variant="warning" className="button-modal" onClick={this.cancelInsurance.bind(this, insurance)}>CANCELAR POLIZA</Button>
             </Col>
             }
             { !insurance.active_status && 
-              <Col>
-              <Button variant="success" onClick={this.props.activateInsurance.bind(this, insurance)}>ACTIVAR</Button>
+              <Col md="12">
+              <Button variant="success" className="button-modal" onClick={this.props.activateInsurance.bind(this, insurance)}>ACTIVAR POLIZA</Button>
               </Col>            
             }
-            <Col>
-              <Button variant="danger" onClick={this.props.deleteInsurance.bind(this, insurance._id, insurance.policy)}><i className="fas fa-trash"/></Button>
+          </Row>
+
+          <Row className="mt-2">
+             <Col md="12">
+              <Button variant="danger" className="button-modal" onClick={this.props.deleteInsurance.bind(this, insurance._id, insurance.policy)}>ELIMINAR POLIZA</Button>
             </Col>
           </Row>
-          <Row className="mt-4">
 
-          </Row>
         </React.Fragment>
       </Container >
     )

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Container, Row } from 'react-bootstrap'
 import { connect } from "react-redux";
-import { createInsurance, deleteInsurance, updateInsurance, getInsurances, cancelInsurance, activateInsurance } from "../../../actions/insuraceActions";
+import { createInsurance, deleteInsurance, updateInsurance, getInsurances, cancelInsurance, activateInsurance, changePayStatus } from "../../../actions/insuraceActions";
 import { getClients } from "../../../actions/registerClient";
 import { getCompanies } from "../../../actions/companyActions";
 import { ExportClientCSV } from "../../ExportCSV/ExportCSV";
@@ -138,7 +138,8 @@ class InsurancePanel extends Component {
         updateInsurance={this.updateInsurance}
         deleteInsurance={this.deleteInsurance}
         cancelInsurance={this.cancelInsurance}
-        activateInsurance={this.activateInsurance}>
+        activateInsurance={this.activateInsurance}
+        changePayStatus={this.changePayStatus}>
       </InsuranceModal>,
       buttons: false,
       title: `Póliza: ${insurance.policy}`
@@ -242,6 +243,25 @@ class InsurancePanel extends Component {
       });  
   }
 
+  changePayStatus = (insurance, e) => {
+    swal({
+      title: `¿Estas seguro de querer cambiar el estatus de pago de ${insurance.policy}?`,
+      icon: "warning",
+      buttons: true,
+      sucessMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          this.confirmPayChange(insurance._id);
+          swal("Tu poliza ha cambiado!", {
+            icon: "success",
+          }).then(() =>{
+            this.refresh();
+          });
+        }
+      });  
+  }
+
   deleteInsurance = (id, name, e) => {
     swal({
       title: `¿Estas seguro de querer eliminar a ${name}?`,
@@ -276,6 +296,10 @@ class InsurancePanel extends Component {
 
   confirmActivation = (id) => {
     this.props.activateInsurance(id);
+  }
+
+  confirmPayChange = (id) => {
+    this.props.changePayStatus(id);
   }
 
   render() {
@@ -458,5 +482,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getClients, getCompanies, createInsurance, deleteInsurance, updateInsurance, getInsurances, cancelInsurance, activateInsurance }
+  { getClients, getCompanies, createInsurance, deleteInsurance, updateInsurance, getInsurances, cancelInsurance, activateInsurance, changePayStatus }
 )(InsurancePanel);

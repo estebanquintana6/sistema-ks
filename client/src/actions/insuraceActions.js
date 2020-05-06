@@ -91,3 +91,19 @@ export const activateInsurance = (id) => dispatch => {
       return err;
     });
 }
+
+export const changePayStatus = (id) => dispatch => {
+  const token = localStorage.getItem("jwtToken");
+  const data = {
+    id,
+    token
+  }
+  
+  return axios
+    .post("/api/insurances/" + id + "/payStatus", data)
+    .then(res => {
+      return res;
+    }).catch(err => {
+      return err;
+    });
+}
