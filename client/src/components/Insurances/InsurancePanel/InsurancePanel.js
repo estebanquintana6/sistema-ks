@@ -286,18 +286,6 @@ class InsurancePanel extends Component {
       Header: "Datos",
       columns: [
         {
-          Header: "Razón",
-          id: "razon",
-          width: 100,
-          accessor: d => {
-            if(d.client){
-              return this.validateField(d.client.person_type)
-            } else {
-              return '';
-            }
-          }
-        },
-        {
           Header: "Cliente",
           id: "client",
           accessor: d => {
@@ -389,14 +377,6 @@ class InsurancePanel extends Component {
       ]
     }
     ];
-
-    if (variant === "AUTOS"){
-      columns.push({
-        Header: "No. serie",
-          id: "car_series_number",
-          accessor: d => d.car_series_number
-      })
-    }
 
     return (
       <React.Fragment>
