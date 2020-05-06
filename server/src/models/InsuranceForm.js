@@ -66,6 +66,12 @@ var InsuranceSchema = new Schema({
     required: true,
     uppercase: true
   },
+  pay_status: {
+    type: String,
+    enum: ['PENDIENTE', 'PAGADO'],
+    required: false,
+    default: 'PENDIENTE',
+  },
   currency: {
     type: String,
     enum: ['PESO', 'DOLAR'],

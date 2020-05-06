@@ -373,7 +373,13 @@ class InsurancePanel extends Component {
             const res = row[filter.id] !== undefined ? moment(row[filter.id], 'DD/MM/YYYY').clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
             return res
           }
-        }
+        },
+        {
+          Header: "Estatus de pago",
+          id: "pay_status",
+          width: 100,
+          accessor: d => this.validateField(d.pay_status)
+        },
       ]
     }
     ];
