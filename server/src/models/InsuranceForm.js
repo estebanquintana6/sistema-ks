@@ -114,11 +114,6 @@ var InsuranceSchema = new Schema({
     uppercase: true,
     default: null
   },
-  car_model: {
-    type: String,
-    required: () => false,
-    default: null
-  },
   car_year: {
     type: Number,
     required: () => false,

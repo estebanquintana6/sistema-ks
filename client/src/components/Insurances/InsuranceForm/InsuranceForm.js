@@ -372,14 +372,9 @@ class InsuranceForm extends Component {
                           <h5 className="swal-title form-title align-left">DATOS AUTO</h5>
                         </Row>
                         <Form.Row>
-                          <Form.Group as={Col} md="6" controlId="cis">
+                          <Form.Group as={Col} md="12" controlId="cis">
                             <Form.Label>CIS</Form.Label>
                             <Form.Control onChange={this.onChange} value={this.state.cis}>
-                            </Form.Control>
-                          </Form.Group>
-                          <Form.Group as={Col} md="6" controlId="car_model">
-                            <Form.Label>Modelo</Form.Label>
-                            <Form.Control onChange={this.onChange} value={this.state.car_model}>
                             </Form.Control>
                           </Form.Group>
                         </Form.Row>
