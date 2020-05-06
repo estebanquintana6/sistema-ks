@@ -315,7 +315,7 @@ class InsurancePanel extends Component {
           filterable: false
         },
         {
-          Header: "Fecha vto.",
+          Header: "Fecha vencimiento",
           id: "due_date",
           accessor: d => formatShortDate(d.due_date),
           width: 300,
