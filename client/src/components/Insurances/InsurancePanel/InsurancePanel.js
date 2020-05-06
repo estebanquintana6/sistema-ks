@@ -375,7 +375,7 @@ class InsurancePanel extends Component {
           }
         },
         {
-          Header: "Estatus de pago",
+          Header: "Pago",
           id: "pay_status",
           width: 100,
           accessor: d => this.validateField(d.pay_status)
