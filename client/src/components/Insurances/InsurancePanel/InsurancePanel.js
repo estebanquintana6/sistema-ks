@@ -305,6 +305,7 @@ class InsurancePanel extends Component {
         {
           Header: "Poliza",
           id: "policy",
+          width: 140,
           accessor: d => this.validateField(d.policy)
         },
         {
