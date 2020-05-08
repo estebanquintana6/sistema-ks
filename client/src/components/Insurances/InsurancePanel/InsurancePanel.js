@@ -311,12 +311,13 @@ class InsurancePanel extends Component {
         {
           Header: "Aseguradora",
           id: "insurance_company",
-          width: 100,
+          width: 120,
           accessor: d => this.validateField(d.insurance_company.name)
         },
         {
           Header: "Cliente",
           id: "client",
+          width: 300,
           accessor: d => {
             if(d.client){
               return this.validateField(d.client.name)
@@ -332,6 +333,12 @@ class InsurancePanel extends Component {
           accessor: d => this.validateField(d.policy)
         },
         {
+          Header: "Forma de pago",
+          id: "payment_type",
+          width: 140,
+          accessor: d => this.validateField(d.payment_type)
+        },
+        {
           Header: "Fecha inicio",
           id: "begin_date",
           width: 130,
@@ -342,7 +349,7 @@ class InsurancePanel extends Component {
           Header: "Fecha vencimiento",
           id: "due_date",
           accessor: d => formatShortDate(d.due_date),
-          width: 300,
+          width: 350,
           Filter: ({filter, onChange}) => (
             <DateRangePicker
               startDateId="start3"
@@ -369,39 +376,8 @@ class InsurancePanel extends Component {
           }
         },
         {
-          Header: "Fecha pago",
-          id: "pay_due_date",
-          accessor: d => formatShortDate(d.pay_due_date),
-          width: 300,
-          Filter: ({filter, onChange}) => (
-            <DateRangePicker
-              startDateId="start2"
-              endDateId="end2"
-              startDate={this.state.payDueDateStartDate}
-              endDate={this.state.payDueDateEndDate}
-              onDatesChange={({ startDate, endDate }) => {
-                this.setState({ payDueDateStartDate: startDate, payDueDateEndDate: endDate }); 
-                onChange({startDate, endDate});}}
-              focusedInput={this.state.focusedInput2}
-              onFocusChange={focusedInput => this.setState({ focusedInput2: focusedInput })}
-              isOutsideRange={() => false}
-              withPortal={true}
-              showClearDates={true}
-            />
-          ),
-          filterMethod: (filter, row) => {
-            if (filter.value.startDate === null || filter.value.endDate === null) {
-              // Incomplet or cleared date picker
-              return true
-            }
-            const res = row[filter.id] !== undefined ? moment(row[filter.id], 'DD/MM/YYYY').clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
-            return res
-          }
-        },
-        {
-          Header: "Pago",
+          Header: "Status",
           id: "pay_status",
-          width: 100,
           accessor: d => this.validateField(d.pay_status)
         },
       ]
