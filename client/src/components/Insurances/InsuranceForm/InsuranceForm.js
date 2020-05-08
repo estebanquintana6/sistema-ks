@@ -19,7 +19,7 @@ class InsuranceForm extends Component {
       invoices: [],
       endorsements: [],
       begin_date: moment().startOf('day').format('YYYY-MM-DD'),
-      due_date: moment().startOf('day').format('YYYY-MM-DD'),
+      due_date: moment().clone().add(1, 'year').startOf('day').format('YYYY-MM-DD'),
       pay_due_date: moment().startOf('day').format('YYYY-MM-DD'),
       company_abbreviations: {}
     };
