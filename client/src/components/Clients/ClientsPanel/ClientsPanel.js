@@ -7,6 +7,7 @@ import swal from '@sweetalert/with-react';
 
 import ClientsForm from "../ClientsForm/ClientsForm";
 import ClientModal from '../ClientModal/ClientModal'
+import { ExportDataToCSV } from "../../ExportCSV/ExportCSV";
 
 // Import React Table
 import ReactTable from "react-table";
@@ -24,7 +25,21 @@ class ClientsPanel extends Component {
     this.state = {
       filtered: [],
       select2: undefined,
-      data: []
+      data: [],
+      fieldTranslation: {
+        comments: "Comentarios",
+        contacts: "Contacto ",
+        email: "Correo",
+        name: "Nombre",
+        observation: "Observaciones",
+        telephone: "Teléfono",
+        created_at: "Fecha de alta",
+        languages: "Lenguajes",
+        name: "Nombre",
+        person_type: "Tipo de Persona",
+        rfc: "RFC"
+      },
+      excludedFields: ['__v', '_id']
     };
   }
 
@@ -259,6 +274,7 @@ class ClientsPanel extends Component {
           />
           </div>
         </Container>
+        <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields}></ExportDataToCSV>
       </React.Fragment>
     );
   }

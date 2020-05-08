@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import { createInsurance, deleteInsurance, updateInsurance, getInsurances, cancelInsurance, activateInsurance, changePayStatus } from "../../../actions/insuraceActions";
 import { getClients } from "../../../actions/registerClient";
 import { getCompanies } from "../../../actions/companyActions";
-import { ExportClientCSV } from "../../ExportCSV/ExportCSV";
 import swal from '@sweetalert/with-react';
 
 import InsuranceForm from "../InsuranceForm/InsuranceForm";
@@ -460,7 +459,7 @@ class InsurancePanel extends Component {
           />
           <div className="row">
             <div className="col-md-4 center mt-4">
-              <ExportClientCSV csvData={this.state.data} fileName="reporteClientes" />
+              {/* <ExportClientCSV csvData={this.state.data} fileName="reporteClientes" /> */}
             </div>
           </div>
 
