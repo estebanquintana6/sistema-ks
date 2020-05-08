@@ -44,6 +44,11 @@ var Client = new Schema({
     type: String,
     required: false,
     uppercase: true
+  },
+  postal_code: {
+    type: String,
+    required: false,
+    uppercase: true
   }
 }, {
   collection: 'Clients'

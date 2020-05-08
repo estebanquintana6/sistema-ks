@@ -256,14 +256,9 @@ class ClientsPanel extends Component {
                   },
                 },
                 {
-                  Header: "Estado",
-                  id: "state",
-                  accessor: d => this.validateField(d.state)
-                },
-                {
-                  Header: "Ciudad",
-                  id: "city",
-                  accessor: d => this.validateField(d.city)
+                  Header: "Código postal",
+                  id: "postal_code",
+                  accessor: d => this.validateField(d.postal_code)
                 }
               ]
             }

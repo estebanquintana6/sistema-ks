@@ -143,13 +143,64 @@ class ClientsForm extends Component {
                 </Form.Row>
 
                 <Form.Row>
-                  <Form.Group as={Col} controlId="rfc" className={this.state.showRazonSocial}>
+                  <Form.Group as={Col} md="8" controlId="rfc" className={this.state.showRazonSocial}>
                     <Form.Label>{this.getPersonTypeId()}</Form.Label>
                     <Form.Control required onChange={this.onChange} value={this.state.rfc} />
                   </Form.Group>
+                </Form.Row>
+                <Form.Row>
+                    <Form.Group as={Col} controlId="state">
+                      <Form.Label>Estado</Form.Label>
+                      <Form.Control as="select" onChange={this.onChange} value={this.state.state}>
+                        <option></option>
+                        <option value="AGUASCALIENTES">Aguascalientes</option>
+                        <option value="BAJA CALIFORNIA">Baja California</option>
+                        <option value="BAJA CALIFORNIA SUR">Baja California Sur</option>
+                        <option value="CAMPECHE">Campeche</option>
+                        <option value="CHIAPAS">Chiapas</option>
+                        <option value="CHIHUAHUA">Chihuahua</option>
+                        <option value="CDMX">Ciudad de México</option>
+                        <option value="COAHUILA">Coahuila</option>
+                        <option value="COLIMA">Colima</option>
+                        <option value="DURANGO">Durango</option>
+                        <option value="ESTADO DE MEXICO">Estado de México</option>
+                        <option value="GUANAJUATO">Guanajuato</option>
+                        <option value="GUERRERO">Guerrero</option>
+                        <option value="HIDALGO">Hidalgo</option>
+                        <option value="JALISCO">Jalisco</option>
+                        <option value="MICHOACAN">Michoacán</option>
+                        <option value="MORELOS">Morelos</option>
+                        <option value="NAYARIT">Nayarit</option>
+                        <option value="NUEVO LEON">Nuevo León</option>
+                        <option value="OAXACA">Oaxaca</option>
+                        <option value="PUEBLA">Puebla</option>
+                        <option value="QUERETARO">Querétaro</option>
+                        <option value="QUINTANA ROO">Quintana Roo</option>
+                        <option value="SAN LUIS POTOSI">San Luis Potosí</option>
+                        <option value="SINALOA">Sinaloa</option>
+                        <option value="SONORA">Sonora</option>
+                        <option value="TABASCO">Tabasco</option>
+                        <option value="TAMAULIPAS">Tamaulipas</option>
+                        <option value="TLAXCALA">Tlaxcala</option>
+                        <option value="VERACRUZ">Veracruz</option>
+                        <option value="YUCATAN">Yucatán</option>
+                        <option value="ZACATECAS">Zacatecas</option>
+                      </Form.Control>
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="city">
+                        <Form.Label>Ciudad</Form.Label>
+                        <Form.Control onChange={this.onChange} value={this.state.city} />
+                    </Form.Group>
+                </Form.Row>
+                
+                <Form.Row>
+                  <Form.Group as={Col} md="6" controlId="postal_code">
+                        <Form.Label>Código postal</Form.Label>
+                        <Form.Control onChange={this.onChange} value={this.state.postal_code} />
+                  </Form.Group>
                   <Form.Group as={Col} controlId="languages">
                     <Form.Label>Idioma</Form.Label>
-                    <Form.Control required as="select" onChange={this.onChange} value={this.state.languages}>
+                    <Form.Control as="select" onChange={this.onChange} value={this.state.languages}>
                       <option></option>
                       <option value="Coreano">Coreano</option>
                       <option value="Español">Español</option>
@@ -157,19 +208,19 @@ class ClientsForm extends Component {
                     </Form.Control>
                   </Form.Group>
                 </Form.Row>
+
                 <Form.Group as={Col} controlId="comments" className={this.state.comments}>
                   <Form.Label>Comentarios</Form.Label>
                   <Form.Control as="textarea" onChange={this.onChange} value={this.state.comments} />
                 </Form.Group>
 
-
               </Col>
-              <Col md="7" style={{height: '400px', overflowY: 'scroll'}}>
+              <Col md="7">
                 <Row>
                   <h5 className="swal-title form-title align-left">CONTACTO(S)</h5>
-                    <Button variant="info" onClick={this.createContact}>AGREGAR</Button>
                 </Row>
-                <Row className="pt-1 pb-2">
+                <Row className="pt-1 pb-2 justify-content-md-center">
+                  <Button variant="info" onClick={this.createContact}>AGREGAR</Button>
                 </Row>
                 {this.state.contacts.map((value, index) => {
                   return (
@@ -177,26 +228,27 @@ class ClientsForm extends Component {
                       <Form.Row>
                         <Form.Group as={Col} md="6">
                           <Form.Label>Nombre</Form.Label>
-                          <Form.Control required onChange={(e) => { this.onChangeContactName(index, e) }} value={this.state.contacts[index].name} />
+                          <Form.Control onChange={(e) => { this.onChangeContactName(index, e) }} value={this.state.contacts[index].name} />
                         </Form.Group>
                         <Form.Group as={Col} md="5">
                           <Form.Label>Email</Form.Label>
-                          <Form.Control required onChange={(e) => { this.onChangeContactEmail(index, e) }} value={this.state.contacts[index].email} />
+                          <Form.Control onChange={(e) => { this.onChangeContactEmail(index, e) }} value={this.state.contacts[index].email} />
                         </Form.Group>
                         <Col md="1">
                           <Button variant="danger" className="align-center" onClick={() => { this.deleteContact(index) }}><i className="fa fa-trash" /></Button>
                         </Col>
                       </Form.Row>
                       <Form.Row>
-                        <Form.Group as={Col} md="3">
+                        <Form.Group as={Col} md="6">
                           <Form.Label>Teléfono</Form.Label>
-                          <Form.Control required onChange={(e) => { this.onChangeContactTelephone(index, e) }} value={this.state.contacts[index].telephone} />
+                          <Form.Control onChange={(e) => { this.onChangeContactTelephone(index, e) }} value={this.state.contacts[index].telephone} />
                         </Form.Group>
-                        <Form.Group as={Col} md="9">
+                        <Form.Group as={Col} md="6">
                           <Form.Label>Observaciones</Form.Label>
-                          <Form.Control required onChange={(e) => { this.onChangeContactObservation(index, e) }} value={this.state.contacts[index].observation} />
+                          <Form.Control onChange={(e) => { this.onChangeContactObservation(index, e) }} value={this.state.contacts[index].observation} />
                         </Form.Group>
                       </Form.Row>
+                      <hr></hr>
                     </React.Fragment>
                   );
                 })}
