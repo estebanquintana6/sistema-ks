@@ -57,13 +57,22 @@ class InsuranceForm extends Component {
 
     if (prevState.begin_date !== this.state.begin_date) {
       this.selectCompanyAndUpdateDays()
+      this.updateInsuranceEndDate()
     }
+  }
+
+  updateInsuranceEndDate = () => {
+    this.updateEndDate()
   }
 
   selectCompanyAndUpdateDays = () => {
     const company = this.getFullCompany()
     if (!company) return;
     this.updatePlusCompanyDays(company.tolerance)
+  }
+
+  updateEndDate = () => {
+    this.setState({ due_date: moment(this.state.begin_date).add(1, 'year').format('YYYY-MM-DD') })
   }
 
   updatePlusCompanyDays = (daysToAdd) => {
