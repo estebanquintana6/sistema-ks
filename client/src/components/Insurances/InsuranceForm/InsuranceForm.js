@@ -315,18 +315,19 @@ class InsuranceForm extends Component {
                     </Form.Row>
 
                     <Form.Row>
-                      {! this.props.edit &&<Form.Group as={Col} md="6" controlId="abbreviation">
-                        <Form.Label>Clave</Form.Label>
-                        <Form.Control as="select" onChange={this.onChange} value={this.state.abbreviation}>
-                          <option></option>
-                          {this.companyOptions().map((abbr) => <option value={abbr.name}>{abbr.name}</option>)}
-                        </Form.Control>
-                      </Form.Group>}
                       <Form.Group as={Col} md="6" controlId="policy">
                         <Form.Label>No. de póliza</Form.Label>
                         <Form.Control onChange={this.onChange} value={this.state.policy}>
                         </Form.Control>
                       </Form.Group>
+                      {this.isCarInsurance() &&
+                      <>
+                        <Form.Group as={Col} md="6" controlId="cis">
+                          <Form.Label>CIS</Form.Label>
+                          <Form.Control onChange={this.onChange} value={this.state.cis}>
+                          </Form.Control>
+                        </Form.Group>
+                      </>}
                     </Form.Row>
 
                     <Form.Row>
@@ -382,13 +383,6 @@ class InsuranceForm extends Component {
                         <Row>
                           <h5 className="swal-title form-title align-left">DATOS AUTO</h5>
                         </Row>
-                        <Form.Row>
-                          <Form.Group as={Col} md="12" controlId="cis">
-                            <Form.Label>CIS</Form.Label>
-                            <Form.Control onChange={this.onChange} value={this.state.cis}>
-                            </Form.Control>
-                          </Form.Group>
-                        </Form.Row>
 
                         <Form.Row>
                           <Form.Group as={Col} md="6" controlId="car_brand">
@@ -402,6 +396,7 @@ class InsuranceForm extends Component {
                               <option value="NISSAN">NISSAN</option>
                               <option value="MAZDA">MAZDA</option>
                               <option value="TOYOTA">TOYOTA</option>
+                              <option value="HONDA">HONDA</option>
                               <option value="HYUNDAI">HYUNDAI</option>
                               <option value="SUZUKI">SUZUKI</option>
                               <option value="BMW">BMW</option>
@@ -412,6 +407,10 @@ class InsuranceForm extends Component {
                               <option value="KIA">KIA</option>
                               <option value="SEAT">SEAT</option>
                               <option value="AUDI">AUDI</option>
+                              <option value="JEEP">JEEP</option>
+                              <option value="VOLVO">VOLVO</option>
+                              <option value="TESLA">TESLA</option>
+                              <option value="RAM">RAM</option>
                             </Form.Control>
                           </Form.Group>
                           <Form.Group as={Col} md="6" controlId="car_year">
@@ -424,17 +423,39 @@ class InsuranceForm extends Component {
                         </Form.Row>
 
                         <Form.Row>
-                          <Form.Group as={Col} md="6" controlId="car_description">
+                          <Form.Group as={Col} md="12" controlId="car_description">
                             <Form.Label>Descripción</Form.Label>
                             <Form.Control onChange={this.onChange} value={this.state.car_description}>
                             </Form.Control>
                           </Form.Group>
+
+                        </Form.Row>
+                        
+                        <Form.Row>
                           <Form.Group as={Col} md="6" controlId="car_series_number">
                             <Form.Label>No. Serie</Form.Label>
                             <Form.Control onChange={this.onChange} value={this.state.car_series_number}>
                             </Form.Control>
                           </Form.Group>
+                          <Form.Group as={Col} md="6" controlId="car_placas">
+                            <Form.Label>Placas</Form.Label>
+                            <Form.Control onChange={this.onChange} value={this.state.car_placas}>
+                            </Form.Control>
+                          </Form.Group>
                         </Form.Row>
+                        <Form.Row>
+                          <Form.Group as={Col} md="6" controlId="car_color">
+                            <Form.Label>Color</Form.Label>
+                            <Form.Control onChange={this.onChange} value={this.state.car_color}>
+                            </Form.Control>
+                          </Form.Group>
+                          <Form.Group as={Col} md="6" controlId="car_motor">
+                            <Form.Label>No. Motor</Form.Label>
+                            <Form.Control onChange={this.onChange} value={this.state.car_motor}>
+                            </Form.Control>
+                          </Form.Group>
+                        </Form.Row>
+
                       </>
                     }
                     <Row>

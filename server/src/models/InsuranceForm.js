@@ -136,6 +136,24 @@ var InsuranceSchema = new Schema({
     required: () => false,
     uppercase: true,
     default: null
+  },
+  car_placas: {
+    type: String,
+    required: false,
+    uppercase: true,
+    default: null
+  },
+  car_color: {
+    type: String,
+    required: false,
+    uppercase: true,
+    default: null
+  },
+  car_motor: {
+    type: String,
+    required: false,
+    uppercase: true,
+    default: null
   }
 });
 
