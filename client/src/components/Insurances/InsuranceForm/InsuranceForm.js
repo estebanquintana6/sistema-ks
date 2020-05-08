@@ -330,17 +330,19 @@ class InsuranceForm extends Component {
                     </Form.Row>
 
                     <Form.Row>
-                      <Form.Group as={Col} md="4" controlId="begin_date">
+                      <Form.Group as={Col} md="6" controlId="begin_date">
                         <Form.Label>F. Inicio Poliza</Form.Label>
                         <Form.Control required type="date" onChange={this.onChange} value={this.formatDate(this.state.begin_date)}>
                         </Form.Control>
                       </Form.Group>
-                      <Form.Group as={Col} md="4" controlId="due_date">
+                      <Form.Group as={Col} md="6" controlId="due_date">
                         <Form.Label>F. Vencimiento</Form.Label>
                         <Form.Control required type="date" onChange={this.onChange} value={this.formatDate(this.state.due_date)}>
                         </Form.Control>
                       </Form.Group>
-                      <Form.Group as={Col} md="4" controlId="pay_due_date">
+                    </Form.Row>
+                    <Form.Row>
+                    <Form.Group as={Col} md="6" controlId="pay_due_date">
                         <Form.Label>F. Vencimiento Pago</Form.Label>
                         <Form.Control required type="date" onChange={this.onChange} value={this.formatDate(this.state.pay_due_date)}>
                         </Form.Control>
