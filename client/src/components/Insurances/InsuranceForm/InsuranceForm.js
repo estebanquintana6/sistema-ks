@@ -292,11 +292,11 @@ class InsuranceForm extends Component {
                       <h5 className="swal-title form-title align-left">CONTRATANTE</h5>
                     </Row>
                     <Form.Row>
-                      <Form.Group as={Col} md="6" controlId="client">
+                      <Form.Group as={Col} controlId="client">
                         <Form.Label>Contratante</Form.Label>
                         <Form.Control required as="select" onChange={this.onChange} value={this.state.client && this.state.client._id}>
                           <option></option>
-                          {this.props.clients.map((client) => client && <option key={client._id} value={client._id}>{`${client.name} ${client.rfc}`}</option>)}
+                          {this.props.clients.map((client) => client && <option key={client._id} value={client._id}>{`${client.name}`}</option>)}
                         </Form.Control>
                       </Form.Group>
                     </Form.Row>
