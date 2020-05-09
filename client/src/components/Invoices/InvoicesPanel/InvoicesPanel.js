@@ -227,36 +227,6 @@ class InvoicePanel extends Component {
                                     return res
                                   }
                             },
-                            {
-                                Header: "Fecha vto. pago",
-                                id: "pay_limit",
-                                width: 350,
-                                accessor: d => formatShortDate(d.pay_limit),
-                                Filter: ({filter, onChange}) => (
-                                    <DateRangePicker
-                                      startDateId="start2"
-                                      endDateId="end2"
-                                      startDate={this.state.payDueDateStartDate}
-                                      endDate={this.state.payDueDateEndDate}
-                                      onDatesChange={({ startDate, endDate }) => {
-                                        this.setState({ payDueDateStartDate: startDate, payDueDateEndDate: endDate }); 
-                                        onChange({startDate, endDate});}}
-                                      focusedInput={this.state.focusedInput2}
-                                      onFocusChange={focusedInput => this.setState({ focusedInput2: focusedInput })}
-                                      isOutsideRange={() => false}
-                                      withPortal={true}
-                                      showClearDates={true}
-                                    />
-                                  ),
-                                  filterMethod: (filter, row) => {
-                                    if (filter.value.startDate === null || filter.value.endDate === null) {
-                                      // Incomplet or cleared date picker
-                                      return true
-                                    }
-                                    const res = row[filter.id] !== undefined ? moment(row[filter.id], 'DD/MM/YYYY').clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
-                                    return res
-                                  }
-                            }
                             ]
                         }
                         ]}

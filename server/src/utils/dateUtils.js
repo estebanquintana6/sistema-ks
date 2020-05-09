@@ -1,10 +1,18 @@
 
+const moment = require('moment')
+
 module.exports = {
     isToday: function(date){
         const today = new Date();
         return date.getDate() === today.getDate() &&
             date.getMonth() === today.getMonth() &&
             date.getFullYear() === today.getFullYear();
+    },
+    hasExpired: function(date){
+        return moment(date).startOf('day').isSameOrBefore(moment().startOf('day'))
+    },
+    willExpire: function(date){
+        return moment(date).startOf('day').isBetween(moment(), moment().clone().add(5,'days').startOf('day'), null, '[]')
     },
     isSameDay: function(date1, date2) {
         return date1.getDate() === date2.getDate() &&

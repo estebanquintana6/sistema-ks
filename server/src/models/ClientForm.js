@@ -22,6 +22,10 @@ var Client = new Schema({
     required: false,
     uppercase: true
   },
+  gender: {
+    type: String,
+    required: false,
+  },
   comments: {
     type: String,
     required: false,

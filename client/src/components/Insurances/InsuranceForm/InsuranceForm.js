@@ -21,7 +21,6 @@ class InsuranceForm extends Component {
       begin_date: moment().startOf('day').format('YYYY-MM-DD'),
       due_date: moment().clone().add(1, 'year').startOf('day').format('YYYY-MM-DD'),
       pay_due_date: moment().startOf('day').format('YYYY-MM-DD'),
-      company_abbreviations: {}
     };
   }
 
@@ -29,30 +28,18 @@ class InsuranceForm extends Component {
     if (this.props.edit) {
       // prepare the insurance data to be rendered in every field
     this.prepareInsuranceForForm()
-    } else{
-    this.composeCompanyAbbreviations()}
-  }
-
-  composeCompanyAbbreviations = () => {
-    if(!this.props.companies) return
-    let resObj = {}
-    this.props.companies.forEach((company) => {
-      resObj[company.name] = company.abbreviations
-    })
-    this.setState({company_abbreviations: resObj})
+    }
   }
 
   prepareInsuranceForForm = () => {
     const auxObj = cloneDeep(this.props.insurance)
     auxObj['edit'] = this.props['edit']
     this.setState(auxObj)
-    this.composeCompanyAbbreviations()
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.insurance_company !== this.state.insurance_company) {
       this.selectCompanyAndUpdateDays()
-      this.composeCompanyAbbreviations()
     }
 
     if (prevState.begin_date !== this.state.begin_date) {
@@ -172,25 +159,59 @@ class InsuranceForm extends Component {
     this.setState({ invoices });
   }
 
+  onChangeInvoiceBounty = (index, e) => {
+    let invoices = [...this.state.invoices];
+    let invoice = { ...invoices[index] };
+
+    invoice.bounty = e.target.value;
+
+    invoices[index] = invoice;
+    this.setState({ invoices });
+  }
+
+  onChangeInvoiceStatus = (index, e) => {
+    let invoices = [...this.state.invoices];
+    let invoice = { ...invoices[index] };
+
+    invoice.payment_status = e.target.value;
+
+    invoices[index] = invoice;
+    this.setState({ invoices });
+  }
+
+  onChangeInvoiceComment = (index, e) => {
+    let invoices = [...this.state.invoices];
+    let invoice = { ...invoices[index] };
+
+    invoice.comments = e.target.value;
+
+    invoices[index] = invoice;
+    this.setState({ invoices });
+  }
+
+  onChangeInvoiceEmail = (index, e) => {
+    let invoices = [...this.state.invoices];
+    let invoice = { ...invoices[index] };
+
+    invoice.email = e.target.value;
+
+    invoices[index] = invoice;
+    this.setState({ invoices });
+  }
+
   onSubmit = e => {
     e.preventDefault();
-    const formattedObject = {...this.state, policy: (this.props.edit ? '' :this.state.abbreviation) + this.state.policy}
-    // if im not editing the client, create one
     if (!this.state.edit) {
-      this.props.save(formattedObject);
+      this.props.save(this.state);
       return;
     }
-    this.props.updateInsurance(formattedObject)
+    this.props.updateInsurance(this.state)
   }
 
   formatDate = (date) => {
     if (!date) return;
     const days = date.split('T')[0]
     return moment(days).startOf('day').format('YYYY-MM-DD')
-  }
-
-  companyOptions = () => {
-    return this.state.company_abbreviations[this.filterInsuranceCompany()] || []
   }
 
   filterInsuranceCompany = () => {
@@ -496,6 +517,7 @@ class InsuranceForm extends Component {
 
                 {this.state.invoices.map((value, index) => {
                   return (
+                    <>
                     <Form.Row>
                       <Form.Group as={Col} md="4">
                         <Form.Label>Recibo</Form.Label>
@@ -505,14 +527,35 @@ class InsuranceForm extends Component {
                         <Form.Label>Fecha de pago</Form.Label>
                         <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(index, e) }} value={this.formatDate(this.state.invoices[index].due_date)} />
                       </Form.Group>
-                      <Form.Group as={Col} md="4">
-                        <Form.Label>Vencimiento de pago</Form.Label>
-                        <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceLimitDate(index, e) }} value={this.formatDate(this.state.invoices[index].pay_limit)} />
+                      <Form.Group as={Col} md="2">
+                        <Form.Label>Prima</Form.Label>
+                        <Form.Control required type="number" onChange={(e) => { this.onChangeInvoiceBounty(index, e) }} value={this.state.invoices[index].bounty} />
+                      </Form.Group>
+                      <Form.Group as={Col} md="2">
+                        <Form.Label>Estatus</Form.Label>
+                        <Form.Control required as="select" onChange={(e) => { this.onChangeInvoiceStatus(index, e) }} value={this.state.invoices[index].payment_status}>
+                          <option></option>
+                          <option value="PENDIENTE">Pendiente</option>
+                          <option value="PAGADO">Pagado</option>
+                          <option value="VENCIDO">Vencido</option>
+                          <option value="SALDO A FAVOR">Saldo a Favor</option>
+                        </Form.Control>
                       </Form.Group>
                       <Col md="1">
                           <Button variant="danger" className="align-center" onClick={() => { this.deleteInvoice(index) }}><i className="fa fa-trash" /></Button>
                         </Col>
                     </Form.Row>
+                    <Form.Row>
+                      <Form.Group as={Col} md="6">
+                        <Form.Label>Comentarios</Form.Label>
+                        <Form.Control required onChange={(e) => { this.onChangeInvoiceComment(index, e) }} value={this.state.invoices[index].comments} />
+                      </Form.Group>
+                      <Form.Group as={Col} md="6">
+                        <Form.Label>Correo</Form.Label>
+                        <Form.Control required onChange={(e) => { this.onChangeInvoiceEmail(index, e) }} value={this.state.invoices[index].email} />
+                      </Form.Group>
+                    </Form.Row>
+                    </>
                   );
                 })}
               </div>
