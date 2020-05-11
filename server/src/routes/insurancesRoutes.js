@@ -20,7 +20,10 @@ updateInvoice = (invoice) => {
   const update = {
     invoice: invoice.invoice,
     due_date: invoice.due_date,
-    pay_limit: invoice.pay_limit
+    bounty: invoice.bounty,
+    payment_status: invoice.payment_status,
+    comments: invoice.comments,
+    email: invoice.email,
   }
   Invoice.findOneAndUpdate({_id: invoice._id}, update).exec();
 }

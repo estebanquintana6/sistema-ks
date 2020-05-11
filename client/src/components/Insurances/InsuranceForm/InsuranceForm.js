@@ -524,7 +524,7 @@ class InsuranceForm extends Component {
                         <Form.Control required onChange={(e) => { this.onChangeInvoice(index, e) }} value={this.state.invoices[index].invoice} />
                       </Form.Group>
                       <Form.Group as={Col} md="3">
-                        <Form.Label>Fecha de pago</Form.Label>
+                        <Form.Label>Fecha límite de pago</Form.Label>
                         <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(index, e) }} value={this.formatDate(this.state.invoices[index].due_date)} />
                       </Form.Group>
                       <Form.Group as={Col} md="2">
