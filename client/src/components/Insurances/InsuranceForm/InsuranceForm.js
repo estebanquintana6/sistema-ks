@@ -529,13 +529,13 @@ class InsuranceForm extends Component {
                       </Form.Group>
                       <Form.Group as={Col} md="2">
                         <Form.Label>Prima</Form.Label>
-                        <Form.Control required type="number" onChange={(e) => { this.onChangeInvoiceBounty(index, e) }} value={this.state.invoices[index].bounty} />
+                        <Form.Control type="number" onChange={(e) => { this.onChangeInvoiceBounty(index, e) }} value={this.state.invoices[index].bounty} />
                       </Form.Group>
                       <Form.Group as={Col} md="2">
                         <Form.Label>Estatus</Form.Label>
                         <Form.Control required as="select" onChange={(e) => { this.onChangeInvoiceStatus(index, e) }} value={this.state.invoices[index].payment_status}>
                           <option></option>
-                          <option value="PENDIENTE">Pendiente</option>
+                          <option selected value="PENDIENTE">Pendiente</option>
                           <option value="PAGADO">Pagado</option>
                           <option value="VENCIDO">Vencido</option>
                           <option value="SALDO A FAVOR">Saldo a Favor</option>
@@ -548,11 +548,11 @@ class InsuranceForm extends Component {
                     <Form.Row>
                       <Form.Group as={Col} md="6">
                         <Form.Label>Comentarios</Form.Label>
-                        <Form.Control required onChange={(e) => { this.onChangeInvoiceComment(index, e) }} value={this.state.invoices[index].comments} />
+                        <Form.Control onChange={(e) => { this.onChangeInvoiceComment(index, e) }} value={this.state.invoices[index].comments} />
                       </Form.Group>
                       <Form.Group as={Col} md="6">
                         <Form.Label>Correo</Form.Label>
-                        <Form.Control required onChange={(e) => { this.onChangeInvoiceEmail(index, e) }} value={this.state.invoices[index].email} />
+                        <Form.Control onChange={(e) => { this.onChangeInvoiceEmail(index, e) }} value={this.state.invoices[index].email} />
                       </Form.Group>
                     </Form.Row>
                     </>
