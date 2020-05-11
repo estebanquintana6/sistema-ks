@@ -203,7 +203,7 @@ router.post("/:id/payStatus", (req, res) => {
         insurance.pay_status = "PAGADO";
         insurance.save();
         res.status(201).json({ message: "Elemento cambiado" });
-      } else if (insurance.pay_status === "PAGADO"){
+      } else if (insurance.pay_status === "PAGADO" || ""){
         insurance.pay_status = "PENDIENTE";
         insurance.save();
         res.status(201).json({ message: "Elemento cambiado" });
