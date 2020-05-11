@@ -34,11 +34,6 @@ var InsuranceSchema = new Schema({
     type: String,
     required: true
   },
-  abbreviation: {
-    type: String,
-    required: false,
-    uppercase: true
-  },
   policy: {
     type: String,
     required: true,

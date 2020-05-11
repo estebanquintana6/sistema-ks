@@ -39,7 +39,6 @@ class InvoicesForm extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    console.log('te lo guardo', this.state)
     this.props.updateInvoice(this.state)
   }
 
@@ -74,11 +73,41 @@ class InvoicesForm extends Component {
             </Form.Group>
           </Col>
           <Col>
-            <Form.Group as={Col} md="12" controlId="pay_limit">
-              <Form.Label>F. Límite de pago</Form.Label>
-              <Form.Control required type="date" onChange={this.onChange} value={this.formatDate(this.state.pay_limit)}>
+            <Form.Group as={Col} md="12" controlId="bounty">
+              <Form.Label>Prima</Form.Label>
+              <Form.Control required type="number" onChange={this.onChange} value={this.state.bounty}>
               </Form.Control>
             </Form.Group>
+          </Col>
+          <Col>
+              <Form.Group controlId="payment_status">
+                <Form.Label>Estatus</Form.Label>
+                <Form.Control required as="select" onChange={this.onChange} value={this.state.payment_status}>
+                  <option></option>
+                  <option value="PENDIENTE">Pendiente</option>
+                  <option value="PAGADO">Pagado</option>
+                  <option value="VENCIDO">Vencido</option>
+                  <option value="SALDO A FAVOR">Saldo a Favor</option>
+                </Form.Control>
+              </Form.Group>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Form.Row>
+              <Form.Group as={Col} controlId="comments">
+                <Form.Label>Comentarios</Form.Label>
+                <Form.Control required onChange={this.onChange} value={this.state.comments} />
+              </Form.Group>
+            </Form.Row>
+          </Col>
+          <Col>
+            <Form.Row>
+              <Form.Group as={Col} controlId="email">
+                <Form.Label>Correo</Form.Label>
+                <Form.Control required onChange={this.onChange} value={this.state.email} />
+              </Form.Group>
+            </Form.Row>
           </Col>
         </Row>
         <Button variant="primary" type="submit">Guardar</Button>

@@ -36,6 +36,9 @@ class ClientsForm extends Component {
   }
 
   onChange = e => {
+    if(e.target.id === 'person_type' && e.target.value === 'MORAL'){
+      this.setState({[e.target.id]: e.target.value, gender: ''})
+    }
     this.setState({ [e.target.id]: e.target.value });
   }
 
@@ -133,6 +136,14 @@ class ClientsForm extends Component {
                       <option value="MORAL">Persona moral</option>
                     </Form.Control>
                   </Form.Group>
+                 { this.state.person_type === 'FISICA' && <Form.Group as={Col} md="6" controlId="gender">
+                    <Form.Label>Sexo</Form.Label>
+                    <Form.Control required as="select" onChange={this.onChange} value={this.state.gender}>
+                      <option></option>
+                      <option value="MASCULINO">MASCULINO</option>
+                      <option value="FEMENINO">FEMENINO</option>
+                    </Form.Control>
+                  </Form.Group>}
                 </Form.Row>
 
                 <Form.Row>

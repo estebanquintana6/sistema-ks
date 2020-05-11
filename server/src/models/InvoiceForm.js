@@ -11,19 +11,28 @@ var InvoiceSchema = new Schema({
     default: true
   },
   payment_status: {
-    type: Boolean,
+    type: String,
+    enum: ['PENDIENTE', 'PAGADO', 'VENCIDO', 'SALDO A FAVOR'],
     required: true,
-    default: false
+    default: 'PENDIENTE',
+  },
+  bounty: {
+    type: Number,
+    required: true
   },
   invoice: {
     type: String,
     required: true
   },
-  due_date: {
-    type: Date,
-    required: true
+  comments: {
+    type: String,
+    required: false
   },
-  pay_limit: {
+  email: {
+    type: String,
+    required: false
+  },
+  due_date: {
     type: Date,
     required: true
   },

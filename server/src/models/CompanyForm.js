@@ -9,10 +9,6 @@ var CompanySchema = new Schema({
     type: String,
     required: true
   },
-  abbreviations: {
-    type: Array,
-    required: false
-  },
   tolerance: {
     type: Number,
     required: true
