@@ -342,13 +342,15 @@ class InsurancePanel extends Component {
           Header: "Fecha inicio",
           id: "begin_date",
           width: 130,
-          accessor: d => formatShortDate(d.begin_date),
+          Cell: c => <span>{c.original.begin_date && formatShortDate(c.original.begin_date)}</span>,
+          accessor: d => moment(d.begin_date).unix(),
           filterable: false
         },
         {
           Header: "Fecha vencimiento",
           id: "due_date",
-          accessor: d => formatShortDate(d.due_date),
+          Cell: c => <span>{c.original.due_date && formatShortDate(c.original.due_date)}</span>,
+          accessor: d => moment(d.due_date).unix(),
           width: 350,
           Filter: ({filter, onChange}) => (
             <DateRangePicker

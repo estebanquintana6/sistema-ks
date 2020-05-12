@@ -201,7 +201,8 @@ class InvoicePanel extends Component {
                                 Header: "Fecha vto.",
                                 id: "due_date",
                                 width: 350,
-                                accessor: d => formatShortDate(d.due_date),
+                                Cell: c => <span>{c.original.due_date && formatShortDate(c.original.due_date)}</span>,
+                                accessor: d => moment(d.due_date).unix(),
                                 Filter: ({filter, onChange}) => (
                                     <DateRangePicker
                                       startDateId="start3"
