@@ -162,7 +162,7 @@ class InvoicePanel extends Component {
                             if(notFilterable.includes(filter.id)) {
                                 console.log(filter.id); 
                                 const id = filter.pivotId || filter.id;
-                                const res = row[id] !== undefined ? moment(row[id], 'DD/MM/YYYY').clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') :true
+                                const res = row[id] !== undefined ? moment.unix(row[id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') :true
                                 return res
                             }
 
@@ -224,7 +224,7 @@ class InvoicePanel extends Component {
                                       // Incomplet or cleared date picker
                                       return true
                                     }
-                                    const res = row[filter.id] !== undefined ? moment(row[filter.id], 'DD/MM/YYYY').clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
+                                    const res = row[filter.id] !== undefined ? moment.unix(row[filter.id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
                                     return res
                                   }
                             },
