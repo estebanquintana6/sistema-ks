@@ -8,8 +8,9 @@ import {
 } from 'react-bootstrap';
 
 import "./InsuranceForm.css";
-import moment from 'moment'
-import { cloneDeep } from 'lodash'
+import moment from 'moment';
+import { cloneDeep } from 'lodash';
+
 
 class InsuranceForm extends Component {
   constructor(props) {
@@ -404,36 +405,42 @@ class InsuranceForm extends Component {
                         <Row>
                           <h5 className="swal-title form-title align-left">DATOS AUTO</h5>
                         </Row>
-
-                        <Form.Row>
-                          <Form.Group as={Col} md="6" controlId="car_brand">
-                            <Form.Label>Marca</Form.Label>
-                            <Form.Control as="select" onChange={this.onChange} value={this.state.car_brand}>
-                              <option></option>
-                              <option value="VOLKSWAGEN">VOLKSWAGEN</option>
-                              <option value="MITSUBISHI">MITSUBISHI</option>
-                              <option value="FORD">FORD</option>
-                              <option value="CHEVROLET">CHEVROLET</option>
-                              <option value="NISSAN">NISSAN</option>
-                              <option value="MAZDA">MAZDA</option>
-                              <option value="TOYOTA">TOYOTA</option>
-                              <option value="HONDA">HONDA</option>
-                              <option value="HYUNDAI">HYUNDAI</option>
-                              <option value="SUZUKI">SUZUKI</option>
-                              <option value="BMW">BMW</option>
-                              <option value="MERCEDES BENZ">MERCEDES BENZ</option>
-                              <option value="LINCOLN">LINCOLN</option>
-                              <option value="CADILLAC">CADILLAC</option>
-                              <option value="GENERAL MOTORS">GENERAL MOTORS</option>
-                              <option value="KIA">KIA</option>
-                              <option value="SEAT">SEAT</option>
-                              <option value="AUDI">AUDI</option>
-                              <option value="JEEP">JEEP</option>
-                              <option value="VOLVO">VOLVO</option>
-                              <option value="TESLA">TESLA</option>
-                              <option value="RAM">RAM</option>
-                            </Form.Control>
+                          <Form.Row>
+                            <Form.Group as={Col}>
+                              <Form.Label>Marca</Form.Label>
+                              <input type="text" 
+                                      id="car_brand" 
+                                      list="data" 
+                                      onChange={this.onChange} 
+                                      className="form-control" 
+                                      value={this.state.car_brand}/>
+                              <datalist id="data">
+                                <option></option>
+                                <option value="VOLKSWAGEN">VOLKSWAGEN</option>
+                                <option value="MITSUBISHI">MITSUBISHI</option>
+                                <option value="FORD">FORD</option>
+                                <option value="CHEVROLET">CHEVROLET</option>
+                                <option value="NISSAN">NISSAN</option>
+                                <option value="MAZDA">MAZDA</option>
+                                <option value="TOYOTA">TOYOTA</option>
+                                <option value="HONDA">HONDA</option>
+                                <option value="HYUNDAI">HYUNDAI</option>
+                                <option value="SUZUKI">SUZUKI</option>
+                                <option value="BMW">BMW</option>
+                                <option value="MERCEDES BENZ">MERCEDES BENZ</option>
+                                <option value="LINCOLN">LINCOLN</option>
+                                <option value="CADILLAC">CADILLAC</option>
+                                <option value="GENERAL MOTORS">GENERAL MOTORS</option>
+                                <option value="KIA">KIA</option>
+                                <option value="SEAT">SEAT</option>
+                                <option value="AUDI">AUDI</option>
+                                <option value="JEEP">JEEP</option>
+                                <option value="VOLVO">VOLVO</option>
+                                <option value="TESLA">TESLA</option>
+                                <option value="RAM">RAM</option>
+                              </datalist>
                           </Form.Group>
+
                           <Form.Group as={Col} md="6" controlId="car_year">
                             <Form.Label>Año</Form.Label>
                             <Form.Control as="select" onChange={this.onChange} value={this.state.car_year}>
