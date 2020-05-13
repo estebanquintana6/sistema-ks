@@ -14,6 +14,7 @@ import "./TaskPanel.css";
 import TaskModal from "../TaskModal/TaskModal";
 import TaskForm from "../TaskForm/TaskForm";
 import {formatShortDate} from '../../component-utils'
+import moment from 'moment';
 
 class TaskPanel extends Component {
   constructor(props) {
@@ -250,7 +251,8 @@ class TaskPanel extends Component {
                   {
                     Header: "Fecha de creación",
                     id: "created_date",
-                    accessor: d => formatShortDate(d.created_date)
+                    Cell: c => <span>{c.original.created_date && formatShortDate(c.original.created_date)}</span>,
+                    accessor: d => moment(d.created_date).unix()
                   },
                   {
                     Header: "Comentarios",
