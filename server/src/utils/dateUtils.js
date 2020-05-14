@@ -11,8 +11,11 @@ module.exports = {
     hasExpired: function(date){
         return moment(date).startOf('day').isSameOrBefore(moment().startOf('day'))
     },
-    willExpire: function(date){
-        return moment(date).startOf('day').isBetween(moment(), moment().clone().add(5,'days').startOf('day'), null, '[]')
+    willExpireFive: function(date){
+        return moment(date).startOf('day').isBetween(moment().startOf('day'), moment().clone().add(5,'days').startOf('day'), null, '[]')
+    },
+    willExpireTen: function(date){
+        return moment(date).startOf('day').isBetween(moment().startOf('day'), moment().clone().add(10,'days').startOf('day'), null, '[]')
     },
     isSameDay: function(date1, date2) {
         return date1.getDate() === date2.getDate() &&
