@@ -385,26 +385,37 @@ class InsurancePanel extends Component {
               currentDate.setHours(0,0,0);
 
               const dates = [];
+              const allDates = [];
+
               c.original.invoices.map((invoice) => {
                 let due_date = new Date(invoice.due_date);
                 due_date.setDate(due_date.getDate() + 1);
                 due_date.setHours(0,0,0);
 
                 if(due_date >= currentDate) dates.push(due_date);
+                allDates.push(due_date);
               });
 
+            if(dates.length !== 0){
               const minDate = new Date(Math.min.apply(null,dates));
               return <span>{formatDateObj(minDate)}</span>
+            } else {
+              const maxDate = new Date(Math.max.apply(null,allDates));
+              return <span>{formatDateObj(maxDate)}</span>
             }
+          }
           
           },
           accessor: d => {
-            if(d.invoices.length > 0){
+            if(d.invoices.length === 1){
+              return moment(d.invoices[0].due_date);
+            }
+            else if(d.invoices.length > 0){
               const currentDate = new Date();
               currentDate.setHours(0,0,0);
 
-              console.log(d.invoices);
               const dates = [];
+              const allDates = [];
 
               d.invoices.map((invoice) => {
                 let due_date = new Date(invoice.due_date);
@@ -412,13 +423,19 @@ class InsurancePanel extends Component {
                 due_date.setHours(0,0,0);
 
                 if(due_date >= currentDate) dates.push(due_date);
+                allDates.push(due_date);
               });
-
-              const minDate = new Date(Math.min.apply(null,dates));
               
+              if(dates.length !== 0){
+                const minDate = new Date(Math.min.apply(null,dates));
               return moment(minDate).unix();
+              } else {
+                const maxDate = new Date(Math.max.apply(null,allDates));
+                return moment(maxDate).unix();
+              }
+              
             } else {
-              return "";
+              return "SIN RECIBOS";
             }
 
           },
