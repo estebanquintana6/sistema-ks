@@ -19,7 +19,7 @@ import "react-table/react-table.css";
 import "./InsurancePanel.css";
 
 import moment from 'moment';
-import {formatShortDate} from '../../component-utils';
+import {formatShortDate, formatDateObj} from '../../component-utils';
 import { DateRangePicker } from 'react-dates';
 
 
@@ -380,11 +380,48 @@ class InsurancePanel extends Component {
           Header: "Vto. pago",
           id: "pay_due_date",
           Cell: c => {
-            if(c.original.invoices.length > 0) console.log(c);
-            console.log(c);
-          return <span>{c.original.pay_due_date && formatShortDate(c.original.pay_due_date)}</span>
+            if(c.original.invoices.length > 0){
+              const currentDate = new Date();
+              currentDate.setHours(0,0,0);
+
+              const dates = [];
+              c.original.invoices.map((invoice) => {
+                let due_date = new Date(invoice.due_date);
+                due_date.setDate(due_date.getDate() + 1);
+                due_date.setHours(0,0,0);
+
+                if(due_date >= currentDate) dates.push(due_date);
+              });
+
+              const minDate = new Date(Math.min.apply(null,dates));
+              return <span>{formatDateObj(minDate)}</span>
+            }
+          
           },
-          accessor: d => moment(d.pay_due_date).unix(),
+          accessor: d => {
+            if(d.invoices.length > 0){
+              const currentDate = new Date();
+              currentDate.setHours(0,0,0);
+
+              console.log(d.invoices);
+              const dates = [];
+
+              d.invoices.map((invoice) => {
+                let due_date = new Date(invoice.due_date);
+                due_date.setDate(due_date.getDate() + 1);
+                due_date.setHours(0,0,0);
+
+                if(due_date >= currentDate) dates.push(due_date);
+              });
+
+              const minDate = new Date(Math.min.apply(null,dates));
+              
+              return moment(minDate).unix();
+            } else {
+              return "";
+            }
+
+          },
           width: 300,
           Filter: ({filter, onChange}) => (
             <DateRangePicker
