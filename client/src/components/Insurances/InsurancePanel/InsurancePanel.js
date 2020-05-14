@@ -311,13 +311,12 @@ class InsurancePanel extends Component {
         {
           Header: "Aseguradora",
           id: "insurance_company",
-          width: 120,
+          width: 90,
           accessor: d => this.validateField(d.insurance_company.name)
         },
         {
           Header: "Cliente",
           id: "client",
-          width: 300,
           accessor: d => {
             if(d.client){
               return this.validateField(d.client.name)
@@ -351,7 +350,7 @@ class InsurancePanel extends Component {
           id: "due_date",
           Cell: c => <span>{c.original.due_date && formatShortDate(c.original.due_date)}</span>,
           accessor: d => moment(d.due_date).unix(),
-          width: 350,
+          width: 300,
           Filter: ({filter, onChange}) => (
             <DateRangePicker
               startDateId="start3"
@@ -363,6 +362,41 @@ class InsurancePanel extends Component {
                 onChange({startDate, endDate});}}
               focusedInput={this.state.focusedInput3}
               onFocusChange={focusedInput => this.setState({ focusedInput3: focusedInput })}
+              isOutsideRange={() => false}
+              withPortal={true}
+              showClearDates={true}
+            />
+          ),
+          filterMethod: (filter, row) => {
+            if (filter.value.startDate === null || filter.value.endDate === null) {
+              // Incomplet or cleared date picker
+              return true
+            }
+            const res = row[filter.id] !== undefined ? moment.unix(row[filter.id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
+            return res
+          }
+        },
+        {
+          Header: "Vto. pago",
+          id: "pay_due_date",
+          Cell: c => {
+            if(c.original.invoices.length > 0) console.log(c);
+            console.log(c);
+          return <span>{c.original.pay_due_date && formatShortDate(c.original.pay_due_date)}</span>
+          },
+          accessor: d => moment(d.pay_due_date).unix(),
+          width: 300,
+          Filter: ({filter, onChange}) => (
+            <DateRangePicker
+              startDateId="start2"
+              endDateId="end2"
+              startDate={this.state.payDueDateStartDate}
+              endDate={this.state.payDueDateEndDate}
+              onDatesChange={({ startDate, endDate }) => {
+                this.setState({ payDueDateStartDate: startDate, payDueDateEndDate: endDate }); 
+                onChange({startDate, endDate});}}
+              focusedInput={this.state.focusedInput2}
+              onFocusChange={focusedInput => this.setState({ focusedInput2: focusedInput })}
               isOutsideRange={() => false}
               withPortal={true}
               showClearDates={true}
