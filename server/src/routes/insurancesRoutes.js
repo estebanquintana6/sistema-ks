@@ -73,6 +73,19 @@ router.get("/fetch/:type", (req, res) => {
   });
 });
 
+// Obtener todos las pólizas del tipo que se consulta
+router.get("/fetch_all", (req, res) => {
+  const token = req.headers.authorization;
+  jwt.verify(token, secretKey, function (err) {
+    if (err) return res.status(401).json({ email: "no permissions" });
+    Insurance.find({}).populate('client').populate('insurance_company').populate('invoices').then((insurances) => {
+      res.json({ insurances });
+    }).catch(err => {
+      res.json(err)
+    });
+  });
+});
+
 router.post("/update", (req, res) => {
   const body = req.body;
   const token = body.token;

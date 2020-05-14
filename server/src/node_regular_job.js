@@ -113,7 +113,7 @@ const mailOptions =  (invoice, users, language, situation) => {
 
     // console.log('EMAIL TO SEND', languageText, language)
     return {
-        from: 'malej.mol@gmail.com',
+        from: 'email',
         to: destinations.join(','),
         subject: subjectText,
         text: languageText
@@ -148,9 +148,9 @@ var j = schedule.scheduleJob('*/5 * * * * *', function(){
             })
             .map((invoice) => {
                 const lang = invoice.invoice.client.languages
-                if (lang !== 'Coreano') func(invoice.invoice, users, 'Español', invoice.method)
-                if (lang !== 'Español') func(invoice.invoice, users, 'Coreano', invoice.method)
-                console.log(invoice._id);
+                if (lang !== 'Coreano') //func(invoice.invoice, users, 'Español', invoice.method)
+                if (lang !== 'Español') //func(invoice.invoice, users, 'Coreano', invoice.method)
+                return true
             });
         })
     })

@@ -39,6 +39,14 @@ class Sidebar extends Component {
                         </ul>
                     </li>
                     <li>
+                        <a href="#insuranceSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">General Seguros</a>
+                        <ul className="collapse list-unstyled" id="insuranceSubmenu">
+                            <li>
+                                <a onClick={() => this.goToPage('/dashboard/general')}>Panel general de seguros</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
                         <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Auto</a>
                         <ul className="collapse list-unstyled" id="pageSubmenu">
                             <li>
