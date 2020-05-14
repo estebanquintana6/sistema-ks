@@ -18,7 +18,7 @@ var InvoiceSchema = new Schema({
   },
   bounty: {
     type: Number,
-    required: true
+    required: false
   },
   invoice: {
     type: String,
@@ -34,7 +34,7 @@ var InvoiceSchema = new Schema({
   },
   due_date: {
     type: Date,
-    required: true
+    required: false
   },
   insurance: {
     type: Schema.Types.ObjectId,
