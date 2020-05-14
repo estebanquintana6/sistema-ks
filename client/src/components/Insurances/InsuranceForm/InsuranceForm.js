@@ -316,10 +316,10 @@ class InsuranceForm extends Component {
                     <Form.Row>
                       <Form.Group as={Col} controlId="client">
                         <Form.Label>Contratante</Form.Label>
-                        <Form.Control required as="select" onChange={this.onChange} value={this.state.client && this.state.client._id}>
-                          <option></option>
-                          {this.props.clients.map((client) => client && <option key={client._id} value={client._id}>{`${client.name}`}</option>)}
-                        </Form.Control>
+                        <Form.Control required list="clientdata" onChange={this.onChange} value={this.state.client && this.state.client._id}/>
+                          <datalist id="clientdata">
+                            {this.props.clients.map((client) => client && <option key={client._id} value={client._id} data-value={client.name}>{`${client.name}`}</option>)}
+                          </datalist>
                       </Form.Group>
                     </Form.Row>
 
