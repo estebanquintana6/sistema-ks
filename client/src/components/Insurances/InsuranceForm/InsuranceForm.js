@@ -540,7 +540,7 @@ class InsuranceForm extends Component {
                       </Form.Group>
                       <Form.Group as={Col} md="2">
                         <Form.Label>Estatus</Form.Label>
-                        <Form.Control required as="select" onChange={(e) => { this.onChangeInvoiceStatus(index, e) }} value={this.state.invoices[index].payment_status}>
+                        <Form.Control as="select" onChange={(e) => { this.onChangeInvoiceStatus(index, e) }} value={this.state.invoices[index].payment_status}>
                           <option></option>
                           <option selected value="PENDIENTE">Pendiente</option>
                           <option value="PAGADO">Pagado</option>
