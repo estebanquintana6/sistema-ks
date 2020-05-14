@@ -228,6 +228,16 @@ class InvoicePanel extends Component {
                                     return res
                                   }
                             },
+                            {
+                              Header: "Monto",
+                              id: "bounty",
+                              accessor: d => d.bounty
+                            },
+                            {
+                              Header: "Status",
+                              id: "payment_status",
+                              accessor: d => d.payment_status
+                            },
                             ]
                         }
                         ]}
