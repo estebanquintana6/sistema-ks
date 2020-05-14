@@ -12,7 +12,6 @@ import { ExportDataToCSV } from "../../ExportCSV/ExportCSV";
 // Import React Table
 import ReactTable from "react-table";
 
-import "react-select/dist/react-select.css";
 
 
 import "react-table/react-table.css";

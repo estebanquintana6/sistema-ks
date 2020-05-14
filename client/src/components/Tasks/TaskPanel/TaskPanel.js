@@ -7,7 +7,6 @@ import { Row } from 'react-bootstrap'
 import { getTasks, registerTask, deleteTask, updateTask } from '../../../actions/taskAction'
 import { listUsers } from '../../../actions/userActions'
 
-import "react-select/dist/react-select.css";
 import "react-table/react-table.css";
 import ReactTable from "react-table";
 import "./TaskPanel.css";

@@ -10,6 +10,8 @@ import {
 import "./InsuranceForm.css";
 import moment from 'moment';
 import { cloneDeep } from 'lodash';
+import Select from 'react-select';
+
 
 
 class InsuranceForm extends Component {
@@ -77,6 +79,10 @@ class InsuranceForm extends Component {
 
   onChange = e => {
     this.setState({ [e.target.id]: e.target.value });
+  }
+
+  onChangeClient = e => {
+    this.setState({client: e.value})
   }
 
   onInvoicesChange = e => {
@@ -283,6 +289,23 @@ class InsuranceForm extends Component {
     this.setState({ invoices });
   }
 
+  composeClientOptions = () => {
+    return this.props.clients.map(client => {
+      return {
+        value: client._id,
+        label: client.name
+      }
+    })
+  }
+
+  selectedClient = () => {
+    const res = this.composeClientOptions().find(e => {
+      const a = this.state.client && this.state.client._id
+      return e.value === a
+    })
+    return res
+  }
+
   render() {
     return (
       <Form onSubmit={this.onSubmit}>
@@ -316,10 +339,15 @@ class InsuranceForm extends Component {
                     <Form.Row>
                       <Form.Group as={Col} controlId="client">
                         <Form.Label>Contratante</Form.Label>
-                        <Form.Control required as="select" onChange={this.onChange} value={this.state.client && this.state.client._id}>
+                        {/* <Form.Control required as="select" onChange={this.onChange} value={this.state.client && this.state.client._id}>
                           <option></option>
                           {this.props.clients.map((client) => client && <option key={client._id} value={client._id}>{`${client.name}`}</option>)}
-                        </Form.Control>
+                        </Form.Control> */}
+                        <Select
+                          value={this.selectedClient()}
+                          onChange={this.onChangeClient}
+                          options={this.composeClientOptions()}
+                        />
                       </Form.Group>
                     </Form.Row>
 

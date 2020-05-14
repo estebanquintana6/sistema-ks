@@ -14,7 +14,6 @@ import { connect } from "react-redux";
 import { differenceBy } from 'lodash'
 import swal from '@sweetalert/with-react';
 
-import "react-select/dist/react-select.css";
 import "react-table/react-table.css";
 import "./InsuranceTypeComponent.css";
 

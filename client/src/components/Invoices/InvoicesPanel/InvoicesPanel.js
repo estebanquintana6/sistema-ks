@@ -11,7 +11,6 @@ import { DateRangePicker } from 'react-dates';
 import ReactTable from "react-table";
 
 
-import "react-select/dist/react-select.css";
 import "react-table/react-table.css";
 
 import moment from 'moment';

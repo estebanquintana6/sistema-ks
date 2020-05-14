@@ -9,7 +9,6 @@ import CompanyModal from '../CompanyModal/CompanyModal'
 import CompanyForm from '../CompanyForm/CompanyForm'
 import { getCompanies, updateCompany, registerCompany, deleteCompany } from '../../../../actions/companyActions'
 
-import "react-select/dist/react-select.css";
 import "react-table/react-table.css";
 import "./CompaniesPanel.css";
 

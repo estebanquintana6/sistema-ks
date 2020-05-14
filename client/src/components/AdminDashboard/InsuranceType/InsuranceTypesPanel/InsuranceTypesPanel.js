@@ -12,7 +12,6 @@ import { Row } from 'react-bootstrap'
 import { getInsuranceTypes, addCompanyToInsuranceType, deleteCompanyFromInsuranceType } from '../../../../actions/insuranceTypesActions'
 import { getCompanies } from '../../../../actions/companyActions';
 
-import "react-select/dist/react-select.css";
 import "react-table/react-table.css";
 import "./InsuranceTypesPanel.css";
 

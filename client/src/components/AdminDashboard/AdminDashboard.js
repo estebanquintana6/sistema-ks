@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Row, Col, Container } from 'react-bootstrap'
-import "react-select/dist/react-select.css";
 import "react-table/react-table.css";
 import "./AdminDashboard.css";
 import InsuranceTypesPanel from "./InsuranceType/InsuranceTypesPanel/InsuranceTypesPanel";

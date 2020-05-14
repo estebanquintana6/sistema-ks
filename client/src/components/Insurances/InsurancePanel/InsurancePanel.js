@@ -11,7 +11,6 @@ import InsuranceForm from "../InsuranceForm/InsuranceForm";
 import InsuranceModal from "../InsuranceModal/InsuranceModal";
 
 
-import "react-select/dist/react-select.css";
 // Import React Table
 import ReactTable from "react-table";
 
