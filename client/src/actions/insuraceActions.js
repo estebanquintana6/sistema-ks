@@ -29,6 +29,18 @@ export const getInsurances = (type) => dispatch => {
     });
 }
 
+export const getAllInsurances = () => dispatch => {
+  const token = localStorage.getItem("jwtToken");
+
+  return axios
+    .get("/api/insurances/fetch_all", { token })
+    .then((res) => {
+      return res.data
+    }).catch(err => {
+      return err;
+    });
+}
+
 export const updateInsurance = (insuranceData) => dispatch => {
   const token = localStorage.getItem("jwtToken");
   const data = {

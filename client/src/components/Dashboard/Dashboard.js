@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 import AdminDashboard from '../AdminDashboard/AdminDashboard';
 import InsurancePanel from '../Insurances/InsurancePanel/InsurancePanel';
+import GeneralInsurancePanel from '../Insurances/GeneralInsurancePanel/GeneralInsurancePanel';
 import ClientsPanel from '../Clients/ClientsPanel/ClientsPanel';
 import InvoicesPanel from '../Invoices/InvoicesPanel/InvoicesPanel';
 
@@ -66,6 +67,9 @@ class Dashboard extends Component {
             </Route>
             <Route exact path="/dashboard/autos">
               <InsurancePanel history={this.props.history} variant="AUTOS"></InsurancePanel>
+            </Route>
+            <Route exact path="/dashboard/general">
+              <GeneralInsurancePanel history={this.props.history} variant="GENERAL"></GeneralInsurancePanel>
             </Route>
             <Route exact path="/dashboard/autos/upload">
               <UploadPanel 
