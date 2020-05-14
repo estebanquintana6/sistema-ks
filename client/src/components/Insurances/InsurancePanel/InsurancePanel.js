@@ -29,12 +29,12 @@ class InsurancePanel extends Component {
     this.state = {
       filtered: [],
       select2: undefined,
-      beginStartDate: moment().startOf('month'),
-      beginEndDate: moment().startOf('month'),
-      payDueDateStartDate: moment().startOf('month'),
-      payDueDateEndDate: moment().startOf('month'),
-      dueDateStartDate: moment().startOf('month'),
-      dueDateEndDate: moment().startOf('month'),
+      beginStartDate: "",
+      beginEndDate: "",
+      payDueDateStartDate: "",
+      payDueDateEndDate: "",
+      dueDateStartDate: "",
+      dueDateEndDate: "",
       data: [],
       clients: [],
       companies: []
