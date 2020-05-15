@@ -36,9 +36,11 @@ class ClientsPanel extends Component {
         languages: "Lenguajes",
         name: "Nombre",
         person_type: "Tipo de Persona",
-        rfc: "RFC"
+        rfc: "RFC",
+        gender: 'SEXO'
       },
-      excludedFields: ['__v', '_id']
+      excludedFields: ['__v', '_id', 'files'],
+      excelHeader: ['Nombre', 'Sexo','Teléfono', 'Fecha de alta', 'Lenguajes', 'Tipo de Persona', 'RFC', 'Observaciones', 'Correo', 'Contacto', 'Comentarios']
     };
   }
 
@@ -268,7 +270,7 @@ class ClientsPanel extends Component {
           />
           </div>
         </Container>
-        <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields}></ExportDataToCSV>
+        <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields} header={this.state.excelHeader}></ExportDataToCSV>
       </React.Fragment>
     );
   }

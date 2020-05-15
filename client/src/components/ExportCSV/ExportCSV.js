@@ -30,7 +30,7 @@ const whiteListNames = ['name', 'title', 'policy']
  *          }
  * 
  * - excludedFields: Array of fields to exclude represented in strings
- * 
+ * - header:  Array of translated strings representing the order of the columns
  */
 
 export const ExportDataToCSV = (props) => {
@@ -67,8 +67,9 @@ export const ExportDataToCSV = (props) => {
         return resultObj
     }
 
-    const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields) => {
+    const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header) => {
         const dataToWrite = []
+        // console.log('NEW HEADER', header)
 
         for (let i in csvData) {
             let resultData = {}
@@ -89,14 +90,16 @@ export const ExportDataToCSV = (props) => {
             })
             dataToWrite.push(resultData)
         }
-        const ws = XLSX.utils.json_to_sheet(dataToWrite);
-        const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
-        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-        const data = new Blob([excelBuffer], { type: fileType });
-        FileSaver.saveAs(data, fileName + fileExtension);
+
+        const workbook = XLSX.utils.book_new();
+        const myHeader = header
+        // console.log('DEFAULT ORDER', Object.keys(dataToWrite[0]))
+        const worksheet = XLSX.utils.json_to_sheet(dataToWrite, {header: myHeader});
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'tab1');
+        XLSX.writeFile(workbook, `${fileName}.xls`);
     }
 
     return (
-        <Button variant="warning" onClick={(e) => exportToCSV(props.csvData, props.fileName, props.fieldTranslation, props.excludedFields)}>Exportar a Excel</Button>
+        <Button variant="warning" onClick={(e) => exportToCSV(props.csvData, props.fileName, props.fieldTranslation, props.excludedFields, props.header)}>Exportar a Excel</Button>
     )
 }
