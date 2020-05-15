@@ -121,7 +121,7 @@ class InsurancePanel extends Component {
     return {};
   }
 
-  openModificationModal(insurance) {
+  openModificationModal(insurance, invoicePanel = false) {
     let cancelation_note = "";
 
     if(!insurance.active_status) cancelation_note = `NOTA DE CANCELACIÓN: ${insurance.cancelation_note}`;
@@ -150,6 +150,7 @@ class InsurancePanel extends Component {
       text: "Captura los datos de la nueva póliza",
       content:
         <InsuranceForm
+          invoicePanel={false}
           type={variant}
           clients={this.state.clients}
           companies={this.state.companies}
@@ -191,14 +192,18 @@ class InsurancePanel extends Component {
           swal({
             icon: "success",
             content: <h2>Poliza Actualizada</h2>,
+          }).then(() => {
+            this.refresh();
           });
         } else {
           swal({
             icon: "error",
             content: <h2>Error al guardar la poliza</h2>,
-          });
+          }).then(() => {
+            this.refresh();
+          });;
         }
-        this.refresh();
+        
       });
   }
 
@@ -325,7 +330,7 @@ class InsurancePanel extends Component {
           }
         },
         {
-          Header: "Poliza",
+          Header: "Poliza No.",
           id: "policy",
           width: 140,
           accessor: d => this.validateField(d.policy)
@@ -345,7 +350,7 @@ class InsurancePanel extends Component {
           filterable: false
         },
         {
-          Header: "Fecha vencimiento",
+          Header: "Fecha vto. poliza",
           id: "due_date",
           Cell: c => <span>{c.original.due_date && formatShortDate(c.original.due_date)}</span>,
           accessor: d => moment(d.due_date).unix(),

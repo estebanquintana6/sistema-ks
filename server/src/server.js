@@ -15,6 +15,7 @@ const invoices = require('./routes/invoicesRoutes');
 
 const cars = require('./routes/carInsuranceRoutes');
 const medics = require('./routes/medicInsuranceRoutes');
+const danos = require('./routes/danosRoutes');
 
 const initializeDb = require('./createInsuranceTypes')
 
@@ -77,6 +78,7 @@ app.use('/api/invoices', invoices);
 
 app.use('/api/cars', cars)
 app.use('/api/medics', medics)
+app.use('/api/danos', danos)
 
 
 const port = process.env.PORT || 5000;

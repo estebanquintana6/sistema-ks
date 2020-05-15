@@ -74,6 +74,9 @@ class Sidebar extends Component {
                             <li>
                                 <a onClick={() => this.goToPage('/dashboard/danos')}>Panel de seguro</a>
                             </li>
+                            <li>
+                                <a onClick={() => this.goToPage('/dashboard/danos/upload')}>Cargar datos de clientes</a>
+                            </li>
                         </ul>
                     </li>
                     <li>

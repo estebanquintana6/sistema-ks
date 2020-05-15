@@ -67,6 +67,7 @@ class SimpleReactFileUpload extends React.Component {
         case 'CLIENTES' : uploadUrl = 'clients'; break;
         case 'AUTOS' : uploadUrl = 'cars'; break;
         case 'GMM' : uploadUrl = 'medics'; break;
+        case 'DANOS': uploadUrl = 'danos'; break;
         default: uploadUrl = ""
       }
 

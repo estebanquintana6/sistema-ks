@@ -5,6 +5,7 @@ import {
   Form,
   Col,
   Row,
+  Jumbotron
 } from 'react-bootstrap';
 import "./InvoicesForm.css"
 import moment from 'moment'
@@ -54,62 +55,64 @@ class InvoicesForm extends Component {
         <Row>
           <h5 className="swal-title form-title align-left">Recibo</h5>
         </Row>
-        <Row>
-          <Col>
-            <Form.Row>
-              <Form.Group as={Col} controlId="invoice">
-                <Form.Label>Recibo</Form.Label>
-                <Form.Control required onChange={this.onChange} value={this.state.invoice} />
-              </Form.Group>
-            </Form.Row>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Form.Group as={Col} md="12" controlId="due_date">
-              <Form.Label>F. Vencimiento</Form.Label>
-              <Form.Control required type="date" onChange={this.onChange} value={this.formatDate(this.state.due_date)}>
-              </Form.Control>
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group as={Col} md="12" controlId="bounty">
-              <Form.Label>Prima</Form.Label>
-              <Form.Control required type="number" onChange={this.onChange} value={this.state.bounty}>
-              </Form.Control>
-            </Form.Group>
-          </Col>
-          <Col>
-              <Form.Group controlId="payment_status">
-                <Form.Label>Estatus</Form.Label>
-                <Form.Control required as="select" onChange={this.onChange} value={this.state.payment_status}>
-                  <option></option>
-                  <option value="PENDIENTE">Pendiente</option>
-                  <option value="PAGADO">Pagado</option>
-                  <option value="VENCIDO">Vencido</option>
-                  <option value="SALDO A FAVOR">Saldo a Favor</option>
+        <Jumbotron>
+          <Row>
+            <Col>
+              <Form.Row>
+                <Form.Group as={Col} controlId="invoice">
+                  <Form.Label>Recibo</Form.Label>
+                  <Form.Control required onChange={this.onChange} value={this.state.invoice} />
+                </Form.Group>
+                <Form.Group as={Col} controlId="payment_status">
+                  <Form.Label>Estatus</Form.Label>
+                  <Form.Control required as="select" onChange={this.onChange} value={this.state.payment_status}>
+                    <option></option>
+                    <option value="PENDIENTE">Pendiente</option>
+                    <option value="PAGADO">Pagado</option>
+                    <option value="VENCIDO">Vencido</option>
+                    <option value="SALDO A FAVOR">Saldo a Favor</option>
+                  </Form.Control>
+                </Form.Group>
+              </Form.Row>
+            </Col>
+          </Row>
+          <Row>
+              <Form.Group as={Col} controlId="due_date">
+                <Form.Label>Fecha límite de pago</Form.Label>
+                <Form.Control type="date" onChange={this.onChange} value={this.formatDate(this.state.due_date)}>
                 </Form.Control>
               </Form.Group>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Form.Row>
-              <Form.Group as={Col} controlId="comments">
-                <Form.Label>Comentarios</Form.Label>
-                <Form.Control required onChange={this.onChange} value={this.state.comments} />
+              <Form.Group as={Col} controlId="due_date">
+                <Form.Label>Vigencia</Form.Label>
+                <Form.Control type="date" onChange={this.onChange} value={this.formatDate(this.state.pay_limit)}>
+                </Form.Control>
               </Form.Group>
-            </Form.Row>
-          </Col>
-          <Col>
-            <Form.Row>
-              <Form.Group as={Col} controlId="email">
-                <Form.Label>Correo</Form.Label>
-                <Form.Control required onChange={this.onChange} value={this.state.email} />
+              <Form.Group as={Col} controlId="bounty">
+                <Form.Label>Prima</Form.Label>
+                <Form.Control onChange={this.onChange} value={this.state.bounty}>
+                </Form.Control>
               </Form.Group>
-            </Form.Row>
-          </Col>
-        </Row>
+          </Row>
+          <Row>
+            <Col>
+              <Form.Row>
+                <Form.Group as={Col} controlId="comments">
+                  <Form.Label>Comentarios</Form.Label>
+                  <Form.Control onChange={this.onChange} value={this.state.comments} />
+                </Form.Group>
+              </Form.Row>
+            </Col>
+            <Col>
+              <Form.Row>
+                <Form.Group as={Col} controlId="email">
+                  <Form.Label>Correo</Form.Label>
+                  <Form.Control onChange={this.onChange} value={this.state.email} />
+                </Form.Group>
+              </Form.Row>
+            </Col>
+          </Row>
+        </Jumbotron>
+
         <Button variant="primary" type="submit">Guardar</Button>
       </Form>
     );

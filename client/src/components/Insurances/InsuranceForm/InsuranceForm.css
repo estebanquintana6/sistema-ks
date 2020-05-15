@@ -66,4 +66,6 @@
   .react-autosuggest__suggestion--highlighted {
     background-color: #ddd;
   }
-  
+
+  .jumbotron {position:relative;}
+  .buttonjumbotron {position:absolute; top:10pt; right:10pt;}
