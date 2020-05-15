@@ -3,29 +3,41 @@ const moment = require('moment')
 
 const Invoice = require("./models/InvoiceForm");
 const User = require("./models/UserForm");
+const Company = require("./models/CompanyForm");
+
 const { hasExpired, willExpireFive, willExpireTen } = require('./utils/dateUtils');
 
 const nodemailer = require('nodemailer');
 
+let companies;
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'email',
-    pass: 'password'
+    user: '',
+    pass: ''
   }
 });
 
 const composeInvoiceDetailsSpanish = (invoice) => {
-  
+  let invoiceId = invoice.insurance.insurance_company;
+
+  const companyFiltered = companies.filter((company) => { 
+    let companyId = company._id;
+    return invoiceId.equals(companyId);
+  });
+
+  let company = companyFiltered[0];
+
   return `\n\n
   Datos de la Póliza: \n
-  - Contratante	${invoice.client.name}
-  - Aseguradora	${invoice.insurance.company}
-  - No de poliza ${invoice.insurance.policy}
-  - Tipo de poliza ${invoice.insurance.insurance_type}
-  - No. Recibo ${invoice.invoice}
-  - Prima ${invoice.bounty}
-  -	Fecha de vencimiento ${moment(invoice.due_date).format('DD/MM/YYYY')}
+  - Contratante:	${invoice.client.name}
+  - Aseguradora: ${company.name}
+  - No de poliza: ${invoice.insurance.policy}
+  - Tipo de poliza: ${invoice.insurance.insurance_type}
+  - No. Recibo: ${invoice.invoice}
+  - Prima: ${invoice.bounty}
+  - Fecha de vencimiento: ${moment(invoice.due_date).format('DD/MM/YYYY')}
   - Moneda ${invoice.insurance.currency}
   `
 }
@@ -113,7 +125,7 @@ const mailOptions =  (invoice, users, language, situation) => {
 
     // console.log('EMAIL TO SEND', languageText, language)
     return {
-        from: 'email',
+        from: '',
         to: destinations.join(','),
         subject: subjectText,
         text: languageText
@@ -135,23 +147,28 @@ const chooseMethod = (date) => {
 }
 
 
-var j = schedule.scheduleJob('*/5 * * * * *', function(){
-    var statuses = ['PENDIENTE', 'VENCIDO']
+var j = schedule.scheduleJob('*/20 * * * * *', async function(){
+    var statuses = ['PENDIENTE', 'VENCIDO'];
+    
+    companies = await Company.find().exec();
+
     Invoice.find({payment_status: {$in: statuses}}).populate('insurance').populate('client').then((invoices, err) => {
-        User.find({}).then((users) => {
-            invoices.filter(invoice => {
-                let due_date = new Date(invoice.due_date);
-                if(hasExpired(due_date)) return invoice;
-                else if(willExpireTen(due_date)) return invoice;
-            }).map(invoice => {
-              return {invoice, method: chooseMethod(invoice.due_date)}
-            })
-            .map((invoice) => {
-                const lang = invoice.invoice.client.languages
-                if (lang !== 'Coreano') //func(invoice.invoice, users, 'Español', invoice.method)
-                if (lang !== 'Español') //func(invoice.invoice, users, 'Coreano', invoice.method)
-                return true
-            });
-        })
-    })
+
+
+      User.find({}).then((users) => {
+          invoices.filter(invoice => {
+              let due_date = new Date(invoice.due_date);
+              if(hasExpired(due_date)) return invoice;
+              else if(willExpireTen(due_date)) return invoice;
+          }).map(invoice => {
+            return {invoice, method: chooseMethod(invoice.due_date)}
+          })
+          .map((invoice) => {
+              const lang = invoice.invoice.client.languages
+              if (lang !== 'Coreano') //func(invoice.invoice, users, 'Español', invoice.method)
+              if (lang !== 'Español') //func(invoice.invoice, users, 'Coreano', invoice.method)
+              return true
+          });
+      })
+  })
 })
