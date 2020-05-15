@@ -150,6 +150,7 @@ class InsurancePanel extends Component {
       text: "Captura los datos de la nueva póliza",
       content:
         <InsuranceForm
+          invoicePanel={false}
           type={variant}
           clients={this.state.clients}
           companies={this.state.companies}

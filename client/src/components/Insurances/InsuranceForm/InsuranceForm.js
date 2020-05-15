@@ -315,9 +315,6 @@ class InsuranceForm extends Component {
       generalActive = "";
       invoicesActive = "show active";
     } 
-    console.log(this.props.invoicePanel);
-    console.log(generalActive);
-    console.log(invoicesActive);
 
     return (
       <Form onSubmit={this.onSubmit}>
@@ -569,7 +566,7 @@ class InsuranceForm extends Component {
 
                 {this.state.invoices.map((value, index) => {
                   return (
-                    <Jumbotron className="mt-3">
+                    <Jumbotron>
                     <Form.Row>
                       <Form.Group as={Col} md="4">
                         <Form.Label>Recibo</Form.Label>
