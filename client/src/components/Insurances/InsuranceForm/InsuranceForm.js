@@ -600,7 +600,7 @@ class InsuranceForm extends Component {
 
                       <Form.Group as={Col}>
                         <Form.Label>Prima</Form.Label>
-                        <Form.Control type="number" onChange={(e) => { this.onChangeInvoiceBounty(index, e) }} value={this.state.invoices[index].bounty} />
+                        <Form.Control type="number" step=".01" onChange={(e) => { this.onChangeInvoiceBounty(index, e) }} value={this.state.invoices[index].bounty} />
                       </Form.Group>
                       
                     </Form.Row>

@@ -89,7 +89,7 @@ class InvoicesForm extends Component {
               </Form.Group>
               <Form.Group as={Col} controlId="bounty">
                 <Form.Label>Prima</Form.Label>
-                <Form.Control required type="number" onChange={this.onChange} value={this.state.bounty}>
+                <Form.Control required type="number" step=".01" onChange={this.onChange} value={this.state.bounty}>
                 </Form.Control>
               </Form.Group>
           </Row>
