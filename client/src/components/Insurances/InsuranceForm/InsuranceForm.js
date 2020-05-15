@@ -359,10 +359,6 @@ class InsuranceForm extends Component {
                     <Form.Row>
                       <Form.Group as={Col} controlId="client">
                         <Form.Label>Contratante</Form.Label>
-                        {/* <Form.Control required as="select" onChange={this.onChange} value={this.state.client && this.state.client._id}>
-                          <option></option>
-                          {this.props.clients.map((client) => client && <option key={client._id} value={client._id}>{`${client.name}`}</option>)}
-                        </Form.Control> */}
                         <Select
                           value={this.selectedClient()}
                           onChange={this.onChangeClient}
@@ -610,6 +606,7 @@ class InsuranceForm extends Component {
                         <Form.Control onChange={(e) => { this.onChangeInvoiceEmail(index, e) }} value={this.state.invoices[index].email} />
                       </Form.Group>
                     </Form.Row>
+                    <hr></hr>
                     </>
                   );
                 })}
