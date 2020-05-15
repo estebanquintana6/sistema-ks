@@ -62,3 +62,20 @@ export const deleteClient = (id) => dispatch => {
     });
 
 }
+
+export const download = (path) => dispatch => {
+  console.log('PATHHH', path)
+  const token = localStorage.getItem("jwtToken");
+  const data = {
+    token,
+    path
+  }
+  return axios
+    .post("/api/clients/download", data)
+    .then(res => {
+      return res;
+    }).catch(err => {
+      return err;
+    });
+
+}

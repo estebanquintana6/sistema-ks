@@ -31,6 +31,10 @@ var Client = new Schema({
     required: false,
     uppercase: false
   },
+  files: {
+    type: Array,
+    required: false
+  },
   contacts: {
     type: Array,
     required: false

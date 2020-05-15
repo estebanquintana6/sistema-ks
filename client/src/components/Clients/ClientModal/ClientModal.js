@@ -33,6 +33,9 @@ class ClientModal extends Component {
                                       </li>
                                       <li class="nav-item">
                                         <a class="nav-link" href="#deleteTab" role="tab" data-toggle="tab"><i class="fas fa-exclamation-triangle"></i>Eliminar</a>
+                                      </li>
+                                      <li class="nav-item">
+                                        <a class="nav-link" href="#downloadTab" role="tab" data-toggle="tab"><i class="fas fa-exclamation-triangle"></i>Descargar</a>
                                       </li>    
                                     </ul>
                                     <div class="tab-content">
@@ -52,6 +55,11 @@ class ClientModal extends Component {
                                             <Button className="panel-btn" variant="danger" onClick={this.props.deleteClient.bind(this, client._id, client.name)}>ELIMINAR</Button>
                                           </Col>
                                         </Row>
+                                      </div>
+                                      <div role="tabpanel" class="tab-pane fade" id="downloadTab">
+                                        {client.files.map(file => {
+                                          return (<span onClick={this.props.download.bind(this, file)}>{file}</span>)
+                                        })}
                                       </div>
                                     </div>
                                   </Col>

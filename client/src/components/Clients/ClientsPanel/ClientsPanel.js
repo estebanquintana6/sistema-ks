@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Container, Row } from 'react-bootstrap';
 import { connect } from "react-redux";
-import { getClients, updateClient, deleteClient, registerClient } from "../../../actions/registerClient";
+import { getClients, updateClient, deleteClient, registerClient, download } from "../../../actions/registerClient";
 import swal from '@sweetalert/with-react';
 
 import ClientsForm from "../ClientsForm/ClientsForm";
@@ -16,6 +16,8 @@ import ReactTable from "react-table";
 
 import "react-table/react-table.css";
 import "./ClientsPanel.css";
+
+import FileUpload from '../../GenericUploader/FileUpload'
 
 
 class ClientsPanel extends Component {
@@ -148,7 +150,8 @@ class ClientsPanel extends Component {
       content: <ClientModal
         client={client}
         updateClient={this.updateClient}
-        deleteClient={this.deleteClient}>
+        deleteClient={this.deleteClient}
+        download={this.props.download}>
       </ClientModal>,
       buttons: false,
       title: `${client.name}`,
@@ -273,6 +276,8 @@ class ClientsPanel extends Component {
           <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields} header={this.state.excelHeader} sortableColumn={'Nombre'}></ExportDataToCSV>
           </div>
         </Container>
+        <FileUpload entity={'clients'} client={this.state.data[0]}></FileUpload>
+        <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields}></ExportDataToCSV>
       </React.Fragment>
     );
   }
@@ -291,5 +296,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getClients, updateClient, deleteClient, registerClient }
+  { getClients, updateClient, deleteClient, registerClient, download }
 )(ClientsPanel);

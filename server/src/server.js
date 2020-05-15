@@ -22,6 +22,8 @@ const initializeDb = require('./createInsuranceTypes')
 const app = express();
 const regular_jobs = require('./node_regular_job')
 const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/test";
+const fileUpload = require('express-fileupload');
+
 
 console.log("MONGOURI: ", mongoUri);
 
@@ -65,6 +67,7 @@ let j = regular_jobs.j;
 require("./config/passport")(passport);
 
 // Routes
+app.use(fileUpload({debug: true, createParentPath: true}));
 app.use("/api/users", users);
 app.use("/api/clients", clients);
 app.use("/api/secom", secom);
