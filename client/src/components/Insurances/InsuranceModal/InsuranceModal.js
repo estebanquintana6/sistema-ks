@@ -25,11 +25,12 @@ class InsuranceModal extends Component {
   }
   
 
-  editInsurance = (insurance) => {
+  editInsurance = (event, insurance, invoices = false) => {
     swal({
       title: `Editar seguro`,
       text: `Modifica los campos del seguro`,
       content: <InsuranceForm 
+                  invoicePanel={invoices}
                   type={this.props.type}
                   insurance={this.props.insurance} 
                   clients={this.props.clients} 
@@ -75,12 +76,17 @@ class InsuranceModal extends Component {
               <Button variant="info" className="button-modal" onClick={this.editInsurance.bind(this, insurance)}>VER POLIZA</Button>
             </Col>
           </Row>
-
+          <Row className="mt-2">
+            <Col md="12">
+              <Button variant="info" className="button-modal" onClick={this.editInsurance.bind(this, insurance, true)}>RECIBOS</Button>
+            </Col>  
+          </Row>
           <Row className="mt-2">
             <Col md="12">
               <Button variant="success" className="button-modal" onClick={this.props.changePayStatus.bind(this, insurance)}>CAMBIAR STATUS PAGO</Button>
             </Col>  
           </Row>
+  
           <Row className="mt-2">
           { insurance.active_status &&
             <Col md="12">

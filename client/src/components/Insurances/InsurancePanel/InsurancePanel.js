@@ -121,7 +121,7 @@ class InsurancePanel extends Component {
     return {};
   }
 
-  openModificationModal(insurance) {
+  openModificationModal(insurance, invoicePanel = false) {
     let cancelation_note = "";
 
     if(!insurance.active_status) cancelation_note = `NOTA DE CANCELACIÓN: ${insurance.cancelation_note}`;

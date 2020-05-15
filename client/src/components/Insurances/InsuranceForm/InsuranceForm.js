@@ -307,6 +307,17 @@ class InsuranceForm extends Component {
   }
 
   render() {
+    let generalActive = "show active";
+    let invoicesActive = "";
+
+    if(this.props.invoicePanel){
+      generalActive = "";
+      invoicesActive = "show active";
+    } 
+    console.log(this.props.invoicePanel);
+    console.log(generalActive);
+    console.log(invoicesActive);
+
     return (
       <Form onSubmit={this.onSubmit}>
         <Row>
@@ -317,20 +328,29 @@ class InsuranceForm extends Component {
           </Col>
           <Col md="12">
             <ul className="nav nav-tabs" role="tablist">
-              <li className="nav-item" onClick={this.update}>
-                <a className="nav-link active" href="#i-types" role="tab" data-toggle="tab"><i className="fas fa-building"></i>Generales</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#invoices" role="tab" data-toggle="tab"><i className="fas fa-receipt"></i> Recibos</a>
-              </li>
-              {this.props.edit && 
-                <li className="nav-item">
-                  <a className="nav-link" href="#endor" role="tab" data-toggle="tab"><i className="fas fa-edit"></i>Endosos</a>
-                </li>
-              }
+                {this.props.invoicePanel === false 
+                 ? <React.Fragment>
+                    <li className="nav-item" onClick={this.update}>
+                      <a className="nav-link active" href="#i-types" role="tab" data-toggle="tab"><i className="fas fa-building"></i>Generales</a>
+                    </li>
+                    <li className="nav-item">
+                      <a className="nav-link" href="#invoices" role="tab" data-toggle="tab"><i className="fas fa-receipt"></i> Recibos</a>
+                    </li>
+                    { this.props.edit && 
+                      <li className="nav-item">
+                        <a className="nav-link" href="#endor" role="tab" data-toggle="tab"><i className="fas fa-edit"></i>Endosos</a>
+                      </li>
+                    }
+                  </React.Fragment>
+                  : <li className="nav-item">
+                      <a className="nav-link active" href="#invoices" role="tab" data-toggle="tab"><i className="fas fa-receipt"></i> Recibos</a>
+                    </li>
+                }
+                {this.props.invoice}
+                
             </ul>
             <div className="tab-content">
-              <div role="tabpanel" className="tab-pane fade show active" id="i-types">
+              <div role="tabpanel" className={`tab-pane fade ${generalActive}`} id="i-types">
                 <Row>
                   <Col md="6">
                     <Row>
@@ -540,7 +560,7 @@ class InsuranceForm extends Component {
                 </Row>
               </div>
 
-              <div role="tabpanel" className="tab-pane fade" id="invoices">
+              <div role="tabpanel" className={`tab-pane fade ${invoicesActive}`} id="invoices">
                 <Row>
                   <h5 className="swal-title form-title align-left">RECIBOS</h5>
                 </Row>
