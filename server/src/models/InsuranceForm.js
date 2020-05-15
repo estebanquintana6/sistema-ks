@@ -52,7 +52,7 @@ var InsuranceSchema = new Schema({
     required: true
   },
   bounty: {
-    type: Number,
+    type: String,
     required: false
   },
   payment_type: {
