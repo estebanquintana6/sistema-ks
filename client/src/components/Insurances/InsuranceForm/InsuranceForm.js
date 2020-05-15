@@ -5,6 +5,7 @@ import {
   Col,
   Form,
   Row,
+  Jumbotron
 } from 'react-bootstrap';
 
 import "./InsuranceForm.css";
@@ -568,7 +569,7 @@ class InsuranceForm extends Component {
 
                 {this.state.invoices.map((value, index) => {
                   return (
-                    <>
+                    <Jumbotron className="mt-3">
                     <Form.Row>
                       <Form.Group as={Col} md="4">
                         <Form.Label>Recibo</Form.Label>
@@ -606,8 +607,7 @@ class InsuranceForm extends Component {
                         <Form.Control onChange={(e) => { this.onChangeInvoiceEmail(index, e) }} value={this.state.invoices[index].email} />
                       </Form.Group>
                     </Form.Row>
-                    <hr></hr>
-                    </>
+                    </Jumbotron>
                   );
                 })}
               </div>
