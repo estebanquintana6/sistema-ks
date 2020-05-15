@@ -79,17 +79,17 @@ class InvoicesForm extends Component {
           <Row>
               <Form.Group as={Col} controlId="due_date">
                 <Form.Label>Fecha límite de pago</Form.Label>
-                <Form.Control required type="date" onChange={this.onChange} value={this.formatDate(this.state.due_date)}>
+                <Form.Control type="date" onChange={this.onChange} value={this.formatDate(this.state.due_date)}>
                 </Form.Control>
               </Form.Group>
               <Form.Group as={Col} controlId="due_date">
                 <Form.Label>Vigencia</Form.Label>
-                <Form.Control required type="date" onChange={this.onChange} value={this.formatDate(this.state.pay_limit)}>
+                <Form.Control type="date" onChange={this.onChange} value={this.formatDate(this.state.pay_limit)}>
                 </Form.Control>
               </Form.Group>
               <Form.Group as={Col} controlId="bounty">
                 <Form.Label>Prima</Form.Label>
-                <Form.Control required type="number" step=".01" onChange={this.onChange} value={this.state.bounty}>
+                <Form.Control type="number" step=".01" onChange={this.onChange} value={this.state.bounty}>
                 </Form.Control>
               </Form.Group>
           </Row>
@@ -98,7 +98,7 @@ class InvoicesForm extends Component {
               <Form.Row>
                 <Form.Group as={Col} controlId="comments">
                   <Form.Label>Comentarios</Form.Label>
-                  <Form.Control required onChange={this.onChange} value={this.state.comments} />
+                  <Form.Control onChange={this.onChange} value={this.state.comments} />
                 </Form.Group>
               </Form.Row>
             </Col>
@@ -106,7 +106,7 @@ class InvoicesForm extends Component {
               <Form.Row>
                 <Form.Group as={Col} controlId="email">
                   <Form.Label>Correo</Form.Label>
-                  <Form.Control required onChange={this.onChange} value={this.state.email} />
+                  <Form.Control onChange={this.onChange} value={this.state.email} />
                 </Form.Group>
               </Form.Row>
             </Col>
