@@ -480,9 +480,12 @@ class InsurancePanel extends Component {
           <Row>
             <h2>Pólizas {variant}</h2>
           </Row>
-          <Row className="mt-4">
-            <a onClick={this.addInsurance.bind(this, variant)} className="btn-primary">Registrar nuevo</a>
-          </Row>
+          {this.props.variant !== "GENERAL" &&
+            <Row className="mt-4">
+              <a onClick={this.addInsurance.bind(this, variant)} className="btn-primary">Registrar nuevo</a>
+            </Row>
+          }
+
         </Container>
         <br />
         <div className="full-width">
