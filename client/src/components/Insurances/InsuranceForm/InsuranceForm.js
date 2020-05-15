@@ -567,22 +567,16 @@ class InsuranceForm extends Component {
                 {this.state.invoices.map((value, index) => {
                   return (
                     <Jumbotron>
+                    <Button variant="danger" className="buttonjumbotron" onClick={() => { this.deleteInvoice(index) }}><i className="fa fa-trash" /></Button>
+                    
                     <Form.Row>
-                      <Form.Group as={Col} md="4">
-                        <Form.Label>Recibo</Form.Label>
-                        <Form.Control required onChange={(e) => { this.onChangeInvoice(index, e) }} value={this.state.invoices[index].invoice} />
-                      </Form.Group>
-                      <Form.Group as={Col} md="3">
-                        <Form.Label>Fecha límite de pago</Form.Label>
-                        <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(index, e) }} value={this.formatDate(this.state.invoices[index].due_date)} />
-                      </Form.Group>
-                      <Form.Group as={Col} md="2">
-                        <Form.Label>Prima</Form.Label>
-                        <Form.Control type="number" onChange={(e) => { this.onChangeInvoiceBounty(index, e) }} value={this.state.invoices[index].bounty} />
-                      </Form.Group>
-                      <Form.Group as={Col} md="2">
-                        <Form.Label>Estatus</Form.Label>
-                        <Form.Control as="select" onChange={(e) => { this.onChangeInvoiceStatus(index, e) }} value={this.state.invoices[index].payment_status}>
+                      <Form.Group as={Col}>
+                          <Form.Label>Recibo</Form.Label>
+                          <Form.Control required onChange={(e) => { this.onChangeInvoice(index, e) }} value={this.state.invoices[index].invoice} />
+                        </Form.Group>
+                      <Form.Group as={Col}>
+                      <Form.Label>Estatus</Form.Label>
+                      <Form.Control as="select" onChange={(e) => { this.onChangeInvoiceStatus(index, e) }} value={this.state.invoices[index].payment_status}>
                           <option></option>
                           <option selected value="PENDIENTE">Pendiente</option>
                           <option value="PAGADO">Pagado</option>
@@ -590,10 +584,26 @@ class InsuranceForm extends Component {
                           <option value="SALDO A FAVOR">Saldo a Favor</option>
                         </Form.Control>
                       </Form.Group>
-                      <Col md="1">
-                          <Button variant="danger" className="align-center" onClick={() => { this.deleteInvoice(index) }}><i className="fa fa-trash" /></Button>
-                        </Col>
                     </Form.Row>
+
+                    <Form.Row>
+
+                      <Form.Group as={Col}>
+                        <Form.Label>Vigencia</Form.Label>
+                        <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceLimitDate(index, e) }} value={this.formatDate(this.state.invoices[index].pay_limit)} />
+                      </Form.Group>
+
+                      <Form.Group as={Col}>
+                        <Form.Label>Fecha límite de pago</Form.Label>
+                        <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(index, e) }} value={this.formatDate(this.state.invoices[index].due_date)} />
+                      </Form.Group>
+
+                      <Form.Group as={Col}>
+                        <Form.Label>Prima</Form.Label>
+                        <Form.Control type="number" onChange={(e) => { this.onChangeInvoiceBounty(index, e) }} value={this.state.invoices[index].bounty} />
+                      </Form.Group>
+                    </Form.Row>
+
                     <Form.Row>
                       <Form.Group as={Col} md="6">
                         <Form.Label>Comentarios</Form.Label>

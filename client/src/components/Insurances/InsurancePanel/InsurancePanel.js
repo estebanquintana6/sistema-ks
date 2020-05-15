@@ -192,14 +192,18 @@ class InsurancePanel extends Component {
           swal({
             icon: "success",
             content: <h2>Poliza Actualizada</h2>,
+          }).then(() => {
+            this.refresh();
           });
         } else {
           swal({
             icon: "error",
             content: <h2>Error al guardar la poliza</h2>,
-          });
+          }).then(() => {
+            this.refresh();
+          });;
         }
-        this.refresh();
+        
       });
   }
 
