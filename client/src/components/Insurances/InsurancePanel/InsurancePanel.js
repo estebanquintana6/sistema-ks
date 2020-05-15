@@ -330,7 +330,7 @@ class InsurancePanel extends Component {
           }
         },
         {
-          Header: "Poliza",
+          Header: "Poliza No.",
           id: "policy",
           width: 140,
           accessor: d => this.validateField(d.policy)
@@ -350,7 +350,7 @@ class InsurancePanel extends Component {
           filterable: false
         },
         {
-          Header: "Fecha vencimiento",
+          Header: "Fecha vto. poliza",
           id: "due_date",
           Cell: c => <span>{c.original.due_date && formatShortDate(c.original.due_date)}</span>,
           accessor: d => moment(d.due_date).unix(),
