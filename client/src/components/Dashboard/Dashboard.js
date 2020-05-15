@@ -99,12 +99,16 @@ class Dashboard extends Component {
             <Route exact path="/dashboard/danos">
               <InsurancePanel history={this.props.history} variant="DANOS"></InsurancePanel>
             </Route>
-            <UploadPanel 
-              history={this.props.history}
-              type="DANOS"
-              resultKeys={['no', 'person_type', 'name', 'rfc', 'policy', 'product', 'coin', 'due_date', 'payment_type', 'prima', 'contact', 'email', 'telephone', 'insurance_company']}
-              originalKeys={['NO','TIPO DE PERSONA','CONTRATANTE','RFC','POLIZA','PRODUCTO', 'MONEDA','FECHA DE VENCIMIENTO', 'TIPO DE PAGO','PRIMA', 'CONTACTO','MAIL','TELEFONO','ASEGURADORA']}
-              ></UploadPanel>
+            <Route exact path="/dashboard/danos/upload">
+              <UploadPanel 
+                history={this.props.history}
+                type="DANOS"
+                resultKeys={['no', 'person_type', 'name', 'rfc', 'policy', 'product', 'coin', 'due_date', 'payment_type', 'prima', 'contact', 'email', 'telephone', 'insurance_company']}
+                originalKeys={['NO','TIPO DE PERSONA','CONTRATANTE','RFC','POLIZA','PRODUCTO', 'MONEDA','FECHA DE VENCIMIENTO', 'TIPO DE PAGO','PRIMA', 'CONTACTO','MAIL','TELEFONO','ASEGURADORA']}
+                >
+                </UploadPanel>
+            </Route>
+
             <Route exact path="/dashboard/invoices">
               <InvoicesPanel history={this.props.history}></InvoicesPanel>
             </Route>
