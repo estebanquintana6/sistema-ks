@@ -26,9 +26,17 @@ class InsuranceModal extends Component {
   
 
   editInsurance = (event, insurance, invoices = false) => {
+    let title = "Editar seguros";
+    let text = "Modifica los campos del seguro";
+
+    if(invoices){
+      title = "Vista de recibos";
+      text = "Modifica los campos de los recibos."
+    }
+
     swal({
-      title: `Editar seguro`,
-      text: `Modifica los campos del seguro`,
+      title: title,
+      text: text,
       content: <InsuranceForm 
                   invoicePanel={invoices}
                   type={this.props.type}
