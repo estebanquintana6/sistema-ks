@@ -45,10 +45,15 @@ export const ExportDataToCSV = (props) => {
         return dataInstance
     }
 
-    const transformInnerArrayToObject = (dataArray, fieldTranslation, excludedFields, parentKey) => {
+    const transformInnerArrayToObject = (dataArray, fieldTranslation, excludedFields, parentKey, isContactsField = false) => {
         let resultObj = {}
         dataArray.forEach((loc, index) => {
             let cleanObj = removeExcludedFieldsFromInstance(loc, excludedFields)
+            if(isContactsField){
+                if(!cleanObj.hasOwnProperty('name')) cleanObj.name = '';
+                if(!cleanObj.hasOwnProperty('email')) cleanObj.email = '';
+                if(!cleanObj.hasOwnProperty('telephone')) cleanObj.telephone = '';
+            }
             Object.keys(cleanObj).forEach((key) => {
                 const translation = whiteListNames.includes(key) ? `${parentKey} ${index + 1}` : `${fieldTranslation[key]} ${index + 1}`;
                 resultObj = {...resultObj, ...renameLabel(cleanObj, key, translation)}
@@ -79,7 +84,7 @@ export const ExportDataToCSV = (props) => {
 
             Object.keys(data).forEach(key => {
                 if (Array.isArray(data[key])) {
-                    resultData = {...resultData, ...transformInnerArrayToObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key])}
+                    resultData = {...resultData, ...transformInnerArrayToObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key], key === 'contacts')}
                 } else if (typeof(data[key]) === 'object'){
                     // treat object
                     resultData = {...resultData, ...spreadInnerObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key])}
@@ -92,8 +97,8 @@ export const ExportDataToCSV = (props) => {
         }
 
         const workbook = XLSX.utils.book_new();
-        const myHeader = header
-        // console.log('DEFAULT ORDER', Object.keys(dataToWrite[0]))
+        let myHeader = header
+
         const worksheet = XLSX.utils.json_to_sheet(dataToWrite, {header: myHeader});
         XLSX.utils.book_append_sheet(workbook, worksheet, 'tab1');
         XLSX.writeFile(workbook, `${fileName}.xls`);

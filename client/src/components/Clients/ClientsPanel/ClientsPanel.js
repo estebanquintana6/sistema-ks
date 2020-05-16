@@ -30,17 +30,15 @@ class ClientsPanel extends Component {
         contacts: "Contacto ",
         email: "Correo",
         name: "Nombre",
-        observation: "Observaciones",
         telephone: "Teléfono",
-        created_at: "Fecha de alta",
-        languages: "Lenguajes",
-        name: "Nombre",
         person_type: "Tipo de Persona",
         rfc: "RFC",
-        gender: 'SEXO'
+        gender: 'Sexo',
+        state: "Estado",
+        city: "Ciudad"
       },
-      excludedFields: ['__v', '_id', 'files'],
-      excelHeader: ['Nombre', 'Sexo','Teléfono', 'Fecha de alta', 'Lenguajes', 'Tipo de Persona', 'RFC', 'Observaciones', 'Correo', 'Contacto', 'Comentarios']
+      excludedFields: ['__v', '_id', 'files', 'created_at'],
+      excelHeader: ['Tipo de Persona', 'RFC', 'Nombre', 'Sexo','Estado', 'Ciudad', 'Comentarios']
     };
   }
 
