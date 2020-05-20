@@ -74,10 +74,22 @@ export const ExportDataToCSV = (props) => {
         return resultObj
     }
 
+    const getClientData = (client) => {
+        return {
+            client_name: client.name,
+            person_type: client.person_type
+        }
+    }
+
     const insuranceToObj = (dataObj) => {
         let resultObj = {}
         Object.keys(dataObj).forEach((key) => {
-            console.log(dataObj[key]);
+            const insuranceObj = {};
+
+            const insurance = dataObj[key];
+
+            const clientData = getClientData(insurance.client);
+            console.log(clientData);
         });
     }
 
@@ -85,7 +97,7 @@ export const ExportDataToCSV = (props) => {
         const dataToWrite = []
         // console.log('NEW HEADER', header)
         if ( isInsurance ){
-            
+            insuranceToObj(csvData);
         } else { 
             for (let i in csvData) {
                 let resultData = {}
