@@ -9,7 +9,7 @@ import swal from '@sweetalert/with-react';
 
 import InsuranceForm from "../InsuranceForm/InsuranceForm";
 import InsuranceModal from "../InsuranceModal/InsuranceModal";
-
+import { ExportDataToCSV } from "../../ExportCSV/ExportCSV";
 
 // Import React Table
 import ReactTable from "react-table";
@@ -36,7 +36,41 @@ class InsurancePanel extends Component {
       dueDateEndDate: "",
       data: [],
       clients: [],
-      companies: []
+      companies: [],
+      fieldTranslation: {
+        _id: "id",
+        begin_date: "Fecha de inicio de póliza",
+        car_brand: "Marca de coche",
+        car_color: "Color de coche",
+        car_description: "Descripción de coche",
+        car_motor: "Nūmero de motor",
+        car_placas: "Número de placas",
+        car_series_number: "Número de serie",
+        car_year: "Modelo de coche",
+        cis: "CIS",
+        client: "Contratante",
+        person_type: "Tipo de persona",
+        rfc: "RFC",
+        colective_insurance: "Tipo de póliza",
+        currency: "Moneda",
+        due_date: "Fecha de vencimiento",
+        endorsements: "Endosos",
+        insurance: "Compañia",
+        email: "Email",
+        bounty: "Prima",
+        insurance_company: "Aseguradora",
+        insurance_type: "Producto",
+        invoices: "Recibos",
+        invoice: "Número de recibo",
+        payment_status: "Estatus de pago",
+        pay_due_date: "Fecha vto. pago",
+        pay_limit: "Vigencia",
+        pay_status: "Status",
+        payment_type: "Tipo de pago",
+        policy: "Póliza",
+      },
+      excludedFields: ['__v', '_id', 'active_status', 'endorsements', 'comments', 'status'],
+      excelHeader: ['Tipo de Persona', 'Contratante', 'RFC', 'Póliza']
     };
   }
 
@@ -56,6 +90,7 @@ class InsurancePanel extends Component {
   refresh = () => {
     this.props.getInsurances(this.props.variant).then(data => {
       this.setState({ data: data.insurances });
+      console.log(data);
     });
   }
 
@@ -529,7 +564,7 @@ class InsurancePanel extends Component {
           />
           <div className="row">
             <div className="col-md-4 center mt-4">
-              {/* <ExportClientCSV csvData={this.state.data} fileName="reporteClientes" /> */}
+            <ExportDataToCSV csvData={this.state.data} fileName={'reporteSeguros'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields} header={this.state.excelHeader} isInsurance={true}></ExportDataToCSV>
             </div>
           </div>
 

@@ -31,14 +31,16 @@ class ClientsPanel extends Component {
         email: "Correo",
         name: "Nombre",
         telephone: "Teléfono",
+        observations: "Observaciones",
         person_type: "Tipo de Persona",
         rfc: "RFC",
         gender: 'Sexo',
         state: "Estado",
-        city: "Ciudad"
+        city: "Ciudad",
+        postal_code: "Código Postal"
       },
       excludedFields: ['__v', '_id', 'files', 'created_at'],
-      excelHeader: ['Tipo de Persona', 'RFC', 'Nombre', 'Sexo','Estado', 'Ciudad', 'Comentarios']
+      excelHeader: ['Tipo de Persona', 'RFC', 'Nombre', 'Sexo','Estado', 'Ciudad', 'Código Postal', 'Comentarios']
     };
   }
 
@@ -267,8 +269,10 @@ class ClientsPanel extends Component {
             getTrProps={this.getTrProps}
           />
           </div>
+          <div className="mt-4">
+          <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields} header={this.state.excelHeader}></ExportDataToCSV>
+          </div>
         </Container>
-        <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields} header={this.state.excelHeader}></ExportDataToCSV>
       </React.Fragment>
     );
   }
