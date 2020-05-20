@@ -37,40 +37,42 @@ class InsurancePanel extends Component {
       data: [],
       clients: [],
       companies: [],
-      fieldTranslation: {
-        _id: "id",
-        begin_date: "Fecha de inicio de póliza",
-        car_brand: "Marca de coche",
-        car_color: "Color de coche",
-        car_description: "Descripción de coche",
-        car_motor: "Nūmero de motor",
-        car_placas: "Número de placas",
-        car_series_number: "Número de serie",
-        car_year: "Modelo de coche",
-        cis: "CIS",
-        client: "Contratante",
-        person_type: "Tipo de persona",
-        rfc: "RFC",
-        colective_insurance: "Tipo de póliza",
-        currency: "Moneda",
-        due_date: "Fecha de vencimiento",
-        endorsements: "Endosos",
-        insurance: "Compañia",
-        email: "Email",
-        bounty: "Prima",
-        insurance_company: "Aseguradora",
-        insurance_type: "Producto",
-        invoices: "Recibos",
-        invoice: "Número de recibo",
-        payment_status: "Estatus de pago",
-        pay_due_date: "Fecha vto. pago",
-        pay_limit: "Vigencia",
-        pay_status: "Status",
-        payment_type: "Tipo de pago",
-        policy: "Póliza",
-      },
-      excludedFields: ['__v', '_id', 'active_status', 'endorsements', 'comments', 'status'],
-      excelHeader: ['Tipo de Persona', 'Contratante', 'RFC', 'Póliza']
+      fieldTranslation: this.generateFieldsTranslation()
+      // {
+      //   _id: "id",
+      //   begin_date: "Fecha de inicio de póliza",
+      //   car_brand: "Marca de coche",
+      //   car_color: "Color de coche",
+      //   car_description: "Descripción de coche",
+      //   car_motor: "Número de motor",
+      //   car_placas: "Número de placas",
+      //   car_series_number: "Número de serie",
+      //   car_year: "Modelo de coche",
+      //   cis: "CIS",
+      //   client: "Contratante",
+      //   person_type: "Tipo de persona",
+      //   rfc: "RFC",
+      //   colective_insurance: "Tipo de póliza",
+      //   currency: "Moneda",
+      //   due_date: "Fecha de vencimiento",
+      //   endorsements: "Endosos",
+      //   insurance: "Compañia",
+      //   email: "Email",
+      //   bounty: "Prima",
+      //   insurance_company: "Aseguradora",
+      //   insurance_type: "Producto",
+      //   invoices: "Recibos",
+      //   invoice: "Número de recibo",
+      //   payment_status: "Estatus de pago",
+      //   pay_due_date: "Fecha vto. pago",
+      //   pay_limit: "Vigencia",
+      //   pay_status: "Status",
+      //   payment_type: "Tipo de pago",
+      //   policy: "Póliza",
+      // }
+      ,
+      excludedFields: ['__v', '_id', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts'],
+      excelHeader: this.generateHeaders()
     };
   }
 
@@ -93,6 +95,79 @@ class InsurancePanel extends Component {
       console.log(data);
     });
   }
+
+  generateFieldsTranslation = () => {
+    let resObj = {
+      _id: "id",
+      begin_date: "Fecha de inicio de póliza",
+      client: "Contratante",
+      person_type: "Tipo de persona",
+      rfc: "RFC",
+      colective_insurance: "Tipo de póliza",
+      currency: "Moneda",
+      due_date: "Fecha de vencimiento",
+      endorsements: "Endosos",
+      insurance: "Compañia",
+      email: "Email",
+      bounty: "Prima",
+      insurance_company: "Aseguradora",
+      insurance_type: "Producto",
+      invoices: "Recibos",
+      invoice: "Número de recibo",
+      payment_status: "Estatus de pago",
+      pay_due_date: "Fecha vto. pago",
+      pay_limit: "Vigencia",
+      pay_status: "Status",
+      payment_type: "Tipo de pago",
+      policy: "Póliza",
+    }
+
+    if(this.props.variant === 'AUTOS'){
+      resObj = {
+        ...resObj, 
+        car_brand: "Marca de coche",
+        car_color: "Color de coche",
+        car_description: "Descripción de coche",
+        car_motor: "Número de motor",
+        car_placas: "Número de placas",
+        car_series_number: "Número de serie",
+        car_year: "Modelo de coche",
+        cis: "CIS"
+      }
+    }
+    return resObj
+  }
+
+  generateHeaders = () => {
+    let resArr = ['Contratante Tipo de persona', 'Contratante', 'Contratante RFC', 'Póliza', 'Producto', 'Tipo de Póliza', 'Moneda', 'Fecha de vencimiento', 'Tipo de pago', 'Aseguradora']
+    if(this.props.variant === 'AUTOS'){
+      resArr = [
+        ...resArr, 
+        "Marca de coche",
+        "Color de coche",
+        "Descripción de coche",
+        "Número de motor",
+        "Número de placas",
+        "Número de serie",
+        "Modelo de coche",
+        "CIS"
+      ]
+    }
+    return resArr
+  }
+
+  // itemsToExclude = () => {
+  //   switch(this.props.variant){
+  //     case 'AUTOS':
+  //       this.setState({excludedFields: [...this.state.excludedFields, '1', '2', '3']})
+  //     default:
+  //       return []
+  //   }
+  // }
+
+  rewriteFieldTranslation = () =>{
+    
+  } 
 
   prepareClientsForForm = () => {
     this.props.getClients().then(data => {

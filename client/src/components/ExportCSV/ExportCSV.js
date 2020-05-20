@@ -39,7 +39,6 @@ export const ExportDataToCSV = (props) => {
     const fileExtension = '.xlsx';
 
     const removeExcludedFieldsFromInstance = (dataInstance, excludedFields) => {
-        console.log(dataInstance);
         excludedFields.forEach(ef => {
             if(ef != null)
                 if(dataInstance.hasOwnProperty(ef)) delete dataInstance[ef]
@@ -83,10 +82,6 @@ export const ExportDataToCSV = (props) => {
 
     const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header, isInsurance = false) => {
         const dataToWrite = []
-        // console.log('NEW HEADER', header)
-        if ( isInsurance ){
-            
-        } else { 
             for (let i in csvData) {
                 let resultData = {}
                 let data = csvData[i];
@@ -94,9 +89,10 @@ export const ExportDataToCSV = (props) => {
                 data = removeExcludedFieldsFromInstance(data, excludedFields)
 
                 Object.keys(data).forEach(key => {
+                    // if(!data[key]){console.log('IGNORE', data[key], key)}
                     if (Array.isArray(data[key])) {
                         resultData = {...resultData, ...transformInnerArrayToObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key], key === 'contacts')}
-                    } else if (typeof(data[key]) === 'object'){
+                    } else if (typeof(data[key]) === 'object' && !!data[key]){
                         // treat object
                         resultData = {...resultData, ...spreadInnerObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key])}
                         delete resultData[key]
@@ -106,8 +102,6 @@ export const ExportDataToCSV = (props) => {
                 })
                 dataToWrite.push(resultData)
             }
-        }
-
             const workbook = XLSX.utils.book_new();
             let myHeader = header
 
