@@ -39,8 +39,10 @@ export const ExportDataToCSV = (props) => {
     const fileExtension = '.xlsx';
 
     const removeExcludedFieldsFromInstance = (dataInstance, excludedFields) => {
+        console.log(dataInstance);
         excludedFields.forEach(ef => {
-            delete dataInstance[ef]
+            if(ef != null)
+                if(dataInstance.hasOwnProperty(ef)) delete dataInstance[ef]
         })
         return dataInstance
     }
@@ -72,39 +74,49 @@ export const ExportDataToCSV = (props) => {
         return resultObj
     }
 
-    const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header) => {
+    const insuranceToObj = (dataObj) => {
+        let resultObj = {}
+        Object.keys(dataObj).forEach((key) => {
+            console.log(dataObj[key]);
+        });
+    }
+
+    const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header, isInsurance = false) => {
         const dataToWrite = []
         // console.log('NEW HEADER', header)
+        if ( isInsurance ){
+            
+        } else { 
+            for (let i in csvData) {
+                let resultData = {}
+                let data = csvData[i];
+                data = {...data, ...resultData}
+                data = removeExcludedFieldsFromInstance(data, excludedFields)
 
-        for (let i in csvData) {
-            let resultData = {}
-            let data = csvData[i];
-            data = {...data, ...resultData}
-            data = removeExcludedFieldsFromInstance(data, excludedFields)
-
-            Object.keys(data).forEach(key => {
-                if (Array.isArray(data[key])) {
-                    resultData = {...resultData, ...transformInnerArrayToObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key], key === 'contacts')}
-                } else if (typeof(data[key]) === 'object'){
-                    // treat object
-                    resultData = {...resultData, ...spreadInnerObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key])}
-                    delete resultData[key]
-                } else {
-                    resultData = {...resultData, ...renameLabel(data, key, fieldTranslation[key])}
-                }
-            })
-            dataToWrite.push(resultData)
+                Object.keys(data).forEach(key => {
+                    if (Array.isArray(data[key])) {
+                        resultData = {...resultData, ...transformInnerArrayToObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key], key === 'contacts')}
+                    } else if (typeof(data[key]) === 'object'){
+                        // treat object
+                        resultData = {...resultData, ...spreadInnerObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key])}
+                        delete resultData[key]
+                    } else {
+                        resultData = {...resultData, ...renameLabel(data, key, fieldTranslation[key])}
+                    }
+                })
+                dataToWrite.push(resultData)
+            }
         }
 
-        const workbook = XLSX.utils.book_new();
-        let myHeader = header
+            const workbook = XLSX.utils.book_new();
+            let myHeader = header
 
-        const worksheet = XLSX.utils.json_to_sheet(dataToWrite, {header: myHeader});
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'tab1');
-        XLSX.writeFile(workbook, `${fileName}.xls`);
+            const worksheet = XLSX.utils.json_to_sheet(dataToWrite, {header: myHeader});
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'tab1');
+            XLSX.writeFile(workbook, `${fileName}.xls`);
     }
 
     return (
-        <Button variant="warning" onClick={(e) => exportToCSV(props.csvData, props.fileName, props.fieldTranslation, props.excludedFields, props.header)}>Exportar a Excel</Button>
+        <Button variant="warning" onClick={(e) => exportToCSV(props.csvData, props.fileName, props.fieldTranslation, props.excludedFields, props.header, props.isInsurance)}>Exportar a Excel</Button>
     )
 }
