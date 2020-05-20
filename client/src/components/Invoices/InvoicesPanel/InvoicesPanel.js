@@ -137,6 +137,11 @@ class InvoicePanel extends Component {
       this.props.deleteInvoice(invoiceId);
     }
 
+    validateField = (field) => {
+      if(field) return field;
+      return '';
+    }
+
 
     render() {
         const { data } = this.state;
@@ -184,12 +189,12 @@ class InvoicePanel extends Component {
                             {
                                 Header: "Cliente",
                                 id: "client_name",
-                                accessor: d => d.client.name
+                                accessor: d => this.validateField(d.client.name)
                             },
                             {
                                 Header: "Póliza",
                                 id: "policy",
-                                accessor: d => d.insurance.policy
+                                accessor: d => this.validateField(d.insurance.policy)
                             },
                             {
                                 Header: "Recibo",
