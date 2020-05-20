@@ -80,7 +80,7 @@ export const ExportDataToCSV = (props) => {
         });
     }
 
-    const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header, isInsurance = false) => {
+    const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header) => {
         const dataToWrite = []
             for (let i in csvData) {
                 let resultData = {}
@@ -111,6 +111,6 @@ export const ExportDataToCSV = (props) => {
     }
 
     return (
-        <Button variant="warning" onClick={(e) => exportToCSV(props.csvData, props.fileName, props.fieldTranslation, props.excludedFields, props.header, props.isInsurance)}>Exportar a Excel</Button>
+        <Button variant="warning" onClick={(e) => exportToCSV(props.csvData, props.fileName, props.fieldTranslation, props.excludedFields, props.header)}>Exportar a Excel</Button>
     )
 }

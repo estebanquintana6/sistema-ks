@@ -37,7 +37,7 @@ class InsurancePanel extends Component {
       data: [],
       clients: [],
       companies: [],
-      fieldTranslation: this.generateFieldsTranslation()
+      // fieldTranslation: this.generateFieldsTranslation()
       // {
       //   _id: "id",
       //   begin_date: "Fecha de inicio de póliza",
@@ -70,9 +70,8 @@ class InsurancePanel extends Component {
       //   payment_type: "Tipo de pago",
       //   policy: "Póliza",
       // }
-      ,
-      excludedFields: ['__v', '_id', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts'],
-      excelHeader: this.generateHeaders()
+      excludedFields: ['__v', '_id', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts']
+      // excelHeader: this.generateHeaders()
     };
   }
 
@@ -639,7 +638,7 @@ class InsurancePanel extends Component {
           />
           <div className="row">
             <div className="col-md-4 center mt-4">
-            <ExportDataToCSV csvData={this.state.data} fileName={'reporteSeguros'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields} header={this.state.excelHeader} isInsurance={true}></ExportDataToCSV>
+            <ExportDataToCSV csvData={this.state.data} fileName={'reporteSeguros'} fieldTranslation={this.generateFieldsTranslation()} excludedFields={this.state.excludedFields} header={this.generateHeaders()}></ExportDataToCSV>
             </div>
           </div>
 
