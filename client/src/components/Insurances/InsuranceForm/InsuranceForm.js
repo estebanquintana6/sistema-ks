@@ -592,12 +592,20 @@ class InsuranceForm extends Component {
                         <Form.Label>Fecha límite de pago</Form.Label>
                         <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(index, e) }} value={this.formatDate(this.state.invoices[index].due_date)} />
                       </Form.Group>
-
+                    {!this.isCarInsurance() &&
+                    <React.Fragment>
                       <Form.Group as={Col}>
-                        <Form.Label>Vigencia</Form.Label>
+                        <Form.Label>Vigencia de</Form.Label>
                         <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceLimitDate(index, e) }} value={this.formatDate(this.state.invoices[index].pay_limit)} />
                       </Form.Group>
 
+                      <Form.Group as={Col}>
+                        <Form.Label>Vigencia a</Form.Label>
+                        <Form.Control type="date" onChange={this.onChange} value={this.formatDate(this.state.invoices[index].pay_limit2)}>
+                        </Form.Control>
+                      </Form.Group>
+                    </React.Fragment>
+                    }
                       <Form.Group as={Col}>
                         <Form.Label>Prima</Form.Label>
                         <Form.Control onChange={(e) => { this.onChangeInvoiceBounty(index, e) }} value={this.state.invoices[index].bounty} />

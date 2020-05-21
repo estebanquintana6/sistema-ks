@@ -189,7 +189,13 @@ class InvoicePanel extends Component {
                             {
                                 Header: "Cliente",
                                 id: "client_name",
-                                accessor: d => this.validateField(d.client.name)
+                                accessor: d => {
+                                  if(d.client){
+                                    return this.validateField(d.client.name)
+                                  } else {
+                                    return '';
+                                  }
+                                }
                             },
                             {
                                 Header: "Póliza",

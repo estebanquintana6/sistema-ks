@@ -45,8 +45,10 @@ class InvoicesForm extends Component {
 
 
   formatDate = (date) => {
-    const days = date.split('T')[0]
-    return moment(days).startOf('day').format('YYYY-MM-DD')
+    if(date){
+      const days = date.split('T')[0]
+      return moment(days).startOf('day').format('YYYY-MM-DD')
+    }
   }
 
   render() {
@@ -82,9 +84,14 @@ class InvoicesForm extends Component {
                 <Form.Control type="date" onChange={this.onChange} value={this.formatDate(this.state.due_date)}>
                 </Form.Control>
               </Form.Group>
-              <Form.Group as={Col} controlId="due_date">
-                <Form.Label>Vigencia</Form.Label>
+              <Form.Group as={Col} controlId="pay_limit">
+                <Form.Label>Vigencia de</Form.Label>
                 <Form.Control type="date" onChange={this.onChange} value={this.formatDate(this.state.pay_limit)}>
+                </Form.Control>
+              </Form.Group>
+              <Form.Group as={Col} controlId="pay_limit2">
+                <Form.Label>Vigencia a</Form.Label>
+                <Form.Control type="date" onChange={this.onChange} value={this.formatDate(this.state.pay_limit2)}>
                 </Form.Control>
               </Form.Group>
               <Form.Group as={Col} controlId="bounty">

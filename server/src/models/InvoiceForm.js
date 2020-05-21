@@ -40,6 +40,10 @@ var InvoiceSchema = new Schema({
     type: Date,
     required: false
   },
+  pay_limit2: {
+    type: Date,
+    required: false
+  },
   insurance: {
     type: Schema.Types.ObjectId,
     ref: 'Insurances',
