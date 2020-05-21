@@ -241,10 +241,13 @@ class TaskPanel extends Component {
                     Header: "Responsables",
                     id: "assignee",
                     accessor: d => {
-                      let list = d.assignee.map((assignee) => {
-                        return assignee.name;
-                      })
-                      return list.toString()
+                      if(d.assignee){
+                        let list = d.assignee.map((assignee) => {
+                          return assignee.name;
+                        })
+                        return list.toString()
+                      }
+                      return '';
                     }
                   },
                   {
