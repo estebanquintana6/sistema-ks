@@ -23,6 +23,7 @@ updateInvoice = (invoice) => {
     bounty: invoice.bounty,
     payment_status: invoice.payment_status,
     pay_limit: invoice.pay_limit,
+    pay_limit2: invoice.pay_limit2,
     comments: invoice.comments,
     email: invoice.email,
   }
