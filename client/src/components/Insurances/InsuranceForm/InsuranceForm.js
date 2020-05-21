@@ -288,7 +288,8 @@ class InsuranceForm extends Component {
     invoices.push({
       invoice: "",
       due_date: "",
-      pay_limit: ""
+      pay_limit: "",
+      pay_limit2: "",
     })
     this.setState({ invoices });
   }
