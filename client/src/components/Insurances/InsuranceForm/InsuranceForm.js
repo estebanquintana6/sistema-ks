@@ -137,6 +137,14 @@ class InsuranceForm extends Component {
     return this.props.type === "AUTOS";
   }
 
+  isMedicInsurance = () => {
+    return this.props.type === "GM";
+  }
+
+  isDamageInsurance = () => {
+    return this.props.type === "DANOS";
+  }
+
   onChangeInvoice = (index, e) => {
     let invoices = [...this.state.invoices];
     let invoice = { ...invoices[index] };
@@ -592,7 +600,7 @@ class InsuranceForm extends Component {
                         <Form.Label>Fecha límite de pago</Form.Label>
                         <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(index, e) }} value={this.formatDate(this.state.invoices[index].due_date)} />
                       </Form.Group>
-                    {!this.isCarInsurance() &&
+                    {(this.isMedicInsurance() || this.isDamageInsurance()) &&
                     <React.Fragment>
                       <Form.Group as={Col}>
                         <Form.Label>Vigencia de</Form.Label>
