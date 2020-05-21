@@ -176,6 +176,16 @@ class InsuranceForm extends Component {
     this.setState({ invoices });
   }
 
+  onChangeInvoiceLimitDate2 = (index, e) => {
+    let invoices = [...this.state.invoices];
+    let invoice = { ...invoices[index] };
+
+    invoice.pay_limit2 = e.target.value;
+
+    invoices[index] = invoice;
+    this.setState({ invoices });
+  }
+
   onChangeInvoiceBounty = (index, e) => {
     let invoices = [...this.state.invoices];
     let invoice = { ...invoices[index] };
@@ -611,7 +621,7 @@ class InsuranceForm extends Component {
 
                       <Form.Group as={Col}>
                         <Form.Label>Vigencia a</Form.Label>
-                        <Form.Control type="date" onChange={this.onChange} value={this.formatDate(this.state.invoices[index].pay_limit2)}>
+                        <Form.Control type="date" onChange={(e) => this.onChangeInvoiceLimitDate2(index, e)} value={this.formatDate(this.state.invoices[index].pay_limit2)}>
                         </Form.Control>
                       </Form.Group>
                     </React.Fragment>
