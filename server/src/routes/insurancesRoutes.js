@@ -17,6 +17,7 @@ relateInsuranceToInvoice = (invoice) => {
 }
 
 updateInvoice = (invoice) => {
+  console.log(invoice);
   const update = {
     invoice: invoice.invoice,
     due_date: invoice.due_date,
@@ -28,6 +29,7 @@ updateInvoice = (invoice) => {
     email: invoice.email,
   }
   Invoice.findOneAndUpdate({_id: invoice._id}, update).then((res, error) => {
+    console.log(res, error);
     if(error) throw Error(error);
   });
 }

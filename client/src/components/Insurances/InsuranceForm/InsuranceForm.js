@@ -122,7 +122,8 @@ class InsuranceForm extends Component {
       invoices.push({
         invoice: "",
         due_date: moment(newDate||prevDate).format('YYYY-MM-DD'),
-        pay_limit: moment(newDate||prevDate).format('YYYY-MM-DD')
+        pay_limit: moment(newDate||prevDate).format('YYYY-MM-DD'),
+        pay_limit2: moment(newDate||prevDate).format('YYYY-MM-DD')
       });
 
       let newDate = moment(prevDate).clone().startOf('day').add(jump, 'months')

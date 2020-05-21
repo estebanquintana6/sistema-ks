@@ -17,7 +17,7 @@ var InvoiceSchema = new Schema({
     default: 'PENDIENTE',
   },
   bounty: {
-    type: Number,
+    type: String,
     required: false
   },
   invoice: {
