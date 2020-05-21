@@ -252,7 +252,7 @@ class TaskPanel extends Component {
                     id: "initiator",
                     accessor: d => {
                       if(d.initiator){
-                          return d.initiator.name;
+                          return this.validateField(d.initiator.name);
                       }
                       return '';
                     }
