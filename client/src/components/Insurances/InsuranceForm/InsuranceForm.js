@@ -578,11 +578,6 @@ class InsuranceForm extends Component {
                 <Row>
                   <h5 className="swal-title form-title align-left">RECIBOS</h5>
                 </Row>
-                <Row className="pt-1 pb-2">
-                  <Col md="12">
-                    <Button variant="info" onClick={this.createInvoice}>AGREGAR</Button>
-                  </Col>
-                </Row>
 
                 {this.state.invoices.map((value, index) => {
                   return (
@@ -646,6 +641,11 @@ class InsuranceForm extends Component {
                     </Jumbotron>
                   );
                 })}
+                <Row className="pt-1 pb-2">
+                  <Col md="12">
+                    <Button variant="info" onClick={this.createInvoice}><i class="fas fa-plus"></i></Button>
+                  </Col>
+                </Row>
               </div>
               <div role="tabpanel" className="tab-pane fade" id="endor">
                 <Row>
