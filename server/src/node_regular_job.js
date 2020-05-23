@@ -5,7 +5,7 @@ const Invoice = require("./models/InvoiceForm");
 const User = require("./models/UserForm");
 const Company = require("./models/CompanyForm");
 
-const { hasExpired, willExpireFive, willExpireTen } = require('./utils/dateUtils');
+const { hasExpired, willExpireFive, willExpireTen, daysFromNow } = require('./utils/dateUtils');
 
 const nodemailer = require('nodemailer');
 
@@ -170,5 +170,29 @@ var j = schedule.scheduleJob('*/20 * * * * *', async function(){
               return true
           });
       })
-  })
+    })
+    // Nueva Query
+    // Invoice.find({
+    //   $and: [ {payment_status: {$in: statuses}}, { due_date: {
+    //       $gte: daysFromNow(4),
+    //       $lte: daysFromNow(6)
+    //     }
+    //   } ]}).populate('insurance').populate('client').then((invoices, err) => {
+    //     console.log('INVOICES', invoices)
+    //   User.find({}).then((users) => {
+    //       invoices.filter(invoice => {
+    //           let due_date = new Date(invoice.due_date);
+    //           if(hasExpired(due_date)) return invoice;
+    //           else if(willExpireTen(due_date)) return invoice;
+    //       }).map(invoice => {
+    //         return {invoice, method: chooseMethod(invoice.due_date)}
+    //       })
+    //       .map((invoice) => {
+    //           const lang = invoice.invoice.client.languages
+    //           if (lang !== 'Coreano') //func(invoice.invoice, users, 'Español', invoice.method)
+    //           if (lang !== 'Español') //func(invoice.invoice, users, 'Coreano', invoice.method)
+    //           return true
+    //       });
+    //   })
+    // })
 })

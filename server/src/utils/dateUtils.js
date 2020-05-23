@@ -30,5 +30,8 @@ module.exports = {
         result.setMonth(date.getMonth());
 
         return result;
+    },
+    daysFromNow: function(numberOfDays){
+        return moment().clone().startOf('day').add(numberOfDays, 'days').toDate()
     }
 }
