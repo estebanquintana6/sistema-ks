@@ -78,15 +78,35 @@ export const ExportDataToCSV = (props) => {
         return resultObj
     }
 
-    const insuranceToObj = (dataObj) => {
-        let resultObj = {}
-        Object.keys(dataObj).forEach((key) => {
-            console.log(dataObj[key]);
+    const invoiceToObj = (dataObj) => {
+        let mappedObj = dataObj.map((invoice) => {
+            //EMPRESA	PRIMA 	RECIBOS	STATUS
+            console.log(invoice);
+            return {
+                "EMPRESA": invoice.client.name,
+                "PRIMA": invoice.bounty,
+                "RECIBO": invoice.invoice,
+                "STATUS": invoice.payment_status
+            }
         });
+
+        mappedObj.sort(function(a, b){
+        if(a.EMPRESA < b.EMPRESA) { return -1; }
+        if(a.EMPRESA > b.EMPRESA) { return 1; }
+            return 0;
+        })
+
+        return mappedObj;
     }
 
-    const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header) => {
-        const dataToWrite = []
+    const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header, type = "") => {
+        const dataToWrite = [];
+        if(type === "invoices"){
+            let obj = invoiceToObj(csvData);
+            obj.map((ob) => {
+                dataToWrite.push(ob);
+            })
+        } else {
             for (let i in csvData) {
                 let resultData = {}
                 let data = csvData[i];
@@ -111,15 +131,17 @@ export const ExportDataToCSV = (props) => {
                 })
                 dataToWrite.push(resultData)
             }
-            const workbook = XLSX.utils.book_new();
-            let myHeader = header
+        }
 
-            const worksheet = XLSX.utils.json_to_sheet(dataToWrite, {header: myHeader});
-            XLSX.utils.book_append_sheet(workbook, worksheet, 'tab1');
-            XLSX.writeFile(workbook, `${fileName}.xls`);
+        const workbook = XLSX.utils.book_new();
+        let myHeader = header
+
+        const worksheet = XLSX.utils.json_to_sheet(dataToWrite, {header: myHeader});
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'tab1');
+        XLSX.writeFile(workbook, `${fileName}.xls`);
     }
 
     return (
-        <Button variant="warning" onClick={(e) => exportToCSV(props.csvData, props.fileName, props.fieldTranslation, props.excludedFields, props.header)}>Exportar a Excel</Button>
+        <Button variant="warning" onClick={(e) => exportToCSV(props.csvData, props.fileName, props.fieldTranslation, props.excludedFields, props.header, props.type)}>Exportar a Excel</Button>
     )
 }

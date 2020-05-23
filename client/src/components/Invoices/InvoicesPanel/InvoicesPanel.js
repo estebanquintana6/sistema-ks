@@ -14,9 +14,13 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 
 import moment from 'moment';
+
 import InvoicesForm from "../InvoicesForm/InvoicesForm";
 import InvoicesModal from "../InvoicesModal/InvoicesModal";
 import swal from '@sweetalert/with-react';
+
+import { ExportDataToCSV } from "../../ExportCSV/ExportCSV";
+
 
 
 class InvoicePanel extends Component {
@@ -189,13 +193,7 @@ class InvoicePanel extends Component {
                             {
                                 Header: "Cliente",
                                 id: "client_name",
-                                accessor: d => {
-                                  if(d.client){
-                                    return this.validateField(d.client.name)
-                                  } else {
-                                    return '';
-                                  }
-                                }
+                                accessor: d => this.validateField(d.client.name)
                             },
                             {
                                 Header: "Póliza",
@@ -255,6 +253,17 @@ class InvoicePanel extends Component {
                         className="-striped -highlight"
                         getTrProps={this.getTrProps}
                         />
+                    </div>
+                    <div className="row">
+                      <div className="col-md-4 center mt-4">
+                      <ExportDataToCSV csvData={this.state.data} 
+                                      fileName={'reporteRecibos'} 
+                                      type="invoices"
+                                      fieldTranslation={()=>{return []}} 
+                                      excludedFields={() => {return []}} 
+                                      header={['EMPRESA', 'PRIMA', 'RECIBO', 'STATUS']}>                
+                      </ExportDataToCSV>
+                      </div>
                     </div>
             </React.Fragment>
         );
