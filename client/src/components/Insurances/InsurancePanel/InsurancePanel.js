@@ -70,7 +70,7 @@ class InsurancePanel extends Component {
       //   payment_type: "Tipo de pago",
       //   policy: "Póliza",
       // }
-      excludedFields: ['__v', '_id', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts']
+      excludedFields: ['__v', '_id', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts', 'begin_date']
       // excelHeader: this.generateHeaders()
     };
   }
@@ -98,7 +98,6 @@ class InsurancePanel extends Component {
   generateFieldsTranslation = () => {
     let resObj = {
       _id: "id",
-      begin_date: "Fecha de inicio de póliza",
       client: "Contratante",
       person_type: "Tipo de persona",
       rfc: "RFC",

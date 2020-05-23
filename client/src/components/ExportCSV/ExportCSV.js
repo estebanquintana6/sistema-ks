@@ -2,10 +2,15 @@ import React from 'react'
 import Button from 'react-bootstrap/Button';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-
+import moment from 'moment'
 
 function renameLabel(json, oldLabel, newLabel) {
-    json["" + newLabel] = json["" + oldLabel];
+    json["" + newLabel] = json["" + oldLabel]
+    const tmp = json["" + oldLabel]
+    const tmpDate = moment(tmp, moment.ISO_8601)
+    if (tmpDate.isValid()) {
+        json[oldLabel] = tmpDate.format('DD-MM-YYYY')
+    }
     const res = {[newLabel]: json[oldLabel]}
     delete json["" + oldLabel];
     return res
@@ -91,7 +96,11 @@ export const ExportDataToCSV = (props) => {
                 Object.keys(data).forEach(key => {
                     // if(!data[key]){console.log('IGNORE', data[key], key)}
                     if (Array.isArray(data[key])) {
-                        resultData = {...resultData, ...transformInnerArrayToObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key], key === 'contacts')}
+                        if(key === 'invoices'){
+                            
+                        } else{
+                            resultData = {...resultData, ...transformInnerArrayToObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key], key === 'contacts')}
+                        }
                     } else if (typeof(data[key]) === 'object' && !!data[key]){
                         // treat object
                         resultData = {...resultData, ...spreadInnerObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key])}
