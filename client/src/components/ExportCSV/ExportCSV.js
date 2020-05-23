@@ -2,10 +2,15 @@ import React from 'react'
 import Button from 'react-bootstrap/Button';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-
+import moment from 'moment'
 
 function renameLabel(json, oldLabel, newLabel) {
-    json["" + newLabel] = json["" + oldLabel];
+    json["" + newLabel] = json["" + oldLabel]
+    const tmp = json["" + oldLabel]
+    const tmpDate = moment(tmp, moment.ISO_8601)
+    if (tmpDate.isValid()) {
+        json[oldLabel] = tmpDate.format('DD-MM-YYYY')
+    }
     const res = {[newLabel]: json[oldLabel]}
     delete json["" + oldLabel];
     return res
@@ -40,12 +45,30 @@ export const ExportDataToCSV = (props) => {
 
     const removeExcludedFieldsFromInstance = (dataInstance, excludedFields) => {
         excludedFields.forEach(ef => {
-            delete dataInstance[ef]
+            if(ef != null)
+                if(dataInstance.hasOwnProperty(ef)) delete dataInstance[ef]
         })
         return dataInstance
     }
 
     const transformInnerArrayToObject = (dataArray, fieldTranslation, excludedFields, parentKey, isContactsField = false) => {
+        let resultObj = {}
+        dataArray.forEach((loc, index) => {
+            let cleanObj = removeExcludedFieldsFromInstance(loc, excludedFields)
+            if(isContactsField){
+                if(!cleanObj.hasOwnProperty('name')) cleanObj.name = '';
+                if(!cleanObj.hasOwnProperty('email')) cleanObj.email = '';
+                if(!cleanObj.hasOwnProperty('telephone')) cleanObj.telephone = '';
+            }
+            Object.keys(cleanObj).forEach((key) => {
+                const translation = whiteListNames.includes(key) ? `${parentKey} ${index + 1}` : `${fieldTranslation[key]} ${index + 1}`;
+                resultObj = {...resultObj, ...renameLabel(cleanObj, key, translation)}
+            })
+        })
+        return resultObj
+    }
+
+    const transformInvoiceToObject = (dataArray, fieldTranslation, excludedFields, parentKey, isContactsField = false) => {
         let resultObj = {}
         dataArray.forEach((loc, index) => {
             let cleanObj = removeExcludedFieldsFromInstance(loc, excludedFields)
@@ -72,30 +95,68 @@ export const ExportDataToCSV = (props) => {
         return resultObj
     }
 
-    const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header) => {
-        const dataToWrite = []
-        // console.log('NEW HEADER', header)
+    const invoiceToObj = (dataObj) => {
+        let mappedObj = dataObj.map((invoice) => {
+            //EMPRESA	PRIMA 	RECIBOS	STATUS
+            console.log(invoice);
+            return {
+                "EMPRESA": invoice.client.name,
+                "PRIMA": invoice.bounty,
+                "RECIBO": invoice.invoice,
+                "STATUS": invoice.payment_status
+            }
+        });
 
-        for (let i in csvData) {
-            let resultData = {}
-            let data = csvData[i];
-            data = {...data, ...resultData}
-            data = removeExcludedFieldsFromInstance(data, excludedFields)
+        mappedObj.sort(function(a, b){
+        if(a.EMPRESA < b.EMPRESA) { return -1; }
+        if(a.EMPRESA > b.EMPRESA) { return 1; }
+            return 0;
+        })
 
-            Object.keys(data).forEach(key => {
-                if (Array.isArray(data[key])) {
-                    resultData = {...resultData, ...transformInnerArrayToObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key], key === 'contacts')}
-                } else if (typeof(data[key]) === 'object'){
-                    // treat object
-                    resultData = {...resultData, ...spreadInnerObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key])}
-                    delete resultData[key]
-                } else {
-                    resultData = {...resultData, ...renameLabel(data, key, fieldTranslation[key])}
-                }
+        return mappedObj;
+    }
+
+    const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header, type = "", sortableColumn = '') => {
+        const dataToWrite = [];
+        if(type === "invoices"){
+            let obj = invoiceToObj(csvData);
+            obj.map((ob) => {
+                dataToWrite.push(ob);
             })
-            dataToWrite.push(resultData)
-        }
+        } else {
+            for (let i in csvData) {
+                let resultData = {}
+                let data = csvData[i];
+                data = {...data, ...resultData}
+                data = removeExcludedFieldsFromInstance(data, excludedFields)
 
+                Object.keys(data).forEach(key => {
+                    if (Array.isArray(data[key])) {
+                        if(key === 'invoices'){
+                            resultData = {...resultData, ...transformInvoiceToObject(data[key], fieldTranslation, ['client', 'comments', 'email', 'insurance', 'pay_limit', 'pay_limit2', 'status', '__v', '_id'], fieldTranslation[key], key === 'contacts')}             
+                        } else{
+                            resultData = {...resultData, ...transformInnerArrayToObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key], key === 'contacts')}
+                        }
+                    } else if (typeof(data[key]) === 'object' && !!data[key]){
+                        // treat object
+                        resultData = {...resultData, ...spreadInnerObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key])}
+                        delete resultData[key]
+                    } else {
+                        if(key === 'colective_insurance'){
+                            resultData = {...resultData, ...{'Tipo de póliza': data[key] === true ? 'Colectivo' : 'Individual'}}
+                        }else{
+                            resultData = {...resultData, ...renameLabel(data, key, fieldTranslation[key])}
+                        }
+                    }
+                })
+                dataToWrite.push(resultData)
+            }
+        }
+        dataToWrite.sort(function(a, b){
+            if(a[sortableColumn] < b[sortableColumn]) { return -1; }
+            if(a[sortableColumn] > b[sortableColumn]) { return 1; }
+                return 0;
+            })
         const workbook = XLSX.utils.book_new();
         let myHeader = header
 
@@ -105,6 +166,6 @@ export const ExportDataToCSV = (props) => {
     }
 
     return (
-        <Button variant="warning" onClick={(e) => exportToCSV(props.csvData, props.fileName, props.fieldTranslation, props.excludedFields, props.header)}>Exportar a Excel</Button>
+        <Button variant="warning" onClick={(e) => exportToCSV(props.csvData, props.fileName, props.fieldTranslation, props.excludedFields, props.header, props.type, props.sortableColumn)}>Exportar a Excel</Button>
     )
 }
