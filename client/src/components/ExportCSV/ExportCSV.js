@@ -68,6 +68,23 @@ export const ExportDataToCSV = (props) => {
         return resultObj
     }
 
+    const transformInvoiceToObject = (dataArray, fieldTranslation, excludedFields, parentKey, isContactsField = false) => {
+        let resultObj = {}
+        dataArray.forEach((loc, index) => {
+            let cleanObj = removeExcludedFieldsFromInstance(loc, excludedFields)
+            if(isContactsField){
+                if(!cleanObj.hasOwnProperty('name')) cleanObj.name = '';
+                if(!cleanObj.hasOwnProperty('email')) cleanObj.email = '';
+                if(!cleanObj.hasOwnProperty('telephone')) cleanObj.telephone = '';
+            }
+            Object.keys(cleanObj).forEach((key) => {
+                const translation = whiteListNames.includes(key) ? `${parentKey} ${index + 1}` : `${fieldTranslation[key]} ${index + 1}`;
+                resultObj = {...resultObj, ...renameLabel(cleanObj, key, translation)}
+            })
+        })
+        return resultObj
+    }
+
     const spreadInnerObject = (dataObj, fieldTranslation, excludedFields, parentKey) => {
         let resultObj = {}
         let cleanObj = removeExcludedFieldsFromInstance(dataObj, excludedFields)
@@ -99,7 +116,7 @@ export const ExportDataToCSV = (props) => {
         return mappedObj;
     }
 
-    const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header, type = "") => {
+    const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header, type = "", sortableColumn = '') => {
         const dataToWrite = [];
         if(type === "invoices"){
             let obj = invoiceToObj(csvData);
@@ -114,10 +131,9 @@ export const ExportDataToCSV = (props) => {
                 data = removeExcludedFieldsFromInstance(data, excludedFields)
 
                 Object.keys(data).forEach(key => {
-                    // if(!data[key]){console.log('IGNORE', data[key], key)}
                     if (Array.isArray(data[key])) {
                         if(key === 'invoices'){
-                            
+                            resultData = {...resultData, ...transformInvoiceToObject(data[key], fieldTranslation, ['client', 'comments', 'email', 'insurance', 'pay_limit', 'pay_limit2', 'status', '__v', '_id'], fieldTranslation[key], key === 'contacts')}             
                         } else{
                             resultData = {...resultData, ...transformInnerArrayToObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key], key === 'contacts')}
                         }
@@ -126,13 +142,21 @@ export const ExportDataToCSV = (props) => {
                         resultData = {...resultData, ...spreadInnerObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key])}
                         delete resultData[key]
                     } else {
-                        resultData = {...resultData, ...renameLabel(data, key, fieldTranslation[key])}
+                        if(key === 'colective_insurance'){
+                            resultData = {...resultData, ...{'Tipo de póliza': data[key] === true ? 'Colectivo' : 'Individual'}}
+                        }else{
+                            resultData = {...resultData, ...renameLabel(data, key, fieldTranslation[key])}
+                        }
                     }
                 })
                 dataToWrite.push(resultData)
             }
         }
-
+        dataToWrite.sort(function(a, b){
+            if(a[sortableColumn] < b[sortableColumn]) { return -1; }
+            if(a[sortableColumn] > b[sortableColumn]) { return 1; }
+                return 0;
+            })
         const workbook = XLSX.utils.book_new();
         let myHeader = header
 
@@ -142,6 +166,6 @@ export const ExportDataToCSV = (props) => {
     }
 
     return (
-        <Button variant="warning" onClick={(e) => exportToCSV(props.csvData, props.fileName, props.fieldTranslation, props.excludedFields, props.header, props.type)}>Exportar a Excel</Button>
+        <Button variant="warning" onClick={(e) => exportToCSV(props.csvData, props.fileName, props.fieldTranslation, props.excludedFields, props.header, props.type, props.sortableColumn)}>Exportar a Excel</Button>
     )
 }

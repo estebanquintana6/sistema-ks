@@ -137,7 +137,7 @@ class InsurancePanel extends Component {
   }
 
   generateHeaders = () => {
-    let resArr = ['Contratante Tipo de persona', 'Contratante', 'Contratante RFC', 'Póliza', 'Producto', 'Tipo de Póliza', 'Moneda', 'Fecha de vencimiento', 'Tipo de pago', 'Aseguradora']
+    let resArr = ['Contratante Tipo de persona', 'Contratante', 'Contratante RFC', 'Póliza', 'Producto', 'Tipo de póliza', 'Moneda', 'Fecha de vencimiento', 'Tipo de pago', 'Aseguradora']
     if(this.props.variant === 'AUTOS'){
       resArr = [
         ...resArr, 
@@ -637,7 +637,7 @@ class InsurancePanel extends Component {
           />
           <div className="row">
             <div className="col-md-4 center mt-4">
-            <ExportDataToCSV csvData={this.state.data} fileName={'reporteSeguros'} fieldTranslation={this.generateFieldsTranslation()} excludedFields={this.state.excludedFields} header={this.generateHeaders()}></ExportDataToCSV>
+            <ExportDataToCSV csvData={this.state.data} fileName={`reporteSeguros_${this.props.variant}`} fieldTranslation={this.generateFieldsTranslation()} excludedFields={this.state.excludedFields} header={this.generateHeaders()} sortableColumn={'Contratante'}></ExportDataToCSV>
             </div>
           </div>
 
