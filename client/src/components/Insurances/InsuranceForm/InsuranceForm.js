@@ -122,7 +122,8 @@ class InsuranceForm extends Component {
       invoices.push({
         invoice: "",
         due_date: moment(newDate||prevDate).format('YYYY-MM-DD'),
-        pay_limit: moment(newDate||prevDate).format('YYYY-MM-DD')
+        pay_limit: moment(newDate||prevDate).format('YYYY-MM-DD'),
+        pay_limit2: moment(newDate||prevDate).format('YYYY-MM-DD')
       });
 
       let newDate = moment(prevDate).clone().startOf('day').add(jump, 'months')
@@ -135,6 +136,14 @@ class InsuranceForm extends Component {
 
   isCarInsurance = () => {
     return this.props.type === "AUTOS";
+  }
+
+  isMedicInsurance = () => {
+    return this.props.type === "GM";
+  }
+
+  isDamageInsurance = () => {
+    return this.props.type === "DANOS";
   }
 
   onChangeInvoice = (index, e) => {
@@ -162,6 +171,16 @@ class InsuranceForm extends Component {
     let invoice = { ...invoices[index] };
 
     invoice.pay_limit = e.target.value;
+
+    invoices[index] = invoice;
+    this.setState({ invoices });
+  }
+
+  onChangeInvoiceLimitDate2 = (index, e) => {
+    let invoices = [...this.state.invoices];
+    let invoice = { ...invoices[index] };
+
+    invoice.pay_limit2 = e.target.value;
 
     invoices[index] = invoice;
     this.setState({ invoices });
@@ -279,7 +298,8 @@ class InsuranceForm extends Component {
     invoices.push({
       invoice: "",
       due_date: "",
-      pay_limit: ""
+      pay_limit: "",
+      pay_limit2: "",
     })
     this.setState({ invoices });
   }
@@ -558,11 +578,6 @@ class InsuranceForm extends Component {
                 <Row>
                   <h5 className="swal-title form-title align-left">RECIBOS</h5>
                 </Row>
-                <Row className="pt-1 pb-2">
-                  <Col md="12">
-                    <Button variant="info" onClick={this.createInvoice}>AGREGAR</Button>
-                  </Col>
-                </Row>
 
                 {this.state.invoices.map((value, index) => {
                   return (
@@ -592,12 +607,20 @@ class InsuranceForm extends Component {
                         <Form.Label>Fecha límite de pago</Form.Label>
                         <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(index, e) }} value={this.formatDate(this.state.invoices[index].due_date)} />
                       </Form.Group>
-
+                    {(this.isMedicInsurance() || this.isDamageInsurance()) &&
+                    <React.Fragment>
                       <Form.Group as={Col}>
-                        <Form.Label>Vigencia</Form.Label>
+                        <Form.Label>Vigencia de</Form.Label>
                         <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceLimitDate(index, e) }} value={this.formatDate(this.state.invoices[index].pay_limit)} />
                       </Form.Group>
 
+                      <Form.Group as={Col}>
+                        <Form.Label>Vigencia a</Form.Label>
+                        <Form.Control type="date" onChange={(e) => this.onChangeInvoiceLimitDate2(index, e)} value={this.formatDate(this.state.invoices[index].pay_limit2)}>
+                        </Form.Control>
+                      </Form.Group>
+                    </React.Fragment>
+                    }
                       <Form.Group as={Col}>
                         <Form.Label>Prima</Form.Label>
                         <Form.Control onChange={(e) => { this.onChangeInvoiceBounty(index, e) }} value={this.state.invoices[index].bounty} />
@@ -618,6 +641,11 @@ class InsuranceForm extends Component {
                     </Jumbotron>
                   );
                 })}
+                <Row className="pt-1 pb-2">
+                  <Col md="12">
+                    <Button variant="info" onClick={this.createInvoice}><i class="fas fa-plus"></i></Button>
+                  </Col>
+                </Row>
               </div>
               <div role="tabpanel" className="tab-pane fade" id="endor">
                 <Row>

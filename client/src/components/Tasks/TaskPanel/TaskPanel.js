@@ -182,6 +182,11 @@ class TaskPanel extends Component {
     this.props.deleteTask(taskId);
   }
 
+  validateField = (field) => {
+    if(field) return field;
+    return '';
+  }
+
 
   render() {
     const { data } = this.state;
@@ -236,16 +241,24 @@ class TaskPanel extends Component {
                     Header: "Responsables",
                     id: "assignee",
                     accessor: d => {
-                      let list = d.assignee.map((assignee) => {
-                        return assignee.name;
-                      })
-                      return list.toString()
+                      if(d.assignee){
+                        let list = d.assignee.map((assignee) => {
+                          return assignee.name;
+                        })
+                        return list.toString()
+                      }
+                      return '';
                     }
                   },
                   {
                     Header: "Creador",
                     id: "initiator",
-                    accessor: d => d.initiator.name
+                    accessor: d => {
+                      if(d.initiator){
+                          return this.validateField(d.initiator.name);
+                      }
+                      return '';
+                    }
                   },
                   {
                     Header: "Fecha de creación",
