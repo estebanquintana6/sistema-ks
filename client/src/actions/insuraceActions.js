@@ -104,10 +104,11 @@ export const activateInsurance = (id) => dispatch => {
     });
 }
 
-export const changePayStatus = (id) => dispatch => {
+export const changePayStatus = (id, status) => dispatch => {
   const token = localStorage.getItem("jwtToken");
   const data = {
     id,
+    status,
     token
   }
   

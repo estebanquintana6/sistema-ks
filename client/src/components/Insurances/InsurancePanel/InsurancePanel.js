@@ -1,8 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Container, Row } from 'react-bootstrap'
+import { Form, Col, Container, Row } from 'react-bootstrap'
 import { connect } from "react-redux";
-import { createInsurance, deleteInsurance, updateInsurance, getInsurances, cancelInsurance, activateInsurance, changePayStatus } from "../../../actions/insuraceActions";
+
+import { 
+  createInsurance, 
+  deleteInsurance,
+  updateInsurance, 
+  getInsurances, 
+  cancelInsurance, 
+  activateInsurance, 
+  changePayStatus 
+} from "../../../actions/insuraceActions";
+
 import { getClients } from "../../../actions/registerClient";
 import { getCompanies } from "../../../actions/companyActions";
 import swal from '@sweetalert/with-react';
@@ -37,41 +47,7 @@ class InsurancePanel extends Component {
       data: [],
       clients: [],
       companies: [],
-      // fieldTranslation: this.generateFieldsTranslation()
-      // {
-      //   _id: "id",
-      //   begin_date: "Fecha de inicio de póliza",
-      //   car_brand: "Marca de coche",
-      //   car_color: "Color de coche",
-      //   car_description: "Descripción de coche",
-      //   car_motor: "Número de motor",
-      //   car_placas: "Número de placas",
-      //   car_series_number: "Número de serie",
-      //   car_year: "Modelo de coche",
-      //   cis: "CIS",
-      //   client: "Contratante",
-      //   person_type: "Tipo de persona",
-      //   rfc: "RFC",
-      //   colective_insurance: "Tipo de póliza",
-      //   currency: "Moneda",
-      //   due_date: "Fecha de vencimiento",
-      //   endorsements: "Endosos",
-      //   insurance: "Compañia",
-      //   email: "Email",
-      //   bounty: "Prima",
-      //   insurance_company: "Aseguradora",
-      //   insurance_type: "Producto",
-      //   invoices: "Recibos",
-      //   invoice: "Número de recibo",
-      //   payment_status: "Estatus de pago",
-      //   pay_due_date: "Fecha vto. pago",
-      //   pay_limit: "Vigencia",
-      //   pay_status: "Status",
-      //   payment_type: "Tipo de pago",
-      //   policy: "Póliza",
-      // }
       excludedFields: ['__v', '_id', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts', 'begin_date']
-      // excelHeader: this.generateHeaders()
     };
   }
 
@@ -153,19 +129,6 @@ class InsurancePanel extends Component {
     }
     return resArr
   }
-
-  // itemsToExclude = () => {
-  //   switch(this.props.variant){
-  //     case 'AUTOS':
-  //       this.setState({excludedFields: [...this.state.excludedFields, '1', '2', '3']})
-  //     default:
-  //       return []
-  //   }
-  // }
-
-  rewriteFieldTranslation = () =>{
-    
-  } 
 
   prepareClientsForForm = () => {
     this.props.getClients().then(data => {
@@ -355,15 +318,30 @@ class InsurancePanel extends Component {
   }
 
   changePayStatus = (insurance, e) => {
+    let newStatus;
+
     swal({
-      title: `¿Estas seguro de querer cambiar el estatus de pago de ${insurance.policy}?`,
+      title: `Cambiar status de ${insurance.policy}`,
       icon: "warning",
+      content: <React.Fragment>
+        <Form.Group as={Col} md="12">
+          <Form.Control required as="select" onChange={(e)=> {newStatus = e.target.value}  } value={newStatus}>
+            <option></option>
+            <option value="PENDIENTE">PENDIENTE</option>
+            <option value="PAGADO">PAGADA</option>
+            <option value="COTIZACION">COTIZACION</option>
+            <option value="RENOVACION">RENOVACION</option>
+            <option value="CANCELADA">CANCELADA</option>
+          </Form.Control>
+        </Form.Group>
+      </React.Fragment>,
       buttons: true,
       sucessMode: true,
     })
-      .then((willDelete) => {
-        if (willDelete) {
-          this.confirmPayChange(insurance._id);
+      .then((willUpdate) => {
+        if (willUpdate) {
+          console.log(newStatus);
+          this.confirmPayChange(insurance._id, newStatus);
           swal("Tu poliza ha cambiado!", {
             icon: "success",
           }).then(() =>{
@@ -409,8 +387,8 @@ class InsurancePanel extends Component {
     this.props.activateInsurance(id);
   }
 
-  confirmPayChange = (id) => {
-    this.props.changePayStatus(id);
+  confirmPayChange = (id, status) => {
+    this.props.changePayStatus(id, status);
   }
 
   render() {

@@ -174,7 +174,7 @@ router.post("/:id/cancel", (req, res) => {
     Insurance.findOne({ _id: req.params.id }).then((company) => {
       const exists = company;
       if (exists) {
-        Insurance.updateOne({ _id: req.params.id }, {active_status: false, cancelation_note: body.note}).then((err, result) => {
+        Insurance.updateOne({ _id: req.params.id }, {active_status: false, cancelation_note: body.note, pay_status: "CANCELADA"}).then((err, result) => {
           if (err) res.status(500);
 
           Invoice.find({insurance: req.params.id}).then((invoices, err) => {
@@ -199,7 +199,7 @@ router.post("/:id/activate", (req, res) => {
     Insurance.findOne({ _id: req.params.id }).then((company) => {
       const exists = company;
       if (exists) {
-        Insurance.updateOne({ _id: req.params.id }, {active_status: true, cancelation_note: ""}).then((err, result) => {
+        Insurance.updateOne({ _id: req.params.id }, {active_status: true, cancelation_note: "", pay_status: ""}).then((err, result) => {
           if (err) res.status(500);
 
           Invoice.find({insurance: req.params.id}).then((invoices, err) => {
@@ -218,18 +218,15 @@ router.post("/:id/activate", (req, res) => {
 
 router.post("/:id/payStatus", (req, res) => {
   const token = req.headers.authorization;
+  const status = req.body.status;
+
   jwt.verify(token, secretKey, function (err, _) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
     Insurance.findOne({ _id: req.params.id }).then((insurance) => {
-      if(insurance.pay_status === "PENDIENTE") {
-        insurance.pay_status = "PAGADO";
+      console.log(status);
+        insurance.pay_status = status;
         insurance.save();
         res.status(201).json({ message: "Elemento cambiado" });
-      } else if (insurance.pay_status === "PAGADO" || insurance.pay_status === ""){
-        insurance.pay_status = "PENDIENTE";
-        insurance.save();
-        res.status(201).json({ message: "Elemento cambiado" });
-      }
     });
   });
 });
