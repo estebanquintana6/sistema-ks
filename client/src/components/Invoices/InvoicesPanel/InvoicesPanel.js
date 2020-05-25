@@ -193,12 +193,20 @@ class InvoicePanel extends Component {
                             {
                                 Header: "Cliente",
                                 id: "client_name",
-                                accessor: d => this.validateField(d.client.name)
+                                accessor: d => {
+                                  if(d.client){
+                                    return this.validateField(d.client.name)
+                                  }
+                                }
                             },
                             {
                                 Header: "Póliza",
                                 id: "policy",
-                                accessor: d => this.validateField(d.insurance.policy)
+                                accessor: d => {
+                                  if(d.insurance){
+                                    return this.validateField(d.insurance.policy)
+                                  }
+                                }
                             },
                             {
                                 Header: "Recibo",
