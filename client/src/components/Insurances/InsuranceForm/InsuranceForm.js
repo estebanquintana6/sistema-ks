@@ -579,7 +579,9 @@ class InsuranceForm extends Component {
                   <h5 className="swal-title form-title align-left">RECIBOS</h5>
                 </Row>
 
-                {this.state.invoices.map((value, index) => {
+                {this.state.invoices.sort(function(a, b) {
+                  return ('' + a.invoice).localeCompare(b.invoice)
+                }).map((value, index) => {
                   return (
                     <Jumbotron>
                     <Button variant="danger" className="buttonjumbotron" onClick={() => { this.deleteInvoice(index) }}><i className="fa fa-trash" /></Button>
