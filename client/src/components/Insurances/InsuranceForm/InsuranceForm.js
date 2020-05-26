@@ -580,10 +580,10 @@ class InsuranceForm extends Component {
                 </Row>
 
                 {this.state.invoices.sort(function(a, b){
-                    if ( a.invoice < b.invoice ){
+                    if (a.invoice < b.invoice){
                       return -1;
                     }
-                    if ( a.invoice > b.invoice ){
+                    if (a.invoice > b.invoice){
                       return 1;
                     }
                     return 0;
