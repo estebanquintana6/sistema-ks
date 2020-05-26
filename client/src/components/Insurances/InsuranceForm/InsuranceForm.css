@@ -69,3 +69,4 @@
 
   .jumbotron {position:relative;}
   .buttonjumbotron {position:absolute; top:10pt; right:10pt;}
+  .invoice-title{position:absolute; top:10pt; left:10pt;}

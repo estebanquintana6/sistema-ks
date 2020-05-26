@@ -590,6 +590,7 @@ class InsuranceForm extends Component {
                   }).map((value, index) => {
                     return (
                       <Jumbotron>
+                      <h6 className="invoice-title">Recibo {index+1}</h6>
                       <Button variant="danger" className="buttonjumbotron" onClick={() => { this.deleteInvoice(index) }}><i className="fa fa-trash" /></Button>
                       
                       <Form.Row>
