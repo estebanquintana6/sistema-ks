@@ -579,69 +579,75 @@ class InsuranceForm extends Component {
                   <h5 className="swal-title form-title align-left">RECIBOS</h5>
                 </Row>
 
-                {this.state.invoices.sort(function(a, b) {
-                  return ('' + a.invoice).localeCompare(b.invoice)
-                }).map((value, index) => {
-                  return (
-                    <Jumbotron>
-                    <Button variant="danger" className="buttonjumbotron" onClick={() => { this.deleteInvoice(index) }}><i className="fa fa-trash" /></Button>
-                    
-                    <Form.Row>
-                      <Form.Group as={Col}>
-                          <Form.Label>Recibo</Form.Label>
-                          <Form.Control required onChange={(e) => { this.onChangeInvoice(index, e) }} value={this.state.invoices[index].invoice} />
-                        </Form.Group>
-                      <Form.Group as={Col}>
-                      <Form.Label>Estatus</Form.Label>
-                      <Form.Control as="select" onChange={(e) => { this.onChangeInvoiceStatus(index, e) }} value={this.state.invoices[index].payment_status}>
-                          <option></option>
-                          <option selected value="PENDIENTE">Pendiente</option>
-                          <option value="PAGADO">Pagado</option>
-                          <option value="VENCIDO">Vencido</option>
-                          <option value="SALDO A FAVOR">Saldo a Favor</option>
-                        </Form.Control>
-                      </Form.Group>
-                    </Form.Row>
-
-                    <Form.Row>
-
-                      <Form.Group as={Col}>
-                        <Form.Label>Fecha límite de pago</Form.Label>
-                        <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(index, e) }} value={this.formatDate(this.state.invoices[index].due_date)} />
-                      </Form.Group>
-                    {(this.isMedicInsurance() || this.isDamageInsurance()) &&
-                    <React.Fragment>
-                      <Form.Group as={Col}>
-                        <Form.Label>Vigencia de</Form.Label>
-                        <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceLimitDate(index, e) }} value={this.formatDate(this.state.invoices[index].pay_limit)} />
-                      </Form.Group>
-
-                      <Form.Group as={Col}>
-                        <Form.Label>Vigencia a</Form.Label>
-                        <Form.Control type="date" onChange={(e) => this.onChangeInvoiceLimitDate2(index, e)} value={this.formatDate(this.state.invoices[index].pay_limit2)}>
-                        </Form.Control>
-                      </Form.Group>
-                    </React.Fragment>
+                {this.state.invoices.sort(function(a, b){
+                    if ( a.invoice < b.invoice ){
+                      return -1;
                     }
-                      <Form.Group as={Col}>
-                        <Form.Label>Prima</Form.Label>
-                        <Form.Control onChange={(e) => { this.onChangeInvoiceBounty(index, e) }} value={this.state.invoices[index].bounty} />
-                      </Form.Group>
+                    if ( a.invoice > b.invoice ){
+                      return 1;
+                    }
+                    return 0;
+                  }).map((value, index) => {
+                    return (
+                      <Jumbotron>
+                      <Button variant="danger" className="buttonjumbotron" onClick={() => { this.deleteInvoice(index) }}><i className="fa fa-trash" /></Button>
                       
-                    </Form.Row>
+                      <Form.Row>
+                        <Form.Group as={Col}>
+                            <Form.Label>Recibo</Form.Label>
+                            <Form.Control required onChange={(e) => { this.onChangeInvoice(index, e) }} value={this.state.invoices[index].invoice} />
+                          </Form.Group>
+                        <Form.Group as={Col}>
+                        <Form.Label>Estatus</Form.Label>
+                        <Form.Control as="select" onChange={(e) => { this.onChangeInvoiceStatus(index, e) }} value={this.state.invoices[index].payment_status}>
+                            <option></option>
+                            <option selected value="PENDIENTE">Pendiente</option>
+                            <option value="PAGADO">Pagado</option>
+                            <option value="VENCIDO">Vencido</option>
+                            <option value="SALDO A FAVOR">Saldo a Favor</option>
+                          </Form.Control>
+                        </Form.Group>
+                      </Form.Row>
 
-                    <Form.Row>
-                      <Form.Group as={Col} md="6">
-                        <Form.Label>Comentarios</Form.Label>
-                        <Form.Control onChange={(e) => { this.onChangeInvoiceComment(index, e) }} value={this.state.invoices[index].comments} />
-                      </Form.Group>
-                      <Form.Group as={Col} md="6">
-                        <Form.Label>Correo</Form.Label>
-                        <Form.Control onChange={(e) => { this.onChangeInvoiceEmail(index, e) }} value={this.state.invoices[index].email} />
-                      </Form.Group>
-                    </Form.Row>
-                    </Jumbotron>
-                  );
+                      <Form.Row>
+
+                        <Form.Group as={Col}>
+                          <Form.Label>Fecha límite de pago</Form.Label>
+                          <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(index, e) }} value={this.formatDate(this.state.invoices[index].due_date)} />
+                        </Form.Group>
+                      {(this.isMedicInsurance() || this.isDamageInsurance()) &&
+                      <React.Fragment>
+                        <Form.Group as={Col}>
+                          <Form.Label>Vigencia de</Form.Label>
+                          <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceLimitDate(index, e) }} value={this.formatDate(this.state.invoices[index].pay_limit)} />
+                        </Form.Group>
+
+                        <Form.Group as={Col}>
+                          <Form.Label>Vigencia a</Form.Label>
+                          <Form.Control type="date" onChange={(e) => this.onChangeInvoiceLimitDate2(index, e)} value={this.formatDate(this.state.invoices[index].pay_limit2)}>
+                          </Form.Control>
+                        </Form.Group>
+                      </React.Fragment>
+                      }
+                        <Form.Group as={Col}>
+                          <Form.Label>Prima</Form.Label>
+                          <Form.Control onChange={(e) => { this.onChangeInvoiceBounty(index, e) }} value={this.state.invoices[index].bounty} />
+                        </Form.Group>
+                        
+                      </Form.Row>
+
+                      <Form.Row>
+                        <Form.Group as={Col} md="6">
+                          <Form.Label>Comentarios</Form.Label>
+                          <Form.Control onChange={(e) => { this.onChangeInvoiceComment(index, e) }} value={this.state.invoices[index].comments} />
+                        </Form.Group>
+                        <Form.Group as={Col} md="6">
+                          <Form.Label>Correo</Form.Label>
+                          <Form.Control onChange={(e) => { this.onChangeInvoiceEmail(index, e) }} value={this.state.invoices[index].email} />
+                        </Form.Group>
+                      </Form.Row>
+                      </Jumbotron>
+                    );
                 })}
                 <Row className="pt-1 pb-2">
                   <Col md="12">
