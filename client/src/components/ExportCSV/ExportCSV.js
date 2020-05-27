@@ -98,13 +98,14 @@ export const ExportDataToCSV = (props) => {
     const invoiceToObj = (dataObj) => {
         let mappedObj = dataObj.map((invoice) => {
             //EMPRESA	PRIMA 	RECIBOS	STATUS
-            console.log(invoice);
-            return {
-                "EMPRESA": invoice.client.name || "",
-                "PRIMA": invoice.bounty || "",
-                "RECIBO": invoice.invoice || "",
-                "STATUS": invoice.payment_status|| ""
-            }
+            let result = {}
+            
+            invoice.client ? result["EMPRESA"] = invoice.client.name : result["EMPRESA"] = "";
+            invoice.bounty ? result["PRIMA"] = invoice.bounty : result["PRIMA"] = "";
+            invoice.bounty ? result["RECIBO"] = invoice.invoice : result["RECIBO"] = "";
+            invoice.payment_status ? result["STATUS"] = invoice.payment_status : result["STATUS"] = "";
+
+            return result;
         });
 
         mappedObj.sort(function(a, b){
