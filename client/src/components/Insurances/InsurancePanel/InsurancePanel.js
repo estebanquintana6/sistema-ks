@@ -47,7 +47,7 @@ class InsurancePanel extends Component {
       data: [],
       clients: [],
       companies: [],
-      excludedFields: ['__v', '_id', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts', 'begin_date']
+      excludedFields: ['__v', '_id', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts', 'begin_date', 'invoices']
     };
   }
 
@@ -86,7 +86,6 @@ class InsurancePanel extends Component {
       bounty: "Prima",
       insurance_company: "Aseguradora",
       insurance_type: "Producto",
-      invoices: "Recibos",
       invoice: "Número de recibo",
       payment_status: "Estatus de pago",
       pay_due_date: "Fecha vto. pago",
