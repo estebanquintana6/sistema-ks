@@ -5,7 +5,7 @@ import * as XLSX from 'xlsx';
 import moment from 'moment'
 
 function renameLabel(json, oldLabel, newLabel) {
-    if (!newLabel) console.log('NULL FOR' oldLabel)
+    if (!newLabel) console.log('NULL FOR', oldLabel)
     json["" + newLabel] = json["" + oldLabel]
     const tmp = json["" + oldLabel]
     const tmpDate = moment(tmp, moment.ISO_8601)
@@ -101,10 +101,10 @@ export const ExportDataToCSV = (props) => {
             //EMPRESA	PRIMA 	RECIBOS	STATUS
             console.log(invoice);
             return {
-                "EMPRESA": invoice.client.name,
-                "PRIMA": invoice.bounty,
-                "RECIBO": invoice.invoice,
-                "STATUS": invoice.payment_status
+                "EMPRESA": invoice.client.name || "",
+                "PRIMA": invoice.bounty || "",
+                "RECIBO": invoice.invoice || "",
+                "STATUS": invoice.payment_status|| ""
             }
         });
 
