@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import moment from 'moment'
+import {formatShortDate} from '../component-utils';
 
 function renameLabel(json, oldLabel, newLabel) {
     if (!newLabel) console.log('NULL FOR', oldLabel)
@@ -105,7 +106,7 @@ export const ExportDataToCSV = (props) => {
             invoice.bounty ? result["RECIBO"] = invoice.invoice : result["RECIBO"] = "";
             invoice.bounty ? result["PRIMA"] = invoice.bounty : result["PRIMA"] = "";
             invoice.payment_status ? result["STATUS"] = invoice.payment_status : result["STATUS"] = "";
-            invoice.due_date ? result["VENCIMIENTO DE PAGO"] = invoice.due_date : result["VENCIMIENTO DE PAGO"] = "";
+            invoice.due_date ? result["VENCIMIENTO DE PAGO"] = formatShortDate(invoice.due_date) : result["VENCIMIENTO DE PAGO"] = "";
 
             return result;
         });
