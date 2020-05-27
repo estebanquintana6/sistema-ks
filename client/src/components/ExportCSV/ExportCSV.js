@@ -100,10 +100,10 @@ export const ExportDataToCSV = (props) => {
             //EMPRESA	PRIMA 	RECIBOS	STATUS
             console.log(invoice);
             return {
-                "EMPRESA": invoice.client.name,
-                "PRIMA": invoice.bounty,
-                "RECIBO": invoice.invoice,
-                "STATUS": invoice.payment_status
+                "EMPRESA": invoice.client.name || "",
+                "PRIMA": invoice.bounty || "",
+                "RECIBO": invoice.invoice || "",
+                "STATUS": invoice.payment_status|| ""
             }
         });
 
