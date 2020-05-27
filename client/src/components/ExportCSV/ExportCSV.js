@@ -5,7 +5,7 @@ import * as XLSX from 'xlsx';
 import moment from 'moment'
 
 function renameLabel(json, oldLabel, newLabel) {
-    if (!newLabel) console.log('NULL FOR', oldLabel)
+    console.log('NULL FOR', oldLabel, newLabel)
     json["" + newLabel] = json["" + oldLabel]
     const tmp = json["" + oldLabel]
     const tmpDate = moment(tmp, moment.ISO_8601)
