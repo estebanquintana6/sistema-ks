@@ -102,9 +102,10 @@ export const ExportDataToCSV = (props) => {
             let result = {}
             
             invoice.client ? result["EMPRESA"] = invoice.client.name : result["EMPRESA"] = "";
-            invoice.bounty ? result["PRIMA"] = invoice.bounty : result["PRIMA"] = "";
             invoice.bounty ? result["RECIBO"] = invoice.invoice : result["RECIBO"] = "";
+            invoice.bounty ? result["PRIMA"] = invoice.bounty : result["PRIMA"] = "";
             invoice.payment_status ? result["STATUS"] = invoice.payment_status : result["STATUS"] = "";
+            invoice.due_date ? result["VENCIMIENTO DE PAGO"] = invoice.due_date : result["VENCIMIENTO DE PAGO"] = "";
 
             return result;
         });
