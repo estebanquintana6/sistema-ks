@@ -6,7 +6,7 @@ import moment from 'moment'
 import {formatShortDate} from '../component-utils';
 
 function renameLabel(json, oldLabel, newLabel) {
-    if (!newLabel) console.log('NULL FOR', oldLabel)
+    if (!newLabel) return
     json["" + newLabel] = json["" + oldLabel]
     const tmp = json["" + oldLabel]
     const tmpDate = moment(tmp, moment.ISO_8601)
