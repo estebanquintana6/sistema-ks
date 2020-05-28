@@ -36,8 +36,18 @@ class InsuranceForm extends Component {
   }
 
   prepareInsuranceForForm = () => {
-    const auxObj = cloneDeep(this.props.insurance)
+    let auxObj = cloneDeep(this.props.insurance)
     auxObj['edit'] = this.props['edit']
+    auxObj["invoices"] = auxObj.invoices.sort(function(a, b){
+      if (a.invoice < b.invoice){
+        return -1;
+      }
+      if (a.invoice > b.invoice){
+        return 1;
+      }
+      return 0;
+    });
+
     this.setState(auxObj)
   }
 
@@ -579,15 +589,7 @@ class InsuranceForm extends Component {
                   <h5 className="swal-title form-title align-left">RECIBOS</h5>
                 </Row>
 
-                {this.state.invoices.sort(function(a, b){
-                    if (a.invoice < b.invoice){
-                      return -1;
-                    }
-                    if (a.invoice > b.invoice){
-                      return 1;
-                    }
-                    return 0;
-                  }).map((value, index) => {
+                {this.state.invoices.map((value, index) => {
                     return (
                       <Jumbotron>
                       <h6 className="invoice-title">Recibo {index+1}</h6>
