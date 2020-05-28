@@ -3,10 +3,9 @@ import Button from 'react-bootstrap/Button';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import moment from 'moment'
-import {formatShortDate} from '../component-utils';
 
 function renameLabel(json, oldLabel, newLabel) {
-    if (!newLabel) console.log('NULL FOR', oldLabel)
+    if (!newLabel) return
     json["" + newLabel] = json["" + oldLabel]
     const tmp = json["" + oldLabel]
     const tmpDate = moment(tmp, moment.ISO_8601)
@@ -100,15 +99,13 @@ export const ExportDataToCSV = (props) => {
     const invoiceToObj = (dataObj) => {
         let mappedObj = dataObj.map((invoice) => {
             //EMPRESA	PRIMA 	RECIBOS	STATUS
-            let result = {}
-            
-            invoice.client ? result["EMPRESA"] = invoice.client.name : result["EMPRESA"] = "";
-            invoice.bounty ? result["RECIBO"] = invoice.invoice : result["RECIBO"] = "";
-            invoice.bounty ? result["PRIMA"] = invoice.bounty : result["PRIMA"] = "";
-            invoice.payment_status ? result["STATUS"] = invoice.payment_status : result["STATUS"] = "";
-            invoice.due_date ? result["VENCIMIENTO DE PAGO"] = formatShortDate(invoice.due_date) : result["VENCIMIENTO DE PAGO"] = "";
-
-            return result;
+            console.log(invoice);
+            return {
+                "EMPRESA": invoice.client.name,
+                "PRIMA": invoice.bounty,
+                "RECIBO": invoice.invoice,
+                "STATUS": invoice.payment_status
+            }
         });
 
         mappedObj.sort(function(a, b){
