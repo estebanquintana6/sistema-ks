@@ -86,7 +86,6 @@ class InvoicePanel extends Component {
     }
 
     openModificationModal(invoice) {
-      console.log('inv', invoice)
       swal({
         content: <InvoicesModal
           invoice={invoice}
@@ -168,7 +167,6 @@ class InvoicePanel extends Component {
                             const notFilterable = ['due_date', 'pay_limit']
 
                             if(notFilterable.includes(filter.id)) {
-                                console.log(filter.id); 
                                 const id = filter.pivotId || filter.id;
                                 const res = row[id] !== undefined ? moment.unix(row[id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') :true
                                 return res
