@@ -268,7 +268,7 @@ class InvoicePanel extends Component {
                                       onComplete={this.refresh}
                                       fieldTranslation={()=>{return []}} 
                                       excludedFields={() => {return []}} 
-                                      header={['EMPRESA', 'PRIMA', 'RECIBO', 'STATUS']}>                
+                                      header={['EMPRESA', 'RECIBO', 'PRODUCTO', 'PRIMA', 'STATUS', 'VENCIMIENTO DE PAGO']}>                
                       </ExportDataToCSV>
                       </div>
                     </div>
