@@ -120,7 +120,7 @@ export const ExportDataToCSV = (props) => {
         return mappedObj;
     }
 
-    const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header, type = "", sortableColumn = '') => {
+    const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header, type = "", sortableColumn = '', refresh) => {
         const dataToWrite = [];
         if(type === "invoices"){
             let obj = invoiceToObj(csvData);
@@ -167,9 +167,10 @@ export const ExportDataToCSV = (props) => {
         const worksheet = XLSX.utils.json_to_sheet(dataToWrite, {header: myHeader});
         XLSX.utils.book_append_sheet(workbook, worksheet, 'tab1');
         XLSX.writeFile(workbook, `${fileName}.xls`);
+        refresh()
     }
 
     return (
-        <Button variant="warning" onClick={(e) => exportToCSV(props.csvData, props.fileName, props.fieldTranslation, props.excludedFields, props.header, props.type, props.sortableColumn)}>Exportar a Excel</Button>
+        <Button variant="warning" onClick={(e) => exportToCSV(props.csvData, props.fileName, props.fieldTranslation, props.excludedFields, props.header, props.type, props.sortableColumn, props.onComplete)}>Exportar a Excel</Button>
     )
 }

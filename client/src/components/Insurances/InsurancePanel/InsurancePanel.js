@@ -107,6 +107,11 @@ class InsurancePanel extends Component {
         car_year: "Modelo de coche",
         cis: "CIS"
       }
+    } else if (this.props.variant === 'DANOS'){
+      resObj = {
+        ...resObj,
+        damage_product: 'Producto Daños'
+      }
     }
     return resObj
   }
@@ -125,6 +130,9 @@ class InsurancePanel extends Component {
         "Modelo de coche",
         "CIS"
       ]
+    }
+    if(this.props.variant === 'DANOS'){
+      resArr = ['Contratante Tipo de persona', 'Contratante', 'Contratante RFC', 'Póliza', 'Producto', 'Producto daños' ,'Tipo de póliza', 'Moneda', 'Fecha de vencimiento', 'Tipo de pago', 'Aseguradora']
     }
     return resArr
   }
@@ -614,7 +622,7 @@ class InsurancePanel extends Component {
           />
           <div className="row">
             <div className="col-md-4 center mt-4">
-            <ExportDataToCSV csvData={this.state.data} fileName={`reporteSeguros_${this.props.variant}`} fieldTranslation={this.generateFieldsTranslation()} excludedFields={this.state.excludedFields} header={this.generateHeaders()} sortableColumn={'Contratante'}></ExportDataToCSV>
+            <ExportDataToCSV csvData={this.state.data} fileName={`reporteSeguros_${this.props.variant}`} onComplete={this.refresh} fieldTranslation={this.generateFieldsTranslation()} excludedFields={this.state.excludedFields} header={this.generateHeaders()} sortableColumn={'Contratante'}></ExportDataToCSV>
             </div>
           </div>
 
