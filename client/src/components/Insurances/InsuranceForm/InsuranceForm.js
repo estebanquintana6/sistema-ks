@@ -350,9 +350,6 @@ class InsuranceForm extends Component {
       <Form onSubmit={this.onSubmit}>
         <Row>
           <Col md="12" className="pull-right profile-right-section">
-            <Row className="justify-content-md-center">
-              <Button variant="primary" type="submit">Guardar</Button>
-            </Row>
           </Col>
           <Col md="12">
             <ul className="nav nav-tabs" role="tablist">
@@ -692,6 +689,11 @@ class InsuranceForm extends Component {
               </div>
             </div>
           </Col>
+        </Row>
+        <Row className="d-flex">
+          <div className="ml-auto mr-4">
+          <Button variant="primary" type="submit" className="btn-primary"><i className="fas fa-save"></i></Button>
+          </div>
         </Row>
       </Form >
     )
