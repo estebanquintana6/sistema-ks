@@ -103,6 +103,7 @@ export const ExportDataToCSV = (props) => {
             let result = {}
             
             invoice.client ? result["EMPRESA"] = invoice.client.name : result["EMPRESA"] = "";
+            invoice.insurance ? result["PRODUCTO"] = invoice.insurance.insurance_type : result["PRODUCTO"] = "";
             invoice.bounty ? result["RECIBO"] = invoice.invoice : result["RECIBO"] = "";
             invoice.bounty ? result["PRIMA"] = invoice.bounty : result["PRIMA"] = "";
             invoice.payment_status ? result["STATUS"] = invoice.payment_status : result["STATUS"] = "";
