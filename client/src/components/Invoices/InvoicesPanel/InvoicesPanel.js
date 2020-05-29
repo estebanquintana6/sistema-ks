@@ -265,6 +265,7 @@ class InvoicePanel extends Component {
                       <ExportDataToCSV csvData={this.state.data} 
                                       fileName={'reporteRecibos'} 
                                       type="invoices"
+                                      onComplete={this.refresh}
                                       fieldTranslation={()=>{return []}} 
                                       excludedFields={() => {return []}} 
                                       header={['EMPRESA', 'PRIMA', 'RECIBO', 'STATUS']}>                
