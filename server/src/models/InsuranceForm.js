@@ -102,6 +102,10 @@ var InsuranceSchema = new Schema({
     type: Array,
     required: false
   },
+  damage_product: {
+    type: String,
+    required: false
+  },
   // campos unicos de seguros de auto
   cis: {
     type: String,

@@ -561,6 +561,12 @@ class InsuranceForm extends Component {
                     <Row>
                       <h5 className="swal-title form-title align-left">COMENTARIOS</h5>
                     </Row>
+                    {this.props.type === "DANOS" && 
+                      <Form.Group as={Col} md="6" controlId="damage_product">
+                      <Form.Label>Producto</Form.Label>
+                      <Form.Control onChange={this.onChange} value={this.state.damage_product}>
+                      </Form.Control>
+                    </Form.Group> }
 
                     <Form.Group as={Col} controlId="comments" className={this.state.comments}>
                       <Form.Label>Comentarios</Form.Label>
