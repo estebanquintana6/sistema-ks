@@ -17,7 +17,6 @@ relateInsuranceToInvoice = (invoice) => {
 }
 
 updateInvoice = (invoice) => {
-  console.log(invoice);
   const update = {
     invoice: invoice.invoice,
     due_date: invoice.due_date,
@@ -29,7 +28,6 @@ updateInvoice = (invoice) => {
     email: invoice.email,
   }
   Invoice.findOneAndUpdate({_id: invoice._id}, update).then((res, error) => {
-    console.log(res, error);
     if(error) throw Error(error);
   });
 }
@@ -111,14 +109,10 @@ router.post("/update", (req, res) => {
           updateInvoice(invoice);
         })
         const toD = invoices.map(inv => inv._id).filter(e=>e)
-        // console.log('INVOICES', toD)
-        // console.log('SAVED INV', insurance.invoices)
         const t = insurance.invoices.filter(e=>e).map(inv => {
-          // console.log('INV', inv, typeof(inv));
           return String(inv)
         })
         const n = arr.difference(t, toD)
-        // console.log('new', n)
         Invoice.deleteMany({_id: {$in: n}}).exec()
         let doc = Insurance.findById(insurance.id);
         doc.updateOne(insuranceData).then((err, _) => {
@@ -223,7 +217,6 @@ router.post("/:id/payStatus", (req, res) => {
   jwt.verify(token, secretKey, function (err, _) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
     Insurance.findOne({ _id: req.params.id }).then((insurance) => {
-      console.log(status);
         insurance.pay_status = status;
         insurance.save();
         res.status(201).json({ message: "Elemento cambiado" });

@@ -448,7 +448,7 @@ class InsuranceForm extends Component {
                     <Form.Row>
                       <Form.Group as={Col} md="4" controlId="bounty">
                         <Form.Label>Prima Total</Form.Label>
-                        <Form.Control type="number" onChange={this.onChange} value={this.state.bounty}>
+                        <Form.Control onChange={this.onChange} value={this.state.bounty}>
                         </Form.Control>
                       </Form.Group>
                       <Form.Group as={Col} md="4" controlId="payment_type">
