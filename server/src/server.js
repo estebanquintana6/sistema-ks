@@ -20,7 +20,7 @@ const danos = require('./routes/danosRoutes');
 const initializeDb = require('./createInsuranceTypes')
 
 const app = express();
-const regular_jobs = require('./node_regular_job')
+//const regular_jobs = require('./node_regular_job')
 const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/test";
 
 console.log("MONGOURI: ", mongoUri);
@@ -60,8 +60,8 @@ db.once("open", () => {
 // Passport middleware
 app.use(passport.initialize());
 
-let j = regular_jobs.j;
-
+//let j = regular_jobs.j;
+console.log(new Date());
 // Passport config
 require("./config/passport")(passport);
 
