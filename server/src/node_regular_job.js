@@ -1,8 +1,8 @@
 const schedule = require('node-schedule');
-const moment = require('moment')
+const moment = require('moment');
+const config = require('./config/email');
 
 const Invoice = require("./models/InvoiceForm");
-const User = require("./models/UserForm");
 const Company = require("./models/CompanyForm");
 
 const { hasExpired, willExpireFive, willExpireTen, daysFromNow } = require('./utils/dateUtils');
@@ -14,8 +14,8 @@ let companies;
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: '',
-    pass: ''
+    user: config.email,
+    pass: config.emailpass
   }
 });
 
@@ -31,43 +31,44 @@ const composeInvoiceDetailsSpanish = (invoice) => {
 
   return `\n\n
   Datos de la Póliza: \n
-  - Contratante:	${invoice.client.name}
+  - Contratante: ${invoice.client.name}
   - Aseguradora: ${company.name}
   - No de poliza: ${invoice.insurance.policy}
   - Tipo de poliza: ${invoice.insurance.insurance_type}
   - No. Recibo: ${invoice.invoice}
   - Prima: ${invoice.bounty}
   - Fecha de vencimiento: ${moment(invoice.due_date).format('DD/MM/YYYY')}
-  - Moneda ${invoice.insurance.currency}
+  - Moneda: ${invoice.insurance.currency}
   `
 }
 
 const composeInvoiceDetailsCorean = (invoice) => {
-  
+  let invoiceId = invoice.insurance.insurance_company;
+
+  const companyFiltered = companies.filter((company) => { 
+    let companyId = company._id;
+    return invoiceId.equals(companyId);
+  });
+
+  let company = companyFiltered[0];
+
   return `\n\n
   정책 정보: \n
-  - 계약자	${invoice.client.name}
-  - 보험 회사	${invoice.insurance.company}
-  - 정책 번호 ${invoice.insurance.policy}
-  - 정책 유형 ${invoice.insurance.insurance_type}
-  - 영수증 번호 ${invoice.invoice}
-  - 공유 ${invoice.bounty}
-  -	마감일 ${moment(invoice.due_date).format('DD/MM/YYYY')}
-  - 통화 ${invoice.insurance.currency}
+  - 계약자: ${invoice.client.name}
+  - 보험 회사: ${company.name}
+  - 정책 번호: ${invoice.insurance.policy}
+  - 정책 유형: ${invoice.insurance.insurance_type}
+  - 영수증 번호: ${invoice.invoice}
+  - 공유: ${invoice.bounty}
+  -	마감일: ${moment(invoice.due_date).format('DD/MM/YYYY')}
+  - 통화: ${invoice.insurance.currency}
   `
 }
 
-const mailOptions =  (invoice, users, language, situation) => {
-    console.log('MANDANDO', language)
-    const destinations = []
-    // para enviar a los contactos del cliente
-    // destinations.push(invoice.client.contacts.map(contact => contact.email))
-    // splittear correos y meter
-    invoice.email.split(',').forEach(element => {
-      destinations.push(element)
-    });
-    const userEmails = users.map(user => user.email)
-    destinations.push(userEmails)
+const mailOptions =  (invoice, situation, destinations) => {
+    const language = invoice.client.languages || "Español";
+    console.log('MANDANDO', language);
+
 
     let subjectText = ''
     let languageText = ''
@@ -95,12 +96,8 @@ const mailOptions =  (invoice, users, language, situation) => {
     } else {
       if (situation === 'vencido'){
         subjectText = `Pago de recibo ${invoice.invoice} VENCIDO`
-        languageText = `Buen día Estimado cliente,\n
-        Nos dirijimos a usted para notificarle que se venció la fecha límite
-        de pago de su póliza, por lo que en caso de siniestro estaría sin cobertura.
-        Solicitamos de su apoyo con el comprobante de pago para poder rehabilitar la póliza lo antes posible.
-        Agradecemos su preferencia. 
-        \nSaludos cordiales.`
+        languageText = `Por medio del presente me permito informarle que su recibo: ${invoice.invoice} venció el día: ${invoice.due_date} a las 12:00pm, por lo que a partir de dicho momento queda sin cobertura las familias correspondientes a tu recibo antes mencionado. \n
+        Si usted realizo su pago favor de hacernos llegar su comprobante, o ponerse en contacto con el equipo de KS SEGUROS, agradecemos su gran apoyo y confianza.`
       } else if(situation === 'proximo5'){
         subjectText = `Pago de recibo ${invoice.invoice} próximo a vencer`
         languageText = `Buen día Estimado cliente,\n
@@ -119,78 +116,82 @@ const mailOptions =  (invoice, users, language, situation) => {
     }
     if(language === 'Coreano'){
       languageText += composeInvoiceDetailsCorean(invoice)
-    }else{
+    } else {
       languageText += composeInvoiceDetailsSpanish(invoice)
     }
 
-    // console.log('EMAIL TO SEND', languageText, language)
     return {
-        from: '',
+        from: config.email,
         to: destinations.join(','),
         subject: subjectText,
         text: languageText
     }
 };
 
-const func = (invoice, users, language, situation) => transporter.sendMail(mailOptions(invoice, users, language, situation), function(error, info){
-  if (error) {
-    console.log(error);
-  } else {
-    console.log('Email sent: ' + info.response);
-  }
-});
-
-const chooseMethod = (date) => {
-  if(hasExpired(date)) return 'vencido';
-  if(willExpireFive(date)) return 'proximo5'
-  if(willExpireTen(date)) return 'proximo10'
-}
+const func = (invoice, situation) => {
+  if(invoice.email.replace(/(\r\n|\n|\r)/gm,"") === '') return
 
 
-var j = schedule.scheduleJob('*/20 * * * * *', async function(){    
+  const destinations = []
+  // para enviar a los contactos del cliente
+  // destinations.push(invoice.client.contacts.map(contact => contact.email))
+  // splittear correos y meter
+  const trimmed = invoice.email.replace(/\s/g,'');
+
+  trimmed.split(',').forEach(element => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (re.test(String(element).toLowerCase())){
+      destinations.push(element)
+    }
+  });
+
+  transporter.sendMail(mailOptions(invoice, situation, destinations), function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    })
+};
+
+var myRule = {"hour": 13, 
+  "minute": 0,
+};
+
+var j = schedule.scheduleJob(myRule, async function(){    
     companies = await Company.find().exec();
 
     Invoice.find({payment_status: 'PENDIENTE'}).populate('insurance').populate('client').then((invoices, err) => {
 
+      console.log("Elementos pendientes de pago:", invoices.length);
 
-      User.find({}).then((users) => {
-          invoices.filter(invoice => {
-              let due_date = new Date(invoice.due_date);
-              if(hasExpired(due_date)) return invoice;
-              else if(willExpireTen(due_date)) return invoice;
-          }).map(invoice => {
-            return {invoice, method: chooseMethod(invoice.due_date)}
-          })
-          .map((invoice) => {
-              const lang = invoice.invoice.client.languages
-              if (lang !== 'Coreano') //func(invoice.invoice, users, 'Español', invoice.method)
-              if (lang !== 'Español') //func(invoice.invoice, users, 'Coreano', invoice.method)
-              return true
-          });
-      })
+      const vencidos = invoices.filter((invoice) => {
+        return hasExpired(invoice.due_date)
+      }).map((invoice) => {
+        func(invoice, 'vencido')
+
+        Invoice.updateOne({"_id": invoice._id}, {"payment_status": "VENCIDO"}).exec();
+        return true
+    });
+
+    const recordatorios_5 = invoices.filter((invoice) => {
+      return willExpireFive(invoice.due_date);
+    }).map((invoice) => {
+      func(invoice, 'proximo5')
+    });
+
+    const recordatorios_10 = invoices.filter((invoice) => {
+      return willExpireTen(invoice.due_date);
+    }).map((invoice) => {
+      console.log(invoice.due_date);
+      func(invoice, 'proximo10');
     })
-    // Nueva Query
-    // Invoice.find({
-    //   $and: [ {payment_status: {$in: statuses}}, { due_date: {
-    //       $gte: daysFromNow(4),
-    //       $lte: daysFromNow(6)
-    //     }
-    //   } ]}).populate('insurance').populate('client').then((invoices, err) => {
-    //     console.log('INVOICES', invoices)
-    //   User.find({}).then((users) => {
-    //       invoices.filter(invoice => {
-    //           let due_date = new Date(invoice.due_date);
-    //           if(hasExpired(due_date)) return invoice;
-    //           else if(willExpireTen(due_date)) return invoice;
-    //       }).map(invoice => {
-    //         return {invoice, method: chooseMethod(invoice.due_date)}
-    //       })
-    //       .map((invoice) => {
-    //           const lang = invoice.invoice.client.languages
-    //           if (lang !== 'Coreano') //func(invoice.invoice, users, 'Español', invoice.method)
-    //           if (lang !== 'Español') //func(invoice.invoice, users, 'Coreano', invoice.method)
-    //           return true
-    //       });
-    //   })
-    // })
+
+      console.log("Elementos vencidos:", vencidos.length);
+      console.log("Elementos a vencer en 5 dias:", recordatorios_5.length);
+      console.log("Elementos a vencer en 10 dias:", recordatorios_10.length);
+
+    })
+    
 })

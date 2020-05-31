@@ -9,13 +9,15 @@ module.exports = {
             date.getFullYear() === today.getFullYear();
     },
     hasExpired: function(date){
-        return moment(date).startOf('day').isSameOrBefore(moment().startOf('day'))
+        const due_date = moment(date).startOf('day');
+        const today = moment().startOf('day');
+        return due_date.isSame(today);
     },
     willExpireFive: function(date){
-        return moment(date).startOf('day').isBetween(moment().startOf('day'), moment().clone().add(5,'days').startOf('day'), null, '[]')
+        return moment(date).startOf('day').isSame(moment().clone().add(5,'days').startOf('day'))
     },
     willExpireTen: function(date){
-        return moment(date).startOf('day').isBetween(moment().startOf('day'), moment().clone().add(10,'days').startOf('day'), null, '[]')
+        return moment(date).startOf('day').isSame(moment().clone().add(10,'days').startOf('day'))
     },
     isSameDay: function(date1, date2) {
         return date1.getDate() === date2.getDate() &&
