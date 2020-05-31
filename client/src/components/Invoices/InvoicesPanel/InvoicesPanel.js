@@ -132,6 +132,7 @@ class InvoicePanel extends Component {
               icon: "success",
             });
           }
+        }).finally(()=> {
           this.refresh();
         });
     }

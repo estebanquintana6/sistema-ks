@@ -147,12 +147,10 @@ const chooseMethod = (date) => {
 }
 
 
-var j = schedule.scheduleJob('*/20 * * * * *', async function(){
-    var statuses = ['PENDIENTE', 'VENCIDO'];
-    
+var j = schedule.scheduleJob('*/20 * * * * *', async function(){    
     companies = await Company.find().exec();
 
-    Invoice.find({payment_status: {$in: statuses}}).populate('insurance').populate('client').then((invoices, err) => {
+    Invoice.find({payment_status: 'PENDIENTE'}).populate('insurance').populate('client').then((invoices, err) => {
 
 
       User.find({}).then((users) => {

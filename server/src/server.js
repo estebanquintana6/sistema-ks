@@ -60,7 +60,7 @@ db.once("open", () => {
 // Passport middleware
 app.use(passport.initialize());
 
-//let j = regular_jobs.j;
+let j = regular_jobs.j;
 
 // Passport config
 require("./config/passport")(passport);
