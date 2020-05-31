@@ -131,13 +131,13 @@ class InsuranceForm extends Component {
     for (let i = 0; i < num_invoices; i++) {
       invoices.push({
         invoice: "",
-        due_date: moment(newDate||prevDate).format('YYYY-MM-DD'),
-        pay_limit: moment(newDate||prevDate).format('YYYY-MM-DD'),
-        pay_limit2: moment(newDate||prevDate).format('YYYY-MM-DD')
+        due_date: moment(newDate||prevDate).startOf('day').format('YYYY-MM-DD'),
+        pay_limit: moment(newDate||prevDate).startOf('day').format('YYYY-MM-DD'),
+        pay_limit2: moment(newDate||prevDate).startOf('day').format('YYYY-MM-DD')
       });
 
-      let newDate = moment(prevDate).clone().startOf('day').add(jump, 'months')
-      prevDate = moment(newDate).clone().startOf('day')
+      let newDate = moment(prevDate).startOf('day').clone().startOf('day').add(jump, 'months')
+      prevDate = moment(newDate).startOf('day').clone().startOf('day')
 
     }
 
@@ -259,7 +259,7 @@ class InsuranceForm extends Component {
 
   composeCarYears = () => {
     const result = [];
-    const endYear = moment().add(1, 'year').startOf('year').year()
+    const endYear = moment().startOf('day').add(1, 'year').startOf('year').year()
     for(let i = 1990; i<=endYear; i++){
       result.push(i)
     }
