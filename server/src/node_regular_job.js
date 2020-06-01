@@ -67,8 +67,6 @@ const composeInvoiceDetailsCorean = (invoice) => {
 
 const mailOptions =  (invoice, situation, destinations) => {
     const language = invoice.client.languages || "Español";
-    console.log('MANDANDO', language);
-
 
     let subjectText = ''
     let languageText = ''
@@ -132,21 +130,14 @@ const func = (invoice, situation) => {
   if(invoice.email.replace(/(\r\n|\n|\r)/gm,"") === '') return
 
 
-  const destinations = []
   // para enviar a los contactos del cliente
   // destinations.push(invoice.client.contacts.map(contact => contact.email))
-  // splittear correos y meter
-  const trimmed = invoice.email.replace(/\s/g,'');
+  // splittear correos y meter  
+  const regex = /\S+[a-z0-9]@[a-z0-9\.]+/img
 
-  trimmed.split(',').forEach(element => {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    if (re.test(String(element).toLowerCase())){
-      destinations.push(element)
-    }
-  });
-
-  transporter.sendMail(mailOptions(invoice, situation, destinations), function(error, info){
+  const emails = invoice.email.match(regex);
+  console.log(emails);
+  transporter.sendMail(mailOptions(invoice, situation, emails), function(error, info){
       if (error) {
         console.log(error);
       } else {
