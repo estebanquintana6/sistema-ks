@@ -120,7 +120,7 @@ class InsurancePanel extends Component {
     let resArr = ['Contratante Tipo de persona', 'Contratante', 'Contratante RFC', 'Póliza', 'Producto', 'Tipo de póliza', 'Moneda', 'Fecha de vencimiento', 'Tipo de pago', 'Aseguradora']
     if(this.props.variant === 'AUTOS'){
       resArr = [
-        ...resArr, 
+        'Contratante Tipo de persona', 'Contratante', 'Contratante RFC', 'Póliza', 'Producto', 'Tipo de póliza', 'Fecha de vencimiento', 'Tipo de pago', 'Aseguradora',
         "Marca de coche",
         "Color de coche",
         "Descripción de coche",
