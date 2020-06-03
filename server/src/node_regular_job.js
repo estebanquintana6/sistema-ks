@@ -94,7 +94,7 @@ const mailOptions =  (invoice, situation, destinations) => {
     } else {
       if (situation === 'vencido'){
         subjectText = `Pago de recibo ${invoice.invoice} VENCIDO`
-        languageText = `Por medio del presente me permito informarle que su recibo: ${invoice.invoice} venció el día: ${invoice.due_date} a las 12:00pm, por lo que a partir de dicho momento queda sin cobertura las familias correspondientes a tu recibo antes mencionado. \n
+        languageText = `Por medio del presente me permito informarle que su recibo: ${invoice.invoice} venció el día: ${moment(invoice.due_date).format('DD/MM/YYYY')} a las 12:00pm, por lo que a partir de dicho momento queda sin cobertura las familias correspondientes a tu recibo antes mencionado. \n
         Si usted realizo su pago favor de hacernos llegar su comprobante, o ponerse en contacto con el equipo de KS SEGUROS, agradecemos su gran apoyo y confianza.`
       } else if(situation === 'proximo5'){
         subjectText = `Pago de recibo ${invoice.invoice} próximo a vencer`
