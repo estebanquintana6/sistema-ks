@@ -73,6 +73,7 @@ class InvoicesForm extends Component {
                     <option value="PAGADO">Pagado</option>
                     <option value="VENCIDO">Vencido</option>
                     <option value="SALDO A FAVOR">Saldo a Favor</option>
+                    <option value="CANCELADO">Cancelado</option>
                   </Form.Control>
                 </Form.Group>
               </Form.Row>
