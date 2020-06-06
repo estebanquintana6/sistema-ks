@@ -72,12 +72,27 @@ class InvoicePanel extends Component {
 
     getTrProps = (state, rowInfo, instance) => {
       if (rowInfo) {
-        return {
-          style: {
-            cursor: "pointer"
-          },
-          onClick: (e) => {
-            this.openModificationModal(rowInfo.original);
+        const original = rowInfo.original;
+        console.log(original);
+        if(original.payment_status !== "VENCIDO"){
+          return {
+            style: {
+              cursor: "pointer"
+            },
+            onClick: (e) => {
+              this.openModificationModal(original);
+            }
+          }
+        } else { 
+          return {
+            style: {
+              "background-color": "#cc6d7f",
+              "cursor": "pointer",
+              "color": "#f0f2f9"
+            },
+            onClick: (e) => {
+              this.openModificationModal(original);
+            }
           }
         }
       }
