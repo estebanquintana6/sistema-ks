@@ -93,9 +93,6 @@ class Dashboard extends Component {
               originalKeys={['NO','TIPO DE PERSONA','CONTRATANTE','RFC','POLIZA','PRODUCTO','TIPO DE POLIZA','MONEDA','FECHA DE VENCIMIENTO','TIPO DE RECIBO','TIPO DE PAGO','CONTACTO','MAIL','TELEFONO','ASEGURADORA']}
               ></UploadPanel>
             </Route>
-            <Route exact path="/dashboard/transporte">
-              <InsurancePanel history={this.props.history} variant="TRANSPORTE"></InsurancePanel>
-            </Route>
             <Route exact path="/dashboard/danos">
               <InsurancePanel history={this.props.history} variant="DANOS"></InsurancePanel>
             </Route>
