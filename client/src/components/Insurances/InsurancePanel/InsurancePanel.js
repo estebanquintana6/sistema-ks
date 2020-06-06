@@ -399,8 +399,6 @@ class InsurancePanel extends Component {
   }
 
   render() {
-    this.refresh();
-
     const { data } = this.state;
     const { variant } = this.props;
     let excelToExport = [];
@@ -408,6 +406,7 @@ class InsurancePanel extends Component {
     const current = this.reactTable.current;
     if (current)
     {
+      this.refresh();
       const allData = current.getResolvedState().sortedData;
       excelToExport = allData.map((data) => data._original)
     }
