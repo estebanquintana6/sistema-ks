@@ -57,6 +57,7 @@ class InsurancePanel extends Component {
     this.prepareClientsForForm();
     this.prepareCompaniesForForm();
     this.refresh();
+    this.interval = setInterval(() => this.refresh(), 1000);
   }
 
   async componentDidUpdate(prevProps) {
@@ -64,6 +65,10 @@ class InsurancePanel extends Component {
       // si cambia el tipo de seguro que estamos viendo
       this.refresh()
     }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   refresh = () => {
