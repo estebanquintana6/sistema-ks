@@ -124,16 +124,16 @@ class InsuranceForm extends Component {
 
     const jump = num_invoices === 0 ? 12 / 1 : 12/num_invoices;
 
-    const startGenDate = this.state.due_date;
+    const startGenDate = this.state.pay_due_date;
 
     let prevDate = startGenDate
     prevDate = prevDate.split('T')[0]
     for (let i = 0; i < num_invoices; i++) {
       invoices.push({
         invoice: "",
-        due_date: moment(newDate||prevDate).startOf('day').format('YYYY-MM-DD'),
-        pay_limit: moment(newDate||prevDate).startOf('day').format('YYYY-MM-DD'),
-        pay_limit2: moment(newDate||prevDate).startOf('day').format('YYYY-MM-DD')
+        due_date: moment(prevDate).startOf('day').format('YYYY-MM-DD'),
+        pay_limit: moment(prevDate).startOf('day').format('YYYY-MM-DD'),
+        pay_limit2: moment(prevDate).startOf('day').format('YYYY-MM-DD')
       });
 
       let newDate = moment(prevDate).startOf('day').clone().startOf('day').add(jump, 'months')

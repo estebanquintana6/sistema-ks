@@ -10,7 +10,6 @@ import swal from '@sweetalert/with-react';
 import InsuranceForm from "../InsuranceForm/InsuranceForm";
 import InsuranceModal from "../InsuranceModal/InsuranceModal";
 
-
 // Import React Table
 import ReactTable from "react-table";
 
@@ -20,11 +19,14 @@ import "./GeneralInsurancePanel.css";
 import moment from 'moment';
 import {formatShortDate, formatDateObj} from '../../component-utils';
 import { DateRangePicker } from 'react-dates';
+import { ExportDataToCSV } from "../../ExportCSV/ExportCSV";
 
 
 class GeneralInsurancePanel extends Component {
   constructor(props) {
     super(props);
+    this.reactTable = React.createRef();
+
     this.state = {
       filtered: [],
       select2: undefined,
@@ -36,7 +38,8 @@ class GeneralInsurancePanel extends Component {
       dueDateEndDate: "",
       data: [],
       clients: [],
-      companies: []
+      companies: [],
+      excludedFields: ['__v', '_id', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts', 'begin_date', 'invoices', 'cancelation_note', 'car_model', 'languages']
     };
   }
 
@@ -58,6 +61,39 @@ class GeneralInsurancePanel extends Component {
       this.setState({ data: data.insurances });
     });
   }
+
+  generateFieldsTranslation = () => {
+    let resObj = {
+      _id: "id",
+      client: "Contratante",
+      person_type: "Tipo de persona",
+      rfc: "RFC",
+      colective_insurance: "Tipo de póliza",
+      currency: "Moneda",
+      due_date: "Fecha de vencimiento",
+      endorsements: "Endosos",
+      insurance: "Compañia",
+      email: "Email",
+      bounty: "Prima",
+      insurance_company: "Aseguradora",
+      insurance_type: "Producto",
+      invoice: "Número de recibo",
+      payment_status: "Estatus de pago",
+      pay_due_date: "Fecha vto. pago",
+      pay_limit: "Vigencia",
+      pay_status: "Status",
+      payment_type: "Tipo de pago",
+      policy: "Póliza",
+    }
+
+    return resObj
+  }
+
+generateHeaders = () => {
+  let resArr = ['Contratante Tipo de persona', 'Contratante', 'Contratante RFC', 'Póliza', 'Producto', 'Tipo de póliza', 'Moneda', 'Fecha de vencimiento', 'Tipo de pago', 'Aseguradora']
+
+  return resArr
+}
 
   prepareClientsForForm = () => {
     this.props.getClients().then(data => {
@@ -301,8 +337,19 @@ class GeneralInsurancePanel extends Component {
   }
 
   render() {
+    this.refresh();
+
     const { data } = this.state;
     const { variant } = this.props;
+    let excelToExport = [];
+
+    const current = this.reactTable.current;
+    if (current)
+    {
+      const allData = current.getResolvedState().sortedData;
+      excelToExport = allData.map((data) => data._original)
+    }
+    
 
     const columns = [{
       Header: "Datos",
@@ -483,6 +530,7 @@ class GeneralInsurancePanel extends Component {
         <br />
         <div className="full-width">
           <ReactTable
+            ref={this.reactTable}
             data={data}
             filterable
             filtered={this.state.filtered}
@@ -524,7 +572,12 @@ class GeneralInsurancePanel extends Component {
               {/* <ExportClientCSV csvData={this.state.data} fileName="reporteClientes" /> */}
             </div>
           </div>
-
+          
+          <div className="row">
+            <div className="col-md-4 center mt-4">
+            <ExportDataToCSV csvData={excelToExport} fileName={`reporteSeguros_${this.props.variant}`} onComplete={this.refresh} fieldTranslation={this.generateFieldsTranslation()} excludedFields={this.state.excludedFields} header={this.generateHeaders()} sortableColumn={'Contratante'}></ExportDataToCSV>
+            </div>
+          </div>
         </div>
       </React.Fragment>
     );

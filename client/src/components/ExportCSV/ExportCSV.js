@@ -1,6 +1,5 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button';
-import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import moment from 'moment'
 import {formatShortDate} from '../component-utils';
@@ -41,9 +40,6 @@ const whiteListNames = ['name', 'title', 'policy']
  */
 
 export const ExportDataToCSV = (props) => {
-
-    const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-    const fileExtension = '.xlsx';
 
     const removeExcludedFieldsFromInstance = (dataInstance, excludedFields) => {
         excludedFields.forEach(ef => {
@@ -125,9 +121,7 @@ export const ExportDataToCSV = (props) => {
         const dataToWrite = [];
         if(type === "invoices"){
             let obj = invoiceToObj(csvData);
-            obj.map((ob) => {
-                dataToWrite.push(ob);
-            })
+            obj.map((ob) => dataToWrite.push(ob))
         } else {
             for (let i in csvData) {
                 let resultData = {}
