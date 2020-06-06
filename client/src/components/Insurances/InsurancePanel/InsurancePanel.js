@@ -35,6 +35,8 @@ import { DateRangePicker } from 'react-dates';
 class InsurancePanel extends Component {
   constructor(props) {
     super(props);
+    this.reactTable = React.createRef();
+
     this.state = {
       filtered: [],
       select2: undefined,
@@ -67,7 +69,6 @@ class InsurancePanel extends Component {
   refresh = () => {
     this.props.getInsurances(this.props.variant).then(data => {
       this.setState({ data: data.insurances });
-      console.log(data);
     });
   }
 
@@ -347,7 +348,6 @@ class InsurancePanel extends Component {
     })
       .then((willUpdate) => {
         if (willUpdate) {
-          console.log(newStatus);
           this.confirmPayChange(insurance._id, newStatus);
           swal("Tu poliza ha cambiado!", {
             icon: "success",
@@ -399,8 +399,19 @@ class InsurancePanel extends Component {
   }
 
   render() {
+    this.refresh();
+
     const { data } = this.state;
     const { variant } = this.props;
+    let excelToExport = [];
+
+    const current = this.reactTable.current;
+    if (current)
+    {
+      const allData = current.getResolvedState().sortedData;
+      excelToExport = allData.map((data) => data._original)
+    }
+    
 
     const columns = [{
       Header: "Datos",
@@ -570,7 +581,7 @@ class InsurancePanel extends Component {
       ]
     }
     ];
-
+    
     return (
       <React.Fragment>
         <Container fluid className="mt-4">
@@ -584,6 +595,7 @@ class InsurancePanel extends Component {
         <br />
         <div className="full-width">
           <ReactTable
+            ref={this.reactTable}
             data={data}
             filterable
             filtered={this.state.filtered}
@@ -622,7 +634,7 @@ class InsurancePanel extends Component {
           />
           <div className="row">
             <div className="col-md-4 center mt-4">
-            <ExportDataToCSV csvData={this.state.data} fileName={`reporteSeguros_${this.props.variant}`} onComplete={this.refresh} fieldTranslation={this.generateFieldsTranslation()} excludedFields={this.state.excludedFields} header={this.generateHeaders()} sortableColumn={'Contratante'}></ExportDataToCSV>
+            <ExportDataToCSV csvData={excelToExport} fileName={`reporteSeguros_${this.props.variant}`} onComplete={this.refresh} fieldTranslation={this.generateFieldsTranslation()} excludedFields={this.state.excludedFields} header={this.generateHeaders()} sortableColumn={'Contratante'}></ExportDataToCSV>
             </div>
           </div>
 

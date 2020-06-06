@@ -15,7 +15,6 @@ import "react-table/react-table.css";
 
 import moment from 'moment';
 
-import InvoicesForm from "../InvoicesForm/InvoicesForm";
 import InvoicesModal from "../InvoicesModal/InvoicesModal";
 import swal from '@sweetalert/with-react';
 
@@ -263,7 +262,7 @@ class InvoicePanel extends Component {
                     </div>
                     <div className="row">
                       <div className="col-md-4 center mt-4">
-                      <ExportDataToCSV csvData={this.state.data} 
+                      <ExportDataToCSV csvData={this.state.filtered} 
                                       fileName={'reporteRecibos'} 
                                       type="invoices"
                                       onComplete={this.refresh}
