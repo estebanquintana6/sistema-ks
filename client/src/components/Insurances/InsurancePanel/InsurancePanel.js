@@ -406,7 +406,6 @@ class InsurancePanel extends Component {
     const current = this.reactTable.current;
     if (current)
     {
-      this.refresh();
       const allData = current.getResolvedState().sortedData;
       excelToExport = allData.map((data) => data._original)
     }
