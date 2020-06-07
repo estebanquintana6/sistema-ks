@@ -10,7 +10,7 @@ import InsuranceTypeComponent from "../InsuranceTypeComponent/InsuranceTypeCompo
 import { Row } from 'react-bootstrap'
 
 import { getInsuranceTypes, addCompanyToInsuranceType, deleteCompanyFromInsuranceType } from '../../../../actions/insuranceTypesActions'
-import { getCompanies } from '../../../../actions/companyActions';
+import { listUsers } from '../../../../actions/userActions';
 
 import "react-table/react-table.css";
 import "./InsuranceTypesPanel.css";
@@ -38,8 +38,8 @@ class InsuranceTypesPanel extends Component {
   }
 
   refreshCompanies = () => {
-    this.props.getCompanies().then(data => {
-      this.setState({ companies: data.companies });
+    this.props.listUsers().then(data => {
+      this.setState({ users: data });
     });
   }
 
@@ -49,7 +49,7 @@ class InsuranceTypesPanel extends Component {
     });
   }
 
-  addCompany = (companyData, insuranceTypeId) => {
+  addUser = (companyData, insuranceTypeId) => {
     this.props.addCompanyToInsuranceType(
       companyData, insuranceTypeId)
       .then((response) => {
@@ -69,27 +69,27 @@ class InsuranceTypesPanel extends Component {
       });
   }
 
-  deleteCompany = (insuranceTypeId, companyId, e) => {
+  deleteUser = (insuranceTypeId, email, e) => {
     swal({
-      title: `¿Estas seguro de querer eliminar la aseguradora del ramo?`,
-      text: "Una vez eliminado ya no podras recuperarlo!",
+      title: `¿Estas seguro de querer eliminar a este encargado del ramo?`,
       icon: "warning",
       buttons: true,
       sucessMode: true,
     })
       .then((willDelete) => {
         if (willDelete) {
-          this.confirmDelete(insuranceTypeId, companyId);
-          swal("Tu aseguradora se ha eliminado del ramo!", {
+          this.confirmDelete(insuranceTypeId, email);
+          swal("El encargado se ha eliminado!", {
             icon: "success",
+          }).then(() => {
+            this.refresh();
           });
         }
-        this.refresh();
       });
   }
 
-  confirmDelete = (insuranceTypeId, companyId) => {
-    this.props.deleteCompanyFromInsuranceType(insuranceTypeId, companyId);
+  confirmDelete = (insuranceTypeId, email) => {
+    this.props.deleteCompanyFromInsuranceType(insuranceTypeId, email);
   }
 
 
@@ -99,9 +99,9 @@ class InsuranceTypesPanel extends Component {
         <Row>
           {this.state.data.map((insuranceType, index) => {
             return (<InsuranceTypeComponent
-              addCompany={this.addCompany}
-              deleteCompany={this.deleteCompany}
-              companies={this.state.companies}
+              addUser={this.addUser}
+              deleteUser={this.deleteUser}
+              users={this.state.users}
               key={index}
               insuranceType={insuranceType}>
 
@@ -126,5 +126,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getInsuranceTypes, addCompanyToInsuranceType, deleteCompanyFromInsuranceType, getCompanies }
+  { getInsuranceTypes, addCompanyToInsuranceType, deleteCompanyFromInsuranceType, listUsers }
 )(InsuranceTypesPanel);

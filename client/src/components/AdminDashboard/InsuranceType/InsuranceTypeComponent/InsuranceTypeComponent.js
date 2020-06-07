@@ -11,7 +11,6 @@ import {
 } from 'react-bootstrap'
 
 import { connect } from "react-redux";
-import { differenceBy } from 'lodash'
 import swal from '@sweetalert/with-react';
 
 import "react-table/react-table.css";
@@ -34,39 +33,67 @@ class InsuranceTypesComponent extends Component {
   }
 
   toggleAddingCompany = insuranceType => {
-    console.log(insuranceType)
     swal({
       title: `Ramo de ${insuranceType.name}`,
       icon: "info",
       content:
-        <Form.Group controlId="newCompany" onChange={this.addCompany}>
-          <Form.Label>Aseguradoras</Form.Label>
+        <Form.Group controlId="newCompany" onChange={this.addUser}>
+          <Form.Label>Encargados</Form.Label>
           <Form.Control as="select">
             <option></option>
-            {this.assignableCompanies().map((company, index) => <option key={index} value={company._id}>{company.name}</option>)}
+            {this.assignableUsers().map((user, index) => <option key={index} value={user.email}>{user.name}</option>)}
           </Form.Control>
         </Form.Group>,
       buttons: false
     })
   }
 
-  addCompany = e => {
+  addUser = e => {
     if (!e.target.value) return;
-    const companyId = e.target.value;
-    const companyData = { _id: companyId }
-    this.props.addCompany(companyData, this.props.insuranceType._id)
+    const email = e.target.value;
+    const userData = { email: email }
+    this.props.addUser(userData, this.props.insuranceType._id)
     this.setState({ [e.target.id]: e.target.value, addingCompany: false });
   }
 
-  deleteCompany = id => {
-    const companyId = id;
-    this.props.deleteCompany(this.props.insuranceType._id, companyId);
+  deleteUser = email => {
+    const userEmail = email;
+    this.props.deleteUser(this.props.insuranceType._id, userEmail);
+
     this.setState({ detailed: false })
   }
 
-  assignableCompanies = () => {
-    // array A -  array B
-    return differenceBy(this.props.companies, this.props.insuranceType.companies, 'name')
+  arr_diff = (a1, a2) => {
+    let a = [], diff = [];
+
+    for (let i = 0; i < a1.length; i++) {
+        a[a1[i]] = true;
+    }
+
+    for (let i = 0; i < a2.length; i++) {
+        if (a[a2[i]]) {
+            delete a[a2[i]];
+        } else {
+            a[a2[i]] = true;
+        }
+    }
+
+    for (let k in a) {
+        diff.push(k);
+    }
+
+    return diff;
+}
+
+  assignableUsers = () => {
+    const emails = this.props.users.map((user) => user.email);
+    const difference = this.arr_diff(emails, this.props.insuranceType.emails);
+
+    const users = this.props.users.filter((user) => {
+      return difference.includes(user.email);
+    })
+
+    return users;
   }
 
   render() {
@@ -79,11 +106,11 @@ class InsuranceTypesComponent extends Component {
           </Card.Header>
           <Card.Body>
             <ListGroup className="list-group-flush">
-              {insuranceType.companies.map((company, index) => {
+              {insuranceType.emails.map((email, index) => {
                 return (
                   <ListGroupItem key={index}>
-                    {company.name}
-                    <Button variant="danger" className="float-right" onClick={this.deleteCompany.bind(this, company._id)}>
+                    {email}
+                    <Button variant="danger" className="float-right" onClick={this.deleteUser.bind(this, email)}>
                       <i className="fa fa-trash" aria-hidden="true"></i>
                     </Button>
                   </ListGroupItem>

@@ -7,10 +7,10 @@ var InsuranceType = new Schema({
     required: true,
     uppercase: false
   },
-  companies: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Companies'
-  }]
+  emails: {
+    type: Array,
+    required: false
+  }
 }, {
   collection: 'InsuranceTypes'
 });

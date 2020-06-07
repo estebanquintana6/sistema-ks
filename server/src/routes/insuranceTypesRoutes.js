@@ -10,13 +10,11 @@ const secretKey = require("../config/config")
 router.post("/:id", (req, res) => {
   const token = req.headers.authorization;
   const body = req.body;
-  const companyId = body.companyData._id;
-
-  console.log('COMPANY ID', body, companyId)
+  const userEmail = body.companyData.email;
 
   jwt.verify(token, secretKey, function (err, _) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
-    InsuranceType.findOneAndUpdate({ _id: req.params.id }, { $push: { companies: companyId } }, { new: true }).then((insuranceType) => {
+    InsuranceType.findOneAndUpdate({ _id: req.params.id }, { $push: { emails: userEmail } }, { new: true }).then((insuranceType) => {
       // If we were able to successfully update a Product, send it back to the client
       res.json(insuranceType)
     }).catch((err) => {
@@ -47,7 +45,7 @@ router.post("/:id/delete/:company_id", (req, res) => {
 
   jwt.verify(token, secretKey, function (err, _) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
-    InsuranceType.updateOne({ _id: req.params.id }, { $pullAll: { companies: [req.params.company_id] } })
+    InsuranceType.updateOne({ _id: req.params.id }, { $pullAll: { emails: [req.params.company_id] } })
       .then((insuranceType) => {
         res.json(insuranceType)
       }).catch((err) => {
