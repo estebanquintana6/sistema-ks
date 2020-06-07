@@ -4,12 +4,25 @@ const config = require('./config/email');
 
 const Invoice = require("./models/InvoiceForm");
 const Company = require("./models/CompanyForm");
+const InsuranceType = require("./models/InsuranceTypeForm");
 
 const { hasExpired, willExpireFive, willExpireTen, daysFromNow } = require('./utils/dateUtils');
 
 const nodemailer = require('nodemailer');
 
 let companies;
+
+Array.prototype.unique = function() {
+  var a = this.concat();
+  for(var i=0; i<a.length; ++i) {
+      for(var j=i+1; j<a.length; ++j) {
+          if(a[i] === a[j])
+              a.splice(j--, 1);
+      }
+  }
+
+  return a;
+};
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -129,21 +142,40 @@ const mailOptions =  (invoice, situation, destinations) => {
 const func = (invoice, situation) => {
   if(invoice.email.replace(/(\r\n|\n|\r)/gm,"") === '') return
 
+  let insuranceType = "";
+  switch(invoice.insurance.insurance_type){
+    case "AUTOS": 
+      insuranceType = "AUTO"; 
+      break;
+    case "DANOS":
+      insuranceType = "DAÑOS";
+      break;
+    case "GM":
+      insuranceType = "GMM";
+      break;
+    case "VIDA":
+      insuranceType = "VIDA";
+      break;      
+    default:
+      insuranceType = "";
+  }
 
-  // para enviar a los contactos del cliente
-  // destinations.push(invoice.client.contacts.map(contact => contact.email))
-  // splittear correos y meter  
-  const regex = /\S+[a-z0-9]@[a-z0-9\.]+/img
+  InsuranceType.findOne({name: insuranceType}).then((insurance_type) => {
+    // para enviar a los contactos del cliente
+    // destinations.push(invoice.client.contacts.map(contact => contact.email))
+    // splittear correos y meter  
+    const regex = /\S+[a-z0-9]@[a-z0-9\.]+/img
 
-  const emails = invoice.email.match(regex);
-  console.log(emails);
-  transporter.sendMail(mailOptions(invoice, situation, emails), function(error, info){
+    const emails = invoice.email.match(regex).concat(insurance_type.emails).unique();
+    console.log(emails);
+    transporter.sendMail(mailOptions(invoice, situation, emails), function(error, info){
       if (error) {
         console.log(error);
       } else {
         console.log('Email sent: ' + info.response);
       }
     })
+  });
 };
 
 var myRule = {"hour": 13, 
