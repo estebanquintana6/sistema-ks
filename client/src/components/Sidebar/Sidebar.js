@@ -98,9 +98,6 @@ class Sidebar extends Component {
                 </ul>
 
                 <ul className="list-unstyled CTAs">
-                    <li>
-                        <a href="#" className="download">Perfil</a>
-                    </li>
                     {this.isUserAdmin() &&
                         <li>
                             <a onClick={() => this.goToPage('/dashboard/admin')} className="article">Panel de administrador</a>
