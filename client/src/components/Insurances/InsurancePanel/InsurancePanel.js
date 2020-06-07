@@ -123,18 +123,25 @@ class InsurancePanel extends Component {
   }
 
   generateHeaders = () => {
+    //Contrantante/#póliza/F de vencimiento de póliza/prima/modelo/marca/Descripción/# de serie/Aseguradoras/lo demás
+
     let resArr = ['Contratante Tipo de persona', 'Contratante', 'Contratante RFC', 'Póliza', 'Producto', 'Tipo de póliza', 'Moneda', 'Fecha de vencimiento', 'Tipo de pago', 'Aseguradora']
     if(this.props.variant === 'AUTOS'){
       resArr = [
-        'Contratante Tipo de persona', 'Contratante', 'Contratante RFC', 'Póliza', 'Producto', 'Tipo de póliza', 'Fecha de vencimiento', 'Tipo de pago', 'Aseguradora',
+        'Contratante',
+        'Póliza',
+        'Fecha de vencimiento',
+        'Prima',
+        "Modelo de coche",
         "Marca de coche",
-        "Color de coche",
         "Descripción de coche",
+        "Número de serie",
+        'Aseguradora',
+        "Color de coche",
         "Número de motor",
         "Número de placas",
-        "Número de serie",
-        "Modelo de coche",
-        "CIS"
+        "CIS",
+        'Contratante Tipo de persona', 'Contratante RFC', 'Producto', 'Tipo de póliza', 'Tipo de pago',
       ]
     }
     if(this.props.variant === 'DANOS'){
