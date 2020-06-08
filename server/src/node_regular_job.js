@@ -80,6 +80,7 @@ const composeInvoiceDetailsCorean = (invoice) => {
 
 const mailOptions =  (invoice, situation, destinations) => {
     const language = invoice.client.languages || "Español";
+    const insuranceType = invoice.insurance.insurance_type;
 
     let subjectText = ''
     let languageText = ''
@@ -105,24 +106,39 @@ const mailOptions =  (invoice, situation, destinations) => {
         \n감사합니다 편안한 하루 되시기 바랍니다`
       }
     } else {
-      if (situation === 'vencido'){
-        subjectText = `Pago de recibo ${invoice.invoice} VENCIDO`
-        languageText = `Por medio del presente me permito informarle que su recibo: ${invoice.invoice} venció el día: ${moment(invoice.due_date).format('DD/MM/YYYY')} a las 12:00pm, por lo que a partir de dicho momento queda sin cobertura las familias correspondientes a tu recibo antes mencionado. \n
-        Si usted realizo su pago favor de hacernos llegar su comprobante, o ponerse en contacto con el equipo de KS SEGUROS, agradecemos su gran apoyo y confianza.`
-      } else if(situation === 'proximo5'){
-        subjectText = `Pago de recibo ${invoice.invoice} próximo a vencer`
-        languageText = `Buen día Estimado cliente,\n
-        Nos dirijimos a usted para recordarle que el pago de  ésta póliza 
-        esta próximo a vencer por lo que solicitamos de su valioso apoyo con el comprobante de pago.
-        Agradecemos su preferencia.
-        \nSaludos cordiales`
-      }else if(situation === 'proximo10'){
-        subjectText = `Pago de recibo ${invoice.invoice} próximo a vencer`
-        languageText = `Buen día Estimado cliente,\n
-        Le enviamos éste correo como recordatorio para el pago de ésta póliza, 
-        solicitamos de su valioso apoyo con el comprobante del mismo. 
-        Seguimos a sus órdenes.
-        \nSaludos cordiales.`
+      if(insuranceType === "AUTOS"){
+        if (situation === 'vencido'){
+          subjectText = `Pago de recibo ${invoice.invoice} VENCIDO`
+          languageText = `Buen día Estimado cliente,\n
+          Nos dirijimos a usted para notificarle que se venció la fecha límite de pago de su póliza, por lo que en caso de siniestro estaría sin cobertura. Solicitamos de su apoyo con el comprobante de pago para poder rehabilitar la póliza lo antes posible. Agradecemos su preferencia. Saludos cordiales.`
+        }
+        if(situation === "proximo5" || situation === 'proximo10'){
+          subjectText = `Pago de recibo ${invoice.invoice} próximo a vencer`
+          languageText = `Buen día Estimado cliente, \n
+          Le enviamos éste correo como recordatorio para el pago de ésta póliza, solicitamos de su valioso apoyo con el comprobante del mismo. Seguimos a sus órdenes. Saludos cordiales.`
+        }
+
+      } else {
+        if (situation === 'vencido'){
+          subjectText = `Pago de recibo ${invoice.invoice} VENCIDO`
+          languageText = `Por medio del presente me permito informarle que su recibo: ${invoice.invoice} venció el día: ${moment(invoice.due_date).format('DD/MM/YYYY')} a las 12:00pm, por lo que a partir de dicho momento queda sin cobertura las familias correspondientes a tu recibo antes mencionado. \n
+          Si usted realizo su pago favor de hacernos llegar su comprobante, o ponerse en contacto con el equipo de KS SEGUROS, agradecemos su gran apoyo y confianza.`
+        } 
+          else if(situation === 'proximo5'){
+          subjectText = `Pago de recibo ${invoice.invoice} próximo a vencer`
+          languageText = `Buen día Estimado cliente,\n
+          Nos dirijimos a usted para recordarle que el pago de  ésta póliza 
+          esta próximo a vencer por lo que solicitamos de su valioso apoyo con el comprobante de pago.
+          Agradecemos su preferencia.
+          \nSaludos cordiales`
+        }else if(situation === 'proximo10'){
+          subjectText = `Pago de recibo ${invoice.invoice} próximo a vencer`
+          languageText = `Buen día Estimado cliente,\n
+          Le enviamos éste correo como recordatorio para el pago de ésta póliza, 
+          solicitamos de su valioso apoyo con el comprobante del mismo. 
+          Seguimos a sus órdenes.
+          \nSaludos cordiales.`
+        }
       }
     }
     if(language === 'Coreano'){
