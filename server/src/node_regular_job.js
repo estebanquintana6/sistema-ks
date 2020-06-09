@@ -117,7 +117,6 @@ const mailOptions =  (invoice, situation, destinations) => {
           languageText = `Buen día Estimado cliente, \n
           Le enviamos éste correo como recordatorio para el pago de ésta póliza, solicitamos de su valioso apoyo con el comprobante del mismo. Seguimos a sus órdenes. Saludos cordiales.`
         }
-
       } else {
         if (situation === 'vencido'){
           subjectText = `Pago de recibo ${invoice.invoice} VENCIDO`
