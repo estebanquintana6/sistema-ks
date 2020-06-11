@@ -226,6 +226,16 @@ class InsuranceForm extends Component {
     this.setState({ invoices });
   }
 
+  onChangeInvoiceEmailComment = (index, e) => {
+    let invoices = [...this.state.invoices];
+    let invoice = { ...invoices[index] };
+
+    invoice.email_comment = e.target.value;
+
+    invoices[index] = invoice;
+    this.setState({ invoices });
+  }
+
   onChangeInvoiceEmail = (index, e) => {
     let invoices = [...this.state.invoices];
     let invoice = { ...invoices[index] };
@@ -611,6 +621,7 @@ class InsuranceForm extends Component {
                             <option value="PAGADO">Pagado</option>
                             <option value="VENCIDO">Vencido</option>
                             <option value="SALDO A FAVOR">Saldo a Favor</option>
+                            <option value="CANCELADO">Cancelado</option>
                           </Form.Control>
                         </Form.Group>
                       </Form.Row>
@@ -650,6 +661,12 @@ class InsuranceForm extends Component {
                         <Form.Group as={Col} md="6">
                           <Form.Label>Correo</Form.Label>
                           <Form.Control onChange={(e) => { this.onChangeInvoiceEmail(index, e) }} value={this.state.invoices[index].email} />
+                        </Form.Group>
+                      </Form.Row>
+                      <Form.Row>
+                        <Form.Group as={Col} md="12">
+                          <Form.Label>Comentarios de email</Form.Label>
+                          <Form.Control onChange={(e) => { this.onChangeInvoiceEmailComment(index, e) }} value={this.state.invoices[index].email_comment} />
                         </Form.Group>
                       </Form.Row>
                       </Jumbotron>

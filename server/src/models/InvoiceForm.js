@@ -28,6 +28,10 @@ var InvoiceSchema = new Schema({
     type: String,
     required: false
   },
+  email_comment: {
+    type: String,
+    required: false
+  },
   email: {
     type: String,
     required: false

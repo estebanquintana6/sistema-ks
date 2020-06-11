@@ -119,6 +119,16 @@ class InvoicesForm extends Component {
               </Form.Row>
             </Col>
           </Row>
+          <Row>
+            <Col>
+              <Form.Row>
+                <Form.Group as={Col} md="12">
+                  <Form.Label>Comentarios de email</Form.Label>
+                  <Form.Control as="textarea" onChange={ this.onChange } value={this.state.email_comment} />
+                </Form.Group>
+              </Form.Row>
+            </Col>
+          </Row>
         </Jumbotron>
 
         <Button variant="primary" type="submit">Guardar</Button>
