@@ -145,6 +145,9 @@ const mailOptions =  (invoice, situation, destinations) => {
     } else {
       languageText += composeInvoiceDetailsSpanish(invoice)
     }
+    if (invoice.email_comment){
+      languageText += `\n\nComentario email: ${invoice.email_comment}`
+    }
 
     return {
         from: config.email,
