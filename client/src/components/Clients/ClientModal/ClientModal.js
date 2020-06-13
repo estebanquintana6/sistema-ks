@@ -7,6 +7,7 @@ import {
   Col
 } from 'react-bootstrap';
 import ClientsForm from "../ClientsForm/ClientsForm";
+import ClientFiles from "../ClientFiles/ClientFiles";
 
 import "./ClientModal.css";
 
@@ -29,7 +30,7 @@ class ClientModal extends Component {
                                         <a class="nav-link active" href="#profile" role="tab" data-toggle="tab"><i class="fas fa-user-circle"></i>Personales</a>
                                       </li>
                                       <li class="nav-item">
-                                        <a class="nav-link" href="#buzz" role="tab" data-toggle="tab"><i class="fas fa-info-circle"></i>Anexos</a>
+                                        <a class="nav-link" href="#buzz" role="tab" data-toggle="tab"><i class="fas fa-file"></i>Anexos</a>
                                       </li>
                                       <li class="nav-item">
                                         <a class="nav-link" href="#deleteTab" role="tab" data-toggle="tab"><i class="fas fa-exclamation-triangle"></i>Eliminar</a>
@@ -44,7 +45,9 @@ class ClientModal extends Component {
                                         </ClientsForm>
                                       </div>
                                       <div role="tabpanel" class="tab-pane fade" id="buzz">
-                                        
+                                        <ClientFiles>
+                                          
+                                        </ClientFiles>
                                       </div>
                                       <div role="tabpanel" class="tab-pane fade" id="deleteTab">
                                         <Row className="mt-4">
