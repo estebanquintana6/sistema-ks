@@ -214,13 +214,13 @@ var j = schedule.scheduleJob(myRule, async function(){
     });
 
     const recordatorios_5 = invoices.filter((invoice) => {
-      return willExpireFive(invoice.due_date);
+      return willExpireFive(invoice.due_date) && !invoice.bounty.contains('-');
     }).map((invoice) => {
       func(invoice, 'proximo5')
     });
 
     const recordatorios_10 = invoices.filter((invoice) => {
-      return willExpireTen(invoice.due_date);
+      return willExpireTen(invoice.due_date) && !invoice.bounty.contains('-');
     }).map((invoice) => {
       console.log(invoice.due_date);
       func(invoice, 'proximo10');
