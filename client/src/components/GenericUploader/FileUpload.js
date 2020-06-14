@@ -62,10 +62,10 @@ const FileUpload = (props) => {
 
       const { fileName, filePath } = res;
 
-      setMessage('File Uploaded');
+      setMessage('Archivo subido');
     } catch (err) {
       if (err.response.status === 500) {
-        setMessage('There was a problem with the server');
+        setMessage('Ocurrió un error en el servidor');
       } else {
         setMessage(err.response.data.msg);
       }
