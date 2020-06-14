@@ -12,13 +12,8 @@ import { ExportDataToCSV } from "../../ExportCSV/ExportCSV";
 // Import React Table
 import ReactTable from "react-table";
 
-
-
 import "react-table/react-table.css";
 import "./ClientsPanel.css";
-
-import FileUpload from '../../GenericUploader/FileUpload'
-
 
 class ClientsPanel extends Component {
   constructor(props) {
@@ -289,8 +284,6 @@ class ClientsPanel extends Component {
           <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields} header={this.state.excelHeader} sortableColumn={'Nombre'}></ExportDataToCSV>
           </div>
         </Container>
-        <FileUpload entity={'clients'} client={this.state.data[0]}></FileUpload>
-        <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields}></ExportDataToCSV>
       </React.Fragment>
     );
   }

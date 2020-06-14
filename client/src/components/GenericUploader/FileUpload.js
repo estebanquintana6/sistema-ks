@@ -3,6 +3,8 @@ import Message from './Message';
 import Progress from './Progress';
 import axios from 'axios';
 
+import {Col} from 'react-bootstrap';
+
 const FileUpload = (props) => {
   const [file, setFile] = useState('');
   const [filename, setFilename] = useState('Choose File');
@@ -10,10 +12,28 @@ const FileUpload = (props) => {
   const [message, setMessage] = useState('');
   const [uploadPercentage, setUploadPercentage] = useState(0);
 
-  const onChange = e => {
-    setFile(e.target.files[0]);
-    setFilename(e.target.files[0].name);
+
+  const validateSize= (event) =>{
+    let file = event.target.files[0];
+    let size = 4000000;
+    let err = '';
+    console.log("File size", file.size);
+    if (file.size > size) {
+      err = file.type+'el tamaño del archivo es muy grande, no debe sobrepasar 4mb \n';
+      setMessage(err);
+    }
+    return true
   };
+
+  const onChange = e => {
+    if(validateSize(e)){ 
+      setFile(e.target.files[0]);
+      setFilename(e.target.files[0].name);
+    }
+  };
+
+
+
 
   const onSubmit = async e => {
     e.preventDefault();
@@ -69,12 +89,14 @@ const FileUpload = (props) => {
         </div>
 
         <Progress percentage={uploadPercentage} />
+        <Col>
+          <input
+            type='submit'
+            value='Subir'
+            className='btn btn-primary btn-block mt-4'
+          />
+        </Col>
 
-        <input
-          type='submit'
-          value='Upload'
-          className='btn btn-primary btn-block mt-4'
-        />
       </form>
       {uploadedFile ? (
         <div className='row mt-5'>

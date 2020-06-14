@@ -7,6 +7,7 @@ import {
   Col
 } from 'react-bootstrap';
 import ClientsForm from "../ClientsForm/ClientsForm";
+import FileUpload from '../../GenericUploader/FileUpload'
 
 import "./ClientModal.css";
 
@@ -47,7 +48,7 @@ class ClientModal extends Component {
                                         </ClientsForm>
                                       </div>
                                       <div role="tabpanel" class="tab-pane fade" id="buzz">
-                                        
+                                        <FileUpload entity={'clients'} client={client}></FileUpload>
                                       </div>
                                       <div role="tabpanel" class="tab-pane fade" id="deleteTab">
                                         <Row className="mt-4">
