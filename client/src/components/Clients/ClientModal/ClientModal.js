@@ -45,9 +45,7 @@ class ClientModal extends Component {
                                         </ClientsForm>
                                       </div>
                                       <div role="tabpanel" class="tab-pane fade" id="buzz">
-                                        <ClientFiles>
-                                          
-                                        </ClientFiles>
+                                        <ClientFiles client={client} entity={'clients'}></ClientFiles>
                                       </div>
                                       <div role="tabpanel" class="tab-pane fade" id="deleteTab">
                                         <Row className="mt-4">

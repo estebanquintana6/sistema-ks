@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
 import {
     Col,
@@ -7,34 +7,25 @@ import {
     Row,
   } from 'react-bootstrap';
 
-  import { ToastContainer, toast } from 'react-toastify';
+  import axios from 'axios';
+
+  import { toast } from 'react-toastify';
 
 
-  import {FormFile} from 'react-bootstrap/Form'
+  const ClientFiles = (props) => {
+    const [file, setFile] = useState('');
 
-class ClientFiles extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-        };
-      }
-
-
-    onChangeHandler = event => {
+    const onChangeHandler = event => {
         var file = event.target.files[0];
         console.log(file);
-        console.log(this.validateSize(event));
-        if(this.validateSize(event)){ 
-          console.log(file);
-      // if return true allow to setState
-         this.setState({
-          selectedFile: file
-          });
+        console.log(validateSize(event));
+        if(validateSize(event)){ 
+            console.log(file);
+            setFile(file);
         }
     }
 
-    validateSize=(event)=>{
+    const validateSize=(event)=>{
         let file = event.target.files[0];
         let size = 30000;
         let err = '';
@@ -46,8 +37,43 @@ class ClientFiles extends Component {
        return true
     };
 
-    render() {
-        return (
+    const fileUploadHandler = async e => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        console.log(formData);
+
+        formData.append('file', file);
+        console.log(formData);
+
+        const token = localStorage.getItem("jwtToken");
+        formData.append('token', token);
+        console.log(formData);
+
+        formData.append('id', props.client._id)
+        console.log(formData);
+
+        try {
+            const res = await axios.post(`/api/${props.entity}/upload`, formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            });
+      
+            const { fileName, filePath } = res;
+            console.log(fileName, filePath);
+      
+          } catch (err) {
+            if (err.response.status === 500) {
+                toast.error('Subida de archivo falló')
+            } else {
+                toast.success('Archivo subido')
+            }
+          }
+
+    };
+
+    return (
        <React.Fragment>
             <Row>
                 <Col>
@@ -63,21 +89,20 @@ class ClientFiles extends Component {
                         <h2 className="swal-title form-title align-left">Subir nuevo archivo</h2>
                     </Row>
                     <Row className="justify-content-md-center">
-                        <form method="post" action="#" id="#">
+                        <form method="post" action="#" id="#" >
                             <div className="form-group files">
                                 <label>Selecciona un archivo </label>
-                                <input type="file" name="file" className="form-control" onChange={this.onChangeHandler}/>
+                                <input type="file" name="file" className="form-control" onChange={onChangeHandler}/>
                             </div>
                             <div>
-                            <button width="100%" type="button" className="btn btn-info" onClick={this.fileUploadHandler}><i class="fa fa-arrow-up" aria-hidden="true"></i></button>
+                            <button width="100%" type="button" className="btn btn-info" onClick={fileUploadHandler}><i class="fa fa-arrow-up" aria-hidden="true"></i></button>
                             </div>
                         </form>                 
                     </Row>
                 </Col>
             </Row>
        </React.Fragment> 
-      );
-    }
+    );
 }
 
 export default ClientFiles;

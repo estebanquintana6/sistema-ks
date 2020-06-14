@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const jwt = require("jsonwebtoken");
+const fileUpload = require('express-fileupload');
 
 const User = require("../models/UserForm");
 const Client = require("../models/ClientForm");
@@ -132,6 +133,48 @@ router.get("/fetch", (req, res) => {
     // This is the way I found to make a get all from model.
     Client.find({}).then((clients) => {
       res.json({ clients });
+    });
+  });
+});
+
+router.post("/upload", (req, res) => {
+  const body = req.body;
+  const token = body.token;
+  const id = body.id;
+
+  console.log("token", token);
+
+  jwt.verify(token, secretKey, function (err, _) {
+    if (err) {
+      return res.status(401).json({ email: "no permissions" });
+    }
+    if (req.files === null) {
+      return res.status(400).json({ msg: 'No file uploaded' });
+    }
+
+
+    const file = req.files.file;
+    
+
+
+    const path =` ${__dirname}/clients/${id}/${file.name}`
+    // const path =`/app/client/public/uploads/clients/${id}/${file.name}`
+    // const downloadPath = `/uploads/clients/${id}/${file.name}`
+    file.mv(path, err => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send(err);
+      }
+    },);
+    Client.findOne({ _id: id }).then((client) => {
+      if (client) {
+        let doc = Client.findById(client.id);
+        const files = [...client.files, path]
+        doc.updateOne({files: files}).then((err, _) => {
+          if (err) res.status(500);
+          res.status(200).json({ fileName: file.name, filePath: path });
+        });
+      }
     });
   });
 });

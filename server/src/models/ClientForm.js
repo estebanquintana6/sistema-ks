@@ -53,7 +53,11 @@ var Client = new Schema({
     type: String,
     required: false,
     uppercase: true
-  }
+  },
+  files: {
+    type: Array,
+    required: false
+  },
 }, {
   collection: 'Clients'
 });
