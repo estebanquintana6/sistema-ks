@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Container, Row } from 'react-bootstrap';
 import { connect } from "react-redux";
-import { getClients, updateClient, deleteClient, registerClient, download } from "../../../actions/registerClient";
+import { getClients, updateClient, deleteClient, registerClient, download, removeFile } from "../../../actions/registerClient";
 import swal from '@sweetalert/with-react';
 
 import ClientsForm from "../ClientsForm/ClientsForm";
@@ -151,7 +151,8 @@ class ClientsPanel extends Component {
         client={client}
         updateClient={this.updateClient}
         deleteClient={this.deleteClient}
-        download={this.download}>
+        download={this.download}
+        removeFile={this.props.removeFile}>
       </ClientModal>,
       buttons: false,
       title: `${client.name}`,
@@ -349,5 +350,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getClients, updateClient, deleteClient, registerClient, download }
+  { getClients, updateClient, deleteClient, registerClient, download, removeFile }
 )(ClientsPanel);

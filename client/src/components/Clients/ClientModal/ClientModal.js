@@ -52,7 +52,7 @@ class ClientModal extends Component {
                                             </Row>
                                             <Row>
                                             {client.files.map(file => {
-                                              return (<span onClick={this.props.download.bind(this, file)}>{file}</span>)
+                                              return (<React.Fragment><span onClick={this.props.download.bind(this, file)}>{file}</span> <span onClick={this.props.removeFile.bind(this, file)}>X</span></React.Fragment>)
                                             })}
                                             </Row>
                                         </Col>

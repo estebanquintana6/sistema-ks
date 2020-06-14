@@ -64,7 +64,6 @@ export const deleteClient = (id) => dispatch => {
 }
 
 export const download = (path) => dispatch => {
-  console.log('PATHHH', path)
   const token = localStorage.getItem("jwtToken");
   const data = {
     token,
@@ -78,4 +77,19 @@ export const download = (path) => dispatch => {
       return err;
     });
 
+}
+
+export const removeFile = (path) => dispatch => {
+  const token = localStorage.getItem("jwtToken");
+  const data = {
+    token,
+    path
+  }
+  return axios
+    .post("/api/clients/remove_file", data)
+    .then(res => {
+      return res;
+    }).catch(err => {
+      return err;
+    });
 }
