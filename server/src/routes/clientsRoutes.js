@@ -139,11 +139,9 @@ router.get("/fetch", (req, res) => {
 
 router.post("/upload", (req, res) => {
   const body = req.body;
-  const token = body.token;
   const id = body.id;
-
-  console.log("token", token);
-
+  const token = req.headers.authorization;
+  
   jwt.verify(token, secretKey, function (err, _) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
@@ -152,11 +150,10 @@ router.post("/upload", (req, res) => {
       return res.status(400).json({ msg: 'No file uploaded' });
     }
 
+    console.log(id);
 
     const file = req.files.file;
     
-
-
     const path =` ${__dirname}/clients/${id}/${file.name}`
     // const path =`/app/client/public/uploads/clients/${id}/${file.name}`
     // const downloadPath = `/uploads/clients/${id}/${file.name}`

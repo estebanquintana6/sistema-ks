@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Progress from "./Progress/Progress";
 
 import {
     Col,
@@ -7,13 +8,14 @@ import {
     Row,
   } from 'react-bootstrap';
 
-  import axios from 'axios';
 
+  import axios from 'axios';
   import { toast } from 'react-toastify';
 
 
   const ClientFiles = (props) => {
     const [file, setFile] = useState('');
+    const [uploadPercentage, setUploadPercentage] = useState(0);
 
     const onChangeHandler = event => {
         var file = event.target.files[0];
@@ -39,35 +41,35 @@ import {
 
     const fileUploadHandler = async e => {
         e.preventDefault();
-
         const formData = new FormData();
-        console.log(formData);
-
         formData.append('file', file);
-        console.log(formData);
-
-        const token = localStorage.getItem("jwtToken");
-        formData.append('token', token);
-        console.log(formData);
-
         formData.append('id', props.client._id)
-        console.log(formData);
+        const token = localStorage.getItem("jwtToken");
+        formData.append('token', token)
 
+        
         try {
             const res = await axios.post(`/api/${props.entity}/upload`, formData, {
               headers: {
                 'Content-Type': 'multipart/form-data'
+              },
+              onUploadProgress: progressEvent => {
+                setUploadPercentage(
+                  parseInt(
+                    Math.round((progressEvent.loaded * 100) / progressEvent.total)
+                  )
+                );
+      
+                // Clear percentage
+                setTimeout(() => setUploadPercentage(0), 10000);
               }
             });
       
             const { fileName, filePath } = res;
-            console.log(fileName, filePath);
       
           } catch (err) {
             if (err.response.status === 500) {
-                toast.error('Subida de archivo falló')
             } else {
-                toast.success('Archivo subido')
             }
           }
 
@@ -89,6 +91,7 @@ import {
                         <h2 className="swal-title form-title align-left">Subir nuevo archivo</h2>
                     </Row>
                     <Row className="justify-content-md-center">
+                        <Progress percentage={uploadPercentage} />
                         <form method="post" action="#" id="#" >
                             <div className="form-group files">
                                 <label>Selecciona un archivo </label>
