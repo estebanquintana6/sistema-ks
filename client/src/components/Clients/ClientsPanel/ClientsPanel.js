@@ -151,12 +151,25 @@ class ClientsPanel extends Component {
         client={client}
         updateClient={this.updateClient}
         deleteClient={this.deleteClient}
-        download={this.props.download}>
+        download={this.download}>
       </ClientModal>,
       buttons: false,
       title: `${client.name}`,
       className: "width-800pt"
     });
+  }
+
+  download = (file) => {
+    this.confirmDownload(file)
+  }
+
+  confirmDownload  = async (file) => {
+    try {
+      const response = await this.props.download(file)
+      console.log('RESPONSE', response)
+    } catch(err) {
+
+    }
   }
 
   deleteClient = (id, name, e) => {

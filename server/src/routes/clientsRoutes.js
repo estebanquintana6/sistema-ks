@@ -6,6 +6,7 @@ const User = require("../models/UserForm");
 const Client = require("../models/ClientForm");
 const secretKey = require("../config/config")
 const fileUpload = require('express-fileupload');
+const fs = require('fs');
 
 
 const { isEmpty, removeDiacritics } = require("../utils/bulkUtils");
@@ -178,7 +179,15 @@ router.post("/download", (req, res) => {
       return res.status(401).json({ email: "no permissions" });
     }
     console.log('AUTHORIZED AND', token, path)
-    res.download(path);
+    const pathArray = path.split('/')
+    const name = pathArray[pathArray.length - 1]
+    const nameArray = name.split('.')
+    const extension = nameArray[nameArray.length - 1]
+    const fullName = nameArray.slice(0, -1).join('.')
+    const contents = fs.readFileSync(path, {encoding: 'base64'});
+    // console.log('CONTENT', contents)
+    res.status(200).json({ encoded: contents, fullName, extension});
+    // res.download(path);
   });
 });
 
