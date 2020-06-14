@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 
 import {
@@ -31,6 +32,8 @@ class ClientModal extends Component {
       this.setState({
         client: client
       });
+    }).finally(() => {
+      this.props.refreshPanel();
     });
   }
 
