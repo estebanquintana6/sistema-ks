@@ -35,9 +35,6 @@ class ClientModal extends Component {
                                       <li class="nav-item">
                                         <a class="nav-link" href="#deleteTab" role="tab" data-toggle="tab"><i class="fas fa-exclamation-triangle"></i>Eliminar</a>
                                       </li>
-                                      <li class="nav-item">
-                                        <a class="nav-link" href="#downloadTab" role="tab" data-toggle="tab"><i class="fas fa-exclamation-triangle"></i>Descargar</a>
-                                      </li>    
                                     </ul>
                                     <div class="tab-content">
                                       <div role="tabpanel" class="tab-pane fade show active" id="profile">
@@ -48,7 +45,27 @@ class ClientModal extends Component {
                                         </ClientsForm>
                                       </div>
                                       <div role="tabpanel" class="tab-pane fade" id="buzz">
-                                        <FileUpload entity={'clients'} client={client}></FileUpload>
+                                      <Row>
+                                        <Col>
+                                            <Row>                
+                                                <h2 className="swal-title form-title align-left">Archivos</h2>
+                                            </Row>
+                                            <Row>
+                                            {client.files.map(file => {
+                                              return (<span onClick={this.props.download.bind(this, file)}>{file}</span>)
+                                            })}
+                                            </Row>
+                                        </Col>
+                                        </Row>
+                                        <Row>
+                                          <Col>
+                                              <Row>                
+                                                  <h2 className="swal-title form-title align-left">Subir nuevo archivo</h2>
+                                              </Row>
+                                              <FileUpload entity={'clients'} client={client}></FileUpload>
+                                          </Col>
+                                        </Row>
+
                                       </div>
                                       <div role="tabpanel" class="tab-pane fade" id="deleteTab">
                                         <Row className="mt-4">
@@ -56,11 +73,6 @@ class ClientModal extends Component {
                                             <Button className="panel-btn" variant="danger" onClick={this.props.deleteClient.bind(this, client._id, client.name)}>ELIMINAR</Button>
                                           </Col>
                                         </Row>
-                                      </div>
-                                      <div role="tabpanel" class="tab-pane fade" id="downloadTab">
-                                        {client.files.map(file => {
-                                          return (<span onClick={this.props.download.bind(this, file)}>{file}</span>)
-                                        })}
                                       </div>
                                     </div>
                                   </Col>
