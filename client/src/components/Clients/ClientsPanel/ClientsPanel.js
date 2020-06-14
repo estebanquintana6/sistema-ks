@@ -12,8 +12,13 @@ import { ExportDataToCSV } from "../../ExportCSV/ExportCSV";
 // Import React Table
 import ReactTable from "react-table";
 
+
+
 import "react-table/react-table.css";
 import "./ClientsPanel.css";
+
+import FileUpload from '../../GenericUploader/FileUpload'
+
 
 class ClientsPanel extends Component {
   constructor(props) {
@@ -158,10 +163,50 @@ class ClientsPanel extends Component {
     this.confirmDownload(file)
   }
 
+
+  b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+    console.log('B64', b64Data)
+    console.log(contentType)
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+  
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+  
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+  
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    console.log('BA', byteArrays)
+  
+    const blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+  }
+
+  determineContentType = (extension) => {
+    return extension === 'PDF' ? 'application/pdf' : `image/${extension}`
+  }
+
   confirmDownload  = async (file) => {
     try {
       const response = await this.props.download(file)
-      console.log('RESPONSE', response)
+      const data = response.data
+      const  {encoded, fullName, extension} = data
+      console.log('DATA', data)
+      const contentType = this.determineContentType(extension)
+      const blob = this.b64toBlob(encoded, contentType);
+      const blobUrl = URL.createObjectURL(blob);
+      console.log('RESPONSE', blobUrl, contentType, blob)
+      var a = document.createElement('A');
+      a.href = blobUrl;
+      a.download = `${fullName}.${extension}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     } catch(err) {
 
     }
@@ -284,6 +329,8 @@ class ClientsPanel extends Component {
           <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields} header={this.state.excelHeader} sortableColumn={'Nombre'}></ExportDataToCSV>
           </div>
         </Container>
+        <FileUpload entity={'clients'} client={this.state.data[0]}></FileUpload>
+        <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields}></ExportDataToCSV>
       </React.Fragment>
     );
   }
