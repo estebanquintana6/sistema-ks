@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/UserForm");
 const Client = require("../models/ClientForm");
 const secretKey = require("../config/config")
-const fileUpload = require('express-fileupload');
 const fs = require('fs');
 
 
@@ -122,7 +121,7 @@ router.post("/upload", (req, res) => {
     }
   
     const file = req.files.file;
-    const path =` ${__dirname}/clients/${id}/${file.name}`
+    const path =`/clients/${id}/${file.name}`
     // const path =`/app/client/public/uploads/clients/${id}/${file.name}`
     // const downloadPath = `/uploads/clients/${id}/${file.name}`
     file.mv(path, err => {
@@ -147,8 +146,8 @@ router.post("/upload", (req, res) => {
 router.post("/remove_file", (req, res) => {
   const body = req.body;
   const token = body.token;
-  const id = body.id
-  const fileroute = body.route
+  const id = body.id;
+  const fileroute = body.path;
 
   jwt.verify(token, secretKey, function (err, _) {
     if (err) {
@@ -157,10 +156,19 @@ router.post("/remove_file", (req, res) => {
     Client.findOne({ _id: id }).then((client) => {
       if (client) {
         let doc = Client.findById(client.id);
-        let files = [...client.files]
-        const index = files.indexOf(fileroute)
-        files = files.splice(index, 1)
-        console.log('NEW FILES', files)
+        let files = [...client.files];
+        
+        fs.unlink(fileroute, (err) => {
+          if (err) {
+            res.status(500).json({error: err});
+          } else {
+            console.log(`File deleted: ${fileroute} `);
+          }        
+        })
+        
+        const index = files.indexOf(fileroute);
+
+        files.splice(index, 1);
         doc.updateOne({files: files}).then((err, _) => {
           if (err) res.status(500);
           res.status(200).json({ message: `${fileroute} eliminado`});

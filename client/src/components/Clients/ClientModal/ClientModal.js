@@ -2,19 +2,60 @@ import React, { Component } from "react";
 
 import {
   Button,
+  Card,
+  Col,
   Container,
-  Row,
-  Col
+  Row
 } from 'react-bootstrap';
 import ClientsForm from "../ClientsForm/ClientsForm";
 import FileUpload from '../../GenericUploader/FileUpload'
+
+import swal from '@sweetalert/with-react';
 
 import "./ClientModal.css";
 
 class ClientModal extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      client: this.props.client
+    };
+  }
+
+  refresh = () => {
+    this.props.getClients().then(data => {
+      const client = data.clients.find((client) => 
+        client._id === this.state.client._id
+      );
+      this.setState({
+        client: client
+      });
+    });
+  }
+
+  confirmRemoveFile = (file, id) => {
+    swal({
+      title: "¿Estás seguro?",
+      text: `Estás a punto de eliminar el archivo ${file.replace(/^.*[\\\/]/, '')}`,
+      icon: "warning",
+      dangerMode: true,
+    })
+    .then(willDelete => {
+      if (willDelete) {
+        this.props.removeFile(file, id);
+
+        swal("Eliminado!", "Tu archivo ha sido eliminado!", "success").then(() =>{
+          this.props.refreshPanel();
+        });
+      }
+    });
+
+  }
+  
+
   render() {
-    const { client } = this.props;
+    const { client } = this.state;
     return (
       < Container >
             <React.Fragment>
@@ -52,7 +93,21 @@ class ClientModal extends Component {
                                             </Row>
                                             <Row>
                                             {client.files.map(file => {
-                                              return (<React.Fragment><span onClick={this.props.download.bind(this, file)}>{file}</span> <span onClick={this.props.removeFile.bind(this, file)}>X</span></React.Fragment>)
+                                              return (<React.Fragment>
+                                                <Card style={{ width: '18rem' }}>
+                                                  <Card.Body>
+                                                    <Card.Title>{file.replace(/^.*[\\\/]/, '')}</Card.Title>
+                                                    <Row>
+                                                      <Col>
+                                                        <Button variant="info" onClick={this.props.download.bind(this, file)}><i class="fa fa-arrow-down" aria-hidden="true"></i></Button>
+                                                      </Col>
+                                                      <Col>
+                                                        <Button variant="danger" onClick={this.confirmRemoveFile.bind(this, file, client._id)}><i class="fa fa-trash" aria-hidden="true"></i></Button>
+                                                      </Col>
+                                                    </Row>
+                                                  </Card.Body>
+                                                </Card>
+                                              </React.Fragment>)
                                             })}
                                             </Row>
                                         </Col>
@@ -62,7 +117,7 @@ class ClientModal extends Component {
                                               <Row>                
                                                   <h2 className="swal-title form-title align-left">Subir nuevo archivo</h2>
                                               </Row>
-                                              <FileUpload entity={'clients'} client={client}></FileUpload>
+                                              <FileUpload entity={'clients'} client={client} refresh={this.refresh}></FileUpload>
                                           </Col>
                                         </Row>
 

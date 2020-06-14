@@ -79,12 +79,14 @@ export const download = (path) => dispatch => {
 
 }
 
-export const removeFile = (path) => dispatch => {
+export const removeFile = (path, id) => dispatch => {
   const token = localStorage.getItem("jwtToken");
   const data = {
     token,
-    path
+    path,
+    id
   }
+
   return axios
     .post("/api/clients/remove_file", data)
     .then(res => {

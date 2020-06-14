@@ -149,10 +149,12 @@ class ClientsPanel extends Component {
     swal({
       content: <ClientModal
         client={client}
+        getClients={this.props.getClients}
+        refreshPanel={this.refresh}
         updateClient={this.updateClient}
         deleteClient={this.deleteClient}
         download={this.download}
-        removeFile={this.props.removeFile}>
+        removeFile={this.removeFile}>
       </ClientModal>,
       buttons: false,
       title: `${client.name}`,
@@ -161,7 +163,13 @@ class ClientsPanel extends Component {
   }
 
   download = (file) => {
-    this.confirmDownload(file)
+    this.confirmDownload(file);
+  }
+
+  removeFile = (file, clientId) => {
+    console.log(file);
+    this.props.removeFile(file, clientId);
+    this.refresh();
   }
 
 
@@ -330,7 +338,7 @@ class ClientsPanel extends Component {
           <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields} header={this.state.excelHeader} sortableColumn={'Nombre'}></ExportDataToCSV>
           </div>
         </Container>
-        <FileUpload entity={'clients'} client={this.state.data[0]}></FileUpload>
+        <FileUpload entity={'clients'} client={this.state.data[0]} refresh={this.refresh}></FileUpload>
         <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields}></ExportDataToCSV>
       </React.Fragment>
     );

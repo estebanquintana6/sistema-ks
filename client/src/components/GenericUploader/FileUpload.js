@@ -59,11 +59,10 @@ const FileUpload = (props) => {
           setTimeout(() => setUploadPercentage(0), 10000);
         }
       });
-
-      const { fileName, filePath } = res;
-
       setMessage('Archivo subido');
+      props.refresh();
     } catch (err) {
+      console.log(err);
       if (err.response.status === 500) {
         setMessage('Ocurrió un error en el servidor');
       } else {
