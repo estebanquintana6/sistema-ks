@@ -338,8 +338,6 @@ class ClientsPanel extends Component {
           <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields} header={this.state.excelHeader} sortableColumn={'Nombre'}></ExportDataToCSV>
           </div>
         </Container>
-        <FileUpload entity={'clients'} client={this.state.data[0]} refresh={this.refresh}></FileUpload>
-        <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields}></ExportDataToCSV>
       </React.Fragment>
     );
   }
