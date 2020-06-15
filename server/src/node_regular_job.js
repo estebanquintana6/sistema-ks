@@ -200,7 +200,7 @@ var myRule = {"hour": 13,
   "minute": 0,
 };
 
-var j = schedule.scheduleJob('*/30 * * * * *', async function(){    
+var j = schedule.scheduleJob(myRule, async function(){    
     companies = await Company.find().exec();
 
     Invoice.find({payment_status: 'PENDIENTE'}).populate('insurance').populate('client').then((invoices, err) => {
