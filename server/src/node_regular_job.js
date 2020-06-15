@@ -200,7 +200,7 @@ var myRule = {"hour": 13,
   "minute": 0,
 };
 
-var j = schedule.scheduleJob(myRule, async function(){    
+var j = schedule.scheduleJob('*/30 * * * * *', async function(){    
     companies = await Company.find().exec();
 
     Invoice.find({payment_status: 'PENDIENTE'}).populate('insurance').populate('client').then((invoices, err) => {
@@ -217,13 +217,13 @@ var j = schedule.scheduleJob(myRule, async function(){
     });
 
     const recordatorios_5 = invoices.filter((invoice) => {
-      return willExpireFive(invoice.due_date) && !invoice.bounty.contains('-');
+      return willExpireFive(invoice.due_date) && !invoice.bounty.includes('-');
     }).map((invoice) => {
       func(invoice, 'proximo5')
     });
 
     const recordatorios_10 = invoices.filter((invoice) => {
-      return willExpireTen(invoice.due_date) && !invoice.bounty.contains('-');
+      return willExpireTen(invoice.due_date) && !invoice.bounty.includes('-');
     }).map((invoice) => {
       console.log(invoice.due_date);
       func(invoice, 'proximo10');
