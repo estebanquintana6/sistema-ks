@@ -335,7 +335,7 @@ class ClientsPanel extends Component {
           />
           </div>
           <div className="mt-4">
-          <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields} header={this.state.excelHeader} sortableColumn={'Nombre'}></ExportDataToCSV>
+          <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields} header={this.state.excelHeader} sortableColumn={'Nombre'} onComplete={this.refresh}></ExportDataToCSV>
           </div>
         </Container>
       </React.Fragment>
