@@ -17,12 +17,17 @@ const FileUpload = (props) => {
     let file = event.target.files[0];
     let size = 4000000;
     let err = '';
-    console.log("File size", file.size);
-    if (file.size > size) {
-      err = file.type+'el tamaño del archivo es muy grande, no debe sobrepasar 4mb \n';
-      setMessage(err);
+    if(file){
+      console.log("File size", file.size);
+      if (file.size > size) {
+        err = file.type+'el tamaño del archivo es muy grande, no debe sobrepasar 4mb \n';
+        setMessage(err);
+      }
+      return true
     }
-    return true
+    err = file.type+'Selecciona un archivo \n';
+    setMessage(err);
+    return false;
   };
 
   const onChange = e => {
