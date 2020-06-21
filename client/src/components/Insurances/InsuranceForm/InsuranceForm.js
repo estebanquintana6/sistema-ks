@@ -613,9 +613,6 @@ class InsuranceForm extends Component {
                 </Row>
                 {this.props.invoicePanel &&
                   <div>
-                    <Row>
-                      <h6 className="swal-title form-title align-left">FILTROS</h6>
-                    </Row>
                     <Row className="justify-content-md-center mb-4">
                       <ToggleButtonGroup type="checkbox" value={this.state.filterArray} onChange={this.handleFilter}>
                         <ToggleButton value={"PENDIENTE"}>Pendientes</ToggleButton>
