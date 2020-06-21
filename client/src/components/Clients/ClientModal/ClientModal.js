@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import {
   Button,
   Card,
+  CardGroup,
   Col,
   Container,
   Row
@@ -12,6 +13,8 @@ import ClientsForm from "../ClientsForm/ClientsForm";
 import FileUpload from '../../GenericUploader/FileUpload'
 
 import swal from '@sweetalert/with-react';
+
+import {formatShortDate} from '../../component-utils';
 
 import "./ClientModal.css";
 
@@ -95,23 +98,31 @@ class ClientModal extends Component {
                                                 <h2 className="swal-title form-title align-left">Archivos</h2>
                                             </Row>
                                             <Row>
-                                            {client.files.map(file => {
-                                              return (<React.Fragment>
-                                                <Card style={{ width: '18rem' }}>
-                                                  <Card.Body>
-                                                    <Card.Title>{file.path.replace(/^.*[\\\/]/, '')}</Card.Title>
-                                                    <Row>
-                                                      <Col>
-                                                        <Button variant="info" onClick={this.props.download.bind(this, file.path)}><i class="fa fa-arrow-down" aria-hidden="true"></i></Button>
-                                                      </Col>
-                                                      <Col>
-                                                        <Button variant="danger" onClick={this.confirmRemoveFile.bind(this, file.path, client._id)}><i class="fa fa-trash" aria-hidden="true"></i></Button>
-                                                      </Col>
-                                                    </Row>
-                                                  </Card.Body>
-                                                </Card>
-                                              </React.Fragment>)
-                                            })}
+                                              {client.files.map(file => {
+                                                return (<React.Fragment>
+                                                      <Card style={{ width: '18rem' }} className="ml-3">
+                                                        <Card.Body>
+                                                          <Card.Title>{file.path.replace(/^.*[\\\/]/, '')}</Card.Title>
+                                                          <Card.Text>
+                                                            {`Descripción: ${file.description}`}
+                                                          </Card.Text>
+                                                          <Card.Text>
+                                                            {`Fecha de subida: ${formatShortDate(file.created_at)}`}
+                                                          </Card.Text>
+                                                        </Card.Body>
+                                                        <Card.Footer>
+                                                          <Row>
+                                                            <Col>
+                                                              <Button variant="info" onClick={this.props.download.bind(this, file.path)}><i class="fa fa-arrow-down" aria-hidden="true"></i></Button>
+                                                            </Col>
+                                                            <Col>
+                                                              <Button variant="danger" onClick={this.confirmRemoveFile.bind(this, file.path, client._id)}><i class="fa fa-trash" aria-hidden="true"></i></Button>
+                                                            </Col>
+                                                          </Row>
+                                                        </Card.Footer>
+                                                      </Card>
+                                                </React.Fragment>)
+                                              })}
                                             </Row>
                                         </Col>
                                         </Row>

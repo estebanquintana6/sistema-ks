@@ -12,15 +12,32 @@ import InsuranceForm from "../InsuranceForm/InsuranceForm";
 import FileUpload from '../../GenericUploader/FileUpload'
 
 import swal from '@sweetalert/with-react';
+import {formatShortDate} from '../../component-utils';
 
 import "./InsuranceModal.css";
 
 class InsuranceModal extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       edit: null,
+      insurance: this.props.insurance
     }
+  }
+
+  refresh = () => {
+    this.props.getInsurances(this.props.type).then(data => {
+      const insurance = data.insurances.find((insurance) => 
+        insurance._id === this.state.insurance._id
+      );
+      this.setState({
+        insurance: insurance
+      });
+    }).finally(() => {
+      this.viewFiles();
+      this.props.refresh();
+    });
   }
 
   onChange = e => {
@@ -77,10 +94,14 @@ class InsuranceModal extends Component {
     });
   }
 
-  viewFiles = (insurance) => {
+  downloadFile = (filepath) => {
+    this.props.download(filepath);
+  }
+
+  viewFiles = () => {
     swal({
       title: `Archivos`,
-      text: `Archivos de póliza ${insurance.policy}`,
+      text: `Archivos de póliza ${this.state.insurance.policy}`,
       className: "width-800pt-100h",
       content: 
       <div>
@@ -88,20 +109,28 @@ class InsuranceModal extends Component {
             <h2 className="swal-title form-title align-left">Archivos</h2>
           </Row>
           <Row>
-          {insurance.files.map(file => {
+          {this.state.insurance.files.map(file => {
             return (<React.Fragment>
-              <Card style={{ width: '18rem' }}>
+              <Card style={{ width: '18rem' }} className="ml-3">
                 <Card.Body>
                   <Card.Title>{file.path.replace(/^.*[\\\/]/, '')}</Card.Title>
+                  <Card.Text>
+                    {`Descripción: ${file.description}`}
+                  </Card.Text>
+                  <Card.Text>
+                    {`Fecha de subida: ${formatShortDate(file.created_at)}`}
+                  </Card.Text>
+                </Card.Body>
+                <Card.Footer>
                   <Row>
                     <Col>
-                      <Button variant="info" onClick={this.props.download.bind(this, file.path)}><i class="fa fa-arrow-down" aria-hidden="true"></i></Button>
+                      <Button variant="info" onClick={this.downloadFile.bind(this, file.path)}><i class="fa fa-arrow-down" aria-hidden="true"></i></Button>
                     </Col>
                     <Col>
-                      <Button variant="danger" onClick={this.props.removeFile.bind(this, file.path, insurance._id)}><i class="fa fa-trash" aria-hidden="true"></i></Button>
+                      <Button variant="danger" onClick={this.props.removeFile.bind(this, file.path, this.state.insurance._id)}><i class="fa fa-trash" aria-hidden="true"></i></Button>
                     </Col>
                   </Row>
-                </Card.Body>
+                </Card.Footer>
               </Card>
             </React.Fragment>)
           })}
@@ -109,13 +138,13 @@ class InsuranceModal extends Component {
           <Row>                
             <h2 className="swal-title form-title align-left">Subir nuevo archivo</h2>
           </Row>
-          <FileUpload entity={'insurances'} refresh={this.props.refresh} target={insurance}></FileUpload>
+          <FileUpload entity={'insurances'} refresh={this.refresh} target={this.state.insurance}></FileUpload>
       </div>
     });
   }
 
   render() {
-    const { insurance } = this.props;
+    const { insurance } = this.state;
     return (
       < Container >
         <React.Fragment>
@@ -132,7 +161,7 @@ class InsuranceModal extends Component {
 
           <Row className="mt-2">
             <Col md="12">
-              <Button variant="info" className="button-modal" onClick={this.viewFiles.bind(this, insurance)}>ARCHIVOS</Button>
+              <Button variant="info" className="button-modal" onClick={this.viewFiles}>ARCHIVOS</Button>
             </Col>  
           </Row>
 

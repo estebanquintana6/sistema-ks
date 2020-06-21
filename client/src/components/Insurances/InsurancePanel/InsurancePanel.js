@@ -229,7 +229,8 @@ class InsurancePanel extends Component {
         changePayStatus={this.changePayStatus}
         download={this.download}
         removeFile={this.confirmRemoveFile}
-        refresh={this.refresh}>
+        refresh={this.refresh}
+        getInsurances={this.props.getInsurances}>
       </InsuranceModal>,
       buttons: false,
       title: `Póliza: ${insurance.policy}`
