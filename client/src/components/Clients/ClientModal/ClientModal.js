@@ -96,16 +96,17 @@ class ClientModal extends Component {
                                             </Row>
                                             <Row>
                                             {client.files.map(file => {
+                                              console.log(file);
                                               return (<React.Fragment>
                                                 <Card style={{ width: '18rem' }}>
                                                   <Card.Body>
-                                                    <Card.Title>{file.replace(/^.*[\\\/]/, '')}</Card.Title>
+                                                    <Card.Title>{file.path.replace(/^.*[\\\/]/, '')}</Card.Title>
                                                     <Row>
                                                       <Col>
-                                                        <Button variant="info" onClick={this.props.download.bind(this, file)}><i class="fa fa-arrow-down" aria-hidden="true"></i></Button>
+                                                        <Button variant="info" onClick={this.props.download.bind(this, file.path)}><i class="fa fa-arrow-down" aria-hidden="true"></i></Button>
                                                       </Col>
                                                       <Col>
-                                                        <Button variant="danger" onClick={this.confirmRemoveFile.bind(this, file, client._id)}><i class="fa fa-trash" aria-hidden="true"></i></Button>
+                                                        <Button variant="danger" onClick={this.confirmRemoveFile.bind(this, file.path, client._id)}><i class="fa fa-trash" aria-hidden="true"></i></Button>
                                                       </Col>
                                                     </Row>
                                                   </Card.Body>

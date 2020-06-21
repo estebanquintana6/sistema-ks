@@ -32,8 +32,25 @@ var Client = new Schema({
     uppercase: false
   },
   files: {
-    type: Array,
-    required: false
+    type: [ 
+      new mongoose.Schema({ 
+        path: {
+          type: String,
+          required: true
+        },
+        created_at: {
+          type: Date,
+          required: false,
+          default: Date.now
+        },
+        description: {
+          type: String,
+          required: false,
+          default: ""
+        }
+      }
+    )],
+    default: []
   },
   contacts: {
     type: Array,

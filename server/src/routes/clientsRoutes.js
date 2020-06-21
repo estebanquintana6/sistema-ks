@@ -130,10 +130,16 @@ router.post("/upload", (req, res) => {
         return res.status(500).send(err);
       }
     },);
+
     Client.findOne({ _id: id }).then((client) => {
       if (client) {
-        let doc = Client.findById(client.id);
-        const files = [...client.files, path]
+        const doc = Client.findById(client.id);
+        
+        const newFile = {
+          path: path
+        }
+
+        const files = [...client.files, newFile];
         doc.updateOne({files: files}).then((err, _) => {
           if (err) res.status(500);
           res.status(200).json({ fileName: file.name, filePath: path });
