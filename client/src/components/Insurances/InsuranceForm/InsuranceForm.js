@@ -5,6 +5,8 @@ import {
   Col,
   Form,
   Row,
+  ToggleButton,
+  ToggleButtonGroup,
   Jumbotron
 } from 'react-bootstrap';
 
@@ -19,6 +21,7 @@ class InsuranceForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      filterArray: [],
       insurance_type: this.props.type || this.props.insurance.insurance_type,
       invoices: [],
       endorsements: [],
@@ -347,6 +350,12 @@ class InsuranceForm extends Component {
     return res
   }
 
+  handleFilter = (val) => {
+    this.setState({
+      filterArray: val
+    })
+  }
+
   render() {
     let generalActive = "show active";
     let invoicesActive = "";
@@ -354,7 +363,8 @@ class InsuranceForm extends Component {
     if(this.props.invoicePanel){
       generalActive = "";
       invoicesActive = "show active";
-    } 
+    }
+
 
     return (
       <Form onSubmit={this.onSubmit}>
@@ -601,13 +611,31 @@ class InsuranceForm extends Component {
                 <Row>
                   <h5 className="swal-title form-title align-left">RECIBOS</h5>
                 </Row>
-
-                {this.state.invoices.map((value, index) => {
+                {this.props.invoicePanel &&
+                  <div>
+                    <Row>
+                      <h6 className="swal-title form-title align-left">FILTROS</h6>
+                    </Row>
+                    <Row className="justify-content-md-center mb-4">
+                      <ToggleButtonGroup type="checkbox" value={this.state.filterArray} onChange={this.handleFilter}>
+                        <ToggleButton value={"PENDIENTE"}>Pendientes</ToggleButton>
+                        <ToggleButton value={"PAGADO"}>Pagados</ToggleButton>
+                        <ToggleButton value={"VENCIDO"}>Vencidos</ToggleButton>
+                        <ToggleButton value={"SALDO A FAVOR"}>Saldo a favor</ToggleButton>
+                        <ToggleButton value={"CANCELADO"}>Cancelados</ToggleButton>
+                      </ToggleButtonGroup>
+                    </Row>
+                  </div>
+                }
+                {this.state.invoices.filter((invoice) => {
+                  if(!this.state.filterArray.length) return true
+                  if(this.state.filterArray.includes(invoice.payment_status)) return true
+                  return false;
+                }).map((value, index) => {
                     return (
                       <Jumbotron>
                       <h6 className="invoice-title">Recibo {index+1}</h6>
                       <Button variant="danger" className="buttonjumbotron" onClick={() => { this.deleteInvoice(index) }}><i className="fa fa-trash" /></Button>
-                      
                       <Form.Row>
                         <Form.Group as={Col}>
                             <Form.Label>Recibo</Form.Label>
