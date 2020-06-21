@@ -44,7 +44,7 @@ const FileUpload = (props) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('id', props.client._id)
+    formData.append('id', props.target._id)
     const token = localStorage.getItem("jwtToken");
     formData.append('token', token)
 
@@ -64,8 +64,8 @@ const FileUpload = (props) => {
           setTimeout(() => setUploadPercentage(0), 10000);
         }
       });
-      setMessage('Archivo subido');
       props.refresh();
+      setMessage('Archivo subido');
     } catch (err) {
       console.log(err);
       if (err.response.status === 500) {

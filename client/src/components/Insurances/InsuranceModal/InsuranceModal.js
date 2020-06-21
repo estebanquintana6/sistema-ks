@@ -2,12 +2,15 @@ import React, { Component } from "react";
 
 import {
   Button,
+  Card,
+  Col,
   Container,
   Form,
   Row,
-  Col
 } from 'react-bootstrap';
 import InsuranceForm from "../InsuranceForm/InsuranceForm";
+import FileUpload from '../../GenericUploader/FileUpload'
+
 import swal from '@sweetalert/with-react';
 
 import "./InsuranceModal.css";
@@ -74,6 +77,43 @@ class InsuranceModal extends Component {
     });
   }
 
+  viewFiles = (insurance) => {
+    swal({
+      title: `Archivos`,
+      text: `Archivos de póliza ${insurance.policy}`,
+      className: "width-800pt-100h",
+      content: 
+      <div>
+          <Row>                
+            <h2 className="swal-title form-title align-left">Archivos</h2>
+          </Row>
+          <Row>
+          {insurance.files.map(file => {
+            return (<React.Fragment>
+              <Card style={{ width: '18rem' }}>
+                <Card.Body>
+                  <Card.Title>{file.path.replace(/^.*[\\\/]/, '')}</Card.Title>
+                  <Row>
+                    <Col>
+                      <Button variant="info" onClick={this.props.download.bind(this, file.path)}><i class="fa fa-arrow-down" aria-hidden="true"></i></Button>
+                    </Col>
+                    <Col>
+                      <Button variant="danger" onClick={this.props.removeFile.bind(this, file.path, insurance._id)}><i class="fa fa-trash" aria-hidden="true"></i></Button>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </React.Fragment>)
+          })}
+          </Row>
+          <Row>                
+            <h2 className="swal-title form-title align-left">Subir nuevo archivo</h2>
+          </Row>
+          <FileUpload entity={'insurances'} refresh={this.props.refresh} target={insurance}></FileUpload>
+      </div>
+    });
+  }
+
   render() {
     const { insurance } = this.props;
     return (
@@ -89,12 +129,19 @@ class InsuranceModal extends Component {
               <Button variant="info" className="button-modal" onClick={this.editInsurance.bind(this, insurance, true)}>RECIBOS</Button>
             </Col>  
           </Row>
+
+          <Row className="mt-2">
+            <Col md="12">
+              <Button variant="info" className="button-modal" onClick={this.viewFiles.bind(this, insurance)}>ARCHIVOS</Button>
+            </Col>  
+          </Row>
+
           <Row className="mt-2">
             <Col md="12">
               <Button variant="success" className="button-modal" onClick={this.props.changePayStatus.bind(this, insurance)}>CAMBIAR STATUS PAGO</Button>
-            </Col>  
+            </Col>
           </Row>
-  
+
           <Row className="mt-2">
           { insurance.active_status &&
             <Col md="12">

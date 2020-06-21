@@ -1,6 +1,7 @@
 var arr = require('lodash/array');
 var express = require('express');
 var router = express.Router();
+const fs = require('fs');
 
 const jwt = require("jsonwebtoken");
 const secretKey = require("../config/config")
@@ -220,6 +221,109 @@ router.post("/:id/payStatus", (req, res) => {
         insurance.pay_status = status;
         insurance.save();
         res.status(201).json({ message: "Elemento cambiado" });
+    });
+  });
+});
+
+
+router.post("/upload", (req, res) => {
+  const body = req.body;
+  const token = body.token;
+  const id = body.id
+
+  console.log('BODY', token, id)
+  jwt.verify(token, secretKey, function (err, _) {
+    if (err) {
+      return res.status(401).json({ email: "no permissions" });
+    }
+    if (req.files === null) {
+      return res.status(400).json({ msg: 'No file uploaded' });
+    }
+  
+    const file = req.files.file;
+    const path =`/insurances/${id}/${file.name}`
+    // const path =`/app/client/public/uploads/clients/${id}/${file.name}`
+    // const downloadPath = `/uploads/clients/${id}/${file.name}`
+    file.mv(path, err => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send(err);
+      }
+    },);
+
+    Insurance.findOne({ _id: id }).then((insurance) => {
+      if (insurance) {
+        const doc = Insurance.findById(insurance.id);
+        
+        const newFile = {
+          path: path
+        }
+
+        const files = [...insurance.files, newFile];
+
+        doc.updateOne({files: files}).then((err, _) => {
+          if (err) res.status(500);
+          res.status(200).json({ fileName: file.name, filePath: path });
+        });
+      }
+    });
+  });
+});
+
+
+router.post("/download", (req, res) => {
+  const body = req.body;
+  const token = body.token;
+  const path = body.path
+  
+  jwt.verify(token, secretKey, function (err, _) {
+    if (err) {
+      return res.status(401).json({ email: "no permissions" });
+    }
+    const pathArray = path.split('/')
+    const name = pathArray[pathArray.length - 1]
+    const nameArray = name.split('.')
+    const extension = nameArray[nameArray.length - 1]
+    const fullName = nameArray.slice(0, -1).join('.')
+    const contents = fs.readFileSync(path, {encoding: 'base64'});
+    // console.log('CONTENT', contents)
+    res.status(200).json({ encoded: contents, fullName, extension});
+    // res.download(path);
+  });
+});
+
+
+router.post("/remove_file", (req, res) => {
+  const body = req.body;
+  const token = body.token;
+  const id = body.id;
+  const fileroute = body.path;
+
+  jwt.verify(token, secretKey, function (err, _) {
+    if (err) {
+      return res.status(401).json({ email: "no permissions" });
+    }
+    Insurance.findOne({ _id: id }).then((insurance) => {
+      if (insurance) {
+        let doc = Insurance.findById(insurance.id);
+        let files = [...insurance.files];
+        
+        fs.unlink(fileroute, (err) => {
+          if (err) {
+            res.status(500).json({error: err});
+          } else {
+            console.log(`File deleted: ${fileroute} `);
+          }        
+        })
+        
+        const index = files.map((file) => { return file.path}).indexOf(fileroute);
+
+        files.splice(index, 1);
+        doc.updateOne({files: files}).then((err, _) => {
+          if (err) res.status(500);
+          res.status(200).json({ message: `${fileroute} eliminado`});
+        });
+      }
     });
   });
 });

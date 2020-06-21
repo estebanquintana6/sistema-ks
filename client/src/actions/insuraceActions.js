@@ -120,3 +120,35 @@ export const changePayStatus = (id, status) => dispatch => {
       return err;
     });
 }
+
+export const download = (path) => dispatch => {
+  const token = localStorage.getItem("jwtToken");
+  const data = {
+    token,
+    path
+  }
+  return axios
+    .post("/api/insurances/download", data)
+    .then(res => {
+      return res;
+    }).catch(err => {
+      return err;
+    });
+}
+
+export const removeFile = (path, id) => dispatch => {
+  const token = localStorage.getItem("jwtToken");
+  const data = {
+    token,
+    path,
+    id
+  }
+
+  return axios
+    .post("/api/insurances/remove_file", data)
+    .then(res => {
+      return res;
+    }).catch(err => {
+      return err;
+    });
+}

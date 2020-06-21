@@ -15,6 +15,7 @@ services:
       - ${PORT}:${PORT}
     volumes:
       - ./client-files:/clients
+      - ./insurance-files:/insurances
     command: node src/server.js
     links:
       - db

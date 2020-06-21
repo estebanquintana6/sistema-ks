@@ -96,7 +96,6 @@ class ClientModal extends Component {
                                             </Row>
                                             <Row>
                                             {client.files.map(file => {
-                                              console.log(file);
                                               return (<React.Fragment>
                                                 <Card style={{ width: '18rem' }}>
                                                   <Card.Body>
@@ -121,7 +120,7 @@ class ClientModal extends Component {
                                               <Row>                
                                                   <h2 className="swal-title form-title align-left">Subir nuevo archivo</h2>
                                               </Row>
-                                              <FileUpload entity={'clients'} client={client} refresh={this.refresh}></FileUpload>
+                                              <FileUpload entity={'clients'} target={client} refresh={this.refresh}></FileUpload>
                                           </Col>
                                         </Row>
 

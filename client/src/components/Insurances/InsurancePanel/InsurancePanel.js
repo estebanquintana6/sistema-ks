@@ -11,7 +11,9 @@ import {
   getInsurances, 
   cancelInsurance, 
   activateInsurance, 
-  changePayStatus 
+  changePayStatus,
+  download,
+  removeFile
 } from "../../../actions/insuraceActions";
 
 import { getClients } from "../../../actions/registerClient";
@@ -58,7 +60,6 @@ class InsurancePanel extends Component {
     this.prepareClientsForForm();
     this.prepareCompaniesForForm();
     this.refresh();
-    this.interval = setInterval(() => this.refresh(), 1000);
   }
 
   async componentDidUpdate(prevProps) {
@@ -66,10 +67,6 @@ class InsurancePanel extends Component {
       // si cambia el tipo de seguro que estamos viendo
       this.refresh()
     }
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
   }
 
   refresh = () => {
@@ -229,7 +226,10 @@ class InsurancePanel extends Component {
         deleteInsurance={this.deleteInsurance}
         cancelInsurance={this.cancelInsurance}
         activateInsurance={this.activateInsurance}
-        changePayStatus={this.changePayStatus}>
+        changePayStatus={this.changePayStatus}
+        download={this.download}
+        removeFile={this.confirmRemoveFile}
+        refresh={this.refresh}>
       </InsuranceModal>,
       buttons: false,
       title: `Póliza: ${insurance.policy}`
@@ -336,6 +336,79 @@ class InsurancePanel extends Component {
           });
         }
       });  
+  }
+
+
+  b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+    console.log('B64', b64Data)
+    console.log(contentType)
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+  
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+  
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+  
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    console.log('BA', byteArrays)
+  
+    const blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+  }
+
+  determineContentType = (extension) => {
+    return extension === 'PDF' ? 'application/pdf' : `image/${extension}`
+  }
+
+  confirmDownload  = async (file) => {
+    try {
+      const response = await this.props.download(file)
+      const data = response.data
+      console.log(data);
+
+      const  {encoded, fullName, extension} = data
+      console.log('DATA', data)
+      const contentType = this.determineContentType(extension)
+      const blob = this.b64toBlob(encoded, contentType);
+      const blobUrl = URL.createObjectURL(blob);
+      var a = document.createElement('A');
+      a.href = blobUrl;
+      a.download = `${fullName}.${extension}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch(err) {
+
+    }
+  }
+
+  download = (file) => {
+    this.confirmDownload(file);
+  }
+
+  confirmRemoveFile = (file, id) => {
+    swal({
+      title: "¿Estás seguro?",
+      text: `Estás a punto de eliminar el archivo ${file.replace(/^.*[\\\/]/, '')}`,
+      icon: "warning",
+      dangerMode: true,
+    })
+    .then(willDelete => {
+      if (willDelete) {
+        this.props.removeFile(file, id);
+
+        swal("Eliminado!", "Tu archivo ha sido eliminado!", "success").then(() =>{
+          this.refresh();
+        });
+      }
+    });
+
   }
 
   changePayStatus = (insurance, e) => {
@@ -667,5 +740,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getClients, getCompanies, createInsurance, deleteInsurance, updateInsurance, getInsurances, cancelInsurance, activateInsurance, changePayStatus }
+  { getClients, getCompanies, createInsurance, deleteInsurance, updateInsurance, getInsurances, cancelInsurance, activateInsurance, changePayStatus, download, removeFile }
 )(InsurancePanel);

@@ -153,7 +153,29 @@ var InsuranceSchema = new Schema({
     required: false,
     uppercase: true,
     default: null
-  }
+  },
+  //files
+  files: {
+    type: [ 
+      new mongoose.Schema({ 
+        path: {
+          type: String,
+          required: true
+        },
+        created_at: {
+          type: Date,
+          required: false,
+          default: Date.now
+        },
+        description: {
+          type: String,
+          required: false,
+          default: ""
+        }
+      }
+    )],
+    default: []
+  },
 });
 
 // Create model from the schema
