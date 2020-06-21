@@ -629,8 +629,7 @@ class InsuranceForm extends Component {
                   if(this.props.invoicePanel){
                     if(this.state.filterArray.length === 0) return true
                     console.log(this.state.filterArray.includes(invoice.payment_status))
-                    if(this.state.filterArray.includes(invoice.payment_status)) return true
-                    else return false;
+                    return this.state.filterArray.includes(invoice.payment_status)
                   }
                   return true;
                 }).map((value, index) => {
