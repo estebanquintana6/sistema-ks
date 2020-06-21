@@ -628,9 +628,12 @@ class InsuranceForm extends Component {
                   </div>
                 }
                 {this.state.invoices.filter((invoice) => {
-                  if(!this.state.filterArray.length) return true
-                  if(this.state.filterArray.includes(invoice.payment_status)) return true
-                  return false;
+                  if(this.props.invoicePanel){
+                    if(!this.state.filterArray.length) return true
+                    if(this.state.filterArray.includes(invoice.payment_status)) return true
+                    return false;
+                  }
+                  return true;
                 }).map((value, index) => {
                     return (
                       <Jumbotron>
