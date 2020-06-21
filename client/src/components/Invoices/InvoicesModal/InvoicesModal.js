@@ -20,12 +20,12 @@ class InvoicesModal extends Component {
   }
 
   getClientName = (client) => {
-    if(client.name) return client.name;
+    if(client.hasOwnProperty('name')) return client.name;
     return "";
   }
 
   getInsurancePolicy = (insurance) => {
-    if(insurance.policy) return insurance.policy;
+    if(insurance.hasOwnProperty('policy')) return insurance.policy;
     return "";
   }
 
