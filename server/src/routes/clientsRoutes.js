@@ -172,7 +172,7 @@ router.post("/remove_file", (req, res) => {
           }        
         })
         
-        const index = files.indexOf(fileroute);
+        const index = files.map((file) => { return file.path}).indexOf(fileroute);
 
         files.splice(index, 1);
         doc.updateOne({files: files}).then((err, _) => {
