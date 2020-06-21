@@ -19,9 +19,14 @@ class InvoicesModal extends Component {
     }
   }
 
+  validateField = (field) => {
+    if(field) return field;
+    return "";
+  }
+
   editInvoice = (invoice) => {
     swal({
-      title: `Editar recibo de cliente ${invoice.client.name || ""}`,
+      title: `Editar recibo de cliente ${this.validateField(invoice.client.name)}`,
       text: `Modifica los campos del recibo para la póliza ${invoice.insurance.policy}`,
       content: <InvoicesForm invoice={this.props.invoice} edit={true} updateInvoice={this.props.updateInvoice} ></InvoicesForm>,
       buttons: false,
