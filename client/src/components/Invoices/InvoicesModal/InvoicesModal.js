@@ -21,7 +21,7 @@ class InvoicesModal extends Component {
 
   editInvoice = (invoice) => {
     swal({
-      title: `Editar recibo de cliente ${invoice.client.name}`,
+      title: `Editar recibo de cliente ${invoice.client.name || ""}`,
       text: `Modifica los campos del recibo para la póliza ${invoice.insurance.policy}`,
       content: <InvoicesForm invoice={this.props.invoice} edit={true} updateInvoice={this.props.updateInvoice} ></InvoicesForm>,
       buttons: false,
