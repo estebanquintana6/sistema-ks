@@ -625,6 +625,7 @@ class InsuranceForm extends Component {
                   </div>
                 }
                 {this.state.invoices.filter((invoice) => {
+                  console.log(invoice.payment_status, this.state.filterArray)
                   if(this.props.invoicePanel){
                     if(!this.state.filterArray.length) return true
                     if(this.state.filterArray.includes(invoice.payment_status)) return true
