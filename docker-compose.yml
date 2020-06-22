@@ -17,8 +17,6 @@ services:
       - ./client-files:/clients
       - ./insurance-files:/insurances
     command: node src/server.js
-    links:
-      - db
     restart: always
   ##########################
   ### SETUP CLIENT CONTAINER
@@ -30,18 +28,3 @@ services:
     links:
       - server
     restart: always
-  ##########################
-  ### SETUP DB CONTAINER
-  ##########################
-  db:
-    image: mongo:latest
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: rootpassword
-    ports:
-      - 27017:27017
-    volumes:
-      - mongodb_data_container:/data/db
-
-volumes:
-  mongodb_data_container:
