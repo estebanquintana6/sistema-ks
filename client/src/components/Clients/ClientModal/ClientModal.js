@@ -94,36 +94,7 @@ class ClientModal extends Component {
                                       <div role="tabpanel" class="tab-pane fade" id="buzz">
                                       <Row>
                                         <Col>
-                                            <Row>                
-                                                <h2 className="swal-title form-title align-left">Archivos</h2>
-                                            </Row>
-                                            <Row>
-                                              {client.files.map(file => {
-                                                return (<React.Fragment>
-                                                      <Card style={{ width: '18rem' }} className="ml-3">
-                                                        <Card.Body>
-                                                          <Card.Title>{file.path.replace(/^.*[\\\/]/, '')}</Card.Title>
-                                                          <Card.Text>
-                                                            {`Descripción: ${file.description}`}
-                                                          </Card.Text>
-                                                          <Card.Text>
-                                                            {`Fecha de subida: ${formatShortDate(file.created_at)}`}
-                                                          </Card.Text>
-                                                        </Card.Body>
-                                                        <Card.Footer>
-                                                          <Row>
-                                                            <Col>
-                                                              <Button variant="info" onClick={this.props.download.bind(this, file.path)}><i class="fa fa-arrow-down" aria-hidden="true"></i></Button>
-                                                            </Col>
-                                                            <Col>
-                                                              <Button variant="danger" onClick={this.confirmRemoveFile.bind(this, file.path, client._id)}><i class="fa fa-trash" aria-hidden="true"></i></Button>
-                                                            </Col>
-                                                          </Row>
-                                                        </Card.Footer>
-                                                      </Card>
-                                                </React.Fragment>)
-                                              })}
-                                            </Row>
+                                        <FileVisualizer entity={this.state.client} downloadFile={this.props.download} refresh={this.refresh} removeFile={this.props.removeFile} saveFile={this.props.saveFile}></FileVisualizer>
                                         </Col>
                                         </Row>
                                         <Row>

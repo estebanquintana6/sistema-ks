@@ -328,5 +328,30 @@ router.post("/remove_file", (req, res) => {
   });
 });
 
+router.post("/save_file", (req, res) => {
+  const body = req.body;
+  const token = body.token;
+  const fileData = body.fileData
+  const id = body.id
+
+  jwt.verify(token, secretKey, function (err, _) {
+    if (err) {
+      return res.status(401).json({ email: "no permissions" });
+    }
+    Insurance.findOne({ _id: id }).then((insurance) => {
+      if (insurance) {
+        let doc = Insurance.findById(insurance.id);
+        let files = [...insurance.files];
+        const index = files.map((file) => { return file.path}).indexOf(fileData.path);
+        files[index] = fileData
+        doc.updateOne({files: files}).then((err, _) => {
+          if (err) res.status(500);
+          res.status(200).json({ message: `archivo eliminado`});
+        });
+      }
+    });
+  });
+});
+
 
 module.exports = router;

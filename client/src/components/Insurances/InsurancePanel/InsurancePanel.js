@@ -13,7 +13,8 @@ import {
   activateInsurance, 
   changePayStatus,
   download,
-  removeFile
+  removeFile,
+  saveFile
 } from "../../../actions/insuraceActions";
 
 import { getClients } from "../../../actions/registerClient";
@@ -228,6 +229,7 @@ class InsurancePanel extends Component {
         activateInsurance={this.activateInsurance}
         changePayStatus={this.changePayStatus}
         download={this.download}
+        saveFile={this.saveFile}
         removeFile={this.confirmRemoveFile}
         refresh={this.refresh}
         getInsurances={this.props.getInsurances}>
@@ -409,7 +411,10 @@ class InsurancePanel extends Component {
         });
       }
     });
+  }
 
+  saveFile = (file, id) => {
+    this.props.saveFile(file, id);
   }
 
   changePayStatus = (insurance, e) => {
@@ -741,5 +746,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getClients, getCompanies, createInsurance, deleteInsurance, updateInsurance, getInsurances, cancelInsurance, activateInsurance, changePayStatus, download, removeFile }
+  { getClients, getCompanies, createInsurance, deleteInsurance, updateInsurance, getInsurances, cancelInsurance, activateInsurance, changePayStatus, download, removeFile, saveFile }
 )(InsurancePanel);
