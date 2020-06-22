@@ -118,6 +118,10 @@ export const ExportDataToCSV = (props) => {
     }
 
     const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header, type = "", sortableColumn = '', refresh) => {
+        if(!csvData.length) {
+            refresh();
+            return;
+        }
         const dataToWrite = [];
         if(type === "invoices"){
             let obj = invoiceToObj(csvData);
