@@ -42,6 +42,7 @@ module.exports = {
     new LiveReloadPlugin({})
   ],
   devServer: {
+    disableHostCheck: true,
     historyApiFallback: true,
     hot: true,
     contentBase: './dist',
