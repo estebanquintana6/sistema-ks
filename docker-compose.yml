@@ -17,6 +17,8 @@ services:
       - ./client-files:/clients
       - ./insurance-files:/insurances
     command: node src/server.js
+    links:
+      - db
     restart: always
   ##########################
   ### SETUP CLIENT CONTAINER
@@ -24,7 +26,21 @@ services:
   client:
     image: tiportero/portero_web_client:latest
     ports:
-      - 80:80
+      - 80:8080
+      - 35729:35729
     links:
       - server
     restart: always
+  ##########################
+  ### SETUP DB CONTAINER
+  ##########################
+  db:
+    image: mongo:latest
+    command: mongod --port 25575
+    ports:
+      - 25575:25575
+    volumes:
+      - mongodb_data_container:/data/db
+
+volumes:
+  mongodb_data_container:

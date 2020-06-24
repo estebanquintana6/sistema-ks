@@ -5,7 +5,7 @@ export const formatShortDate = (date) => {
   return moment(days).startOf('day').format('DD/MM/YYYY')
 }
 
-export const formatDateObj = (date: Date) => {
+export const formatDateObj = (date) => {
   const day = ("0" + date.getDate()).slice(-2)
   const month = ("0" + (date.getMonth() + 1)).slice(-2)
 

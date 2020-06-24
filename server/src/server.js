@@ -25,8 +25,6 @@ const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/test";
 const fileUpload = require('express-fileupload');
 
 
-console.log("MONGOURI: ", mongoUri);
-
 // Bodyparser middleware
 app.use(
   bodyParser.urlencoded({
@@ -67,7 +65,7 @@ let j = regular_jobs.j;
 require("./config/passport")(passport);
 
 // Routes
-app.use(fileUpload({debug: true, createParentPath: true}));
+app.use(fileUpload({debug: false, createParentPath: true}));
 app.use("/api/users", users);
 app.use("/api/clients", clients);
 app.use("/api/secom", secom);
