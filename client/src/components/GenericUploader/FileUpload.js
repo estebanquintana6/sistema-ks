@@ -38,8 +38,6 @@ const FileUpload = (props) => {
   };
 
 
-
-
   const onSubmit = async e => {
     e.preventDefault();
     const formData = new FormData();
@@ -64,7 +62,6 @@ const FileUpload = (props) => {
           setTimeout(() => setUploadPercentage(0), 10000);
         }
       });
-      props.refresh();
       setMessage('Archivo subido');
     } catch (err) {
       console.log(err);
@@ -73,6 +70,9 @@ const FileUpload = (props) => {
       } else {
         setMessage(err.response.data.msg);
       }
+    } finally {
+      console.log("here");
+      props.refresh();
     }
   };
 

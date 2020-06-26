@@ -218,7 +218,7 @@ router.post("/save_file", (req, res) => {
     }
     Client.findOne({ _id: id }).then((insurance) => {
       if (insurance) {
-        let doc = Insurance.findById(insurance.id);
+        let doc = Client.findById(insurance.id);
         let files = [...insurance.files];
         const index = files.map((file) => { return file.path}).indexOf(fileData.path);
         files[index] = fileData

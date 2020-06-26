@@ -17,8 +17,6 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import "./ClientsPanel.css";
 
-import FileUpload from '../../GenericUploader/FileUpload'
-
 
 class ClientsPanel extends Component {
   constructor(props) {
@@ -155,7 +153,8 @@ class ClientsPanel extends Component {
         deleteClient={this.deleteClient}
         download={this.download}
         removeFile={this.removeFile}
-        saveFile={this.saveFile}>
+        saveFile={this.saveFile}
+        reopenModal={this.openModificationModal}>
       </ClientModal>,
       buttons: false,
       title: `${client.name}`,
@@ -165,7 +164,7 @@ class ClientsPanel extends Component {
 
   saveFile = (file, id) => {
     this.props.saveFile(file, id)
-    this.refresh()
+    this.refresh();
   }
 
   download = (file) => {

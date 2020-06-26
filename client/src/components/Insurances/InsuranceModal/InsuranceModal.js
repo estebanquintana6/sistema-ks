@@ -113,8 +113,8 @@ class InsuranceModal extends Component {
   }
 
   saveFile = (file, id) => {
-    this.props.saveFile(file, id)
-    this.props.refresh()
+      this.props.saveFile(file, id);
+      this.props.refresh();
   }
 
   viewFiles = () => {
@@ -124,7 +124,7 @@ class InsuranceModal extends Component {
       className: "width-800pt-100h",
       content: 
       <div>
-        <FileVisualizer entity={this.state.insurance} downloadFile={this.downloadFile} refresh={this.refresh} removeFile={this.confirmRemoveFile} saveFile={this.saveFile}></FileVisualizer>
+        <FileVisualizer entity={this.state.insurance} downloadFile={this.downloadFile} refresh={this.refresh} removeFile={this.props.removeFile} saveFile={this.saveFile}></FileVisualizer>
           <Row>                
             <h2 className="swal-title form-title align-left">Subir nuevo archivo</h2>
           </Row>

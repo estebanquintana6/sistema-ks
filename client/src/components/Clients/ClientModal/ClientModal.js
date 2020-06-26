@@ -34,8 +34,9 @@ class ClientModal extends Component {
         client._id === this.state.client._id
       );
       this.setState({
-        client: client
+        client
       });
+
     }).finally(() => {
       this.props.refreshPanel();
     });
@@ -95,7 +96,12 @@ class ClientModal extends Component {
                                       <div role="tabpanel" class="tab-pane fade" id="buzz">
                                       <Row>
                                         <Col>
-                                        <FileVisualizer entity={this.state.client} downloadFile={this.props.download} refresh={this.refresh} removeFile={this.props.removeFile} saveFile={this.props.saveFile}></FileVisualizer>
+                                        <FileVisualizer 
+                                        entity={this.state.client} 
+                                        downloadFile={this.props.download} 
+                                        refresh={this.refresh} 
+                                        removeFile={this.confirmRemoveFile} 
+                                        saveFile={this.props.saveFile}></FileVisualizer>
                                         </Col>
                                         </Row>
                                         <Row>

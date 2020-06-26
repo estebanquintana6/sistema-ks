@@ -143,7 +143,6 @@ export const removeFile = (path, id) => dispatch => {
     path,
     id
   }
-
   return axios
     .post("/api/insurances/remove_file", data)
     .then(res => {

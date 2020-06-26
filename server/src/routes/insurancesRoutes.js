@@ -298,7 +298,6 @@ router.post("/remove_file", (req, res) => {
   const token = body.token;
   const id = body.id;
   const fileroute = body.path;
-
   jwt.verify(token, secretKey, function (err, _) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
@@ -310,7 +309,7 @@ router.post("/remove_file", (req, res) => {
         
         fs.unlink(fileroute, (err) => {
           if (err) {
-            res.status(500).json({error: err});
+            console.log(`File not found: ${fileroute} `);
           } else {
             console.log(`File deleted: ${fileroute} `);
           }        
