@@ -255,7 +255,8 @@ class InsuranceForm extends Component {
       this.props.save(this.state);
       return;
     }
-    this.props.updateInsurance(this.state)
+    this.props.updateInsurance(this.state);
+    this.props.refreshPanel();
   }
 
   formatDate = (date) => {
@@ -632,21 +633,25 @@ class InsuranceForm extends Component {
                     return true;
                   }
                 }).map((value, index) => {
+                    let i;
+                    i
                     if(this.props.invoicePanel){
-                      index = this.state.invoices.map(function(e) { return e.invoice; }).indexOf(value.invoice);
+                      i = this.state.invoices.map(function(e) { return e.invoice; }).indexOf(value.invoice);
+                    } else {
+                      i = index;
                     }
                     return (
                       <Jumbotron>
-                      <h6 className="invoice-title">Recibo {index+1}</h6>
-                      <Button variant="danger" className="buttonjumbotron" onClick={() => { this.deleteInvoice(index) }}><i className="fa fa-trash" /></Button>
+                      <h6 className="invoice-title">Recibo {i+1}</h6>
+                      <Button variant="danger" className="buttonjumbotron" onClick={() => { this.deleteInvoice(i) }}><i className="fa fa-trash" /></Button>
                       <Form.Row>
                         <Form.Group as={Col}>
                             <Form.Label>Recibo</Form.Label>
-                            <Form.Control required onChange={(e) => { this.onChangeInvoice(index, e) }} value={this.state.invoices[index].invoice} />
+                            <Form.Control required onChange={(e) => { this.onChangeInvoice(i, e) }} value={this.state.invoices[i].invoice} />
                           </Form.Group>
                         <Form.Group as={Col}>
                         <Form.Label>Estatus</Form.Label>
-                        <Form.Control as="select" onChange={(e) => { this.onChangeInvoiceStatus(index, e) }} value={this.state.invoices[index].payment_status}>
+                        <Form.Control as="select" onChange={(e) => { this.onChangeInvoiceStatus(i, e) }} value={this.state.invoices[i].payment_status}>
                             <option></option>
                             <option selected value="PENDIENTE">Pendiente</option>
                             <option value="PAGADO">Pagado</option>

@@ -60,7 +60,9 @@ class InsuranceModal extends Component {
                   clients={this.props.clients} 
                   companies={this.props.companies} 
                   edit={true} 
-                  updateInsurance={this.props.updateInsurance} >
+                  updateInsurance={this.props.updateInsurance} 
+                  refreshPanel={this.props.refresh}
+                  >
                 </InsuranceForm>,
       buttons: false,
       className: "width-800pt-100h"
