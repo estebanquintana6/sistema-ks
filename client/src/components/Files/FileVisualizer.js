@@ -53,7 +53,7 @@ class FileVisualizer extends Component {
                     <Form.Group as={Col} md="12">
                     <Form.Label onClick={() => this.editFile(null)}>Descripcion</Form.Label>
                     <Form.Control required onChange={(e) => { this.onChange(index, e) }} value={this.state.entity.files[index].description} />
-                    <Button variant='success' onClick={() => this.saveFile(file, this.state.entity._id)}>Guardar</Button>
+                    <Button className="mt-2" variant='success' onClick={() => this.saveFile(file, this.state.entity._id)}>Guardar</Button>
                     </Form.Group>
                   </div>) : <Card.Text onClick={() => this.editFile(index)}>
                     {`Descripción: ${file.description}`}
