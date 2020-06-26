@@ -11,6 +11,7 @@ import {
 } from 'react-bootstrap';
 import ClientsForm from "../ClientsForm/ClientsForm";
 import FileUpload from '../../GenericUploader/FileUpload'
+import FileVisualizer from "../../Files/FileVisualizer"
 
 import swal from '@sweetalert/with-react';
 
