@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Container, Row } from 'react-bootstrap'
 import { connect } from "react-redux";
-import { createInsurance, deleteInsurance, updateInsurance, getAllInsurances, cancelInsurance, activateInsurance, changePayStatus } from "../../../actions/insuraceActions";
+import { createInsurance, deleteInsurance, updateInsurance, getAllInsurances, cancelInsurance, activateInsurance, changePayStatus, removeFile, download, saveFile } from "../../../actions/insuraceActions";
 import { getClients } from "../../../actions/registerClient";
 import { getCompanies } from "../../../actions/companyActions";
 import swal from '@sweetalert/with-react';
@@ -174,11 +174,77 @@ generateHeaders = () => {
         deleteInsurance={this.deleteInsurance}
         cancelInsurance={this.cancelInsurance}
         activateInsurance={this.activateInsurance}
-        changePayStatus={this.changePayStatus}>
+        changePayStatus={this.changePayStatus}
+        download={this.download}
+        removeFile={this.removeFile}
+        refresh={this.refresh}
+        saveFile={this.saveFile}>
       </InsuranceModal>,
       buttons: false,
       title: `Póliza: ${insurance.policy}`
     });
+  }
+
+  saveFile = (file, id) => {
+    this.props.saveFile(file, id);
+  }
+
+  download = (file) => {
+    this.confirmDownload(file);
+  }
+
+  removeFile = (file, clientId) => {
+    console.log(file);
+    this.props.removeFile(file, clientId);
+    this.refresh();
+  }
+
+  b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+    console.log('B64', b64Data)
+    console.log(contentType)
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+  
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+  
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+  
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    console.log('BA', byteArrays)
+  
+    const blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+  }
+
+  determineContentType = (extension) => {
+    return extension === 'PDF' ? 'application/pdf' : `image/${extension}`
+  }
+
+  confirmDownload  = async (file) => {
+    try {
+      const response = await this.props.download(file)
+      const data = response.data
+      const  {encoded, fullName, extension} = data
+      console.log('DATA', data)
+      const contentType = this.determineContentType(extension)
+      const blob = this.b64toBlob(encoded, contentType);
+      const blobUrl = URL.createObjectURL(blob);
+      console.log('RESPONSE', blobUrl, contentType, blob)
+      var a = document.createElement('A');
+      a.href = blobUrl;
+      a.download = `${fullName}.${extension}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch(err) {
+
+    }
   }
 
   addInsurance(variant) {
@@ -597,5 +663,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getClients, getCompanies, createInsurance, deleteInsurance, updateInsurance, getAllInsurances, cancelInsurance, activateInsurance, changePayStatus }
+  { getClients, getCompanies, createInsurance, deleteInsurance, updateInsurance, getAllInsurances, cancelInsurance, activateInsurance, changePayStatus, removeFile, download, saveFile }
 )(GeneralInsurancePanel);

@@ -152,3 +152,20 @@ export const removeFile = (path, id) => dispatch => {
       return err;
     });
 }
+
+export const saveFile = (fileData, id) => dispatch => {
+  const token = localStorage.getItem("jwtToken");
+  const data = {
+    token,
+    fileData,
+    id,
+  }
+
+  return axios
+    .post("/api/insurances/save_file", data)
+    .then(res => {
+      return res;
+    }).catch(err => {
+      return err;
+    });
+}

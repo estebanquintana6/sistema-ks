@@ -15,6 +15,7 @@ import swal from '@sweetalert/with-react';
 import {formatShortDate} from '../../component-utils';
 
 import "./InsuranceModal.css";
+import FileVisualizer from '../../Files/FileVisualizer'
 
 class InsuranceModal extends Component {
   constructor(props) {
@@ -39,11 +40,6 @@ class InsuranceModal extends Component {
       this.props.refresh();
     });
   }
-
-  onChange = e => {
-    this.setState({ [e.target.id]: e.target.value });
-  }
-  
 
   editInsurance = (event, insurance, invoices = false) => {
     let title = "Editar seguros";
@@ -98,6 +94,29 @@ class InsuranceModal extends Component {
     this.props.download(filepath);
   }
 
+  confirmRemoveFile = (file, id) => {
+    swal({
+      title: "¿Estás seguro?",
+      text: `Estás a punto de eliminar el archivo ${file.replace(/^.*[\\\/]/, '')}`,
+      icon: "warning",
+      dangerMode: true,
+    })
+    .then(willDelete => {
+      if (willDelete) {
+        this.props.removeFile(file, id);
+
+        swal("Eliminado!", "Tu archivo ha sido eliminado!", "success").then(() =>{
+          this.props.refresh()
+        });
+      }
+    });
+  }
+
+  saveFile = (file, id) => {
+    this.props.saveFile(file, id)
+    this.props.refresh()
+  }
+
   viewFiles = () => {
     swal({
       title: `Archivos`,
@@ -105,36 +124,7 @@ class InsuranceModal extends Component {
       className: "width-800pt-100h",
       content: 
       <div>
-          <Row>                
-            <h2 className="swal-title form-title align-left">Archivos</h2>
-          </Row>
-          <Row>
-          {this.state.insurance.files.map(file => {
-            return (<React.Fragment>
-              <Card style={{ width: '18rem' }} className="ml-3">
-                <Card.Body>
-                  <Card.Title>{file.path.replace(/^.*[\\\/]/, '')}</Card.Title>
-                  <Card.Text>
-                    {`Descripción: ${file.description}`}
-                  </Card.Text>
-                  <Card.Text>
-                    {`Fecha de subida: ${formatShortDate(file.created_at)}`}
-                  </Card.Text>
-                </Card.Body>
-                <Card.Footer>
-                  <Row>
-                    <Col>
-                      <Button variant="info" onClick={this.downloadFile.bind(this, file.path)}><i class="fa fa-arrow-down" aria-hidden="true"></i></Button>
-                    </Col>
-                    <Col>
-                      <Button variant="danger" onClick={this.props.removeFile.bind(this, file.path, this.state.insurance._id)}><i class="fa fa-trash" aria-hidden="true"></i></Button>
-                    </Col>
-                  </Row>
-                </Card.Footer>
-              </Card>
-            </React.Fragment>)
-          })}
-          </Row>
+        <FileVisualizer entity={this.state.insurance} downloadFile={this.downloadFile} refresh={this.refresh} removeFile={this.confirmRemoveFile} saveFile={this.saveFile}></FileVisualizer>
           <Row>                
             <h2 className="swal-title form-title align-left">Subir nuevo archivo</h2>
           </Row>
