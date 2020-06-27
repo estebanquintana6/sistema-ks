@@ -232,6 +232,7 @@ router.post("/upload", (req, res) => {
   const id = body.id
 
   const validTypes = ['pdf', 'docx', 'xlsx', 'jpeg', 'jpg', 'gif', 'png'];
+
   jwt.verify(token, secretKey, function (err, _) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
@@ -243,7 +244,7 @@ router.post("/upload", (req, res) => {
     const file = req.files.file;
 
     let extensionRe = /(?:\.([^.]+))?$/;
-    let ext = extensionRe.exec(file.name)[1];
+    let ext = extensionRe.exec(file.name.toLowerCase())[1];
 
     if(!validTypes.includes(ext)) return res.status(500).send("El archivo recibo no es valido");
 

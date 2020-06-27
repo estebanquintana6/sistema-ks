@@ -203,7 +203,9 @@ class ClientsPanel extends Component {
   
   determineContentType = (extension) => {
     let type = "";
-    switch(extension) {
+    let fileExtension = extension.toLowerCase();
+    
+    switch(fileExtension) {
       case "PDF":
         type = 'application/pdf';
         break;
