@@ -200,14 +200,19 @@ class ClientsPanel extends Component {
     const blob = new Blob(byteArrays, {type: contentType});
     return blob;
   }
-
+  
   determineContentType = (extension) => {
     let type = "";
-    console.log(extension);
     switch(extension) {
       case "PDF":
         type = 'application/pdf';
         break;
+      case "xlsx":
+        type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        break;
+      case "docx":
+        type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+        break
       default:
         type = `image/${extension}`
     }
