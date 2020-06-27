@@ -202,7 +202,16 @@ class ClientsPanel extends Component {
   }
 
   determineContentType = (extension) => {
-    return extension === 'PDF' ? 'application/pdf' : `image/${extension}`
+    let type = "";
+    console.log(extension);
+    switch(extension) {
+      case "PDF":
+        type = 'application/pdf';
+        break;
+      default:
+        type = `image/${extension}`
+    }
+    return type;
   }
 
   confirmDownload  = async (file) => {

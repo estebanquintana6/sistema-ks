@@ -113,7 +113,7 @@ router.post("/update", (req, res) => {
         const t = insurance.invoices.filter(e=>e).map(inv => {
           return String(inv)
         })
-        const n = arr.difference(t, toD)
+        const n = arr.difference(t, toD);
         Invoice.deleteMany({_id: {$in: n}}).exec()
         let doc = Insurance.findById(insurance.id);
         doc.updateOne(insuranceData).then((err, _) => {
@@ -231,7 +231,7 @@ router.post("/upload", (req, res) => {
   const token = body.token;
   const id = body.id
 
-  console.log('BODY', token, id)
+  const validTypes = ['pdf', 'docx', 'xlsx', 'jpeg', 'jpg', 'gif', 'png'];
   jwt.verify(token, secretKey, function (err, _) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
@@ -241,12 +241,17 @@ router.post("/upload", (req, res) => {
     }
   
     const file = req.files.file;
+
+    let extensionRe = /(?:\.([^.]+))?$/;
+    let ext = extensionRe.exec(file.name)[1];
+
+    if(!validTypes.includes(ext)) return res.status(500).send("El archivo recibo no es valido");
+
     const path =`/insurances/${id}/${file.name}`
     // const path =`/app/client/public/uploads/clients/${id}/${file.name}`
     // const downloadPath = `/uploads/clients/${id}/${file.name}`
     file.mv(path, err => {
       if (err) {
-        console.error(err);
         return res.status(500).send(err);
       }
     },);

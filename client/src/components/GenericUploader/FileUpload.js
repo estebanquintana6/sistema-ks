@@ -15,12 +15,12 @@ const FileUpload = (props) => {
 
   const validateSize= (event) =>{
     let file = event.target.files[0];
-    let size = 4000000;
+    let size = 15000000;
     let err = '';
     if(file){
       console.log("File size", file.size);
       if (file.size > size) {
-        err = file.type+'el tamaño del archivo es muy grande, no debe sobrepasar 4mb \n';
+        err = file.type+'el tamaño del archivo es muy grande, no debe sobrepasar 15mb \n';
         setMessage(err);
       }
       return true
@@ -83,6 +83,7 @@ const FileUpload = (props) => {
         <div className='custom-file mb-4'>
           <input
             type='file'
+            accept="image/jpg, image/png, image/jpeg, application/pdf, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             className='custom-file-input'
             id='customFile'
             onChange={onChange}

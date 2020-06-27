@@ -366,7 +366,21 @@ class InsurancePanel extends Component {
   }
 
   determineContentType = (extension) => {
-    return extension === 'PDF' ? 'application/pdf' : `image/${extension}`
+    let type = "";
+    switch(extension) {
+      case "PDF":
+        type = 'application/pdf';
+        break;
+      case "xlsx":
+        type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        break;
+      case "docx":
+        type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+        break
+      default:
+        type = `image/${extension}`
+    }
+    return type;
   }
 
   confirmDownload  = async (file) => {
