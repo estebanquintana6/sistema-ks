@@ -10,8 +10,10 @@ import {
 } from 'react-bootstrap';
 
 import Select from 'react-select';
-import "./SinesterForm.css";
 
+import moment from 'moment';
+
+import "./SinesterForm.css";
 
 class SinesterForm extends Component {
   constructor(props) {
@@ -58,8 +60,32 @@ class SinesterForm extends Component {
     this.setState({ history });
   }
 
-  onSubmit = () => {
-    console.log(this.state);
+  onChangeHistoryDate = (index, e) => {
+    let histories = [...this.state.history];
+    let history = { ...histories[index] };
+
+    history.date = e.target.value;
+
+    histories[index] = history;
+
+    this.setState({ history: histories });
+  }
+
+  onChangeHistoryStatus = (index, e) => {
+    let histories = [...this.state.history];
+    let history = { ...histories[index] };
+
+    history.status = e.target.value;
+
+    histories[index] = history;
+
+    this.setState({ history: histories });
+  }
+
+  onSubmit = e => {
+    e.preventDefault();
+
+    this.props.save(this.state);
   }
 
 
@@ -79,16 +105,16 @@ class SinesterForm extends Component {
                     <Col md="12">
                       <Row>
                         <Col md="12">
-                          <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                              <a class="nav-link active" href="#generales" role="tab" data-toggle="tab"><i class="fas fa-user-circle"></i>Generales</a>
+                          <ul className="nav nav-tabs" role="tablist">
+                            <li className="nav-item">
+                              <a className="nav-link active" href="#generales" role="tab" data-toggle="tab"><i className="fas fa-user-circle"></i>Generales</a>
                             </li>
-                            <li class="nav-item">
-                              <a class="nav-link" href="#buzz" role="tab" data-toggle="tab"><i class="fas fa-info-circle"></i>Seguimiento</a>
+                            <li className="nav-item">
+                              <a className="nav-link" href="#buzz" role="tab" data-toggle="tab"><i className="fas fa-info-circle"></i>Seguimiento</a>
                             </li>
                           </ul>
-                          <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane fade show active" id="generales">
+                          <div className="tab-content">
+                            <div role="tabpanel" className="tab-pane fade show active" id="generales">
                               <Row>
                                 <h5 className="swal-title form-title align-left">DATOS DE CLIENTE</h5>
                               </Row>
@@ -137,7 +163,7 @@ class SinesterForm extends Component {
                                 </Form.Group>
                               </Form.Row>
                             </div>
-                            <div role="tabpanel" class="tab-pane fade" id="buzz">
+                            <div role="tabpanel" className="tab-pane fade" id="buzz">
                               <Row>
                                 <h5 className="swal-title form-title align-left">SEGUIMIENTO</h5>
                               </Row>
@@ -149,13 +175,13 @@ class SinesterForm extends Component {
                                         <Form.Label>Fecha</Form.Label>
                                         <Form.Control
                                           type="date"
-                                          onChange={(e) => { this.onChangeHistory(index, e) }}
+                                          onChange={(e) => { this.onChangeHistoryDate(index, e) }}
                                           value={this.state.history[index].date} />
                                       </Form.Group>
                                       <Form.Group as={Col} md={9}>
                                         <Form.Label>Estatus</Form.Label>
                                         <Form.Control
-                                          onChange={(e) => { this.onChangeHistory(index, e) }}
+                                          onChange={(e) => { this.onChangeHistoryStatus(index, e) }}
                                           value={this.state.history[index].status}>
                                         </Form.Control>
                                       </Form.Group>
@@ -164,7 +190,7 @@ class SinesterForm extends Component {
                                 })}
                                 <Row className="pt-1 pb-2">
                                   <Col md="12">
-                                    <Button variant="info" onClick={this.createHistory}><i class="fas fa-plus"></i></Button>
+                                    <Button variant="info" onClick={this.createHistory}><i className="fas fa-plus"></i></Button>
                                   </Col>
                                 </Row>
                               </Jumbotron>

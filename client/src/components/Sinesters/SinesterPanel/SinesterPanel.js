@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Container, Row } from 'react-bootstrap';
 import { connect } from "react-redux";
 import { getClients } from "../../../actions/registerClient";
+import { registerSinester } from "../../../actions/sinesterActions";
 
 import swal from '@sweetalert/with-react';
 
@@ -81,7 +82,12 @@ class SinesterPanel extends Component {
       title: `Registro de siniestro`,
       text: "Captura los datos del siniestro",
       className: "width-800pt", 
-      content: <SinesterForm clients={this.state.clients}></SinesterForm>,
+      content: 
+      <SinesterForm 
+      clients={this.state.clients}
+      save={this.props.registerSinester}
+      >
+      </SinesterForm>,
       buttons: false
     })
   }
@@ -121,5 +127,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getClients }
+  { getClients, registerSinester }
 )(SinesterPanel);
