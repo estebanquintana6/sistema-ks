@@ -48,7 +48,7 @@ router.post("/bulk", (req, res) => {
 
     allData.map((clientData) => {
       delete clientData.no;
-      
+
       const contactKeys = ["contact", "correo", "tel"];
       const contactTransformationKeys = ["name", "email", "telephone"];
 
@@ -56,17 +56,17 @@ router.post("/bulk", (req, res) => {
 
       let contacts = [];
 
-      for(let i = 1; i<4; i++){
+      for (let i = 1; i < 4; i++) {
         let contact = {};
         contactKeys.map((key, index) => {
           let dataKey = `${key}${i}`;
           let targetKey = contactTransformationKeys[index];
-          if(clientData[dataKey] != undefined) {
+          if (clientData[dataKey] != undefined) {
             contact[targetKey] = clientData[dataKey]
             delete clientData[dataKey];
           };
         })
-        if(!isEmpty(contact)) contacts.push(contact);
+        if (!isEmpty(contact)) contacts.push(contact);
       }
 
       clientData["contacts"] = contacts;
@@ -74,9 +74,9 @@ router.post("/bulk", (req, res) => {
       const client = new Client(clientData);
 
       Client.find({
-        $and: [{rfc: clientData.rfc}, {name: clientData.name}]
+        $and: [{ rfc: clientData.rfc }, { name: clientData.name }]
       }).then((res, err) => {
-        if(isEmpty(res)) client.save();
+        if (isEmpty(res)) client.save();
       })
 
     })
@@ -121,15 +121,15 @@ router.post("/upload", (req, res) => {
     if (req.files === null) {
       return res.status(400).json({ msg: 'No file uploaded' });
     }
-  
+
     const file = req.files.file;
-    
+
     let extensionRe = /(?:\.([^.]+))?$/;
     let ext = extensionRe.exec(file.name.toLowerCase())[1];
 
-    if(!validTypes.includes(ext)) return res.status(500).send("El archivo recibo no es valido");
+    if (!validTypes.includes(ext)) return res.status(500).send("El archivo recibo no es valido");
 
-    const path =`/clients/${id}/${file.name}`
+    const path = `/clients/${id}/${file.name}`
     // const path =`/app/client/public/uploads/clients/${id}/${file.name}`
     // const downloadPath = `/uploads/clients/${id}/${file.name}`
     file.mv(path, err => {
@@ -137,18 +137,18 @@ router.post("/upload", (req, res) => {
         console.error(err);
         return res.status(500).send(err);
       }
-    },);
+    });
 
     Client.findOne({ _id: id }).then((client) => {
       if (client) {
         const doc = Client.findById(client.id);
-        
+
         const newFile = {
           path: path
         }
 
         const files = [...client.files, newFile];
-        doc.updateOne({files: files}).then((err, _) => {
+        doc.updateOne({ files: files }).then((err, _) => {
           if (err) res.status(500);
           res.status(200).json({ fileName: file.name, filePath: path });
         });
@@ -171,21 +171,21 @@ router.post("/remove_file", (req, res) => {
       if (client) {
         let doc = Client.findById(client.id);
         let files = [...client.files];
-        
+
         fs.unlink(fileroute, (err) => {
           if (err) {
-            res.status(500).json({error: err});
+            res.status(500).json({ error: err });
           } else {
             console.log(`File deleted: ${fileroute} `);
-          }        
+          }
         })
-        
-        const index = files.map((file) => { return file.path}).indexOf(fileroute);
+
+        const index = files.map((file) => { return file.path }).indexOf(fileroute);
 
         files.splice(index, 1);
-        doc.updateOne({files: files}).then((err, _) => {
+        doc.updateOne({ files: files }).then((err, _) => {
           if (err) res.status(500);
-          res.status(200).json({ message: `${fileroute} eliminado`});
+          res.status(200).json({ message: `${fileroute} eliminado` });
         });
       }
     });
@@ -196,7 +196,7 @@ router.post("/download", (req, res) => {
   const body = req.body;
   const token = body.token;
   const path = body.path
-  
+
   jwt.verify(token, secretKey, function (err, _) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
@@ -207,9 +207,9 @@ router.post("/download", (req, res) => {
     const nameArray = name.split('.')
     const extension = nameArray[nameArray.length - 1]
     const fullName = nameArray.slice(0, -1).join('.')
-    const contents = fs.readFileSync(path, {encoding: 'base64'});
+    const contents = fs.readFileSync(path, { encoding: 'base64' });
     // console.log('CONTENT', contents)
-    res.status(200).json({ encoded: contents, fullName, extension});
+    res.status(200).json({ encoded: contents, fullName, extension });
     // res.download(path);
   });
 });
@@ -228,11 +228,11 @@ router.post("/save_file", (req, res) => {
       if (insurance) {
         let doc = Client.findById(insurance.id);
         let files = [...insurance.files];
-        const index = files.map((file) => { return file.path}).indexOf(fileData.path);
+        const index = files.map((file) => { return file.path }).indexOf(fileData.path);
         files[index] = fileData
-        doc.updateOne({files: files}).then((err, _) => {
+        doc.updateOne({ files: files }).then((err, _) => {
           if (err) res.status(500);
-          res.status(200).json({ message: `archivo eliminado`});
+          res.status(200).json({ message: `archivo eliminado` });
         });
       }
     });

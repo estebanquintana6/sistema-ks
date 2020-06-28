@@ -32,8 +32,8 @@ var Client = new Schema({
     uppercase: false
   },
   files: {
-    type: [ 
-      new mongoose.Schema({ 
+    type: [
+      new mongoose.Schema({
         path: {
           type: String,
           required: true
@@ -49,7 +49,7 @@ var Client = new Schema({
           default: ""
         }
       }
-    )],
+      )],
     default: []
   },
   contacts: {

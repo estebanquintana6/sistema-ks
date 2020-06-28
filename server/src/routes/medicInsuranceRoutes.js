@@ -11,7 +11,7 @@ const Company = require("../models/CompanyForm")
 const { substractYears } = require("../utils/dateUtils");
 const { removeDiacritics } = require("../utils/bulkUtils");
 
-Date.prototype.addDays = function(days) {
+Date.prototype.addDays = function (days) {
     var date = new Date(this.valueOf());
     date.setDate(date.getDate() + days);
     return date;
@@ -22,18 +22,18 @@ router.post("/bulk", (req, res) => {
     const token = body.token;
 
     jwt.verify(token, secretKey, function (err, _) {
-      if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
-      const allData = body.bulkData;
-      
-      allData.map((data) => {
-          Insurance.exists({policy: data.policy}, function(err, res){
-                if(err) res.status(500).json(err);
+        if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
+        const allData = body.bulkData;
 
-                if(!res){
-                    Client.findOne({rfc: data.rfc}).then((client) => {
+        allData.map((data) => {
+            Insurance.exists({ policy: data.policy }, function (err, res) {
+                if (err) res.status(500).json(err);
+
+                if (!res) {
+                    Client.findOne({ rfc: data.rfc }).then((client) => {
                         let clientId;
 
-                        if(!client){
+                        if (!client) {
                             let contacts = [{
                                 name: data.contact,
                                 email: data.email,
@@ -53,7 +53,7 @@ router.post("/bulk", (req, res) => {
                             clientId = client._id;
                         }
 
-                        Company.findOne({name: data.insurance_company}).then((company) => {
+                        Company.findOne({ name: data.insurance_company }).then((company) => {
                             delete data.no;
                             delete data.name;
                             delete data.insurance_company;
@@ -61,10 +61,10 @@ router.post("/bulk", (req, res) => {
                             const due_date = new Date(data.due_date);
                             const begin_date = substractYears(due_date, 1);
                             const pay_due_date = begin_date.addDays(30);
-                            
+
                             let currency = null;
 
-                            switch(data.coin){
+                            switch (data.coin) {
                                 case "M.N": currency = 'PESO'; break;
                                 default: currency = "PESO";
                             }
@@ -86,8 +86,8 @@ router.post("/bulk", (req, res) => {
                         })
                     })
                 }
-          });
-      });
+            });
+        });
     });
 });
 

@@ -11,7 +11,7 @@ const Company = require("../models/CompanyForm")
 const { substractYears } = require("../utils/dateUtils");
 const { removeDiacritics } = require("../utils/bulkUtils");
 
-Date.prototype.addDays = function(days) {
+Date.prototype.addDays = function (days) {
     var date = new Date(this.valueOf());
     date.setDate(date.getDate() + days);
     return date;
@@ -23,16 +23,16 @@ router.post("/bulk", (req, res) => {
     let insertedElements = 0;
 
     jwt.verify(token, secretKey, function (err, _) {
-      if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
-      const allData = body.bulkData;
+        if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
+        const allData = body.bulkData;
 
 
-      allData.map((car) => {
+        allData.map((car) => {
             const clientName = removeDiacritics(car.client.toUpperCase().trim());
 
-            Client.findOne({name: clientName}).then((client) => {
+            Client.findOne({ name: clientName }).then((client) => {
                 let clientId;
-                if(!client) {
+                if (!client) {
                     const missingClient = new Client({
                         name: clientName
                     })
@@ -43,16 +43,16 @@ router.post("/bulk", (req, res) => {
                     clientId = client._id;
                 }
 
-                Company.findOne({name: car.insurance_company}).then((company) => {
+                Company.findOne({ name: car.insurance_company }).then((company) => {
                     delete car.client;
                     delete car.insurance_company;
-                    
+
                     const due_date = new Date(car.due_date);
                     const begin_date = substractYears(due_date, 1);
                     const pay_due_date = begin_date.addDays(30);
-                    
-                    Insurance.findOne({ policy: car.policy}).then((insurance) => {
-                        if(!insurance){
+
+                    Insurance.findOne({ policy: car.policy }).then((insurance) => {
+                        if (!insurance) {
                             let insurance = new Insurance({
                                 client: clientId,
                                 insurance_company: company._id,
@@ -67,15 +67,15 @@ router.post("/bulk", (req, res) => {
                                 car_year: car.car_year,
                                 car_brand: car.car_brand
                             });
-        
+
                             insurance.save();
-                            insertedElements = insertedElements +1;
+                            insertedElements = insertedElements + 1;
 
                         }
                     });
                 });
             });
-      });
+        });
     });
 });
 

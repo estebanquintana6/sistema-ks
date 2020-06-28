@@ -34,18 +34,18 @@ class InsuranceForm extends Component {
   componentDidMount() {
     if (this.props.edit) {
       // prepare the insurance data to be rendered in every field
-    this.prepareInsuranceForForm()
+      this.prepareInsuranceForForm()
     }
   }
 
   prepareInsuranceForForm = () => {
     let auxObj = cloneDeep(this.props.insurance)
     auxObj['edit'] = this.props['edit']
-    auxObj["invoices"] = auxObj.invoices.sort(function(a, b){
-      if (a.invoice < b.invoice){
+    auxObj["invoices"] = auxObj.invoices.sort(function (a, b) {
+      if (a.invoice < b.invoice) {
         return -1;
       }
-      if (a.invoice > b.invoice){
+      if (a.invoice > b.invoice) {
         return 1;
       }
       return 0;
@@ -96,7 +96,7 @@ class InsuranceForm extends Component {
   }
 
   onChangeClient = e => {
-    this.setState({client: e.value})
+    this.setState({ client: e.value })
   }
 
   onInvoicesChange = e => {
@@ -125,7 +125,7 @@ class InsuranceForm extends Component {
         num_invoices = 0;
     }
 
-    const jump = num_invoices === 0 ? 12 / 1 : 12/num_invoices;
+    const jump = num_invoices === 0 ? 12 / 1 : 12 / num_invoices;
 
     const startGenDate = this.state.pay_due_date;
 
@@ -274,7 +274,7 @@ class InsuranceForm extends Component {
   composeCarYears = () => {
     const result = [];
     const endYear = moment().startOf('day').add(1, 'year').startOf('year').year()
-    for(let i = 1990; i<=endYear; i++){
+    for (let i = 1990; i <= endYear; i++) {
       result.push(i)
     }
     return result
@@ -297,7 +297,7 @@ class InsuranceForm extends Component {
       date: today
     })
 
-    this.setState({endorsements});
+    this.setState({ endorsements });
   }
 
   onChangeEndorsement = (index, e) => {
@@ -361,7 +361,7 @@ class InsuranceForm extends Component {
     let generalActive = "show active";
     let invoicesActive = "";
 
-    if(this.props.invoicePanel){
+    if (this.props.invoicePanel) {
       generalActive = "";
       invoicesActive = "show active";
     }
@@ -374,26 +374,26 @@ class InsuranceForm extends Component {
           </Col>
           <Col md="12">
             <ul className="nav nav-tabs" role="tablist">
-                {this.props.invoicePanel === false 
-                 ? <React.Fragment>
-                    <li className="nav-item" onClick={this.update}>
-                      <a className="nav-link active" href="#i-types" role="tab" data-toggle="tab"><i className="fas fa-building"></i>Generales</a>
-                    </li>
+              {this.props.invoicePanel === false
+                ? <React.Fragment>
+                  <li className="nav-item" onClick={this.update}>
+                    <a className="nav-link active" href="#i-types" role="tab" data-toggle="tab"><i className="fas fa-building"></i>Generales</a>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link" href="#invoices" role="tab" data-toggle="tab"><i className="fas fa-receipt"></i> Recibos</a>
+                  </li>
+                  {this.props.edit &&
                     <li className="nav-item">
-                      <a className="nav-link" href="#invoices" role="tab" data-toggle="tab"><i className="fas fa-receipt"></i> Recibos</a>
+                      <a className="nav-link" href="#endor" role="tab" data-toggle="tab"><i className="fas fa-edit"></i>Endosos</a>
                     </li>
-                    { this.props.edit && 
-                      <li className="nav-item">
-                        <a className="nav-link" href="#endor" role="tab" data-toggle="tab"><i className="fas fa-edit"></i>Endosos</a>
-                      </li>
-                    }
-                  </React.Fragment>
-                  : <li className="nav-item">
-                      <a className="nav-link active" href="#invoices" role="tab" data-toggle="tab"><i className="fas fa-receipt"></i> Recibos</a>
-                    </li>
-                }
-                {this.props.invoice}
-                
+                  }
+                </React.Fragment>
+                : <li className="nav-item">
+                  <a className="nav-link active" href="#invoices" role="tab" data-toggle="tab"><i className="fas fa-receipt"></i> Recibos</a>
+                </li>
+              }
+              {this.props.invoice}
+
             </ul>
             <div className="tab-content">
               <div role="tabpanel" className={`tab-pane fade ${generalActive}`} id="i-types">
@@ -433,13 +433,13 @@ class InsuranceForm extends Component {
                         </Form.Control>
                       </Form.Group>
                       {this.isCarInsurance() &&
-                      <>
-                        <Form.Group as={Col} md="6" controlId="cis">
-                          <Form.Label>CIS</Form.Label>
-                          <Form.Control onChange={this.onChange} value={this.state.cis}>
-                          </Form.Control>
-                        </Form.Group>
-                      </>}
+                        <>
+                          <Form.Group as={Col} md="6" controlId="cis">
+                            <Form.Label>CIS</Form.Label>
+                            <Form.Control onChange={this.onChange} value={this.state.cis}>
+                            </Form.Control>
+                          </Form.Group>
+                        </>}
                     </Form.Row>
 
                     <Form.Row>
@@ -455,7 +455,7 @@ class InsuranceForm extends Component {
                       </Form.Group>
                     </Form.Row>
                     <Form.Row>
-                    <Form.Group as={Col} md="6" controlId="pay_due_date">
+                      <Form.Group as={Col} md="6" controlId="pay_due_date">
                         <Form.Label>F. Vencimiento Pago</Form.Label>
                         <Form.Control required type="date" onChange={this.onChange} value={this.formatDate(this.state.pay_due_date)}>
                         </Form.Control>
@@ -495,40 +495,40 @@ class InsuranceForm extends Component {
                         <Row>
                           <h5 className="swal-title form-title align-left">DATOS AUTO</h5>
                         </Row>
-                          <Form.Row>
-                            <Form.Group as={Col}>
-                              <Form.Label>Marca</Form.Label>
-                              <input type="text" 
-                                      id="car_brand" 
-                                      list="data" 
-                                      onChange={this.onChange} 
-                                      className="form-control" 
-                                      value={this.state.car_brand}/>
-                              <datalist id="data">
-                                <option></option>
-                                <option value="VOLKSWAGEN">VOLKSWAGEN</option>
-                                <option value="MITSUBISHI">MITSUBISHI</option>
-                                <option value="FORD">FORD</option>
-                                <option value="CHEVROLET">CHEVROLET</option>
-                                <option value="NISSAN">NISSAN</option>
-                                <option value="MAZDA">MAZDA</option>
-                                <option value="TOYOTA">TOYOTA</option>
-                                <option value="HONDA">HONDA</option>
-                                <option value="HYUNDAI">HYUNDAI</option>
-                                <option value="SUZUKI">SUZUKI</option>
-                                <option value="BMW">BMW</option>
-                                <option value="MERCEDES BENZ">MERCEDES BENZ</option>
-                                <option value="LINCOLN">LINCOLN</option>
-                                <option value="CADILLAC">CADILLAC</option>
-                                <option value="GENERAL MOTORS">GENERAL MOTORS</option>
-                                <option value="KIA">KIA</option>
-                                <option value="SEAT">SEAT</option>
-                                <option value="AUDI">AUDI</option>
-                                <option value="JEEP">JEEP</option>
-                                <option value="VOLVO">VOLVO</option>
-                                <option value="TESLA">TESLA</option>
-                                <option value="RAM">RAM</option>
-                              </datalist>
+                        <Form.Row>
+                          <Form.Group as={Col}>
+                            <Form.Label>Marca</Form.Label>
+                            <input type="text"
+                              id="car_brand"
+                              list="data"
+                              onChange={this.onChange}
+                              className="form-control"
+                              value={this.state.car_brand} />
+                            <datalist id="data">
+                              <option></option>
+                              <option value="VOLKSWAGEN">VOLKSWAGEN</option>
+                              <option value="MITSUBISHI">MITSUBISHI</option>
+                              <option value="FORD">FORD</option>
+                              <option value="CHEVROLET">CHEVROLET</option>
+                              <option value="NISSAN">NISSAN</option>
+                              <option value="MAZDA">MAZDA</option>
+                              <option value="TOYOTA">TOYOTA</option>
+                              <option value="HONDA">HONDA</option>
+                              <option value="HYUNDAI">HYUNDAI</option>
+                              <option value="SUZUKI">SUZUKI</option>
+                              <option value="BMW">BMW</option>
+                              <option value="MERCEDES BENZ">MERCEDES BENZ</option>
+                              <option value="LINCOLN">LINCOLN</option>
+                              <option value="CADILLAC">CADILLAC</option>
+                              <option value="GENERAL MOTORS">GENERAL MOTORS</option>
+                              <option value="KIA">KIA</option>
+                              <option value="SEAT">SEAT</option>
+                              <option value="AUDI">AUDI</option>
+                              <option value="JEEP">JEEP</option>
+                              <option value="VOLVO">VOLVO</option>
+                              <option value="TESLA">TESLA</option>
+                              <option value="RAM">RAM</option>
+                            </datalist>
                           </Form.Group>
 
                           <Form.Group as={Col} md="6" controlId="car_year">
@@ -548,7 +548,7 @@ class InsuranceForm extends Component {
                           </Form.Group>
 
                         </Form.Row>
-                        
+
                         <Form.Row>
                           <Form.Group as={Col} md="6" controlId="car_series_number">
                             <Form.Label>No. Serie</Form.Label>
@@ -579,18 +579,18 @@ class InsuranceForm extends Component {
                     <Row>
                       <h5 className="swal-title form-title align-left">COMENTARIOS</h5>
                     </Row>
-                    {this.props.type === "DANOS" && 
+                    {this.props.type === "DANOS" &&
                       <Form.Group as={Col} md="6" controlId="damage_product">
-                      <Form.Label>Producto</Form.Label>
-                      <Form.Control onChange={this.onChange} value={this.state.damage_product}>
-                      </Form.Control>
-                    </Form.Group> }
+                        <Form.Label>Producto</Form.Label>
+                        <Form.Control onChange={this.onChange} value={this.state.damage_product}>
+                        </Form.Control>
+                      </Form.Group>}
 
                     <Form.Group as={Col} controlId="comments" className={this.state.comments}>
                       <Form.Label>Comentarios</Form.Label>
                       <Form.Control as="textarea" onChange={this.onChange} value={this.state.comments} />
                     </Form.Group>
-                    {this.state.active_status === false && 
+                    {this.state.active_status === false &&
                       <>
                         <Row>
                           <h5 className="swal-title form-title align-left">NOTA DE CANCELACIÓN</h5>
@@ -626,32 +626,32 @@ class InsuranceForm extends Component {
                   </div>
                 }
                 {this.state.invoices.filter((invoice) => {
-                  if(this.props.invoicePanel){
-                    if(this.state.filterArray.length === 0) return true
+                  if (this.props.invoicePanel) {
+                    if (this.state.filterArray.length === 0) return true
                     return this.state.filterArray.includes(invoice.payment_status)
                   } else {
                     return true;
                   }
                 }).map((value, index) => {
-                    let i;
-                    i
-                    if(this.props.invoicePanel){
-                      i = this.state.invoices.map(function(e) { return e.invoice; }).indexOf(value.invoice);
-                    } else {
-                      i = index;
-                    }
-                    return (
-                      <Jumbotron>
-                      <h6 className="invoice-title">Recibo {i+1}</h6>
+                  let i;
+                  i
+                  if (this.props.invoicePanel) {
+                    i = this.state.invoices.map(function (e) { return e.invoice; }).indexOf(value.invoice);
+                  } else {
+                    i = index;
+                  }
+                  return (
+                    <Jumbotron>
+                      <h6 className="invoice-title">Recibo {i + 1}</h6>
                       <Button variant="danger" className="buttonjumbotron" onClick={() => { this.deleteInvoice(i) }}><i className="fa fa-trash" /></Button>
                       <Form.Row>
                         <Form.Group as={Col}>
-                            <Form.Label>Recibo</Form.Label>
-                            <Form.Control required onChange={(e) => { this.onChangeInvoice(i, e) }} value={this.state.invoices[i].invoice} />
-                          </Form.Group>
+                          <Form.Label>Recibo</Form.Label>
+                          <Form.Control required onChange={(e) => { this.onChangeInvoice(i, e) }} value={this.state.invoices[i].invoice} />
+                        </Form.Group>
                         <Form.Group as={Col}>
-                        <Form.Label>Estatus</Form.Label>
-                        <Form.Control as="select" onChange={(e) => { this.onChangeInvoiceStatus(i, e) }} value={this.state.invoices[i].payment_status}>
+                          <Form.Label>Estatus</Form.Label>
+                          <Form.Control as="select" onChange={(e) => { this.onChangeInvoiceStatus(i, e) }} value={this.state.invoices[i].payment_status}>
                             <option></option>
                             <option selected value="PENDIENTE">Pendiente</option>
                             <option value="PAGADO">Pagado</option>
@@ -668,25 +668,25 @@ class InsuranceForm extends Component {
                           <Form.Label>Fecha límite de pago</Form.Label>
                           <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(index, e) }} value={this.formatDate(this.state.invoices[index].due_date)} />
                         </Form.Group>
-                      {(this.isMedicInsurance() || this.isDamageInsurance()) &&
-                      <React.Fragment>
-                        <Form.Group as={Col}>
-                          <Form.Label>Vigencia de</Form.Label>
-                          <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceLimitDate(index, e) }} value={this.formatDate(this.state.invoices[index].pay_limit)} />
-                        </Form.Group>
+                        {(this.isMedicInsurance() || this.isDamageInsurance()) &&
+                          <React.Fragment>
+                            <Form.Group as={Col}>
+                              <Form.Label>Vigencia de</Form.Label>
+                              <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceLimitDate(index, e) }} value={this.formatDate(this.state.invoices[index].pay_limit)} />
+                            </Form.Group>
 
-                        <Form.Group as={Col}>
-                          <Form.Label>Vigencia a</Form.Label>
-                          <Form.Control type="date" onChange={(e) => this.onChangeInvoiceLimitDate2(index, e)} value={this.formatDate(this.state.invoices[index].pay_limit2)}>
-                          </Form.Control>
-                        </Form.Group>
-                      </React.Fragment>
-                      }
+                            <Form.Group as={Col}>
+                              <Form.Label>Vigencia a</Form.Label>
+                              <Form.Control type="date" onChange={(e) => this.onChangeInvoiceLimitDate2(index, e)} value={this.formatDate(this.state.invoices[index].pay_limit2)}>
+                              </Form.Control>
+                            </Form.Group>
+                          </React.Fragment>
+                        }
                         <Form.Group as={Col}>
                           <Form.Label>Prima</Form.Label>
                           <Form.Control onChange={(e) => { this.onChangeInvoiceBounty(index, e) }} value={this.state.invoices[index].bounty} />
                         </Form.Group>
-                        
+
                       </Form.Row>
 
                       <Form.Row>
@@ -705,8 +705,8 @@ class InsuranceForm extends Component {
                           <Form.Control onChange={(e) => { this.onChangeInvoiceEmailComment(index, e) }} value={this.state.invoices[index].email_comment} />
                         </Form.Group>
                       </Form.Row>
-                      </Jumbotron>
-                    );
+                    </Jumbotron>
+                  );
                 })}
                 <Row className="pt-1 pb-2">
                   <Col md="12">
@@ -724,26 +724,26 @@ class InsuranceForm extends Component {
                   </Col>
                 </Row>
                 {this.state.endorsements.map((value, index) => {
-                    return (
-                      <Form.Row>
-                        <Form.Group as={Col} md={{span: 8}}>
-                          <Form.Label>Comentario</Form.Label>
-                          <Form.Control onChange={(e) => {this.onChangeEndorsement(index, e)}} value={this.state.endorsements[index].comment} />
-                        </Form.Group>
-                        <Form.Group as={Col} md={{span: 3}}>
-                          <Form.Label>Fecha</Form.Label>
-                          <Form.Control type="date" disabled value={this.state.endorsements[index].date} />
-                        </Form.Group>
-                        <Col md={1}>
-                          <Button 
-                            variant="danger" 
-                            className="button-margin"
-                            onClick={() => { this.deleteEndorsement(index) }}>
-                              <i className="fa fa-trash"/>
-                          </Button>
-                        </Col>
-                      </Form.Row>
-                    );
+                  return (
+                    <Form.Row>
+                      <Form.Group as={Col} md={{ span: 8 }}>
+                        <Form.Label>Comentario</Form.Label>
+                        <Form.Control onChange={(e) => { this.onChangeEndorsement(index, e) }} value={this.state.endorsements[index].comment} />
+                      </Form.Group>
+                      <Form.Group as={Col} md={{ span: 3 }}>
+                        <Form.Label>Fecha</Form.Label>
+                        <Form.Control type="date" disabled value={this.state.endorsements[index].date} />
+                      </Form.Group>
+                      <Col md={1}>
+                        <Button
+                          variant="danger"
+                          className="button-margin"
+                          onClick={() => { this.deleteEndorsement(index) }}>
+                          <i className="fa fa-trash" />
+                        </Button>
+                      </Col>
+                    </Form.Row>
+                  );
                 })}
               </div>
             </div>
@@ -751,7 +751,7 @@ class InsuranceForm extends Component {
         </Row>
         <Row className="d-flex">
           <div className="ml-auto mr-4">
-          <Button variant="primary" type="submit" className="btn-primary"><i className="fas fa-save"></i></Button>
+            <Button variant="primary" type="submit" className="btn-primary"><i className="fas fa-save"></i></Button>
           </div>
         </Row>
       </Form >
