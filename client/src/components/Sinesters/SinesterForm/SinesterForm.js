@@ -23,6 +23,21 @@ class SinesterForm extends Component {
     };
   }
 
+  componentDidMount() {
+    if (!this.props.edit) return;
+    // prepare the client data to be rendered in every field
+    this.prepareSinesterForForm();
+  }
+
+  prepareSinesterForForm = () => {
+    const auxObj = {}
+    Object.keys(this.props.sinester).forEach(key => {
+      auxObj[key] = this.props['sinester'][key];
+    })
+    auxObj['edit'] = this.props['edit']
+    this.setState(auxObj)
+  }
+
   formatDate = (date) => {
     if (!date) return;
     const days = date.split('T')[0]
@@ -129,7 +144,7 @@ class SinesterForm extends Component {
                                 </Form.Group>
                                 <Form.Group as={Col} md={7} controlId="affected">
                                   <Form.Label>Afectado</Form.Label>
-                                  <Form.Control onChange={this.onChange} value={this.state.affeccted}>
+                                  <Form.Control onChange={this.onChange} value={this.state.affected}>
                                   </Form.Control>
                                 </Form.Group>
                               </Form.Row>
@@ -138,9 +153,20 @@ class SinesterForm extends Component {
                                 <h5 className="swal-title form-title align-left">GENERALES</h5>
                               </Row>
                               <Form.Row>
-                                <Form.Group as={Col} md="5" controlId="begin_date">
+                                <Form.Group as={Col} md="6" controlId="begin_date">
                                   <Form.Label>Fecha inicial</Form.Label>
                                   <Form.Control required type="date" onChange={this.onChange} value={this.formatDate(this.state.begin_date)}>
+                                  </Form.Control>
+                                </Form.Group>
+                                <Form.Group as={Col} md="6" controlId="status">
+                                  <Form.Label>Status</Form.Label>
+                                  <Form.Control as="select" onChange={this.onChange} value={this.state.status}>
+                                    <option value=''></option>
+                                    <option value='DOCUMENTOS'>DOCUMENTOS</option>
+                                    <option value='PROCESO'>PROCESO</option>
+                                    <option value='REQUERIMIENTO'>REQUERIMIENTO</option>
+                                    <option value='RECHAZO'>RECHAZO</option>
+                                    <option value='PAGADO'>PAGADO</option>
                                   </Form.Control>
                                 </Form.Group>
                               </Form.Row>
@@ -176,7 +202,7 @@ class SinesterForm extends Component {
                                         <Form.Control
                                           type="date"
                                           onChange={(e) => { this.onChangeHistoryDate(index, e) }}
-                                          value={this.state.history[index].date} />
+                                          value={this.formatDate(this.state.history[index].date)} />
                                       </Form.Group>
                                       <Form.Group as={Col} md={9}>
                                         <Form.Label>Estatus</Form.Label>

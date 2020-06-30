@@ -7,6 +7,11 @@ var Sinester = new Schema({
         required: false,
         uppercase: true
     },
+    status: {
+        type: String,
+        enum: ['DOCUMENTOS', 'PROCESO', 'REQUERIMIENTO', 'RECHAZO', 'PAGADO'],
+        required: false
+    },
     ramo: {
         type: String,
         required: false
