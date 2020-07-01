@@ -16,6 +16,7 @@ services:
     volumes:
       - ./client-files:/clients
       - ./insurance-files:/insurances
+      - ./sinester-files:/sinesters
     command: node src/server.js
     links:
       - db

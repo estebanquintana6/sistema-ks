@@ -3,6 +3,7 @@ config.js
 email.js
 insurance-files/
 client-files/
+sinester-files/
 mongofile
 dev-docker-compose.yml
 docker-compose.yml

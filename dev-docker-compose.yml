@@ -28,6 +28,7 @@ services:
       - ./server/src:/app/server/src
       - ./client-files:/clients
       - ./insurance-files:/insurances
+      - ./sinester-files:/sinesters
     # Run command
     # Nodemon for hot reloading (-L flag required for polling in Docker)
     command: nodemon -L src/server.js
