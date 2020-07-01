@@ -97,6 +97,7 @@ class SinesterPanel extends Component {
       <SinesterForm 
       clients={this.state.clients}
       save={this.props.registerSinester}
+      refreshPanel={this.refresh}
       >
       </SinesterForm>,
       buttons: false
