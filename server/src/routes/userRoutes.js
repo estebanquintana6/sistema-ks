@@ -124,10 +124,10 @@ router.post("/recover", (req, res) => {
   User.findOne({ email }).then(user => {
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ errors: {email: "Email no existe" }});
+      return res.status(404).json({ errors: { email: "Email no existe" } });
     }
 
-    ResetPassword.find({userId: user.id, status: 0}).remove().exec();
+    ResetPassword.find({ userId: user.id, status: 0 }).remove().exec();
 
     const token = crypto.randomBytes(32).toString('hex');
 
@@ -161,10 +161,10 @@ router.post("/recover", (req, res) => {
 
       transporter.sendMail(mailOptions, (error) => {
         if (error) {
-          res.status(500).json({message: "Error mandando mail"});
+          res.status(500).json({ message: "Error mandando mail" });
         }
         res.status(200).json({ message: "Correo mandado." });
-        })
+      })
 
     });
 
@@ -186,27 +186,27 @@ router.post("/changePassword", (req, res) => {
   const password = body.password;
 
   User.findOne({ email }).then(user => {
-    if(!user){
+    if (!user) {
       return res.status(200).json({ "status": false });
     }
     ResetPassword.findOne({
       resetPasswordToken: token,
       userId: user._id
     }).then((reset) => {
-      if(reset){
-        if(reset.expire > moment.now() ){
+      if (reset) {
+        if (reset.expire > moment.now()) {
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(password, salt, (err, hash) => {
               user.password = hash;
-              user.save().then( data => {
+              user.save().then(data => {
                 reset.remove();
-                return res.status(200).json({message: "Contraseña cambiada"});
+                return res.status(200).json({ message: "Contraseña cambiada" });
               })
             });
           });
         }
       } else {
-        return res.status(404).json({message: "Token caducado"});
+        return res.status(404).json({ message: "Token caducado" });
       }
     });
   })
@@ -218,10 +218,10 @@ router.post("/list", (req, res) => {
   const body = req.body;
   const token = body.token;
 
-  jwt.verify(token, secretKey, function(err, decoded) {
-    if(err) res.status(402);
+  jwt.verify(token, secretKey, function (err, decoded) {
+    if (err) res.status(402);
     const role = decoded.role;
-    if(role){
+    if (role) {
       User.find().select(["-password", "-referidos", "-secoms", "-clients"]).then((users) => {
         res.status(200).json(users);
       });
@@ -238,17 +238,17 @@ router.post("/changeRol", (req, res) => {
   const userId = body.id;
   const newRole = body.role;
 
-  if(newRole !== "admin"  || newRole !== "user"){
-    res.status(400,{error: "Peticion erronea"});
+  if (newRole !== "admin" || newRole !== "user") {
+    res.status(400, { error: "Peticion erronea" });
   }
 
-  jwt.verify(token, secretKey, function(err, decoded) {
-    if(err) res.status(402);
+  jwt.verify(token, secretKey, function (err, decoded) {
+    if (err) res.status(402);
     const role = decoded.role;
-    if(role === "admin"){
-      User.findOneAndUpdate({_id: userId}, {role: newRole}).then((err, doc) => {
-        if(err) res.status(500, {error: "El rol no se modifico"})
-        res.status(200, {message: "Rol modificado"});
+    if (role === "admin") {
+      User.findOneAndUpdate({ _id: userId }, { role: newRole }).then((err, doc) => {
+        if (err) res.status(500, { error: "El rol no se modifico" })
+        res.status(200, { message: "Rol modificado" });
       });
     }
   });
@@ -260,13 +260,13 @@ router.post("/delete", (req, res) => {
   const token = body.token;
   const userId = body.id;
 
-  jwt.verify(token, secretKey, function(err, decoded) {
-    if(err) res.status(402);
+  jwt.verify(token, secretKey, function (err, decoded) {
+    if (err) res.status(402);
     const role = decoded.role;
-    if(role === "admin"){
+    if (role === "admin") {
       User.findByIdAndDelete(userId).then((err, doc) => {
-        if(err) res.status(500, {error: "El usuario no se elimino"})
-        res.status(200, {message: "Usuario eliminado"});
+        if (err) res.status(500, { error: "El usuario no se elimino" })
+        res.status(200, { message: "Usuario eliminado" });
       })
     } else {
       res.status(402);

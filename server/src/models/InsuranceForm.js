@@ -156,8 +156,8 @@ var InsuranceSchema = new Schema({
   },
   //files
   files: {
-    type: [ 
-      new mongoose.Schema({ 
+    type: [
+      new mongoose.Schema({
         path: {
           type: String,
           required: true
@@ -173,7 +173,7 @@ var InsuranceSchema = new Schema({
           default: ""
         }
       }
-    )],
+      )],
     default: []
   },
 });

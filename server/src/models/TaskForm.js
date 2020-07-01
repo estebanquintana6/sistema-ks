@@ -13,7 +13,7 @@ var TaskSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  status: {
+  status: {
     type: String,
     required: true
   },

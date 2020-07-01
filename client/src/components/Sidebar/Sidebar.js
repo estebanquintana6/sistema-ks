@@ -95,6 +95,14 @@ class Sidebar extends Component {
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="#siniestrosSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Siniestros</a>
+                        <ul className="collapse list-unstyled" id="siniestrosSubmenu">
+                            <li>
+                                <a onClick={() => this.goToPage('/dashboard/siniestros')}>Panel de siniestos</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
 
                 <ul className="list-unstyled CTAs">

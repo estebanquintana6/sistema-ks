@@ -28,8 +28,8 @@ updateInvoice = (invoice) => {
     comments: invoice.comments,
     email: invoice.email,
   }
-  Invoice.findOneAndUpdate({_id: invoice._id}, update).then((res, error) => {
-    if(error) throw Error(error);
+  Invoice.findOneAndUpdate({ _id: invoice._id }, update).then((res, error) => {
+    if (error) throw Error(error);
   });
 }
 
@@ -46,18 +46,18 @@ router.post("/save", (req, res) => {
     const insurance = new Insurance(insuranceData);
 
     insurance.save().then((insurance, err) => {
-      
+
       invoices.map(invoice => {
         invoice.client = insurance.client;
         invoice.insurance = insurance._id;
 
         const newInvoice = new Invoice(invoice);
-        
+
         newInvoice.save().then((invoiceResponse, err) => {
           relateInsuranceToInvoice(invoiceResponse);
         });
       });
-      
+
       res.json({ message: 'Aseguradora guardada.' });
     }).catch((error) => {
       res.status(500).json({ error });
@@ -109,20 +109,20 @@ router.post("/update", (req, res) => {
         invoices.map(invoice => {
           updateInvoice(invoice);
         })
-        const toD = invoices.map(inv => inv._id).filter(e=>e)
-        const t = insurance.invoices.filter(e=>e).map(inv => {
+        const toD = invoices.map(inv => inv._id).filter(e => e)
+        const t = insurance.invoices.filter(e => e).map(inv => {
           return String(inv)
         })
         const n = arr.difference(t, toD);
-        Invoice.deleteMany({_id: {$in: n}}).exec()
+        Invoice.deleteMany({ _id: { $in: n } }).exec()
         let doc = Insurance.findById(insurance.id);
         doc.updateOne(insuranceData).then((err, _) => {
           invoices.map(invoice => {
             invoice.client = insurance.client;
             invoice.insurance = insurance._id;
-    
+
             const newInvoice = new Invoice(invoice);
-            
+
             newInvoice.save().then((invoiceResponse, err) => {
               relateInsuranceToInvoice(invoiceResponse);
             });
@@ -146,7 +146,7 @@ router.post("/:id/delete", (req, res) => {
         Insurance.deleteOne({ _id: req.params.id }).then((err, result) => {
           if (err) res.status(500);
 
-          Invoice.find({insurance: req.params.id}).then((invoices, err) => {
+          Invoice.find({ insurance: req.params.id }).then((invoices, err) => {
             invoices.map(invoice => {
               Invoice.findByIdAndDelete(invoice._id).exec();
             })
@@ -169,12 +169,12 @@ router.post("/:id/cancel", (req, res) => {
     Insurance.findOne({ _id: req.params.id }).then((company) => {
       const exists = company;
       if (exists) {
-        Insurance.updateOne({ _id: req.params.id }, {active_status: false, cancelation_note: body.note, pay_status: "CANCELADA"}).then((err, result) => {
+        Insurance.updateOne({ _id: req.params.id }, { active_status: false, cancelation_note: body.note, pay_status: "CANCELADA" }).then((err, result) => {
           if (err) res.status(500);
 
-          Invoice.find({insurance: req.params.id}).then((invoices, err) => {
+          Invoice.find({ insurance: req.params.id }).then((invoices, err) => {
             invoices.map(invoice => {
-              Invoice.update({_id: invoice._id}, {status: false}).exec();
+              Invoice.update({ _id: invoice._id }, { status: false }).exec();
             })
           })
 
@@ -194,12 +194,12 @@ router.post("/:id/activate", (req, res) => {
     Insurance.findOne({ _id: req.params.id }).then((company) => {
       const exists = company;
       if (exists) {
-        Insurance.updateOne({ _id: req.params.id }, {active_status: true, cancelation_note: "", pay_status: ""}).then((err, result) => {
+        Insurance.updateOne({ _id: req.params.id }, { active_status: true, cancelation_note: "", pay_status: "" }).then((err, result) => {
           if (err) res.status(500);
 
-          Invoice.find({insurance: req.params.id}).then((invoices, err) => {
+          Invoice.find({ insurance: req.params.id }).then((invoices, err) => {
             invoices.map(invoice => {
-              Invoice.update({_id: invoice._id}, {status: true}).exec();
+              Invoice.update({ _id: invoice._id }, { status: true }).exec();
             })
           })
 
@@ -218,9 +218,9 @@ router.post("/:id/payStatus", (req, res) => {
   jwt.verify(token, secretKey, function (err, _) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
     Insurance.findOne({ _id: req.params.id }).then((insurance) => {
-        insurance.pay_status = status;
-        insurance.save();
-        res.status(201).json({ message: "Elemento cambiado" });
+      insurance.pay_status = status;
+      insurance.save();
+      res.status(201).json({ message: "Elemento cambiado" });
     });
   });
 });
@@ -240,34 +240,34 @@ router.post("/upload", (req, res) => {
     if (req.files === null) {
       return res.status(400).json({ msg: 'No file uploaded' });
     }
-  
+
     const file = req.files.file;
 
     let extensionRe = /(?:\.([^.]+))?$/;
     let ext = extensionRe.exec(file.name.toLowerCase())[1];
 
-    if(!validTypes.includes(ext)) return res.status(500).send("El archivo recibo no es valido");
+    if (!validTypes.includes(ext)) return res.status(500).send("El archivo recibo no es valido");
 
-    const path =`/insurances/${id}/${file.name}`
+    const path = `/insurances/${id}/${file.name}`
     // const path =`/app/client/public/uploads/clients/${id}/${file.name}`
     // const downloadPath = `/uploads/clients/${id}/${file.name}`
     file.mv(path, err => {
       if (err) {
         return res.status(500).send(err);
       }
-    },);
+    });
 
     Insurance.findOne({ _id: id }).then((insurance) => {
       if (insurance) {
         const doc = Insurance.findById(insurance.id);
-        
+
         const newFile = {
           path: path
         }
 
         const files = [...insurance.files, newFile];
 
-        doc.updateOne({files: files}).then((err, _) => {
+        doc.updateOne({ files: files }).then((err, _) => {
           if (err) res.status(500);
           res.status(200).json({ fileName: file.name, filePath: path });
         });
@@ -281,7 +281,7 @@ router.post("/download", (req, res) => {
   const body = req.body;
   const token = body.token;
   const path = body.path
-  
+
   jwt.verify(token, secretKey, function (err, _) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
@@ -291,9 +291,9 @@ router.post("/download", (req, res) => {
     const nameArray = name.split('.')
     const extension = nameArray[nameArray.length - 1]
     const fullName = nameArray.slice(0, -1).join('.')
-    const contents = fs.readFileSync(path, {encoding: 'base64'});
+    const contents = fs.readFileSync(path, { encoding: 'base64' });
     // console.log('CONTENT', contents)
-    res.status(200).json({ encoded: contents, fullName, extension});
+    res.status(200).json({ encoded: contents, fullName, extension });
     // res.download(path);
   });
 });
@@ -312,21 +312,21 @@ router.post("/remove_file", (req, res) => {
       if (insurance) {
         let doc = Insurance.findById(insurance.id);
         let files = [...insurance.files];
-        
+
         fs.unlink(fileroute, (err) => {
           if (err) {
             console.log(`File not found: ${fileroute} `);
           } else {
             console.log(`File deleted: ${fileroute} `);
-          }        
+          }
         })
-        
-        const index = files.map((file) => { return file.path}).indexOf(fileroute);
+
+        const index = files.map((file) => { return file.path }).indexOf(fileroute);
 
         files.splice(index, 1);
-        doc.updateOne({files: files}).then((err, _) => {
+        doc.updateOne({ files: files }).then((err, _) => {
           if (err) res.status(500);
-          res.status(200).json({ message: `${fileroute} eliminado`});
+          res.status(200).json({ message: `${fileroute} eliminado` });
         });
       }
     });
@@ -347,11 +347,11 @@ router.post("/save_file", (req, res) => {
       if (insurance) {
         let doc = Insurance.findById(insurance.id);
         let files = [...insurance.files];
-        const index = files.map((file) => { return file.path}).indexOf(fileData.path);
+        const index = files.map((file) => { return file.path }).indexOf(fileData.path);
         files[index] = fileData
-        doc.updateOne({files: files}).then((err, _) => {
+        doc.updateOne({ files: files }).then((err, _) => {
           if (err) res.status(500);
-          res.status(200).json({ message: `archivo eliminado`});
+          res.status(200).json({ message: `archivo eliminado` });
         });
       }
     });

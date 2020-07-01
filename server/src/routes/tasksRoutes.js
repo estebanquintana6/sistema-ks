@@ -11,7 +11,7 @@ router.post("/save", (req, res) => {
 
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
-    const taskForm = {...body.taskData, initiator: decoded.id};
+    const taskForm = { ...body.taskData, initiator: decoded.id };
     const task = new Task(taskForm);
     task.save().then((result) => {
       res.json({ message: 'Aseguradora guardada.' });
@@ -65,7 +65,7 @@ router.get("/fetch", (req, res) => {
     if (err) return res.status(401).json({ email: "no permissions" });
     // This is the way I found to make a get all from model.
 
-  Task.find( { $or:[ {'assignee': decoded.id}, {'initiator': decoded.id}]}).populate('assignee').populate('initiator').then((tasks) => {
+    Task.find({ $or: [{ 'assignee': decoded.id }, { 'initiator': decoded.id }] }).populate('assignee').populate('initiator').then((tasks) => {
       res.json({ tasks });
     });
   });

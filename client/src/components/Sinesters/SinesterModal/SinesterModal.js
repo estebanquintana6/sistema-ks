@@ -9,7 +9,6 @@ import {
   Container,
   Row
 } from 'react-bootstrap';
-import ClientsForm from "../ClientsForm/ClientsForm";
 import FileUpload from '../../GenericUploader/FileUpload'
 import FileVisualizer from "../../Files/FileVisualizer"
 
@@ -17,24 +16,26 @@ import swal from '@sweetalert/with-react';
 
 import { formatShortDate } from '../../component-utils';
 
-import "./ClientModal.css";
+import "./SinesterModal.css";
 
-class ClientModal extends Component {
+import SinesterForm from '../SinesterForm/SinesterForm'
+
+class SinesterModal extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      client: this.props.client
+      sinester: this.props.sinester
     };
   }
 
   refresh = () => {
-    this.props.getClients().then(data => {
-      const client = data.clients.find((client) =>
-        client._id === this.state.client._id
+    this.props.getSinesters().then(data => {
+      const sinester = data.sinesters.find((sinester) =>
+        sinester._id === this.state.Sinester._id
       );
       this.setState({
-        client
+        sinester
       });
 
     }).finally(() => {
@@ -63,7 +64,7 @@ class ClientModal extends Component {
 
 
   render() {
-    const { client } = this.state;
+    const { sinester } = this.state;
     return (
       < Container >
         <React.Fragment>
@@ -79,7 +80,7 @@ class ClientModal extends Component {
                             <a class="nav-link active" href="#profile" role="tab" data-toggle="tab"><i class="fas fa-user-circle"></i>Personales</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="#buzz" role="tab" data-toggle="tab"><i class="fas fa-info-circle"></i>Anexos</a>
+                            <a class="nav-link" href="#files" role="tab" data-toggle="tab"><i class="fas fa-file"></i>Anexos</a>
                           </li>
                           <li class="nav-item">
                             <a class="nav-link" href="#deleteTab" role="tab" data-toggle="tab"><i class="fas fa-exclamation-triangle"></i>Eliminar</a>
@@ -87,17 +88,19 @@ class ClientModal extends Component {
                         </ul>
                         <div class="tab-content">
                           <div role="tabpanel" class="tab-pane fade show active" id="profile">
-                            <ClientsForm
-                              client={client}
+                            <SinesterForm
+                              save={this.props.save}
+                              clients={this.props.clients}
+                              sinester={sinester}
                               edit={true}
-                              updateClient={this.props.updateClient}>
-                            </ClientsForm>
+                              updateSinester={this.props.updateSinester}>
+                            </SinesterForm>
                           </div>
-                          <div role="tabpanel" class="tab-pane fade" id="buzz">
+                          <div role="tabpanel" class="tab-pane fade" id="files">
                             <Row>
                               <Col>
                                 <FileVisualizer
-                                  entity={this.state.client}
+                                  entity={this.state.sinester}
                                   downloadFile={this.props.download}
                                   refresh={this.refresh}
                                   removeFile={this.confirmRemoveFile}
@@ -109,15 +112,14 @@ class ClientModal extends Component {
                                 <Row>
                                   <h2 className="swal-title form-title align-left">Subir nuevo archivo</h2>
                                 </Row>
-                                <FileUpload entity={'clients'} target={client} refresh={this.refresh}></FileUpload>
+                                <FileUpload entity={'sinesters'} target={sinester} refresh={this.refresh}></FileUpload>
                               </Col>
                             </Row>
-
                           </div>
                           <div role="tabpanel" class="tab-pane fade" id="deleteTab">
                             <Row className="mt-4">
                               <Col>
-                                <Button className="panel-btn" variant="danger" onClick={this.props.deleteClient.bind(this, client._id, client.name)}>ELIMINAR</Button>
+                                <Button className="panel-btn" variant="danger" onClick={this.props.deleteSinester.bind(this, sinester._id, sinester.description)}>ELIMINAR</Button>
                               </Col>
                             </Row>
                           </div>
@@ -135,4 +137,4 @@ class ClientModal extends Component {
   }
 }
 
-export default ClientModal;
+export default SinesterModal;

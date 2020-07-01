@@ -5,13 +5,13 @@ const passport = require("passport");
 
 const users = require("./routes/userRoutes");
 const clients = require("./routes/clientsRoutes");
-const secom = require("./routes/secomRoutes");
 const token = require("./routes/tokenRoutes");
 const insuranceTypes = require('./routes/insuranceTypesRoutes')
 const companies = require('./routes/companiesRoutes')
 const insurances = require('./routes/insurancesRoutes')
 const tasks = require('./routes/tasksRoutes')
 const invoices = require('./routes/invoicesRoutes');
+const sinesters = require('./routes/sinesterRoutes');
 
 const cars = require('./routes/carInsuranceRoutes');
 const medics = require('./routes/medicInsuranceRoutes');
@@ -65,10 +65,9 @@ let j = regular_jobs.j;
 require("./config/passport")(passport);
 
 // Routes
-app.use(fileUpload({debug: false, createParentPath: true}));
+app.use(fileUpload({ debug: false, createParentPath: true }));
 app.use("/api/users", users);
 app.use("/api/clients", clients);
-app.use("/api/secom", secom);
 app.use("/api/token", token);
 app.use('/api/insurance_types', insuranceTypes);
 app.use('/api/companies', companies);
@@ -76,10 +75,11 @@ app.use('/api/insurances', insurances);
 app.use('/api/tasks', tasks);
 app.use('/api/invoices', invoices);
 
-app.use('/api/cars', cars)
-app.use('/api/medics', medics)
-app.use('/api/danos', danos)
+app.use('/api/cars', cars);
+app.use('/api/medics', medics);
+app.use('/api/danos', danos);
 
+app.use('/api/sinesters', sinesters);
 
 const port = process.env.PORT || 5000;
 

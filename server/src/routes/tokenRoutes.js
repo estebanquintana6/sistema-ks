@@ -14,16 +14,16 @@ router.post('/validate', (req, res) => {
   const body = req.body;
   const token = body.token;
   const email = body.email;
-  
+
   User.findOne({ email }).then(user => {
-    if(!user){
+    if (!user) {
       return res.status(200).json({ "status": false });
     }
     ResetPassword.findOne({
       resetPasswordToken: token,
       userId: user._id
     }).then((reset) => {
-      if(reset){        
+      if (reset) {
         return res.status(200).json({ "status": true });
       } else {
         return res.status(200).json({ "status": false });

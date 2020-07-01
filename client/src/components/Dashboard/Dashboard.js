@@ -7,6 +7,7 @@ import InsurancePanel from '../Insurances/InsurancePanel/InsurancePanel';
 import GeneralInsurancePanel from '../Insurances/GeneralInsurancePanel/GeneralInsurancePanel';
 import ClientsPanel from '../Clients/ClientsPanel/ClientsPanel';
 import InvoicesPanel from '../Invoices/InvoicesPanel/InvoicesPanel';
+import SinesterPanel from '../Sinesters/SinesterPanel/SinesterPanel';
 
 import UploadPanel from '../UploadPanel/UploadPanel';
 //redux
@@ -105,9 +106,11 @@ class Dashboard extends Component {
                 >
                 </UploadPanel>
             </Route>
-
             <Route exact path="/dashboard/invoices">
               <InvoicesPanel history={this.props.history}></InvoicesPanel>
+            </Route>
+            <Route exact path="/dashboard/siniestros">
+              <SinesterPanel history={this.props.history}></SinesterPanel>
             </Route>
           </Switch>
         </div>
