@@ -316,7 +316,12 @@ class SinesterPanel extends Component {
                 {
                   Header: "Aseguradora",
                   id: "company",
-                  accessor: d => this.validateField(d.company.name)
+                  accessor: d => {
+                    if(d.company){
+                      this.validateField(d.company.name)
+                    } 
+                    return "";
+                  }
                 },
                 {
                   Header: "Cliente",
