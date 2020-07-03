@@ -102,6 +102,14 @@ class SinesterForm extends Component {
     e.preventDefault();
 
     this.props.save(this.state);
+
+    swal({
+      icon: "success",
+      content: <h2>Siniestro registrado</h2>,
+    }).then(() => {
+      this.props.refreshPanel();
+    });
+
   }
 
 
