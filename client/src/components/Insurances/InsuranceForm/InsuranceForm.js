@@ -665,25 +665,25 @@ class InsuranceForm extends Component {
 
                         <Form.Group as={Col}>
                           <Form.Label>Fecha límite de pago</Form.Label>
-                          <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(index, e) }} value={this.formatDate(this.state.invoices[index].due_date)} />
+                          <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(i, e) }} value={this.formatDate(this.state.invoices[i].due_date)} />
                         </Form.Group>
                         {(this.isMedicInsurance() || this.isDamageInsurance()) &&
                           <React.Fragment>
                             <Form.Group as={Col}>
                               <Form.Label>Vigencia de</Form.Label>
-                              <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceLimitDate(index, e) }} value={this.formatDate(this.state.invoices[index].pay_limit)} />
+                              <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceLimitDate(i, e) }} value={this.formatDate(this.state.invoices[i].pay_limit)} />
                             </Form.Group>
 
                             <Form.Group as={Col}>
                               <Form.Label>Vigencia a</Form.Label>
-                              <Form.Control type="date" onChange={(e) => this.onChangeInvoiceLimitDate2(index, e)} value={this.formatDate(this.state.invoices[index].pay_limit2)}>
+                              <Form.Control type="date" onChange={(e) => this.onChangeInvoiceLimitDate2(i, e)} value={this.formatDate(this.state.invoices[i].pay_limit2)}>
                               </Form.Control>
                             </Form.Group>
                           </React.Fragment>
                         }
                         <Form.Group as={Col}>
                           <Form.Label>Prima</Form.Label>
-                          <Form.Control onChange={(e) => { this.onChangeInvoiceBounty(index, e) }} value={this.state.invoices[index].bounty} />
+                          <Form.Control onChange={(e) => { this.onChangeInvoiceBounty(i, e) }} value={this.state.invoices[i].bounty} />
                         </Form.Group>
 
                       </Form.Row>
@@ -691,17 +691,17 @@ class InsuranceForm extends Component {
                       <Form.Row>
                         <Form.Group as={Col} md="6">
                           <Form.Label>Comentarios</Form.Label>
-                          <Form.Control onChange={(e) => { this.onChangeInvoiceComment(index, e) }} value={this.state.invoices[index].comments} />
+                          <Form.Control onChange={(e) => { this.onChangeInvoiceComment(i, e) }} value={this.state.invoices[i].comments} />
                         </Form.Group>
                         <Form.Group as={Col} md="6">
                           <Form.Label>Correo</Form.Label>
-                          <Form.Control onChange={(e) => { this.onChangeInvoiceEmail(index, e) }} value={this.state.invoices[index].email} />
+                          <Form.Control onChange={(e) => { this.onChangeInvoiceEmail(i, e) }} value={this.state.invoices[i].email} />
                         </Form.Group>
                       </Form.Row>
                       <Form.Row>
                         <Form.Group as={Col} md="12">
                           <Form.Label>Comentarios de email</Form.Label>
-                          <Form.Control onChange={(e) => { this.onChangeInvoiceEmailComment(index, e) }} value={this.state.invoices[index].email_comment} />
+                          <Form.Control onChange={(e) => { this.onChangeInvoiceEmailComment(i, e) }} value={this.state.invoices[i].email_comment} />
                         </Form.Group>
                       </Form.Row>
                     </Jumbotron>
