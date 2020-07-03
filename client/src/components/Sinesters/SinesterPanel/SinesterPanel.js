@@ -108,6 +108,7 @@ class SinesterPanel extends Component {
       <SinesterForm 
       clients={this.state.clients}
       save={this.props.registerSinester}
+      companies={this.state.companies}
       refreshPanel={this.refresh}
       >
       </SinesterForm>,
