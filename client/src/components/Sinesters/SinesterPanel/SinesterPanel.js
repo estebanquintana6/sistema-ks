@@ -318,7 +318,7 @@ class SinesterPanel extends Component {
                   id: "company",
                   accessor: d => {
                     if(d.company){
-                      this.validateField(d.company.name)
+                      return this.validateField(d.company.name)
                     } 
                     return "";
                   }
