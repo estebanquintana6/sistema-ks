@@ -23,7 +23,10 @@ router.post("/save", (req, res) => {
             sinester: data.sinester,
             description: data.description,
             begin_date: data.begin_date,
-            history: data.history
+            history: data.history,
+            status: data.status,
+            ramo: data.ramo,
+            company: data.company
         });
         sinester.save()
         .then(() => {
