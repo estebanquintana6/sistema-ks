@@ -20,7 +20,6 @@ export const registerCompany = (companyData) => dispatch => {
 
 export const getCompanies = () => dispatch => {
   const token = localStorage.getItem("jwtToken");
-
   return axios
     .get("/api/companies/fetch", { token })
     .then((res) => {
