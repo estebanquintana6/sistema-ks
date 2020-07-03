@@ -77,7 +77,7 @@ class SinesterModal extends Component {
                       <Col md="12">
                         <ul class="nav nav-tabs" role="tablist">
                           <li class="nav-item">
-                            <a class="nav-link active" href="#profile" role="tab" data-toggle="tab"><i class="fas fa-user-circle"></i>Personales</a>
+                            <a class="nav-link active" href="#profile" role="tab" data-toggle="tab"><i class="fas fa-user-circle"></i>Generales</a>
                           </li>
                           <li class="nav-item">
                             <a class="nav-link" href="#files" role="tab" data-toggle="tab"><i class="fas fa-file"></i>Anexos</a>

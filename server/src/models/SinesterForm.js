@@ -13,7 +13,7 @@ var Sinester = new Schema({
         required: false
     },
     ramo: {
-        type: String,
+        type: ['GMM', 'VIDA', 'AUTOS', 'DAÑOS'],
         required: false
     },
     //CONTRATANTE 	ASEGURADORA	NO DE POLIZA	NO DE SINIESTRO	FECHA DE SINIESTRO	FECHA FIN 	TIPO DE SINIESTRO	ESTATUS
