@@ -295,6 +295,11 @@ class SinesterPanel extends Component {
               Header: "Datos",
               columns: [
                 {
+                  Header: "Ramo",
+                  id: "ramo",
+                  accessor: d => this.validateField(d.ramo)
+                },
+                {
                   Header: "Cliente",
                   id: "client",
                   accessor: d => this.validateField(d.client.name)
@@ -303,11 +308,6 @@ class SinesterPanel extends Component {
                   Header: "Siniestro",
                   id: "sinester",
                   accessor: d => this.validateField(d.sinester)
-                },
-                {
-                  Header: "Descripcion",
-                  id: "description",
-                  accessor: d => this.validateField(d.description)
                 },
                 {
                   Header: "Status",
@@ -345,6 +345,21 @@ class SinesterPanel extends Component {
                     return res
                   }
                 },
+                {
+                  Header: "Días totales",
+                  id: "total_days",
+                  accessor: d => {
+                    let first_day = new Date(d.begin_date);
+                    first_day.setDate(first_day.getDate() + 1);
+
+                    const today = new Date();
+
+                    const diffTime = Math.abs(today - first_day);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+
+                    return diffDays;
+                  }
+                }
               ]
             }
             ]}
