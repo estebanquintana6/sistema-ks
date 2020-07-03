@@ -634,7 +634,6 @@ class InsuranceForm extends Component {
                   }
                 }).map((value, index) => {
                   let i;
-                  i
                   if (this.props.invoicePanel) {
                     i = this.state.invoices.map(function (e) { return e.invoice; }).indexOf(value.invoice);
                   } else {
