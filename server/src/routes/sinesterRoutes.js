@@ -62,7 +62,7 @@ router.get("/fetch", (req, res) => {
       return res.status(401).json({ email: "no permissions" });
     }
     // This is the way I found to make a get all from model.
-    Sinester.find({}).populate('client').then((sinesters) => {
+    Sinester.find({}).populate('client').populate('company').then((sinesters) => {
       res.json({ sinesters });
     });
   });

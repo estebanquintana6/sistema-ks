@@ -92,6 +92,7 @@ class SinesterModal extends Component {
                               save={this.props.save}
                               clients={this.props.clients}
                               sinester={sinester}
+                              companies={this.props.companies}
                               edit={true}
                               updateSinester={this.props.updateSinester}>
                             </SinesterForm>

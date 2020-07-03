@@ -101,14 +101,7 @@ class SinesterForm extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    this.props.save(this.state).then(() => {
-      swal({
-        icon: "success",
-        content: <h2>Siniestro registrado</h2>,
-      }).then(() => {
-        this.props.refreshPanel();
-      });
-    });
+    this.props.save(this.state);
   }
 
 
@@ -138,7 +131,7 @@ class SinesterForm extends Component {
                           </ul>
                           <div className="tab-content">
                             <div role="tabpanel" className="tab-pane fade show active" id="generales">
-                            <Form.Row className="mt-4">
+                              <Form.Row className="mt-4">
                                 <Form.Group as={Col} md={4} controlId="ramo">
                                   <Form.Label>Ramo</Form.Label>
                                   <Form.Control as="select" onChange={this.onChange} value={this.state.ramo}>
@@ -147,6 +140,13 @@ class SinesterForm extends Component {
                                     <option value='VIDA'>VIDA</option>
                                     <option value='AUTOS'>AUTOS</option>
                                     <option value='DAÑOS'>DAÑOS</option>
+                                  </Form.Control>
+                                </Form.Group>
+                                <Form.Group as={Col} md={4} controlId="company">
+                                  <Form.Label>Aseguradora</Form.Label>
+                                  <Form.Control required as="select" onChange={this.onChange} value={this.state.company && this.state.company._id}>
+                                    <option></option>
+                                    {this.props.companies.map((company) => <option value={company._id}>{`${company.name}`}</option>)}
                                   </Form.Control>
                                 </Form.Group>
                               </Form.Row>

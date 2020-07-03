@@ -4,6 +4,7 @@ import { Container, Row } from 'react-bootstrap';
 import { connect } from "react-redux";
 import { getClients } from '../../../actions/registerClient'
 import { getSinisters, registerSinester, updateSinester, deleteSinester, download, removeFile, saveFile } from "../../../actions/sinesterActions";
+import { getCompanies } from "../../../actions/companyActions";
 
 import swal from '@sweetalert/with-react';
 
@@ -24,12 +25,15 @@ class SinesterPanel extends Component {
     super(props);
     this.state = {
       filtered: [],
-      data: []
+      data: [],
+      companies: [],
+      clients: []
     };
   }
 
   async componentDidMount() {
     this.prepareClientsForForm();
+    this.prepareCompaniesForForm();
     this.refresh();
   }
 
@@ -37,6 +41,13 @@ class SinesterPanel extends Component {
     this.props.getClients().then(data => {
       this.setState({ clients: data.clients });
     });
+  }
+
+  prepareCompaniesForForm = () => {
+    this.props.getCompanies().then(data => {
+      this.setState({ companies: data.companies });
+    });
+
   }
 
   refresh = () => {
@@ -193,7 +204,9 @@ class SinesterPanel extends Component {
         if (status === 200) {
           swal({
             icon: "success",
-            content: <h2>Cliente actualizado</h2>,
+            content: <h2>Siniestro registrado</h2>,
+          }).then(() => {
+            this.refresh();
           });
         } else {
           swal({
@@ -234,6 +247,7 @@ class SinesterPanel extends Component {
         save={this.updateSinester}
         sinester={sinester}
         clients={this.state.clients}
+        companies={this.state.companies}
         refreshPanel={this.refresh}
         updateSinester={this.updateSinester}
         deleteSinester={this.deleteSinester}
@@ -300,6 +314,11 @@ class SinesterPanel extends Component {
                   accessor: d => this.validateField(d.ramo)
                 },
                 {
+                  Header: "Aseguradora",
+                  id: "company",
+                  accessor: d => this.validateField(d.company.name)
+                },
+                {
                   Header: "Cliente",
                   id: "client",
                   accessor: d => this.validateField(d.client.name)
@@ -346,7 +365,7 @@ class SinesterPanel extends Component {
                   }
                 },
                 {
-                  Header: "Días totales",
+                  Header: "Días proceso",
                   id: "total_days",
                   accessor: d => {
                     let first_day = new Date(d.begin_date);
@@ -386,5 +405,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getSinisters, registerSinester, updateSinester, deleteSinester, getClients, download, removeFile, saveFile }
+  { getSinisters, registerSinester, updateSinester, deleteSinester, getClients, download, removeFile, saveFile, getCompanies }
 )(SinesterPanel);

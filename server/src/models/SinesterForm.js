@@ -16,6 +16,11 @@ var Sinester = new Schema({
         type: ['GMM', 'VIDA', 'AUTOS', 'DAÑOS'],
         required: false
     },
+    company: {
+        type: Schema.Types.ObjectId,
+        ref: 'Companies',
+        required: false
+    },
     //CONTRATANTE 	ASEGURADORA	NO DE POLIZA	NO DE SINIESTRO	FECHA DE SINIESTRO	FECHA FIN 	TIPO DE SINIESTRO	ESTATUS
     client: {
         type: Schema.Types.ObjectId,
