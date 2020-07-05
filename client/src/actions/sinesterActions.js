@@ -112,3 +112,14 @@ export const saveFile = (fileData, id) => dispatch => {
       return err;
     });
 }
+
+export const getSinester = (id) => dispatch => {
+  const token = localStorage.getItem("jwtToken");
+  return axios
+    .get("/api/sinesters/fetch/" + id, { token })
+    .then((res) => {
+      return res.data
+    }).catch(err => {
+      return err;
+    });
+}

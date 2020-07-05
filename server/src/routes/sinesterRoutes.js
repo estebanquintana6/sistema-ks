@@ -222,4 +222,17 @@ router.post("/delete", (req, res) => {
   });
 });
 
+router.get("/fetch/:id", (req, res) => {
+  const token = req.headers.authorization;
+  jwt.verify(token, secretKey, function (err) {
+    if (err) return res.status(401).json({ email: "no permissions" });
+    Sinester.findById(req.params.id).populate('client').populate('company').then((sinester) => {
+      res.json(sinester);
+    }).catch(err => {
+      res.json(err)
+    });
+  });
+});
+
+
 module.exports = router;

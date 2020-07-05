@@ -15,8 +15,6 @@ import FileVisualizer from "../../Files/FileVisualizer"
 
 import swal from '@sweetalert/with-react';
 
-import { formatShortDate } from '../../component-utils';
-
 import "./ClientModal.css";
 
 class ClientModal extends Component {
@@ -29,14 +27,10 @@ class ClientModal extends Component {
   }
 
   refresh = () => {
-    this.props.getClients().then(data => {
-      const client = data.clients.find((client) =>
-        client._id === this.state.client._id
-      );
+    this.props.getClient(this.state.client._id).then(client => {
       this.setState({
         client
       });
-
     }).finally(() => {
       this.props.refreshPanel();
     });
@@ -58,12 +52,10 @@ class ClientModal extends Component {
           });
         }
       });
-
   }
 
 
   render() {
-    const { client } = this.state;
     return (
       < Container >
         <React.Fragment>
@@ -88,7 +80,7 @@ class ClientModal extends Component {
                         <div class="tab-content">
                           <div role="tabpanel" class="tab-pane fade show active" id="profile">
                             <ClientsForm
-                              client={client}
+                              client={this.state.client}
                               edit={true}
                               updateClient={this.props.updateClient}>
                             </ClientsForm>
@@ -109,15 +101,14 @@ class ClientModal extends Component {
                                 <Row>
                                   <h2 className="swal-title form-title align-left">Subir nuevo archivo</h2>
                                 </Row>
-                                <FileUpload entity={'clients'} target={client} refresh={this.refresh}></FileUpload>
+                                <FileUpload entity={'clients'} target={this.state.client} refresh={this.refresh} finally={() => console.log("done")}></FileUpload>
                               </Col>
                             </Row>
-
                           </div>
                           <div role="tabpanel" class="tab-pane fade" id="deleteTab">
                             <Row className="mt-4">
                               <Col>
-                                <Button className="panel-btn" variant="danger" onClick={this.props.deleteClient.bind(this, client._id, client.name)}>ELIMINAR</Button>
+                                <Button className="panel-btn" variant="danger" onClick={this.props.deleteClient.bind(this, this.state.client._id, this.state.client.name)}>ELIMINAR</Button>
                               </Col>
                             </Row>
                           </div>

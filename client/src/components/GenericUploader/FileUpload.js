@@ -71,8 +71,8 @@ const FileUpload = (props) => {
         setMessage(err.response.data.msg);
       }
     } finally {
-      console.log("here");
       props.refresh();
+      props.finally();
     }
   };
 

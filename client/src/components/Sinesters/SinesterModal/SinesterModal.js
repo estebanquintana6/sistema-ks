@@ -30,10 +30,7 @@ class SinesterModal extends Component {
   }
 
   refresh = () => {
-    this.props.getSinesters().then(data => {
-      const sinester = data.sinesters.find((sinester) =>
-        sinester._id === this.state.Sinester._id
-      );
+    this.props.getSinester(this.state.sinester._id).then(sinester => {
       this.setState({
         sinester
       });
@@ -113,7 +110,7 @@ class SinesterModal extends Component {
                                 <Row>
                                   <h2 className="swal-title form-title align-left">Subir nuevo archivo</h2>
                                 </Row>
-                                <FileUpload entity={'sinesters'} target={sinester} refresh={this.refresh}></FileUpload>
+                                <FileUpload entity={'sinesters'} target={sinester} refresh={this.refresh} finally={() => console.log("done")}></FileUpload>
                               </Col>
                             </Row>
                           </div>

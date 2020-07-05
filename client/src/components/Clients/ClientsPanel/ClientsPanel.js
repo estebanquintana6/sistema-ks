@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Container, Row } from 'react-bootstrap';
 import { connect } from "react-redux";
-import { getClients, updateClient, deleteClient, registerClient, download, removeFile, saveFile } from "../../../actions/registerClient";
+import { getClients, updateClient, deleteClient, registerClient, download, removeFile, saveFile, getClient } from "../../../actions/registerClient";
 import swal from '@sweetalert/with-react';
 
 import ClientsForm from "../ClientsForm/ClientsForm";
@@ -40,7 +40,7 @@ class ClientsPanel extends Component {
         postal_code: "Código Postal"
       },
       excludedFields: ['__v', '_id', 'files', 'created_at'],
-      excelHeader: ['Tipo de Persona', 'RFC', 'Nombre', 'Sexo','Estado', 'Ciudad', 'Código Postal', 'Comentarios']
+      excelHeader: ['Tipo de Persona', 'RFC', 'Nombre', 'Sexo', 'Estado', 'Ciudad', 'Código Postal', 'Comentarios']
     };
   }
 
@@ -123,7 +123,7 @@ class ClientsPanel extends Component {
     swal({
       title: `Registro de cliente`,
       text: "Captura los datos del nuevo cliente",
-      className: "width-800pt", 
+      className: "width-800pt",
       content: <ClientsForm save={this.registerClient}></ClientsForm>,
       buttons: false
     })
@@ -148,6 +148,7 @@ class ClientsPanel extends Component {
       content: <ClientModal
         client={client}
         getClients={this.props.getClients}
+        getClient={this.props.getClient}
         refreshPanel={this.refresh}
         updateClient={this.updateClient}
         deleteClient={this.deleteClient}
@@ -178,34 +179,34 @@ class ClientsPanel extends Component {
   }
 
 
-  b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+  b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
     console.log('B64', b64Data)
     console.log(contentType)
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
-  
+
     for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
       const slice = byteCharacters.slice(offset, offset + sliceSize);
-  
+
       const byteNumbers = new Array(slice.length);
       for (let i = 0; i < slice.length; i++) {
         byteNumbers[i] = slice.charCodeAt(i);
       }
-  
+
       const byteArray = new Uint8Array(byteNumbers);
       byteArrays.push(byteArray);
     }
     console.log('BA', byteArrays)
-  
-    const blob = new Blob(byteArrays, {type: contentType});
+
+    const blob = new Blob(byteArrays, { type: contentType });
     return blob;
   }
-  
+
   determineContentType = (extension) => {
     let type = "";
     let fileExtension = extension.toLowerCase();
-    
-    switch(fileExtension) {
+
+    switch (fileExtension) {
       case "PDF":
         type = 'application/pdf';
         break;
@@ -221,11 +222,11 @@ class ClientsPanel extends Component {
     return type;
   }
 
-  confirmDownload  = async (file) => {
+  confirmDownload = async (file) => {
     try {
       const response = await this.props.download(file)
       const data = response.data
-      const  {encoded, fullName, extension} = data
+      const { encoded, fullName, extension } = data
       console.log('DATA', data)
       const contentType = this.determineContentType(extension)
       const blob = this.b64toBlob(encoded, contentType);
@@ -237,7 +238,7 @@ class ClientsPanel extends Component {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-    } catch(err) {
+    } catch (err) {
 
     }
   }
@@ -266,7 +267,7 @@ class ClientsPanel extends Component {
   }
 
   validateField = (field) => {
-    if(field) return field;
+    if (field) return field;
     return '';
   }
 
@@ -309,54 +310,54 @@ class ClientsPanel extends Component {
                   }
                 }
               }}
-            columns={[{
-              Header: "Datos",
-              columns: [
-                {
-                  Header: "Nombre",
-                  id: "name",
-                  accessor: d => this.validateField(d.name)
-                },
-                {
-                  Header: "RFC/Razon social",
-                  id: "rfc",
-                  accessor: d => this.validateField(d.rfc)
-                },
-                {
-                  Header: "Correo",
-                  id: "email",
-                  accessor: d => {
-                    if(d.contacts[0]){
-                      return d.contacts[0].email;
-                    }
-                    return '';
-                  }
-                },
-                {
-                  Header: "Telefono",
-                  id: "telephone",
-                  accessor: d => {
-                    if(d.contacts[0]){
-                      return d.contacts[0].telephone;
-                    }
-                    return '';
+              columns={[{
+                Header: "Datos",
+                columns: [
+                  {
+                    Header: "Nombre",
+                    id: "name",
+                    accessor: d => this.validateField(d.name)
                   },
-                },
-                {
-                  Header: "Código postal",
-                  id: "postal_code",
-                  accessor: d => this.validateField(d.postal_code)
-                }
-              ]
-            }
-            ]}
-            defaultPageSize={10}
-            className="-striped -highlight"
-            getTrProps={this.getTrProps}
-          />
+                  {
+                    Header: "RFC/Razon social",
+                    id: "rfc",
+                    accessor: d => this.validateField(d.rfc)
+                  },
+                  {
+                    Header: "Correo",
+                    id: "email",
+                    accessor: d => {
+                      if (d.contacts[0]) {
+                        return d.contacts[0].email;
+                      }
+                      return '';
+                    }
+                  },
+                  {
+                    Header: "Telefono",
+                    id: "telephone",
+                    accessor: d => {
+                      if (d.contacts[0]) {
+                        return d.contacts[0].telephone;
+                      }
+                      return '';
+                    },
+                  },
+                  {
+                    Header: "Código postal",
+                    id: "postal_code",
+                    accessor: d => this.validateField(d.postal_code)
+                  }
+                ]
+              }
+              ]}
+              defaultPageSize={10}
+              className="-striped -highlight"
+              getTrProps={this.getTrProps}
+            />
           </div>
           <div className="mt-4">
-          <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields} header={this.state.excelHeader} sortableColumn={'Nombre'} onComplete={this.refresh}></ExportDataToCSV>
+            <ExportDataToCSV csvData={this.state.data} fileName={'clientes'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields} header={this.state.excelHeader} sortableColumn={'Nombre'} onComplete={this.refresh}></ExportDataToCSV>
           </div>
         </Container>
       </React.Fragment>
@@ -377,5 +378,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getClients, updateClient, deleteClient, registerClient, download, removeFile, saveFile }
+  { getClient, getClients, updateClient, deleteClient, registerClient, download, removeFile, saveFile }
 )(ClientsPanel);

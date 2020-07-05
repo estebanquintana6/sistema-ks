@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Container, Row } from 'react-bootstrap';
 import { connect } from "react-redux";
 import { getClients } from '../../../actions/registerClient'
-import { getSinisters, registerSinester, updateSinester, deleteSinester, download, removeFile, saveFile } from "../../../actions/sinesterActions";
+import { getSinester, getSinisters, registerSinester, updateSinester, deleteSinester, download, removeFile, saveFile } from "../../../actions/sinesterActions";
 import { getCompanies } from "../../../actions/companyActions";
 
 import swal from '@sweetalert/with-react';
@@ -17,7 +17,7 @@ import SinesterModal from "../SinesterModal/SinesterModal"
 import "react-table/react-table.css";
 import { DateRangePicker } from 'react-dates';
 import moment from 'moment';
-import {formatShortDate, formatDateObj} from '../../component-utils';
+import { formatShortDate } from '../../component-utils';
 
 
 class SinesterPanel extends Component {
@@ -95,7 +95,7 @@ class SinesterPanel extends Component {
   }
 
   validateField = (field) => {
-    if(field) return field;
+    if (field) return field;
     return '';
   }
 
@@ -103,15 +103,15 @@ class SinesterPanel extends Component {
     swal({
       title: `Registro de siniestro`,
       text: "Captura los datos del siniestro",
-      className: "width-800pt", 
-      content: 
-      <SinesterForm 
-      clients={this.state.clients}
-      save={this.props.registerSinester}
-      companies={this.state.companies}
-      refreshPanel={this.refresh}
-      >
-      </SinesterForm>,
+      className: "width-800pt",
+      content:
+        <SinesterForm
+          clients={this.state.clients}
+          save={this.props.registerSinester}
+          companies={this.state.companies}
+          refreshPanel={this.refresh}
+        >
+        </SinesterForm>,
       buttons: false
     })
   }
@@ -133,34 +133,34 @@ class SinesterPanel extends Component {
   }
 
 
-  b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+  b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
     console.log('B64', b64Data)
     console.log(contentType)
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
-  
+
     for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
       const slice = byteCharacters.slice(offset, offset + sliceSize);
-  
+
       const byteNumbers = new Array(slice.length);
       for (let i = 0; i < slice.length; i++) {
         byteNumbers[i] = slice.charCodeAt(i);
       }
-  
+
       const byteArray = new Uint8Array(byteNumbers);
       byteArrays.push(byteArray);
     }
     console.log('BA', byteArrays)
-  
-    const blob = new Blob(byteArrays, {type: contentType});
+
+    const blob = new Blob(byteArrays, { type: contentType });
     return blob;
   }
-  
+
   determineContentType = (extension) => {
     let type = "";
     let fileExtension = extension.toLowerCase();
-    
-    switch(fileExtension) {
+
+    switch (fileExtension) {
       case "PDF":
         type = 'application/pdf';
         break;
@@ -176,11 +176,11 @@ class SinesterPanel extends Component {
     return type;
   }
 
-  confirmDownload  = async (file) => {
+  confirmDownload = async (file) => {
     try {
       const response = await this.props.download(file)
       const data = response.data
-      const  {encoded, fullName, extension} = data
+      const { encoded, fullName, extension } = data
       console.log('DATA', data)
       const contentType = this.determineContentType(extension)
       const blob = this.b64toBlob(encoded, contentType);
@@ -192,7 +192,7 @@ class SinesterPanel extends Component {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-    } catch(err) {
+    } catch (err) {
 
     }
   }
@@ -250,6 +250,7 @@ class SinesterPanel extends Component {
         clients={this.state.clients}
         companies={this.state.companies}
         refreshPanel={this.refresh}
+        getSinester={this.props.getSinester}
         updateSinester={this.updateSinester}
         deleteSinester={this.deleteSinester}
         download={this.download}
@@ -278,7 +279,7 @@ class SinesterPanel extends Component {
           </Container>
           <br />
           <div className="full-width">
-          <ReactTable
+            <ReactTable
               data={data}
               filterable
               filtered={this.state.filtered}
@@ -288,9 +289,9 @@ class SinesterPanel extends Component {
               defaultFilterMethod={(filter, row, column) => {
                 const notFilterable = ['begin_date']
 
-                if(notFilterable.includes(filter.id)) {
+                if (notFilterable.includes(filter.id)) {
                   const id = filter.pivotId || filter.id;
-                  const res = row[id] !== undefined ? moment.unix(row[id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
+                  const res = row[id] !== undefined ? moment.unix(row[id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'), null, '[]') : true
                   return res
                 }
                 const id = filter.pivotId || filter.id;
@@ -306,92 +307,93 @@ class SinesterPanel extends Component {
                   }
                 }
               }}
-            columns={[{
-              Header: "Datos",
-              columns: [
-                {
-                  Header: "Ramo",
-                  id: "ramo",
-                  accessor: d => this.validateField(d.ramo)
-                },
-                {
-                  Header: "Aseguradora",
-                  id: "company",
-                  accessor: d => {
-                    if(d.company){
-                      return this.validateField(d.company.name)
-                    } 
-                    return "";
-                  }
-                },
-                {
-                  Header: "Cliente",
-                  id: "client",
-                  accessor: d => this.validateField(d.client.name)
-                },
-                {
-                  Header: "Siniestro",
-                  id: "sinester",
-                  accessor: d => this.validateField(d.sinester)
-                },
-                {
-                  Header: "Status",
-                  id: "status",
-                  accessor: d => this.validateField(d.status)
-                },
-                {
-                  Header: "Fecha de inicio",
-                  id: "begin_date",
-                  Cell: c => <span>{c.original.begin_date && formatShortDate(c.original.begin_date)}</span>,
-                  accessor: d => moment(d.begin_date).unix(),
-                  width: 300,
-                  Filter: ({filter, onChange}) => (
-                    <DateRangePicker
-                      startDateId="start3"
-                      endDateId="end3"
-                      startDate={this.state.searchStartDate}
-                      endDate={this.state.searchEndDate}
-                      onDatesChange={({ startDate, endDate }) => {
-                        this.setState({ searchStartDate: startDate, searchEndDate: endDate }); 
-                        onChange({startDate, endDate});}}
-                      focusedInput={this.state.focusedInput3}
-                      onFocusChange={focusedInput => this.setState({ focusedInput3: focusedInput })}
-                      isOutsideRange={() => false}
-                      withPortal={true}
-                      showClearDates={true}
-                    />
-                    ),
-                  filterMethod: (filter, row) => {
-                    if (filter.value.startDate === null || filter.value.endDate === null) {
-                      // Incomplet or cleared date picker
-                      return true
+              columns={[{
+                Header: "Datos",
+                columns: [
+                  {
+                    Header: "Ramo",
+                    id: "ramo",
+                    accessor: d => this.validateField(d.ramo)
+                  },
+                  {
+                    Header: "Aseguradora",
+                    id: "company",
+                    accessor: d => {
+                      if (d.company) {
+                        return this.validateField(d.company.name)
+                      }
+                      return "";
                     }
-                    const res = row[filter.id] !== undefined ? moment.unix(row[filter.id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true
-                    return res
+                  },
+                  {
+                    Header: "Cliente",
+                    id: "client",
+                    accessor: d => this.validateField(d.client.name)
+                  },
+                  {
+                    Header: "Siniestro",
+                    id: "sinester",
+                    accessor: d => this.validateField(d.sinester)
+                  },
+                  {
+                    Header: "Status",
+                    id: "status",
+                    accessor: d => this.validateField(d.status)
+                  },
+                  {
+                    Header: "Fecha de inicio",
+                    id: "begin_date",
+                    Cell: c => <span>{c.original.begin_date && formatShortDate(c.original.begin_date)}</span>,
+                    accessor: d => moment(d.begin_date).unix(),
+                    width: 300,
+                    Filter: ({ filter, onChange }) => (
+                      <DateRangePicker
+                        startDateId="start3"
+                        endDateId="end3"
+                        startDate={this.state.searchStartDate}
+                        endDate={this.state.searchEndDate}
+                        onDatesChange={({ startDate, endDate }) => {
+                          this.setState({ searchStartDate: startDate, searchEndDate: endDate });
+                          onChange({ startDate, endDate });
+                        }}
+                        focusedInput={this.state.focusedInput3}
+                        onFocusChange={focusedInput => this.setState({ focusedInput3: focusedInput })}
+                        isOutsideRange={() => false}
+                        withPortal={true}
+                        showClearDates={true}
+                      />
+                    ),
+                    filterMethod: (filter, row) => {
+                      if (filter.value.startDate === null || filter.value.endDate === null) {
+                        // Incomplet or cleared date picker
+                        return true
+                      }
+                      const res = row[filter.id] !== undefined ? moment.unix(row[filter.id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'), null, '[]') : true
+                      return res
+                    }
+                  },
+                  {
+                    Header: "Días proceso",
+                    id: "total_days",
+                    accessor: d => {
+                      let first_day = new Date(d.begin_date);
+                      first_day.setDate(first_day.getDate() + 1);
+
+                      const today = new Date();
+
+                      const diffTime = Math.abs(today - first_day);
+                      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                      return diffDays;
+                    }
                   }
-                },
-                {
-                  Header: "Días proceso",
-                  id: "total_days",
-                  accessor: d => {
-                    let first_day = new Date(d.begin_date);
-                    first_day.setDate(first_day.getDate() + 1);
-
-                    const today = new Date();
-
-                    const diffTime = Math.abs(today - first_day);
-                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-
-                    return diffDays;
-                  }
-                }
-              ]
-            }
-            ]}
-            defaultPageSize={10}
-            className="-striped -highlight"
-            getTrProps={this.getTrProps}
-          />
+                ]
+              }
+              ]}
+              defaultPageSize={10}
+              className="-striped -highlight"
+              getTrProps={this.getTrProps}
+            />
           </div>
         </Container>
       </React.Fragment>
@@ -411,5 +413,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getSinisters, registerSinester, updateSinester, deleteSinester, getClients, download, removeFile, saveFile, getCompanies }
+  { getSinester, getSinisters, registerSinester, updateSinester, deleteSinester, getClients, download, removeFile, saveFile, getCompanies }
 )(SinesterPanel);

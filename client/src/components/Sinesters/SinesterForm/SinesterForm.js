@@ -210,12 +210,14 @@ class SinesterForm extends Component {
                                   </Form.Control>
                                 </Form.Group>
                               </Form.Row>
+
                               <Form.Row>
                                 <Form.Group as={Col} md={12} controlId="description">
-                                  <Form.Label>Padecimiento</Form.Label>
+                                  <Form.Label>{this.state.ramo === 'AUTOS' ? "Taller" : "Padecimiento"}</Form.Label>
                                   <Form.Control as="textarea" onChange={this.onChange} value={this.state.description} />
                                 </Form.Group>
                               </Form.Row>
+
                             </div>
                             <div role="tabpanel" className="tab-pane fade" id="buzz">
                               <Row>

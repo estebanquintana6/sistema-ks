@@ -271,6 +271,17 @@ router.get("/fetch", (req, res) => {
   });
 });
 
+router.get("/fetch/:id", (req, res) => {
+  const token = req.headers.authorization;
+  jwt.verify(token, secretKey, function (err) {
+    if (err) return res.status(401).json({ email: "no permissions" });
+    Client.findById(req.params.id).then((client) => {
+      res.json(client);
+    }).catch(err => {
+      res.json(err)
+    });
+  });
+});
 
 
 

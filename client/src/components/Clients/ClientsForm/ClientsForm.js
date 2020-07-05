@@ -25,6 +25,10 @@ class ClientsForm extends Component {
     this.prepareClientForForm();
   }
 
+  componentWillReceiveProps() {
+    this.prepareClientForForm();
+  }
+
   prepareClientForForm = () => {
     const auxObj = {}
     Object.keys(this.props.client).forEach(key => {

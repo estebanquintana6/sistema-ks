@@ -3,11 +3,12 @@ import {
   Button,
   Card,
   Col,
-  Container,
   Form,
   Row,
 } from 'react-bootstrap';
-import {formatShortDate, formatDateObj} from '../component-utils' ;
+import {formatShortDate} from '../component-utils' ;
+
+import swal from '@sweetalert/with-react';
 
 class FileVisualizer extends Component {
   constructor(props){
@@ -16,6 +17,10 @@ class FileVisualizer extends Component {
       editingFile: null,
       entity: props.entity,
     }
+  }
+
+  componentWillReceiveProps({entity}) {
+    this.setState({...this.state,entity})
   }
 
   onChange = (index, e) => {

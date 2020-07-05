@@ -130,7 +130,7 @@ class InsuranceModal extends Component {
           <Row>                
             <h2 className="swal-title form-title align-left">Subir nuevo archivo</h2>
           </Row>
-          <FileUpload entity={'insurances'} refresh={this.refresh} target={this.state.insurance}></FileUpload>
+          <FileUpload entity={'insurances'} refresh={this.refresh} target={this.state.insurance} finally={() => console.log("done")}></FileUpload>
       </div>
     });
   }
