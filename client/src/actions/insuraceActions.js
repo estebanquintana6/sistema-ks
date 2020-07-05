@@ -41,6 +41,18 @@ export const getAllInsurances = () => dispatch => {
     });
 }
 
+
+export const getInsurance = (id) => dispatch => {
+  const token = localStorage.getItem("jwtToken");
+  return axios
+    .get("/api/insurances/fetchOne/" + id, { token })
+    .then((res) => {
+      return res.data
+    }).catch(err => {
+      return err;
+    });
+}
+
 export const updateInsurance = (insuranceData) => dispatch => {
   const token = localStorage.getItem("jwtToken");
   const data = {

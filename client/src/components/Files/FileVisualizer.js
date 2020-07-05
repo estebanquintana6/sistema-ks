@@ -51,7 +51,7 @@ class FileVisualizer extends Component {
           <Row>
           {this.state.entity.files.map((file, index) => {
             return (<React.Fragment key={index}>
-              <Card style={{ width: '18rem' }} className="ml-3">
+              <Card style={{ width: '18rem' }} className="ml-3 mt-3">
                 <Card.Body>
                   <Card.Title>{file.path.replace(/^.*[\\\/]/, '')}</Card.Title>
                   {(this.state.editingFile === index) ? (<div>

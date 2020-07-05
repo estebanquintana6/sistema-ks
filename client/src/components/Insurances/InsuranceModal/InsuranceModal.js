@@ -28,12 +28,9 @@ class InsuranceModal extends Component {
   }
 
   refresh = () => {
-    this.props.getInsurances(this.props.type).then(data => {
-      const insurance = data.insurances.find((insurance) => 
-        insurance._id === this.state.insurance._id
-      );
+    this.props.getInsurance(this.state.insurance._id).then(data => {
       this.setState({
-        insurance: insurance
+        insurance: data
       });
     }).finally(() => {
       this.viewFiles();

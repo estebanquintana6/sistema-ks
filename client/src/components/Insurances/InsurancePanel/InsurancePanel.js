@@ -7,7 +7,8 @@ import { connect } from "react-redux";
 import { 
   createInsurance, 
   deleteInsurance,
-  updateInsurance, 
+  updateInsurance,
+  getInsurance,
   getInsurances, 
   cancelInsurance, 
   activateInsurance, 
@@ -232,7 +233,9 @@ class InsurancePanel extends Component {
         saveFile={this.saveFile}
         removeFile={this.confirmRemoveFile}
         refresh={this.refresh}
-        getInsurances={this.props.getInsurances}>
+        getInsurances={this.props.getInsurances}
+        getInsurance={this.props.getInsurance}
+        >
       </InsuranceModal>,
       buttons: false,
       title: `Póliza: ${insurance.policy}`
@@ -762,5 +765,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getClients, getCompanies, createInsurance, deleteInsurance, updateInsurance, getInsurances, cancelInsurance, activateInsurance, changePayStatus, download, removeFile, saveFile }
+  { getClients, getCompanies, createInsurance, deleteInsurance, updateInsurance, getInsurance, getInsurances, cancelInsurance, activateInsurance, changePayStatus, download, removeFile, saveFile }
 )(InsurancePanel);
