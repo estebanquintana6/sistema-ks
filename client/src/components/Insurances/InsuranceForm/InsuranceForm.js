@@ -634,11 +634,9 @@ class InsuranceForm extends Component {
                   }
                 }).map((value, index) => {
                   let i;
-                  if (this.props.invoicePanel) {
-                    i = this.state.invoices.map(function (e) { return e._id; }).indexOf(value._id);
-                  } else {
-                    i = index;
-                  }
+                  if (value._id) i = this.state.invoices.map(function (e) { return e._id; }).indexOf(value._id)
+                  else i = index;
+
                   return (
                     <Jumbotron>
                       <h6 className="invoice-title">Recibo {i + 1}</h6>
