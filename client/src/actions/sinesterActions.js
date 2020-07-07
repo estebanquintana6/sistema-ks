@@ -123,3 +123,14 @@ export const getSinester = (id) => dispatch => {
       return err;
     });
 }
+
+export const getById = (id) => dispatch => {
+  const token = localStorage.getItem("jwtToken");
+  return axios
+    .get("/api/sinesters/fetch_sinister/" + id, { token })
+    .then((res) => {
+      return res.data
+    }).catch(err => {
+      return err;
+    });
+}

@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import { Container, Row } from 'react-bootstrap';
 import { connect } from "react-redux";
 import { getClients } from '../../../actions/registerClient'
-import { getSinester, getSinisters, registerSinester, updateSinester, deleteSinester, download, removeFile, saveFile } from "../../../actions/sinesterActions";
+import { getSinester, getSinisters, registerSinester, updateSinester, deleteSinester, download, removeFile, saveFile, getById } from "../../../actions/sinesterActions";
 import { getCompanies } from "../../../actions/companyActions";
+import { ExportDataToCSV } from "../../ExportCSV/ExportCSV";
 
 import swal from '@sweetalert/with-react';
 
@@ -27,7 +28,25 @@ class SinesterPanel extends Component {
       filtered: [],
       data: [],
       companies: [],
-      clients: []
+      clients: [],
+      resultant: null,
+      fieldTranslation: {
+        sinesterType: "Tipo de siniestro",
+        type: "Tipo",
+        status: "Status",
+        ramo: "Ramo",
+        company: "Aseguradora",
+        client: "Cliente",
+        affected: "Afectado",
+        folio: "Folio",
+        sinester: 'Siniestro',
+        begin_date: "Fecha de inicio",
+        end_date: "Fecha de fin",
+        description: "Descripción",
+        total_days: 'Días de proceso'
+      },
+      excludedFields: ['__v', '_id', 'history', 'files'],
+      excelHeader: ['Días de proceso','Ramo', 'Aseguradora', 'Cliente', 'Siniestro', 'Status', 'Folio', 'Fecha de inicio', 'Fecha de fin', 'Descipción', 'Tipo', 'Tipo de siniestro', 'Afectado']
     };
   }
 
@@ -53,7 +72,24 @@ class SinesterPanel extends Component {
   refresh = () => {
     this.props.getSinisters().then(data => {
       this.setState({ data: data.sinesters });
+      this.attachDate()
     });
+  }
+
+  attachDate = ()=> {
+    const newData = []
+    this.state.data.forEach(loc => {
+      let calculatedDays = 0;
+      let cop = {...loc}
+      if(loc.end_date){
+        calculatedDays = moment(loc.end_date).startOf('day').diff(moment(loc.begin_date).startOf('day'),'days');
+      }else{
+        calculatedDays = moment().startOf('day').diff(moment(loc.begin_date).startOf('day'),'days');
+      }
+      cop['total_days'] = calculatedDays
+      newData.push(cop)
+    })
+    this.setState({data: newData})
   }
 
   onFilteredChangeCustom = (value, accessor) => {
@@ -110,6 +146,8 @@ class SinesterPanel extends Component {
           save={this.props.registerSinester}
           companies={this.state.companies}
           refreshPanel={this.refresh}
+          search={this.search}
+          sinester={this.state.resultant}
         >
         </SinesterForm>,
       buttons: false
@@ -120,6 +158,10 @@ class SinesterPanel extends Component {
   saveFile = (file, id) => {
     this.props.saveFile(file, id)
     this.refresh();
+  }
+
+  search = async(id) => {
+    return await this.props.getById(id)
   }
 
   download = (file) => {
@@ -375,17 +417,7 @@ class SinesterPanel extends Component {
                   {
                     Header: "Días proceso",
                     id: "total_days",
-                    accessor: d => {
-                      let first_day = new Date(d.begin_date);
-                      first_day.setDate(first_day.getDate() + 1);
-
-                      const today = new Date();
-
-                      const diffTime = Math.abs(today - first_day);
-                      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-                      return diffDays;
-                    }
+                    accessor: d => d.total_days
                   }
                 ]
               }
@@ -394,6 +426,9 @@ class SinesterPanel extends Component {
               className="-striped -highlight"
               getTrProps={this.getTrProps}
             />
+          </div>
+          <div className="mt-4">
+            <ExportDataToCSV csvData={this.state.data} fileName={'siniestros'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields} header={this.state.excelHeader} sortableColumn={'Cliente'} onComplete={this.refresh}></ExportDataToCSV>
           </div>
         </Container>
       </React.Fragment>
@@ -413,5 +448,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getSinester, getSinisters, registerSinester, updateSinester, deleteSinester, getClients, download, removeFile, saveFile, getCompanies }
+  { getSinester, getSinisters, registerSinester, updateSinester, deleteSinester, getClients, download, removeFile, saveFile, getCompanies, getById }
 )(SinesterPanel);
