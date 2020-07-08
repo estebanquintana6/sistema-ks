@@ -110,7 +110,7 @@ class InsurancePanel extends Component {
         car_motor: "Número de motor",
         car_placas: "Número de placas",
         car_series_number: "Número de serie",
-        car_year: "Modelo de coche",
+        car_year: "Modelo",
         cis: "CIS"
       }
     } else if (this.props.variant === 'DANOS'){
