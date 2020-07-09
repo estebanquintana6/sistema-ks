@@ -234,5 +234,17 @@ router.get("/fetch/:id", (req, res) => {
   });
 });
 
+router.get("/fetch_sinister/:id", (req, res) => {
+  const token = req.headers.authorization;
+  jwt.verify(token, secretKey, function (err) {
+    if (err) return res.status(401).json({ email: "no permissions" });
+    Sinester.findOne({ $and: [{ 'sinester': req.params.id }, { 'sinesterType': 'INICIAL' }] }).populate('client').populate('company').then((sinester) => {
+      res.json(sinester);
+    }).catch(err => {
+      res.json(err)
+    });
+  });
+});
+
 
 module.exports = router;

@@ -2,6 +2,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Sinester = new Schema({
+    sinesterType: {
+        type: String,
+        required: true,
+        uppercase: true
+    },
     type: {
         type: String,
         required: false,
@@ -13,7 +18,8 @@ var Sinester = new Schema({
         required: false
     },
     ramo: {
-        type: ['GMM', 'VIDA', 'AUTOS', 'DAÑOS'],
+        type: String,
+        enum: ['GMM', 'VIDA', 'AUTOS', 'DAÑOS'],
         required: false
     },
     company: {
