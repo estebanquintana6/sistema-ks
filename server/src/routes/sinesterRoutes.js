@@ -26,12 +26,14 @@ router.post("/save", (req, res) => {
             history: data.history,
             status: data.status,
             ramo: data.ramo,
-            company: data.company
+            company: data.company,
+            sinesterType: data.sinesterType
         });
         sinester.save()
         .then(() => {
             res.status(200).json({message: "Siniestro registrado"})
           }).catch((error) => {
+            console.log(error);
             res.status(500).json({ error });
           });
   

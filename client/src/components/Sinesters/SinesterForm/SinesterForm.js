@@ -166,7 +166,7 @@ class SinesterForm extends Component {
                                     <option value='COMPLEMENTARIO'>COMPLEMENTARIO</option>
                                   </Form.Control>
                                 </Form.Group>
-                                {this.state.sinesterType === 'COMPLEMENTARIO' &&  !this.state.sinester && <Form.Group as={Col} md={7} controlId="search">
+                                {this.state.sinesterType === 'COMPLEMENTARIO' &&  !this.state.sinester && <Form.Group as={Col} md={4} controlId="search">
                                   <Form.Label>Siniestro</Form.Label>
                                   <Form.Control onBlur={this.onChange}>
                                   </Form.Control>
