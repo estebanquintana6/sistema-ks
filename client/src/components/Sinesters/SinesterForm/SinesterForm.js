@@ -39,6 +39,17 @@ class SinesterForm extends Component {
     this.setState(auxObj)
   }
 
+  prepareSearchSinesterForForm = (sinester) => {
+    const auxObj = {}
+    Object.keys(sinester).forEach(key => {
+      auxObj[key] = (sinester)[key];
+    })
+    auxObj['begin_date'] = null
+    auxObj['sinesterType'] = 'COMPLEMENTARIO'
+    console.log('AUXOBJ', auxObj)
+    this.setState(auxObj)
+  }
+
   formatDate = (date) => {
     if (!date) return;
     const days = date.split('T')[0]
@@ -112,8 +123,15 @@ class SinesterForm extends Component {
 
   }
 
+  searchSinister = async(id) => {
+    const res = await this.props.search(id)
+    console.log('Prostata', res)
+    if(!res) return;
+    this.prepareSearchSinesterForForm(res)
+  }
 
   onChange = e => {
+    if (e.target.id === 'search'){ this.searchSinister(e.target.value) }
     this.setState({ [e.target.id]: e.target.value });
   }
 
@@ -140,6 +158,19 @@ class SinesterForm extends Component {
                           <div className="tab-content">
                             <div role="tabpanel" className="tab-pane fade show active" id="generales">
                               <Form.Row className="mt-4">
+                                <Form.Group as={Col} md={12} controlId="sinesterType">
+                                  <Form.Label>Tipo</Form.Label>
+                                  <Form.Control as="select" onChange={this.onChange} value={this.state.sinesterType}>
+                                    <option value=''></option>
+                                    <option value='INICIAL'>INICIAL</option>
+                                    <option value='COMPLEMENTARIO'>COMPLEMENTARIO</option>
+                                  </Form.Control>
+                                </Form.Group>
+                                {this.state.sinesterType === 'COMPLEMENTARIO' &&  !this.state.sinester && <Form.Group as={Col} md={7} controlId="search">
+                                  <Form.Label>Siniestro</Form.Label>
+                                  <Form.Control onBlur={this.onChange}>
+                                  </Form.Control>
+                                </Form.Group>}
                                 <Form.Group as={Col} md={4} controlId="ramo">
                                   <Form.Label>Ramo</Form.Label>
                                   <Form.Control as="select" onChange={this.onChange} value={this.state.ramo}>
