@@ -36,7 +36,10 @@ class InvoicePanel extends Component {
 
     async componentDidMount() {
         this.props.getInvoices().then(data => {
-            this.setState({ data: data.invoices });
+            this.setState({ 
+              data: data.invoices,
+              filtered: data.invoices
+            });
         });
     }
 
@@ -73,7 +76,6 @@ class InvoicePanel extends Component {
     getTrProps = (state, rowInfo, instance) => {
       if (rowInfo) {
         const original = rowInfo.original;
-        console.log(original);
         if(original.payment_status !== "VENCIDO"){
           return {
             style: {
@@ -86,7 +88,7 @@ class InvoicePanel extends Component {
         } else { 
           return {
             style: {
-              "background-color": "#cc6d7f",
+              "backgroundColor": "#cc6d7f",
               "cursor": "pointer",
               "color": "#f0f2f9"
             },

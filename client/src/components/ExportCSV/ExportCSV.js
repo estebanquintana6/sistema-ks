@@ -118,6 +118,7 @@ export const ExportDataToCSV = (props) => {
     }
 
     const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header, type = "", sortableColumn = '', refresh) => {
+        console.log(csvData);
         if(!csvData.length) {
             refresh();
             return;
