@@ -4,14 +4,14 @@ import PropTypes from "prop-types";
 import { Form, Col, Container, Row } from 'react-bootstrap'
 import { connect } from "react-redux";
 
-import { 
-  createInsurance, 
+import {
+  createInsurance,
   deleteInsurance,
   updateInsurance,
   getInsurance,
-  getInsurances, 
-  cancelInsurance, 
-  activateInsurance, 
+  getInsurances,
+  cancelInsurance,
+  activateInsurance,
   changePayStatus,
   download,
   removeFile,
@@ -33,7 +33,7 @@ import "react-table/react-table.css";
 import "./InsurancePanel.css";
 
 import moment from 'moment';
-import {formatShortDate, formatDateObj} from '../../component-utils';
+import { formatShortDate, formatDateObj } from '../../component-utils';
 import { DateRangePicker } from 'react-dates';
 
 
@@ -101,9 +101,9 @@ class InsurancePanel extends Component {
       policy: "Póliza",
     }
 
-    if(this.props.variant === 'AUTOS'){
+    if (this.props.variant === 'AUTOS') {
       resObj = {
-        ...resObj, 
+        ...resObj,
         car_brand: "Marca de coche",
         car_color: "Color de coche",
         car_description: "Descripción de coche",
@@ -113,7 +113,7 @@ class InsurancePanel extends Component {
         car_year: "Modelo",
         cis: "CIS"
       }
-    } else if (this.props.variant === 'DANOS'){
+    } else if (this.props.variant === 'DANOS') {
       resObj = {
         ...resObj,
         damage_product: 'Producto Daños'
@@ -126,7 +126,7 @@ class InsurancePanel extends Component {
     //Contrantante/#póliza/F de vencimiento de póliza/prima/modelo/marca/Descripción/# de serie/Aseguradoras/lo demás
 
     let resArr = ['Contratante Tipo de persona', 'Contratante', 'Contratante RFC', 'Póliza', 'Producto', 'Tipo de póliza', 'Moneda', 'Fecha de vencimiento', 'Tipo de pago', 'Aseguradora']
-    if(this.props.variant === 'AUTOS'){
+    if (this.props.variant === 'AUTOS') {
       resArr = [
         'Contratante',
         'Póliza',
@@ -144,8 +144,8 @@ class InsurancePanel extends Component {
         'Contratante Tipo de persona', 'Contratante RFC', 'Producto', 'Tipo de póliza', 'Tipo de pago',
       ]
     }
-    if(this.props.variant === 'DANOS'){
-      resArr = ['Contratante Tipo de persona', 'Contratante', 'Contratante RFC', 'Póliza', 'Producto', 'Producto daños' ,'Tipo de póliza', 'Moneda', 'Fecha de vencimiento', 'Tipo de pago', 'Aseguradora']
+    if (this.props.variant === 'DANOS') {
+      resArr = ['Contratante Tipo de persona', 'Contratante', 'Contratante RFC', 'Póliza', 'Producto', 'Producto daños', 'Tipo de póliza', 'Moneda', 'Fecha de vencimiento', 'Tipo de pago', 'Aseguradora']
     }
     return resArr
   }
@@ -190,7 +190,7 @@ class InsurancePanel extends Component {
 
   getTrProps = (state, rowInfo, instance) => {
     if (rowInfo) {
-      if(!rowInfo.original.active_status){
+      if (!rowInfo.original.active_status) {
         return {
           style: {
             cursor: "pointer",
@@ -199,7 +199,8 @@ class InsurancePanel extends Component {
           onClick: (e) => {
             this.openModificationModal(rowInfo.original);
           }
-        }      }
+        }
+      }
       return {
         style: {
           cursor: "pointer",
@@ -215,7 +216,7 @@ class InsurancePanel extends Component {
   openModificationModal(insurance, invoicePanel = false) {
     let cancelation_note = "";
 
-    if(!insurance.active_status) cancelation_note = `NOTA DE CANCELACIÓN: ${insurance.cancelation_note}`;
+    if (!insurance.active_status) cancelation_note = `NOTA DE CANCELACIÓN: ${insurance.cancelation_note}`;
 
     swal({
       text: `${cancelation_note}`,
@@ -235,7 +236,7 @@ class InsurancePanel extends Component {
         refresh={this.refresh}
         getInsurances={this.props.getInsurances}
         getInsurance={this.props.getInsurance}
-        >
+      >
       </InsuranceModal>,
       buttons: false,
       title: `Póliza: ${insurance.policy}`
@@ -301,7 +302,7 @@ class InsurancePanel extends Component {
             this.refresh();
           });;
         }
-        
+
       });
   }
 
@@ -318,11 +319,11 @@ class InsurancePanel extends Component {
           this.confirmCancel(insurance._id, note);
           swal("Tu poliza se ha cancelado!", {
             icon: "success",
-          }).then(() =>{
+          }).then(() => {
             this.refresh();
           });
         }
-      });  
+      });
   }
 
   activateInsurance = (insurance, e) => {
@@ -337,42 +338,42 @@ class InsurancePanel extends Component {
           this.confirmActivation(insurance._id);
           swal("Tu poliza se ha activado!", {
             icon: "success",
-          }).then(() =>{
+          }).then(() => {
             this.refresh();
           });
         }
-      });  
+      });
   }
 
 
-  b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+  b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
     console.log('B64', b64Data)
     console.log(contentType)
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
-  
+
     for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
       const slice = byteCharacters.slice(offset, offset + sliceSize);
-  
+
       const byteNumbers = new Array(slice.length);
       for (let i = 0; i < slice.length; i++) {
         byteNumbers[i] = slice.charCodeAt(i);
       }
-  
+
       const byteArray = new Uint8Array(byteNumbers);
       byteArrays.push(byteArray);
     }
     console.log('BA', byteArrays)
-  
-    const blob = new Blob(byteArrays, {type: contentType});
+
+    const blob = new Blob(byteArrays, { type: contentType });
     return blob;
   }
 
   determineContentType = (extension) => {
     let type = "";
     let fileExtension = extension.toLowerCase();
-    
-    switch(fileExtension) {
+
+    switch (fileExtension) {
       case "PDF":
         type = 'application/pdf';
         break;
@@ -388,13 +389,13 @@ class InsurancePanel extends Component {
     return type;
   }
 
-  confirmDownload  = async (file) => {
+  confirmDownload = async (file) => {
     try {
       const response = await this.props.download(file)
       const data = response.data
       console.log(data);
 
-      const  {encoded, fullName, extension} = data
+      const { encoded, fullName, extension } = data
       console.log('DATA', data)
       const contentType = this.determineContentType(extension)
       const blob = this.b64toBlob(encoded, contentType);
@@ -405,7 +406,7 @@ class InsurancePanel extends Component {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-    } catch(err) {
+    } catch (err) {
 
     }
   }
@@ -421,15 +422,15 @@ class InsurancePanel extends Component {
       icon: "warning",
       dangerMode: true,
     })
-    .then(willDelete => {
-      if (willDelete) {
-        this.props.removeFile(file, id);
+      .then(willDelete => {
+        if (willDelete) {
+          this.props.removeFile(file, id);
 
-        swal("Eliminado!", "Tu archivo ha sido eliminado!", "success").then(() =>{
-          this.refresh();
-        });
-      }
-    });
+          swal("Eliminado!", "Tu archivo ha sido eliminado!", "success").then(() => {
+            this.refresh();
+          });
+        }
+      });
   }
 
   saveFile = (file, id) => {
@@ -444,7 +445,7 @@ class InsurancePanel extends Component {
       icon: "warning",
       content: <React.Fragment>
         <Form.Group as={Col} md="12">
-          <Form.Control required as="select" onChange={(e)=> {newStatus = e.target.value}  } value={newStatus}>
+          <Form.Control required as="select" onChange={(e) => { newStatus = e.target.value }} value={newStatus}>
             <option></option>
             <option value="PENDIENTE">PENDIENTE</option>
             <option value="PAGADO">PAGADA</option>
@@ -462,11 +463,11 @@ class InsurancePanel extends Component {
           this.confirmPayChange(insurance._id, newStatus);
           swal("Tu poliza ha cambiado!", {
             icon: "success",
-          }).then(() =>{
+          }).then(() => {
             this.refresh();
           });
         }
-      });  
+      });
   }
 
   deleteInsurance = (id, name, e) => {
@@ -489,7 +490,7 @@ class InsurancePanel extends Component {
   }
 
   validateField = (field) => {
-    if(field) return field;
+    if (field) return field;
     return '';
   }
 
@@ -515,12 +516,11 @@ class InsurancePanel extends Component {
     let excelToExport = [];
 
     const current = this.reactTable.current;
-    if (current)
-    {
+    if (current) {
       const allData = current.getResolvedState().sortedData;
       excelToExport = allData.map((data) => data._original)
     }
-    
+
 
     const columns = [{
       Header: "Datos",
@@ -535,7 +535,7 @@ class InsurancePanel extends Component {
           Header: "Cliente",
           id: "client",
           accessor: d => {
-            if(d.client){
+            if (d.client) {
               return this.validateField(d.client.name)
             } else {
               return '';
@@ -568,15 +568,16 @@ class InsurancePanel extends Component {
           Cell: c => <span>{c.original.due_date && formatShortDate(c.original.due_date)}</span>,
           accessor: d => moment(d.due_date).unix(),
           width: 300,
-          Filter: ({filter, onChange}) => (
+          Filter: ({ filter, onChange }) => (
             <DateRangePicker
               startDateId="start3"
               endDateId="end3"
               startDate={this.state.dueDateStartDate}
               endDate={this.state.dueDateEndDate}
               onDatesChange={({ startDate, endDate }) => {
-                this.setState({ dueDateStartDate: startDate, dueDateEndDate: endDate }); 
-                onChange({startDate, endDate});}}
+                this.setState({ dueDateStartDate: startDate, dueDateEndDate: endDate });
+                onChange({ startDate, endDate });
+              }}
               focusedInput={this.state.focusedInput3}
               onFocusChange={focusedInput => this.setState({ focusedInput3: focusedInput })}
               isOutsideRange={() => false}
@@ -589,7 +590,7 @@ class InsurancePanel extends Component {
               // Incomplet or cleared date picker
               return true
             }
-            const res = row[filter.id] !== undefined ? moment.unix(row[filter.id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
+            const res = row[filter.id] !== undefined ? moment.unix(row[filter.id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'), null, '[]') : true
             return res
           }
         },
@@ -597,9 +598,9 @@ class InsurancePanel extends Component {
           Header: "Vto. pago",
           id: "pay_due_date",
           Cell: c => {
-            if(c.original.invoices.length > 0){
+            if (c.original.invoices.length > 0) {
               const currentDate = new Date();
-              currentDate.setHours(0,0,0);
+              currentDate.setHours(0, 0, 0);
 
               const dates = [];
               const allDates = [];
@@ -607,29 +608,29 @@ class InsurancePanel extends Component {
               c.original.invoices.map((invoice) => {
                 let due_date = new Date(invoice.due_date);
                 due_date.setDate(due_date.getDate() + 1);
-                due_date.setHours(0,0,0);
+                due_date.setHours(0, 0, 0);
 
-                if(due_date >= currentDate) dates.push(due_date);
+                if (due_date >= currentDate) dates.push(due_date);
                 allDates.push(due_date);
               });
 
-            if(dates.length !== 0){
-              const minDate = new Date(Math.min.apply(null,dates));
-              return <span>{formatDateObj(minDate)}</span>
-            } else {
-              const maxDate = new Date(Math.max.apply(null,allDates));
-              return <span>{formatDateObj(maxDate)}</span>
+              if (dates.length !== 0) {
+                const minDate = new Date(Math.min.apply(null, dates));
+                return <span>{formatDateObj(minDate)}</span>
+              } else {
+                const maxDate = new Date(Math.max.apply(null, allDates));
+                return <span>{formatDateObj(maxDate)}</span>
+              }
             }
-          }
-          
+
           },
           accessor: d => {
-            if(d.invoices.length === 1){
-              return moment(d.invoices[0].due_date);
+            if (d.invoices.length === 1) {
+              return moment(d.invoices[0].due_date).unix();
             }
-            else if(d.invoices.length > 0){
+            else if (d.invoices.length > 0) {
               const currentDate = new Date();
-              currentDate.setHours(0,0,0);
+              currentDate.setHours(0, 0, 0);
 
               const dates = [];
               const allDates = [];
@@ -637,35 +638,36 @@ class InsurancePanel extends Component {
               d.invoices.map((invoice) => {
                 let due_date = new Date(invoice.due_date);
                 due_date.setDate(due_date.getDate() + 1);
-                due_date.setHours(0,0,0);
+                due_date.setHours(0, 0, 0);
 
-                if(due_date >= currentDate) dates.push(due_date);
+                if (due_date >= currentDate) dates.push(due_date);
                 allDates.push(due_date);
               });
-              
-              if(dates.length !== 0){
-                const minDate = new Date(Math.min.apply(null,dates));
-              return moment(minDate).unix();
+
+              if (dates.length !== 0) {
+                const minDate = new Date(Math.min.apply(null, dates));
+                return moment(minDate).unix();
               } else {
-                const maxDate = new Date(Math.max.apply(null,allDates));
+                const maxDate = new Date(Math.max.apply(null, allDates));
                 return moment(maxDate).unix();
               }
-              
+
             } else {
-              return "SIN RECIBOS";
+              return "";
             }
 
           },
           width: 300,
-          Filter: ({filter, onChange}) => (
+          Filter: ({ filter, onChange }) => (
             <DateRangePicker
               startDateId="start2"
               endDateId="end2"
               startDate={this.state.payDueDateStartDate}
               endDate={this.state.payDueDateEndDate}
               onDatesChange={({ startDate, endDate }) => {
-                this.setState({ payDueDateStartDate: startDate, payDueDateEndDate: endDate }); 
-                onChange({startDate, endDate});}}
+                this.setState({ payDueDateStartDate: startDate, payDueDateEndDate: endDate });
+                onChange({ startDate, endDate });
+              }}
               focusedInput={this.state.focusedInput2}
               onFocusChange={focusedInput => this.setState({ focusedInput2: focusedInput })}
               isOutsideRange={() => false}
@@ -679,24 +681,12 @@ class InsurancePanel extends Component {
               return true
             }
 
-            const startDate = new Date(filter.value.startDate.format());
-            const endDate = new Date(filter.value.endDate.format());
+            if(Number.isInteger(row[filter.id])){
+              row[filter.id] = moment(row[filter.id]);
+            } 
 
-            startDate.setHours(0,0,0,0);
-            endDate.setHours(0,0,0,0);
-
-            let check;
-
-            if(row[filter.id] !== "SIN RECIBOS"){
-              if(Number.isInteger(row[filter.id])){
-                check = new Date(row[filter.id]);
-              }
-              else if(moment.isMoment(row[filter.id])){
-                check = new Date(row[filter.id].format());
-              }
-              const res = row[filter.id] !== undefined ? moment.unix(check).clone().startOf('day').isBetween(moment(startDate).clone().startOf('day'), moment(endDate).clone().startOf('day'),null, '[]') : true 
-              return res
-            }
+            const res = row[filter.id] !== undefined ? moment.unix(row[filter.id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
+            return res
           }
         },
         {
@@ -707,7 +697,7 @@ class InsurancePanel extends Component {
       ]
     }
     ];
-    
+
     return (
       <React.Fragment>
         <Container fluid className="mt-4">
@@ -731,10 +721,10 @@ class InsurancePanel extends Component {
             defaultFilterMethod={(filter, row, column) => {
               const notFilterable = ['begin_date', 'due_date', 'pay_due_date']
 
-              if(notFilterable.includes(filter.id)) {
+              if (notFilterable.includes(filter.id)) {
                 const id = filter.pivotId || filter.id;
                 console.log(row[id]);
-                const res = row[id] !== undefined ? moment.unix(row[id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
+                const res = row[id] !== undefined ? moment.unix(row[id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'), null, '[]') : true
                 return res
               }
 
@@ -761,7 +751,7 @@ class InsurancePanel extends Component {
           />
           <div className="row">
             <div className="col-md-4 center mt-4">
-            <ExportDataToCSV csvData={excelToExport} fileName={`reporteSeguros_${this.props.variant}`} onComplete={this.refresh} fieldTranslation={this.generateFieldsTranslation()} excludedFields={this.state.excludedFields} header={this.generateHeaders()} sortableColumn={'Contratante'}></ExportDataToCSV>
+              <ExportDataToCSV csvData={excelToExport} fileName={`reporteSeguros_${this.props.variant}`} onComplete={this.refresh} fieldTranslation={this.generateFieldsTranslation()} excludedFields={this.state.excludedFields} header={this.generateHeaders()} sortableColumn={'Contratante'}></ExportDataToCSV>
             </div>
           </div>
 
