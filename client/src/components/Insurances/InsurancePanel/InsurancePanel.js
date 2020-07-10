@@ -678,8 +678,25 @@ class InsurancePanel extends Component {
               // Incomplet or cleared date picker
               return true
             }
-            const res = row[filter.id] !== undefined ? moment.unix(row[filter.id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
-            return res
+
+            const startDate = new Date(filter.value.startDate.format());
+            const endDate = new Date(filter.value.endDate.format());
+
+            startDate.setHours(0,0,0,0);
+            endDate.setHours(0,0,0,0);
+
+            let check;
+
+            if(row[filter.id] !== "SIN RECIBOS"){
+              if(Number.isInteger(row[filter.id])){
+                check = new Date(row[filter.id]);
+              }
+              else if(moment.isMoment(row[filter.id])){
+                check = new Date(row[filter.id].format());
+              }
+              const res = row[filter.id] !== undefined ? moment.unix(check).clone().startOf('day').isBetween(moment(startDate).clone().startOf('day'), moment(endDate).clone().startOf('day'),null, '[]') : true 
+              return res
+            }
           }
         },
         {
@@ -716,6 +733,7 @@ class InsurancePanel extends Component {
 
               if(notFilterable.includes(filter.id)) {
                 const id = filter.pivotId || filter.id;
+                console.log(row[id]);
                 const res = row[id] !== undefined ? moment.unix(row[id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
                 return res
               }
