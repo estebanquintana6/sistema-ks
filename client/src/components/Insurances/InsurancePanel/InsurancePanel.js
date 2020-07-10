@@ -676,7 +676,7 @@ class InsurancePanel extends Component {
             />
           ),
           filterMethod: (filter, row) => {
-            if (filter.value.startDate === (null || '') || filter.value.endDate === (null|| '')) {              // Incomplet or cleared date picker
+            if (filter.value.startDate === null || filter.value.endDate === null) {             // Incomplet or cleared date picker
               return true
             }
 
