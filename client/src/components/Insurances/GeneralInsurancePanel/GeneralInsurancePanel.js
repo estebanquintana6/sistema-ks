@@ -521,7 +521,7 @@ generateHeaders = () => {
           },
           accessor: d => {
             if(d.invoices.length === 1){
-              return moment(d.invoices[0].due_date);
+              return moment(d.invoices[0].due_date).unix();
             }
             else if(d.invoices.length > 0){
               const currentDate = new Date();
@@ -548,7 +548,7 @@ generateHeaders = () => {
               }
               
             } else {
-              return "SIN RECIBOS";
+              return "";
             }
 
           },
