@@ -575,6 +575,8 @@ class InsurancePanel extends Component {
               startDate={this.state.dueDateStartDate}
               endDate={this.state.dueDateEndDate}
               onDatesChange={({ startDate, endDate }) => {
+                console.log('NEW VALUES', startDate, endDate);
+                console.log('State', this.state.dueDateStartDate, this.state.dueDateEndDate);
                 this.setState({ dueDateStartDate: startDate, dueDateEndDate: endDate }); 
                 onChange({startDate, endDate});}}
               focusedInput={this.state.focusedInput3}
@@ -674,7 +676,8 @@ class InsurancePanel extends Component {
             />
           ),
           filterMethod: (filter, row) => {
-            if (filter.value.startDate === null || filter.value.endDate === null) {
+            console.log('FILTER ON FILTER METHOD', filter)
+            if (filter.value.startDate === (null || '') || filter.value.endDate === (null|| '')) {
               // Incomplet or cleared date picker
               return true
             }
