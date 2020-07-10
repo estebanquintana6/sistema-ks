@@ -46,7 +46,7 @@ class SinesterPanel extends Component {
         total_days: 'Días de proceso'
       },
       excludedFields: ['__v', '_id', 'history', 'files'],
-      excelHeader: ['Días de proceso','Ramo', 'Aseguradora', 'Cliente', 'Siniestro', 'Status', 'Folio', 'Fecha de inicio', 'Fecha de fin', 'Descipción', 'Tipo', 'Tipo de siniestro', 'Afectado']
+      excelHeader: ['Días de proceso', 'Ramo', 'Aseguradora', 'Cliente', 'Siniestro', 'Status', 'Folio', 'Fecha de inicio', 'Fecha de fin', 'Descipción', 'Tipo', 'Tipo de siniestro', 'Afectado']
     };
   }
 
@@ -76,20 +76,20 @@ class SinesterPanel extends Component {
     });
   }
 
-  attachDate = ()=> {
+  attachDate = () => {
     const newData = []
     this.state.data.forEach(loc => {
       let calculatedDays = 0;
-      let cop = {...loc}
-      if(loc.end_date){
-        calculatedDays = moment(loc.end_date).startOf('day').diff(moment(loc.begin_date).startOf('day'),'days');
-      }else{
-        calculatedDays = moment().startOf('day').diff(moment(loc.begin_date).startOf('day'),'days');
+      let cop = { ...loc }
+      if (loc.end_date) {
+        calculatedDays = moment(loc.end_date).startOf('day').diff(moment(loc.begin_date).startOf('day'), 'days');
+      } else {
+        calculatedDays = moment().startOf('day').diff(moment(loc.begin_date).startOf('day'), 'days');
       }
       cop['total_days'] = calculatedDays
       newData.push(cop)
     })
-    this.setState({data: newData})
+    this.setState({ data: newData })
   }
 
   onFilteredChangeCustom = (value, accessor) => {
@@ -148,6 +148,7 @@ class SinesterPanel extends Component {
           refreshPanel={this.refresh}
           search={this.search}
           sinester={this.state.resultant}
+          modification={false}
         >
         </SinesterForm>,
       buttons: false
@@ -160,7 +161,7 @@ class SinesterPanel extends Component {
     this.refresh();
   }
 
-  search = async(id) => {
+  search = async (id) => {
     return await this.props.getById(id)
   }
 
@@ -298,7 +299,8 @@ class SinesterPanel extends Component {
         download={this.download}
         removeFile={this.removeFile}
         saveFile={this.saveFile}
-        reopenModal={this.openModificationModal}>
+        reopenModal={this.openModificationModal}
+        modification={true}>
       </SinesterModal>,
       buttons: false,
       title: `${sinester.description}`,
@@ -310,7 +312,7 @@ class SinesterPanel extends Component {
     const { data } = this.state;
     return (
       <React.Fragment>
-        <Container>
+        <Container fluid>
           <Container fluid className="mt-4">
             <Row>
               <h2>Siniestros</h2>
@@ -400,6 +402,38 @@ class SinesterPanel extends Component {
                         }}
                         focusedInput={this.state.focusedInput3}
                         onFocusChange={focusedInput => this.setState({ focusedInput3: focusedInput })}
+                        isOutsideRange={() => false}
+                        withPortal={true}
+                        showClearDates={true}
+                      />
+                    ),
+                    filterMethod: (filter, row) => {
+                      if (filter.value.startDate === null || filter.value.endDate === null) {
+                        // Incomplet or cleared date picker
+                        return true
+                      }
+                      const res = row[filter.id] !== undefined ? moment.unix(row[filter.id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'), null, '[]') : true
+                      return res
+                    }
+                  },
+                  {
+                    Header: "Fecha fin",
+                    id: "end_date",
+                    Cell: c => <span>{c.original.end_date && formatShortDate(c.original.end_date)}</span>,
+                    accessor: d => moment(d.end_date).unix(),
+                    width: 300,
+                    Filter: ({ filter, onChange }) => (
+                      <DateRangePicker
+                        startDateId="start3"
+                        endDateId="end3"
+                        startDate={this.state.searchStartDate2}
+                        endDate={this.state.searchEndDate2}
+                        onDatesChange={({ startDate, endDate }) => {
+                          this.setState({ searchStartDate2: startDate, searchEndDate2: endDate });
+                          onChange({ startDate, endDate });
+                        }}
+                        focusedInput={this.state.focusedInput2}
+                        onFocusChange={focusedInput => this.setState({ focusedInput2: focusedInput })}
                         isOutsideRange={() => false}
                         withPortal={true}
                         showClearDates={true}

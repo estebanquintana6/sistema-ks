@@ -109,6 +109,12 @@ class SinesterForm extends Component {
     this.setState({ history: histories });
   }
 
+  deleteHistory = (index) => {
+    const histories = [...this.state.history];
+    histories.splice(index, 1);
+    this.setState({ history: histories });
+  }
+
   onSubmit = e => {
     e.preventDefault();
 
@@ -217,6 +223,13 @@ class SinesterForm extends Component {
                                   <Form.Control required type="date" onChange={this.onChange} value={this.formatDate(this.state.begin_date)}>
                                   </Form.Control>
                                 </Form.Group>
+                                {this.props.modification && 
+                                  <Form.Group as={Col} md="6" controlId="end_date">
+                                  <Form.Label>Fecha final</Form.Label>
+                                  <Form.Control required type="date" onChange={this.onChange} value={this.formatDate(this.state.end_date)}>
+                                  </Form.Control>
+                                </Form.Group>
+                                }
                                 <Form.Group as={Col} md="6" controlId="status">
                                   <Form.Label>Status</Form.Label>
                                   <Form.Control as="select" onChange={this.onChange} value={this.state.status}>
@@ -265,13 +278,16 @@ class SinesterForm extends Component {
                                           onChange={(e) => { this.onChangeHistoryDate(index, e) }}
                                           value={this.formatDate(this.state.history[index].date)} />
                                       </Form.Group>
-                                      <Form.Group as={Col} md={9}>
+                                      <Form.Group as={Col} md={8}>
                                         <Form.Label>Estatus</Form.Label>
                                         <Form.Control
                                           onChange={(e) => { this.onChangeHistoryStatus(index, e) }}
                                           value={this.state.history[index].status}>
                                         </Form.Control>
                                       </Form.Group>
+                                      <Col md="1">
+                                        <Button variant="danger" className="align-center" onClick={() => { this.deleteHistory(index) }}><i className="fa fa-trash" /></Button>
+                                      </Col>
                                     </Form.Row>
                                   );
                                 })}

@@ -91,7 +91,8 @@ class SinesterModal extends Component {
                               sinester={sinester}
                               companies={this.props.companies}
                               edit={true}
-                              updateSinester={this.props.updateSinester}>
+                              updateSinester={this.props.updateSinester}
+                              modification={true}>
                             </SinesterForm>
                           </div>
                           <div role="tabpanel" class="tab-pane fade" id="files">
