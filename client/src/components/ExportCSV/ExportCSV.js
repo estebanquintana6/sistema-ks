@@ -135,6 +135,7 @@ export const ExportDataToCSV = (props) => {
                 data = removeExcludedFieldsFromInstance(data, excludedFields)
 
                 Object.keys(data).forEach(key => {
+
                     if (Array.isArray(data[key])) {
                         if(key === 'invoices'){
                             resultData = {...resultData, ...transformInvoiceToObject(data[key], fieldTranslation, ['client', 'comments', 'email', 'insurance', 'pay_limit', 'pay_limit2', 'status', '__v', '_id'], fieldTranslation[key], key === 'contacts')}             
@@ -151,6 +152,9 @@ export const ExportDataToCSV = (props) => {
                         }else{
                             resultData = {...resultData, ...renameLabel(data, key, fieldTranslation[key])}
                         }
+                    }
+                    if(key === 'car_year' && !!resultData['Modelo']){
+                        resultData['Modelo'] = resultData['Modelo'].split('-')[2]
                     }
                 })
                 dataToWrite.push(resultData)
