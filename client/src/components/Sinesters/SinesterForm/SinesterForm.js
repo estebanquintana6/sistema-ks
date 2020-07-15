@@ -117,7 +117,7 @@ class SinesterForm extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-
+    console.log('SAVING', this.state)
     this.props.save(this.state);
 
     swal({
@@ -144,7 +144,7 @@ class SinesterForm extends Component {
   render() {
     return (
       <div>
-        <Form id="clientForm" onSubmit={this.onSubmit}>
+        <Form id="clientForm">
           <React.Fragment>
             <Container>
               <Row>
@@ -310,7 +310,7 @@ class SinesterForm extends Component {
           </React.Fragment>
           <Row className="d-flex">
             <div className="ml-auto mr-4">
-              <Button variant="primary" type="submit" className="btn-primary"><i className="fas fa-save"></i></Button>
+              <Button onClick={this.onSubmit} variant="primary" type="button" className="btn-primary"><i className="fas fa-save"></i></Button>
             </div>
           </Row>
         </Form>

@@ -370,14 +370,14 @@ class SinesterPanel extends Component {
                     }
                   },
                   {
-                    Header: "Cliente",
-                    id: "client",
-                    accessor: d => this.validateField(d.client.name)
+                    Header: "Afectado",
+                    id: "affected",
+                    accessor: d => this.validateField(d.affected)
                   },
                   {
-                    Header: "Siniestro",
-                    id: "sinester",
-                    accessor: d => this.validateField(d.sinester)
+                    Header: "Folio",
+                    id: "folio",
+                    accessor: d => this.validateField(d.folio)
                   },
                   {
                     Header: "Status",
