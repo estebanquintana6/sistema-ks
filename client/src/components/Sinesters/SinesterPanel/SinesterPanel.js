@@ -45,7 +45,7 @@ class SinesterPanel extends Component {
         description: "Descripción",
         total_days: 'Días de proceso'
       },
-      excludedFields: ['__v', '_id', 'history', 'files'],
+      excludedFields: ['__v', '_id', 'history', 'files', 'tolerance', 'city', 'contacts', 'created_at', 'state','person_type', 'rfc'],
       excelHeader: ['Días de proceso', 'Ramo', 'Aseguradora', 'Cliente', 'Siniestro', 'Status', 'Folio', 'Fecha de inicio', 'Fecha de fin', 'Descipción', 'Tipo', 'Tipo de siniestro', 'Afectado']
     };
   }
@@ -462,6 +462,7 @@ class SinesterPanel extends Component {
             />
           </div>
           <div className="mt-4">
+            {console.log('DATA', this.state.data)}
             <ExportDataToCSV csvData={this.state.data} fileName={'siniestros'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields} header={this.state.excelHeader} sortableColumn={'Cliente'} onComplete={this.refresh}></ExportDataToCSV>
           </div>
         </Container>
