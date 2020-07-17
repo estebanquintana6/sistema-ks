@@ -33,20 +33,20 @@ class SinesterPanel extends Component {
       fieldTranslation: {
         sinesterType: "Tipo de siniestro",
         type: "Tipo",
-        status: "Status",
+        status: "Estatus",
         ramo: "Ramo",
-        company: "Aseguradora",
+        company: "Empresa",
         client: "Cliente",
         affected: "Afectado",
         folio: "Folio",
         sinester: 'Siniestro',
         begin_date: "Fecha de inicio",
-        end_date: "Fecha de fin",
+        end_date: "Fecha final",
         description: "Padecimiento",
         total_days: 'Días de proceso'
       },
-      excludedFields: ['__v', '_id', 'history', 'files', 'tolerance', 'city', 'contacts', 'created_at', 'state','person_type', 'rfc'],
-      excelHeader: ['Días de proceso', 'Ramo', 'Aseguradora', 'Cliente', 'Siniestro', 'Status', 'Folio', 'Fecha de inicio', 'Fecha de fin', 'Tipo', 'Tipo de siniestro', 'Afectado', 'Padecimiento']
+      excludedFields: ['__v', '_id', 'history', 'files', 'tolerance', 'city', 'contacts', 'created_at', 'state','person_type', 'rfc', 'ramo', 'client', 'type', 'sinesterType' ],
+      excelHeader: ['Empresa', 'Afectado', 'Folio', 'Siniestro', 'Fecha de inicio', 'Fecha final', 'Días de proceso', 'Estatus', 'Padecimiento']
     };
   }
 
