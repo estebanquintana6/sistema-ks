@@ -42,11 +42,11 @@ class SinesterPanel extends Component {
         sinester: 'Siniestro',
         begin_date: "Fecha de inicio",
         end_date: "Fecha de fin",
-        description: "Descripción",
+        description: "Padecimiento",
         total_days: 'Días de proceso'
       },
       excludedFields: ['__v', '_id', 'history', 'files', 'tolerance', 'city', 'contacts', 'created_at', 'state','person_type', 'rfc'],
-      excelHeader: ['Días de proceso', 'Ramo', 'Aseguradora', 'Cliente', 'Siniestro', 'Status', 'Folio', 'Fecha de inicio', 'Fecha de fin', 'Descipción', 'Tipo', 'Tipo de siniestro', 'Afectado']
+      excelHeader: ['Días de proceso', 'Ramo', 'Aseguradora', 'Cliente', 'Siniestro', 'Status', 'Folio', 'Fecha de inicio', 'Fecha de fin', 'Tipo', 'Tipo de siniestro', 'Afectado', 'Padecimiento']
     };
   }
 
