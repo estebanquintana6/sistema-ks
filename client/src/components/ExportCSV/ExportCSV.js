@@ -118,7 +118,6 @@ export const ExportDataToCSV = (props) => {
     }
 
     const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header, type = "", sortableColumn = '', refresh) => {
-        console.log(csvData);
         if(!csvData.length) {
             refresh();
             return;
@@ -135,7 +134,6 @@ export const ExportDataToCSV = (props) => {
                 data = removeExcludedFieldsFromInstance(data, excludedFields)
 
                 Object.keys(data).forEach(key => {
-
                     if (Array.isArray(data[key])) {
                         if(key === 'invoices'){
                             resultData = {...resultData, ...transformInvoiceToObject(data[key], fieldTranslation, ['client', 'comments', 'email', 'insurance', 'pay_limit', 'pay_limit2', 'status', '__v', '_id'], fieldTranslation[key], key === 'contacts')}             
