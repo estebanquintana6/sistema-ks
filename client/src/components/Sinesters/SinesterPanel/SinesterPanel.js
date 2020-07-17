@@ -463,7 +463,7 @@ class SinesterPanel extends Component {
           </div>
           <div className="mt-4">
             {console.log('DATA', this.state.data)}
-            <ExportDataToCSV csvData={this.state.data} fileName={'siniestros'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields} header={this.state.excelHeader} sortableColumn={'Cliente'} onComplete={this.refresh}></ExportDataToCSV>
+            <ExportDataToCSV csvData={this.state.filtered} fileName={'siniestros'} fieldTranslation={this.state.fieldTranslation} excludedFields={this.state.excludedFields} header={this.state.excelHeader} sortableColumn={'Cliente'} onComplete={this.refresh}></ExportDataToCSV>
           </div>
         </Container>
       </React.Fragment>
