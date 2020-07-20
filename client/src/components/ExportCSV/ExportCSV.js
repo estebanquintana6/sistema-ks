@@ -165,6 +165,7 @@ export const ExportDataToCSV = (props) => {
             if(a[sortableColumn] > b[sortableColumn]) { return 1; }
                 return 0;
             })
+        console.log('WRITING', dataToWrite)
         const workbook = XLSX.utils.book_new();
         let myHeader = header
 
