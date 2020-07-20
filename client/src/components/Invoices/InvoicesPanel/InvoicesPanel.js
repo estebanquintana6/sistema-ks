@@ -279,7 +279,7 @@ class InvoicePanel extends Component {
                     </div>
                     <div className="row">
                       <div className="col-md-4 center mt-4">
-                      <ExportDataToCSV csvData={this.state.filtered} 
+                      <ExportDataToCSV csvData={this.state.data} 
                                       fileName={'reporteRecibos'} 
                                       type="invoices"
                                       onComplete={this.refresh}
