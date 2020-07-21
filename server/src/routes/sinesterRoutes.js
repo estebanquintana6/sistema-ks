@@ -9,35 +9,35 @@ const fs = require('fs');
 
 
 router.post("/save", (req, res) => {
-    const body = req.body;
-    const token = body.token;
+  const body = req.body;
+  const token = body.token;
 
-    jwt.verify(token, secretKey, function (err, decoded) {
-        if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
-        const data = body.sinesterData;
-        
-        const sinester = new Sinester({
-            client: data.client,
-            affected: data.affected,
-            folio: data.folio,
-            sinester: data.sinester,
-            description: data.description,
-            begin_date: data.begin_date,
-            history: data.history,
-            status: data.status,
-            ramo: data.ramo,
-            company: data.company,
-            sinesterType: data.sinesterType
-        });
-        sinester.save()
-        .then(() => {
-            res.status(200).json({message: "Siniestro registrado"})
-          }).catch((error) => {
-            console.log(error);
-            res.status(500).json({ error });
-          });
-  
+  jwt.verify(token, secretKey, function (err, decoded) {
+    if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
+    const data = body.sinesterData;
+
+    const sinester = new Sinester({
+      client: data.client,
+      affected: data.affected,
+      folio: data.folio,
+      sinester: data.sinester,
+      description: data.description,
+      begin_date: data.begin_date,
+      history: data.history,
+      status: data.status,
+      ramo: data.ramo,
+      company: data.company,
+      sinesterType: data.sinesterType
     });
+    sinester.save()
+      .then(() => {
+        res.status(200).json({ message: "Siniestro registrado" })
+      }).catch((error) => {
+        console.log(error);
+        res.status(500).json({ error });
+      });
+
+  });
 });
 
 router.post("/update", (req, res) => {
@@ -236,12 +236,22 @@ router.get("/fetch/:id", (req, res) => {
   });
 });
 
+uniqueArray = a => [...new Set(a.map(o => JSON.stringify(o)))].map(s => JSON.parse(s))
+
 router.get("/fetch_sinister/:id", (req, res) => {
   const token = req.headers.authorization;
   jwt.verify(token, secretKey, function (err) {
     if (err) return res.status(401).json({ email: "no permissions" });
     Sinester.findOne({ $and: [{ 'sinester': req.params.id }, { 'sinesterType': 'INICIAL' }] }).populate('client').populate('company').then((sinester) => {
-      res.json(sinester);
+      let auxSinester = sinester;
+
+      Sinester.find({ $and: [{ 'sinester': req.params.id }, { 'sinesterType': { $ne: 'INICIAL' } }] }).then((complementaries) => {
+        complementaries.map((complement) => {
+          auxSinester.history = uniqueArray(auxSinester.history.concat(complement.history));
+        });
+      }).finally(() => {
+        res.json(auxSinester);
+      });
     }).catch(err => {
       res.json(err)
     });
