@@ -55,7 +55,7 @@ class SinesterAutosPanel extends Component {
                 total_days: 'Días de proceso'
             },
             excludedFields: ['__v', '_id', 'history', 'files', 'tolerance', 'city', 'contacts', 'created_at', 'state', 'person_type', 'rfc', 'ramo', 'client', 'type', 'sinesterType'],
-            excelHeader: ['Empresa', 'Afectado', 'Folio', 'Siniestro', 'Fecha de inicio', 'Fecha final', 'Días de proceso', 'Estatus', 'Padecimiento'],
+            excelHeader: ['Empresa', 'Afectado', 'Reporte', 'Siniestro', 'Fecha de inicio', 'Fecha final', 'Días de proceso', 'Estatus', 'Padecimiento'],
         };
     }
 
