@@ -137,6 +137,8 @@ class SinesterForm extends Component {
 
   onChange = e => {
     if (e.target.id === 'search') { this.searchSinister(e.target.value) }
+    if (e.target.id === 'ramo' && e.target.value === "AUTOS") this.setState({ sinesterType: "INICIAL" })
+
     this.setState({ [e.target.id]: e.target.value });
   }
 
@@ -163,7 +165,27 @@ class SinesterForm extends Component {
                           <div className="tab-content">
                             <div role="tabpanel" className="tab-pane fade show active" id="generales">
                               <Form.Row className="mt-4">
-                                <Form.Group as={Col} md={12} controlId="sinesterType">
+
+                                <Form.Group as={Col} md={4} controlId="ramo">
+                                  <Form.Label>Ramo</Form.Label>
+                                  <Form.Control as="select" onChange={this.onChange} value={this.state.ramo}>
+                                    <option value=''></option>
+                                    <option value='GMM'>GMM</option>
+                                    <option value='VIDA'>VIDA</option>
+                                    <option value='AUTOS'>AUTOS</option>
+                                    <option value='DAÑOS'>DAÑOS</option>
+                                  </Form.Control>
+                                </Form.Group>
+
+                                <Form.Group as={Col} md={4} controlId="company">
+                                  <Form.Label>Aseguradora</Form.Label>
+                                  <Form.Control required as="select" onChange={this.onChange} value={this.state.company && this.state.company._id}>
+                                    <option></option>
+                                    {this.props.companies.map((company) => <option value={company._id}>{`${company.name}`}</option>)}
+                                  </Form.Control>
+                                </Form.Group>
+
+                                <Form.Group as={Col} md={4} controlId="sinesterType">
                                   <Form.Label>Tipo</Form.Label>
                                   <Form.Control as="select" onChange={this.onChange} value={this.state.sinesterType}>
                                     <option value=''></option>
@@ -176,23 +198,6 @@ class SinesterForm extends Component {
                                   <Form.Control onBlur={this.onChange}>
                                   </Form.Control>
                                 </Form.Group>}
-                                <Form.Group as={Col} md={4} controlId="ramo">
-                                  <Form.Label>Ramo</Form.Label>
-                                  <Form.Control as="select" onChange={this.onChange} value={this.state.ramo}>
-                                    <option value=''></option>
-                                    <option value='GMM'>GMM</option>
-                                    <option value='VIDA'>VIDA</option>
-                                    <option value='AUTOS'>AUTOS</option>
-                                    <option value='DAÑOS'>DAÑOS</option>
-                                  </Form.Control>
-                                </Form.Group>
-                                <Form.Group as={Col} md={4} controlId="company">
-                                  <Form.Label>Aseguradora</Form.Label>
-                                  <Form.Control required as="select" onChange={this.onChange} value={this.state.company && this.state.company._id}>
-                                    <option></option>
-                                    {this.props.companies.map((company) => <option value={company._id}>{`${company.name}`}</option>)}
-                                  </Form.Control>
-                                </Form.Group>
                               </Form.Row>
                               <Row>
                                 <h5 className="swal-title form-title align-left">DATOS DE CLIENTE</h5>
