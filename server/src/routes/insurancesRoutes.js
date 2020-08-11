@@ -17,7 +17,8 @@ relateInsuranceToInvoice = (invoice) => {
   });
 }
 
-updateInvoice = (invoice) => {
+updateInvoice = (invoice, client) => {
+  console.log(client);
   const update = {
     invoice: invoice.invoice,
     due_date: invoice.due_date,
@@ -27,6 +28,7 @@ updateInvoice = (invoice) => {
     pay_limit2: invoice.pay_limit2,
     comments: invoice.comments,
     email: invoice.email,
+    client: client
   }
   Invoice.findOneAndUpdate({ _id: invoice._id }, update).then((res, error) => {
     if (error) throw Error(error);
@@ -119,7 +121,7 @@ router.post("/update", (req, res) => {
     Insurance.findOne({ _id: id }).then((insurance) => {
       if (insurance) {
         invoices.map(invoice => {
-          updateInvoice(invoice);
+          updateInvoice(invoice, insuranceData.client);
         })
         const toD = invoices.map(inv => inv._id).filter(e => e)
         const t = insurance.invoices.filter(e => e).map(inv => {
