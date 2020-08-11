@@ -19,11 +19,9 @@ export const registerSinester = (sinesterData) => dispatch => {
   
   };
 
-export const getSinisters = () => dispatch => {
-  const token = localStorage.getItem("jwtToken");
-
+export const getSinisters = (type) => dispatch => {
   return axios
-    .get("/api/sinesters/fetch", { token })
+    .get("/api/sinesters/fetch/" + type)
     .then((res) => {
       return res.data
     }).catch(err => {

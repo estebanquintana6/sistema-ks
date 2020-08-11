@@ -129,15 +129,14 @@ class SinesterForm extends Component {
 
   }
 
-  searchSinister = async(id) => {
+  searchSinister = async (id) => {
     const res = await this.props.search(id)
-    console.log('Prostata', res)
-    if(!res) return;
+    if (!res) return;
     this.prepareSearchSinesterForForm(res)
   }
 
   onChange = e => {
-    if (e.target.id === 'search'){ this.searchSinister(e.target.value) }
+    if (e.target.id === 'search') { this.searchSinister(e.target.value) }
     this.setState({ [e.target.id]: e.target.value });
   }
 
@@ -172,7 +171,7 @@ class SinesterForm extends Component {
                                     <option value='COMPLEMENTARIO'>COMPLEMENTARIO</option>
                                   </Form.Control>
                                 </Form.Group>
-                                {this.state.sinesterType === 'COMPLEMENTARIO' &&  !this.state.sinester && <Form.Group as={Col} md={4} controlId="search">
+                                {this.state.sinesterType === 'COMPLEMENTARIO' && !this.state.sinester && <Form.Group as={Col} md={4} controlId="search">
                                   <Form.Label>Siniestro</Form.Label>
                                   <Form.Control onBlur={this.onChange}>
                                   </Form.Control>
@@ -223,12 +222,12 @@ class SinesterForm extends Component {
                                   <Form.Control required type="date" onChange={this.onChange} value={this.formatDate(this.state.begin_date)}>
                                   </Form.Control>
                                 </Form.Group>
-                                {this.props.modification && 
+                                {this.props.modification &&
                                   <Form.Group as={Col} md="6" controlId="end_date">
-                                  <Form.Label>Fecha final</Form.Label>
-                                  <Form.Control required type="date" onChange={this.onChange} value={this.formatDate(this.state.end_date)}>
-                                  </Form.Control>
-                                </Form.Group>
+                                    <Form.Label>Fecha final</Form.Label>
+                                    <Form.Control required type="date" onChange={this.onChange} value={this.formatDate(this.state.end_date)}>
+                                    </Form.Control>
+                                  </Form.Group>
                                 }
                                 <Form.Group as={Col} md="6" controlId="status">
                                   <Form.Label>Status</Form.Label>
@@ -239,12 +238,20 @@ class SinesterForm extends Component {
                                     <option value='REQUERIMIENTO'>REQUERIMIENTO</option>
                                     <option value='RECHAZO'>RECHAZO</option>
                                     <option value='PAGADO'>PAGADO</option>
+                                    {this.state.ramo === "AUTOS" &&
+                                      <React.Fragment>
+                                        <option value='VALUACION'>VALUACION</option>
+                                        <option value='REPARACION TALLER'>REPARACION TALLER</option>
+                                        <option value='DOCUMENTACION PENDIENTE'>DOCUMENTACION PENDIENTE</option>
+                                        <option value='PENDIENTE ASEGURADORA'>PENDIENTE ASEGURADORA</option>
+                                      </React.Fragment>
+                                    }
                                   </Form.Control>
                                 </Form.Group>
                               </Form.Row>
                               <Form.Row>
                                 <Form.Group as={Col} md={6} controlId="folio">
-                                  <Form.Label>Folio</Form.Label>
+                                  <Form.Label>{this.state.ramo === 'AUTOS' ? "Reporte" : "Folio"}</Form.Label>
                                   <Form.Control onChange={this.onChange} value={this.state.folio}>
                                   </Form.Control>
                                 </Form.Group>
@@ -257,7 +264,7 @@ class SinesterForm extends Component {
 
                               <Form.Row>
                                 <Form.Group as={Col} md={12} controlId="description">
-                                  <Form.Label>{this.state.ramo === 'AUTOS' ? "Taller" : "Padecimiento"}</Form.Label>
+                                  <Form.Label>{this.state.ramo === 'AUTOS' ? "Observaciones" : "Padecimiento"}</Form.Label>
                                   <Form.Control as="textarea" onChange={this.onChange} value={this.state.description} />
                                 </Form.Group>
                               </Form.Row>

@@ -60,14 +60,15 @@ router.post("/update", (req, res) => {
   });
 });
 
-router.get("/fetch", (req, res) => {
+router.get("/fetch/:type", (req, res) => {
   const token = req.headers.authorization;
   jwt.verify(token, secretKey, function (err) {
-    if (err) {
-      return res.status(401).json({ email: "no permissions" });
-    }
+    if (err) res.status(401).json({ email: "no permissions" });
+
+    let query = { ramo: { $ne: "AUTOS" } };
+    if(req.params.type === "AUTOS") query = { "ramo":  "AUTOS"}
     // This is the way I found to make a get all from model.
-    Sinester.find({}).populate('client').populate('company').then((sinesters) => {
+    Sinester.find(query).populate('client').populate('company').then((sinesters) => {
       res.json({ sinesters });
     });
   });

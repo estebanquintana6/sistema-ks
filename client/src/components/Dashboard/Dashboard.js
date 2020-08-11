@@ -8,6 +8,7 @@ import GeneralInsurancePanel from '../Insurances/GeneralInsurancePanel/GeneralIn
 import ClientsPanel from '../Clients/ClientsPanel/ClientsPanel';
 import InvoicesPanel from '../Invoices/InvoicesPanel/InvoicesPanel';
 import SinesterPanel from '../Sinesters/SinesterPanel/SinesterPanel';
+import SinesterAutosPanel from '../Sinesters/SinesterAutosPanel/SinesterAutosPanel';
 
 import UploadPanel from '../UploadPanel/UploadPanel';
 //redux
@@ -56,11 +57,11 @@ class Dashboard extends Component {
               <ClientsPanel history={this.props.history}></ClientsPanel>
             </Route>
             <Route exact path="/dashboard/clientes/upload">
-              <UploadPanel 
-              history={this.props.history}
-              type="CLIENTES"
-              resultKeys={['no', 'person_type', 'name', 'rfc', 'contact1', 'correo1', 'tel1', 'contact2', 'correo2', 'tel2', 'contact3', 'correo3', 'tel3', 'state', 'city']}
-              originalKeys={['No', 'Tipo de persona',	'CONTRATANTE'	,'RFC'	,'Contacto',	'CORREO'	,'TEL',	'Contacto2',	'CORREO2'	,'TEL2'	,'Contacto3'	,'CORREO3'	,'TEL3'	,'ESTADO'	,'CIUDAD']}
+              <UploadPanel
+                history={this.props.history}
+                type="CLIENTES"
+                resultKeys={['no', 'person_type', 'name', 'rfc', 'contact1', 'correo1', 'tel1', 'contact2', 'correo2', 'tel2', 'contact3', 'correo3', 'tel3', 'state', 'city']}
+                originalKeys={['No', 'Tipo de persona', 'CONTRATANTE', 'RFC', 'Contacto', 'CORREO', 'TEL', 'Contacto2', 'CORREO2', 'TEL2', 'Contacto3', 'CORREO3', 'TEL3', 'ESTADO', 'CIUDAD']}
               ></UploadPanel>
             </Route>
             <Route exact path="/dashboard/pendientes">
@@ -73,11 +74,11 @@ class Dashboard extends Component {
               <GeneralInsurancePanel history={this.props.history} variant="GENERAL"></GeneralInsurancePanel>
             </Route>
             <Route exact path="/dashboard/autos/upload">
-              <UploadPanel 
-              history={this.props.history}
-              type="AUTOS"
-              resultKeys={['insurance_company', 'client', 'policy', 'car_year', 'car_brand', 'car_description', 'due_date', 'cis', 'payment_type', 'type']}
-              originalKeys={['ASEGURADORA', 'CONTRATANTE', 'POLIZA', 'MODELO', 'MARCA', 'CARROCERIA', 'F. VENCIMIENTO', 'CIS', 'FORMA DE PAGO', 'TIPO']}
+              <UploadPanel
+                history={this.props.history}
+                type="AUTOS"
+                resultKeys={['insurance_company', 'client', 'policy', 'car_year', 'car_brand', 'car_description', 'due_date', 'cis', 'payment_type', 'type']}
+                originalKeys={['ASEGURADORA', 'CONTRATANTE', 'POLIZA', 'MODELO', 'MARCA', 'CARROCERIA', 'F. VENCIMIENTO', 'CIS', 'FORMA DE PAGO', 'TIPO']}
               ></UploadPanel>
             </Route>
             <Route exact path="/dashboard/vida">
@@ -87,30 +88,36 @@ class Dashboard extends Component {
               <InsurancePanel history={this.props.history} variant="GM"></InsurancePanel>
             </Route>
             <Route exact path="/dashboard/gm/upload">
-              <UploadPanel 
-              history={this.props.history}
-              type="GMM"
-              resultKeys={['no', 'person_type', 'name', 'rfc', 'policy', 'product', 'colective_type', 'coin', 'due_date', 'receipt_type','payment_type', 'contact', 'email', 'telephone', 'insurance_company']}
-              originalKeys={['NO','TIPO DE PERSONA','CONTRATANTE','RFC','POLIZA','PRODUCTO','TIPO DE POLIZA','MONEDA','FECHA DE VENCIMIENTO','TIPO DE RECIBO','TIPO DE PAGO','CONTACTO','MAIL','TELEFONO','ASEGURADORA']}
+              <UploadPanel
+                history={this.props.history}
+                type="GMM"
+                resultKeys={['no', 'person_type', 'name', 'rfc', 'policy', 'product', 'colective_type', 'coin', 'due_date', 'receipt_type', 'payment_type', 'contact', 'email', 'telephone', 'insurance_company']}
+                originalKeys={['NO', 'TIPO DE PERSONA', 'CONTRATANTE', 'RFC', 'POLIZA', 'PRODUCTO', 'TIPO DE POLIZA', 'MONEDA', 'FECHA DE VENCIMIENTO', 'TIPO DE RECIBO', 'TIPO DE PAGO', 'CONTACTO', 'MAIL', 'TELEFONO', 'ASEGURADORA']}
               ></UploadPanel>
             </Route>
             <Route exact path="/dashboard/danos">
               <InsurancePanel history={this.props.history} variant="DANOS"></InsurancePanel>
             </Route>
             <Route exact path="/dashboard/danos/upload">
-              <UploadPanel 
+              <UploadPanel
                 history={this.props.history}
                 type="DANOS"
                 resultKeys={['no', 'person_type', 'name', 'rfc', 'policy', 'product', 'coin', 'due_date', 'payment_type', 'prima', 'contact', 'email', 'telephone', 'insurance_company']}
-                originalKeys={['NO','TIPO DE PERSONA','CONTRATANTE','RFC','POLIZA','PRODUCTO', 'MONEDA','FECHA DE VENCIMIENTO', 'TIPO DE PAGO','PRIMA', 'CONTACTO','MAIL','TELEFONO','ASEGURADORA']}
-                >
-                </UploadPanel>
+                originalKeys={['NO', 'TIPO DE PERSONA', 'CONTRATANTE', 'RFC', 'POLIZA', 'PRODUCTO', 'MONEDA', 'FECHA DE VENCIMIENTO', 'TIPO DE PAGO', 'PRIMA', 'CONTACTO', 'MAIL', 'TELEFONO', 'ASEGURADORA']}
+              >
+              </UploadPanel>
             </Route>
             <Route exact path="/dashboard/invoices">
               <InvoicesPanel history={this.props.history}></InvoicesPanel>
             </Route>
             <Route exact path="/dashboard/siniestros">
               <SinesterPanel history={this.props.history}></SinesterPanel>
+            </Route>
+            <Route exact path="/dashboard/siniestros">
+              <SinesterPanel history={this.props.history}></SinesterPanel>
+            </Route>
+            <Route exact path="/dashboard/siniestrosautos">
+              <SinesterAutosPanel history={this.props.history}></SinesterAutosPanel>
             </Route>
           </Switch>
         </div>

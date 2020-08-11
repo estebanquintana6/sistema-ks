@@ -58,7 +58,17 @@ var Sinester = new Schema({
     },
     status: {
         type: String,
-        enum: ['DOCUMENTOS', 'PROCESO', 'REQUERIMIENTO', 'RECHAZO', 'PAGADO'],
+        enum: [
+            'DOCUMENTOS',
+            'PROCESO',
+            'REQUERIMIENTO',
+            'RECHAZO',
+            'PAGADO',
+            'VALUACION',
+            'REPARACION TALLER',
+            'DOCUMENTACION PENDIENTE',
+            'PENDIENTE ASEGURADORA'
+        ],
         required: false
     },
     description: {

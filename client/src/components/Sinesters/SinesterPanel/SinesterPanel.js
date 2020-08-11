@@ -3,7 +3,17 @@ import PropTypes from "prop-types";
 import { Container, Row } from 'react-bootstrap';
 import { connect } from "react-redux";
 import { getClients } from '../../../actions/registerClient'
-import { getSinester, getSinisters, registerSinester, updateSinester, deleteSinester, download, removeFile, saveFile, getById } from "../../../actions/sinesterActions";
+import {
+  getSinester,
+  getSinisters,
+  registerSinester,
+  updateSinester,
+  deleteSinester,
+  download,
+  removeFile,
+  saveFile,
+  getById
+} from "../../../actions/sinesterActions";
 import { getCompanies } from "../../../actions/companyActions";
 import { ExportDataToCSV } from "../../ExportCSV/ExportCSV";
 
@@ -45,12 +55,12 @@ class SinesterPanel extends Component {
         description: "Padecimiento",
         total_days: 'Días de proceso'
       },
-      excludedFields: ['__v', '_id', 'history', 'files', 'tolerance', 'city', 'contacts', 'created_at', 'state','person_type', 'rfc', 'ramo', 'client', 'type', 'sinesterType' ],
-      excelHeader: ['Empresa', 'Afectado', 'Folio', 'Siniestro', 'Fecha de inicio', 'Fecha final', 'Días de proceso', 'Estatus', 'Padecimiento']
+      excludedFields: ['__v', '_id', 'history', 'files', 'tolerance', 'city', 'contacts', 'created_at', 'state', 'person_type', 'rfc', 'ramo', 'client', 'type', 'sinesterType'],
+      excelHeader: ['Empresa', 'Afectado', 'Folio', 'Siniestro', 'Fecha de inicio', 'Fecha final', 'Días de proceso', 'Estatus', 'Padecimiento'],
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     this.prepareClientsForForm();
     this.prepareCompaniesForForm();
     this.refresh();
@@ -70,7 +80,7 @@ class SinesterPanel extends Component {
   }
 
   refresh = () => {
-    this.props.getSinisters().then(data => {
+    this.props.getSinisters("GENERAL").then(data => {
       this.setState({ data: data.sinesters });
       this.attachDate()
     });
