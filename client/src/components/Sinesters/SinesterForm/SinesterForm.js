@@ -253,6 +253,11 @@ class SinesterForm extends Component {
                                     }
                                   </Form.Control>
                                 </Form.Group>
+
+                                <Form.Group as={Col} md="6" controlId="poliza">
+                                  <Form.Label>Poliza</Form.Label>
+                                  <Form.Control onChange={this.onChange} value={this.state.poliza}></Form.Control>
+                                </Form.Group>
                               </Form.Row>
                               <Form.Row>
                                 <Form.Group as={Col} md={6} controlId="folio">

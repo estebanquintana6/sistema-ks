@@ -17,6 +17,11 @@ var Sinester = new Schema({
         enum: ['DOCUMENTOS', 'PROCESO', 'REQUERIMIENTO', 'RECHAZO', 'PAGADO'],
         required: false
     },
+    poliza: {
+        type: String,
+        required: false,
+        uppercase: true
+    },
     ramo: {
         type: String,
         enum: ['GMM', 'VIDA', 'AUTOS', 'DAÑOS'],

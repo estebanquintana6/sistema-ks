@@ -27,7 +27,8 @@ router.post("/save", (req, res) => {
       status: data.status,
       ramo: data.ramo,
       company: data.company,
-      sinesterType: data.sinesterType
+      sinesterType: data.sinesterType,
+      poliza: data.poliza
     });
     sinester.save()
       .then(() => {

@@ -313,7 +313,7 @@ class SinesterPanel extends Component {
         modification={true}>
       </SinesterModal>,
       buttons: false,
-      title: `${sinester.description}`,
+      title: `${sinester.sinester}`,
       className: "width-800pt"
     });
   }
@@ -375,6 +375,16 @@ class SinesterPanel extends Component {
                     accessor: d => {
                       if (d.company) {
                         return this.validateField(d.company.name)
+                      }
+                      return "";
+                    }
+                  },
+                  {
+                    Header: "No. Poliza",
+                    id: "poliza",
+                    accessor: d => {
+                      if (d.poliza) {
+                        return this.validateField(d.poliza)
                       }
                       return "";
                     }

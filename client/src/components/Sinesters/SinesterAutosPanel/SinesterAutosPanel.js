@@ -374,6 +374,16 @@ class SinesterAutosPanel extends Component {
                                         }
                                     },
                                     {
+                                        Header: "No. Poliza",
+                                        id: "poliza",
+                                        accessor: d => {
+                                            if (d.poliza) {
+                                                return this.validateField(d.poliza)
+                                            }
+                                            return "";
+                                        }
+                                    },
+                                    {
                                         Header: "Afectado",
                                         id: "affected",
                                         accessor: d => this.validateField(d.affected)
