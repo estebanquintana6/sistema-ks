@@ -54,7 +54,7 @@ class InsurancePanel extends Component {
       data: [],
       clients: [],
       companies: [],
-      excludedFields: ['__v', '_id', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts', 'begin_date', 'invoices', 'cancelation_note', 'car_model', 'languages']
+      excludedFields: ['__v', '_id', 'files', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts', 'begin_date', 'invoices', 'cancelation_note', 'car_model', 'languages']
     };
   }
 
@@ -104,7 +104,7 @@ class InsurancePanel extends Component {
     if (this.props.variant === 'AUTOS') {
       resObj = {
         ...resObj,
-        car_brand: "Marca de coche",
+        car_brand: "Marca",
         car_color: "Color de coche",
         car_description: "Descripción de coche",
         car_motor: "Número de motor",
@@ -125,23 +125,38 @@ class InsurancePanel extends Component {
   generateHeaders = () => {
     //Contrantante/#póliza/F de vencimiento de póliza/prima/modelo/marca/Descripción/# de serie/Aseguradoras/lo demás
 
-    let resArr = ['Contratante Tipo de persona', 'Contratante', 'Contratante RFC', 'Póliza', 'Producto', 'Tipo de póliza', 'Moneda', 'Fecha de vencimiento', 'Tipo de pago', 'Aseguradora']
+    let resArr = [
+      'Contratante',
+      'Póliza',
+      'Fecha de vencimiento',
+      'Status',
+      'Tipo de pago',
+      'Aseguradora',
+      'Producto',
+      'Tipo de póliza',
+      'Contratante RFC',
+      'Contratante Tipo de persona',
+      'Moneda',
+    ];
     if (this.props.variant === 'AUTOS') {
       resArr = [
         'Contratante',
         'Póliza',
         'Fecha de vencimiento',
-        'Prima',
-        "Modelo de coche",
-        "Marca de coche",
+        "Marca",
         "Descripción de coche",
-        "Número de serie",
-        'Aseguradora',
-        "Color de coche",
-        "Número de motor",
+        "Modelo",
         "Número de placas",
+        'Prima',
+        'Status',
+        'Fecha vto. pago',
+        'Tipo de pago',
+        'Aseguradora',
+        "Número de serie",
+        "Número de motor",
+        "Color de coche",
         "CIS",
-        'Contratante Tipo de persona', 'Contratante RFC', 'Producto', 'Tipo de póliza', 'Tipo de pago',
+        'Contratante Tipo de persona', 'Contratante RFC', 'Producto', 'Tipo de póliza', 'Tipo de pago', 'Moneda'
       ]
     }
     if (this.props.variant === 'DANOS') {
@@ -680,11 +695,11 @@ class InsurancePanel extends Component {
               return true
             }
 
-            if(Number.isInteger(row[filter.id])){
+            if (Number.isInteger(row[filter.id])) {
               row[filter.id] = moment(row[filter.id]);
-            } 
+            }
 
-            const res = row[filter.id] !== undefined ? moment.unix(row[filter.id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'),null, '[]') : true 
+            const res = row[filter.id] !== undefined ? moment.unix(row[filter.id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'), null, '[]') : true
             return res
           }
         },
