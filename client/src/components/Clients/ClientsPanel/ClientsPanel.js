@@ -26,12 +26,10 @@ class ClientsPanel extends Component {
       select2: undefined,
       data: [],
       fieldTranslation: {
-        comments: "Comentarios",
         contacts: "Contacto ",
         email: "Correo",
         name: "Nombre",
         telephone: "Teléfono",
-        observations: "Observaciones",
         person_type: "Tipo de Persona",
         rfc: "RFC",
         gender: 'Sexo',
@@ -39,8 +37,8 @@ class ClientsPanel extends Component {
         city: "Ciudad",
         postal_code: "Código Postal"
       },
-      excludedFields: ['__v', '_id', 'files', 'created_at'],
-      excelHeader: ['Tipo de Persona', 'RFC', 'Nombre', 'Sexo', 'Estado', 'Ciudad', 'Código Postal', 'Comentarios']
+      excludedFields: ['__v', '_id', 'files', 'created_at', 'observations', 'comments'],
+      excelHeader: ['Nombre', 'Tipo de Persona', 'RFC', 'Sexo', 'Estado', 'Ciudad', 'Código Postal']
     };
   }
 
