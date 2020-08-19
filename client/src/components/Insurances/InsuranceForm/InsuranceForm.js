@@ -417,11 +417,20 @@ class InsuranceForm extends Component {
                       <h5 className="swal-title form-title align-left">PÓLIZA</h5>
                     </Row>
                     <Form.Row>
-                      <Form.Group as={Col} md="12" controlId="insurance_company">
+                      <Form.Group as={Col} md="6" controlId="insurance_company">
                         <Form.Label>Aseguradora</Form.Label>
                         <Form.Control required as="select" onChange={this.onChange} value={this.state.insurance_company && this.state.insurance_company._id}>
                           <option></option>
                           {this.props.companies.map((company) => <option value={company._id}>{`${company.name}`}</option>)}
+                        </Form.Control>
+                      </Form.Group>
+
+                      <Form.Group as={Col} md="6" controlId="colective_insurance">
+                        <Form.Label>Tipo de poliza</Form.Label>
+                        <Form.Control required as="select" onChange={this.onChange} value={this.state.colective_insurance}>
+                          <option></option>
+                          <option value={false}>Individual</option>
+                          <option value={true}>Colectiva</option>
                         </Form.Control>
                       </Form.Group>
                     </Form.Row>
