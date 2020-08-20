@@ -121,7 +121,31 @@ class InsurancePanel extends Component {
         pay_status: "Status",
         payment_type: "Tipo de pago",
         policy: "Póliza",
-      }      
+      }
+      this.setState({
+        excludedFields: ['__v',
+          '_id',
+          'files',
+          'active_status',
+          'endorsements',
+          'comments',
+          'status',
+          'created_at',
+          'tolerance',
+          'state',
+          'city',
+          'postal_code',
+          'gender',
+          'contacts',
+          'begin_date',
+          'invoices',
+          'cancelation_note',
+          'car_model',
+          'languages',
+          'damage_product',
+          'bounty',
+          'currency']
+      })
     }
 
     if (this.props.variant === 'AUTOS') {
@@ -172,28 +196,28 @@ class InsurancePanel extends Component {
         'Contratante Tipo de persona'
       ];
       this.setState({
-        excludedFields: ['__v', 
-        '_id', 
-        'files', 
-        'active_status', 
-        'endorsements', 
-        'comments', 
-        'status', 
-        'created_at', 
-        'tolerance', 
-        'state', 
-        'city', 
-        'postal_code', 
-        'gender', 
-        'contacts', 
-        'begin_date', 
-        'invoices', 
-        'cancelation_note', 
-        'car_model', 
-        'languages', 
-        'damage_product', 
-        'bounty', 
-        'currency']
+        excludedFields: ['__v',
+          '_id',
+          'files',
+          'active_status',
+          'endorsements',
+          'comments',
+          'status',
+          'created_at',
+          'tolerance',
+          'state',
+          'city',
+          'postal_code',
+          'gender',
+          'contacts',
+          'begin_date',
+          'invoices',
+          'cancelation_note',
+          'car_model',
+          'languages',
+          'damage_product',
+          'bounty',
+          'currency']
       })
     }
     if (this.props.variant === 'AUTOS') {
