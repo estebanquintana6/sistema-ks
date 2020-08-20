@@ -130,6 +130,7 @@ class InsurancePanel extends Component {
       'Póliza',
       'Fecha de vencimiento',
       'Status',
+      'Fecha vto. pago',
       'Tipo de pago',
       'Aseguradora',
       'Producto',
