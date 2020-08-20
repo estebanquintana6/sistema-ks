@@ -102,7 +102,7 @@ class InsurancePanel extends Component {
     }
 
     if (this.props.variant === 'GMM') {
-      let resObj = {
+      resObj = {
         _id: "id",
         client: "Contratante",
         person_type: "Tipo de persona",
@@ -121,9 +121,7 @@ class InsurancePanel extends Component {
         pay_status: "Status",
         payment_type: "Tipo de pago",
         policy: "Póliza",
-      }
-      
-      return resObj;
+      }      
     }
 
     if (this.props.variant === 'AUTOS') {
