@@ -54,8 +54,8 @@ class InsurancePanel extends Component {
       data: [],
       clients: [],
       companies: [],
-      excludedFields: this.props.variant === 'GMM' ? 
-        ['__v', '_id', 'files', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts', 'begin_date', 'invoices', 'cancelation_note', 'car_model', 'languages', 'damage_product', 'bounty', 'currency'] : 
+      excludedFields: this.props.variant === 'GMM' ?
+        ['__v', '_id', 'files', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts', 'begin_date', 'invoices', 'cancelation_note', 'car_model', 'languages', 'damage_product', 'bounty', 'currency'] :
         ['__v', '_id', 'files', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts', 'begin_date', 'invoices', 'cancelation_note', 'car_model', 'languages', 'damage_product']
     };
   }
@@ -86,12 +86,10 @@ class InsurancePanel extends Component {
       person_type: "Tipo de persona",
       rfc: "RFC",
       colective_insurance: "Tipo de póliza",
-      currency: "Moneda",
       due_date: "Fecha de vencimiento",
       endorsements: "Endosos",
       insurance: "Compañia",
       email: "Email",
-      bounty: "Prima",
       insurance_company: "Aseguradora",
       insurance_type: "Producto",
       invoice: "Número de recibo",
@@ -101,29 +99,6 @@ class InsurancePanel extends Component {
       pay_status: "Status",
       payment_type: "Tipo de pago",
       policy: "Póliza",
-    }
-
-    if (this.props.variant === 'GMM') {
-      resObj = {
-        _id: "id",
-        client: "Contratante",
-        person_type: "Tipo de persona",
-        rfc: "RFC",
-        colective_insurance: "Tipo de póliza",
-        due_date: "Fecha de vencimiento",
-        endorsements: "Endosos",
-        insurance: "Compañia",
-        email: "Email",
-        insurance_company: "Aseguradora",
-        insurance_type: "Producto",
-        invoice: "Número de recibo",
-        payment_status: "Estatus de pago",
-        pay_due_date: "Fecha vto. pago",
-        pay_limit: "Vigencia",
-        pay_status: "Status",
-        payment_type: "Tipo de pago",
-        policy: "Póliza",
-      }
     }
 
     if (this.props.variant === 'AUTOS') {
@@ -139,6 +114,15 @@ class InsurancePanel extends Component {
         cis: "CIS"
       }
     }
+
+    if (this.props.variant !== 'GMM') {
+      resObj = {
+        ...resObj,
+        bounty: "Prima",
+        currency: "Moneda"
+      }
+    }
+    
     return resObj
   }
 
