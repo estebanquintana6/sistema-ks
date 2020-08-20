@@ -55,7 +55,7 @@ class InsurancePanel extends Component {
       clients: [],
       companies: [],
       excludedFields: this.props.variant === 'GM' ?
-        ['__v', '_id', 'files', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts', 'begin_date', 'invoices', 'cancelation_note', 'car_model', 'languages', 'damage_product', 'bounty', 'currency'] :
+        ['__v', '_id', 'files', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts', 'begin_date', 'invoices', 'cancelation_note', 'car_model', 'languages', 'damage_product', 'bounty', 'currency', 'Moneda'] :
         ['__v', '_id', 'files', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts', 'begin_date', 'invoices', 'cancelation_note', 'car_model', 'languages', 'damage_product']
     };
   }
