@@ -122,6 +122,8 @@ class InsurancePanel extends Component {
         payment_type: "Tipo de pago",
         policy: "Póliza",
       }
+      
+      return resObj;
     }
 
     if (this.props.variant === 'AUTOS') {
