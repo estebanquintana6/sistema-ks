@@ -54,7 +54,7 @@ class InsurancePanel extends Component {
       data: [],
       clients: [],
       companies: [],
-      excludedFields: ['__v', '_id', 'files', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts', 'begin_date', 'invoices', 'cancelation_note', 'car_model', 'languages']
+      excludedFields: ['__v', '_id', 'files', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts', 'begin_date', 'invoices', 'cancelation_note', 'car_model', 'languages', 'damage_product']
     };
   }
 
@@ -113,12 +113,7 @@ class InsurancePanel extends Component {
         car_year: "Modelo",
         cis: "CIS"
       }
-    } else if (this.props.variant === 'DANOS') {
-      resObj = {
-        ...resObj,
-        damage_product: 'Producto Daños'
-      }
-    }
+    } 
     return resObj
   }
 
