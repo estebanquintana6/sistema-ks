@@ -134,6 +134,24 @@ class InsurancePanel extends Component {
       'Contratante Tipo de persona',
       'Moneda',
     ];
+    if (this.props.variant === "GMM") {
+      resArr = [
+        'Contratante',
+        'Póliza',
+        'Fecha de vencimiento',
+        'Status',
+        'Fecha vto. pago',
+        'Tipo de pago',
+        'Aseguradora',
+        'Producto',
+        'Tipo de póliza',
+        'Contratante RFC',
+        'Contratante Tipo de persona'
+      ];
+      this.setState({
+        excludedFields: ['__v', '_id', 'files', 'active_status', 'endorsements', 'comments', 'status', 'created_at', 'tolerance', 'state', 'city', 'postal_code', 'gender', 'contacts', 'begin_date', 'invoices', 'cancelation_note', 'car_model', 'languages', 'damage_product', 'bounty']
+      })
+    }
     if (this.props.variant === 'AUTOS') {
       resArr = [
         'Contratante',
