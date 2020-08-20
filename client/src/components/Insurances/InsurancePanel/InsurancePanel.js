@@ -574,6 +574,8 @@ class InsurancePanel extends Component {
   }
 
   render() {
+    this.refresh();
+
     const { data } = this.state;
     const { variant } = this.props;
     let excelToExport = [];
