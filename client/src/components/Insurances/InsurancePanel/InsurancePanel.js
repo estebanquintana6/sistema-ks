@@ -113,7 +113,7 @@ class InsurancePanel extends Component {
         car_year: "Modelo",
         cis: "CIS"
       }
-    } 
+    }
     return resObj
   }
 
@@ -169,7 +169,21 @@ class InsurancePanel extends Component {
         'Contratante Tipo de persona',
         'Contratante RFC',
       ];
-
+    } if (this.props.variant === "VIDA") {
+      resArr = [
+        'Contratante',
+        'Póliza',
+        'Fecha de vencimiento',
+        'Status',
+        'Fecha vto. pago',
+        'Tipo de pago',
+        'Aseguradora',
+        'Producto',
+        'Tipo de póliza',
+        'Moneda',
+        'Contratante RFC',
+        'Contratante Tipo de persona',
+      ];
     }
     return resArr
   }
