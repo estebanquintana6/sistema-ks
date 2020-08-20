@@ -143,7 +143,8 @@ class InsurancePanel extends Component {
       'Contratante Tipo de persona',
       'Moneda',
     ];
-    if (this.props.variant === "GMM") {
+
+    if (this.props.variant === "GM") {
       resArr = [
         'Contratante',
         'Póliza',
