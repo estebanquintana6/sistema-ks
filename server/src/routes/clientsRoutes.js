@@ -6,8 +6,6 @@ const User = require("../models/UserForm");
 const Client = require("../models/ClientForm");
 const secretKey = require("../config/config")
 const fs = require('fs');
-const User = require("../models/UserForm");
-
 
 const { isEmpty, removeDiacritics } = require("../utils/bulkUtils");
 
