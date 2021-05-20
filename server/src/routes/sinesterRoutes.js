@@ -3,6 +3,7 @@ var router = express.Router();
 const jwt = require("jsonwebtoken");
 
 const Sinester = require("../models/SinesterForm");
+const User = require("../models/UserForm");
 
 const secretKey = require("../config/config");
 const fs = require('fs');
@@ -14,6 +15,11 @@ router.post("/save", (req, res) => {
 
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+          return res.status(402);
+      }
+    })
     const data = body.sinesterData;
 
     const sinester = new Sinester({

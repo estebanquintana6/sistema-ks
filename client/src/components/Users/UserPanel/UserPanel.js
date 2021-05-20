@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 import { listUsers } from "../../../actions/userActions";
-import { changeRol, deleteUser } from "../../../actions/adminActions";
+import { changeRol, deleteUser, activateUser } from "../../../actions/adminActions";
 
 import swal from '@sweetalert/with-react';
 
@@ -88,12 +88,36 @@ class UserPanel extends Component {
       });
   }
 
+  confirmActivation = (id) => {
+    this.props.activateUser(id);
+  }
+
+  activateUser = (id, name, e) => {
+    swal({
+      title: `¿Estas seguro de querer activar a ${name}?`,
+      text: "Una vez activado tendrás que eliminar el usuario para revocar permisos!",
+      icon: "warning",
+      buttons: true,
+      sucessMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          this.confirmActivation(id);
+          swal("Puf! Tu usuario se ha activado!", {
+            icon: "success",
+          });
+          this.getUsers();
+        }
+      });
+  }
+
   openModificationModal(user) {
     swal({
       content: <UserModal
         user={user}
         changeRol={this.changeRol}
-        deleteUser={this.deleteUser}>
+        deleteUser={this.deleteUser}
+        activateUser={this.activateUser}>
       </UserModal>,
       buttons: false
     });
@@ -189,6 +213,11 @@ class UserPanel extends Component {
                     Header: "Email",
                     accessor: "email"
                   },
+                  {
+                    Header: "Estatus",
+                    id: "active",
+                    accessor: d => d.active ? "ACTIVO" : "INACTIVO"
+                  },
                 ]
               }
             ]}
@@ -215,5 +244,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { listUsers, changeRol, deleteUser }
+  { listUsers, changeRol, deleteUser, activateUser }
 )(UserPanel);

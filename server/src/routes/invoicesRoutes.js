@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 
 
 const Invoice = require("../models/InvoiceForm");
+const User = require("../models/UserForm");
 
 const secretKey = require("../config/config")
 
@@ -13,8 +14,13 @@ router.post("/update", (req, res) => {
   const token = body.token;
   const invoiceData = body.invoiceData;
   const id = invoiceData._id;
-  jwt.verify(token, secretKey, function (err, _) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) return res.status(401).json({ email: "no permissions" });
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
     Invoice.findOne({ _id: id }).then((invoice) => {
       if (!invoice) return res.status(404).json({ message: "Recibo no encontrado" });
       let doc = Invoice.findById(invoice.id);
@@ -34,6 +40,11 @@ router.post("/delete", (req, res) => {
 
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) return res.status(401).json({ email: "no permissions" });
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
     Invoice.findOne({ _id: id }).then((task) => {
       const exists = task;
       if (exists) {
@@ -49,10 +60,15 @@ router.post("/delete", (req, res) => {
 
 router.get("/fetch", (req, res) => {
   const token = req.headers.authorization;
-  jwt.verify(token, secretKey, function (err) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
     }
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
     // This is the way I found to make a get all from model.
     Invoice.find({}).populate('client').populate('insurance').then((invoices) => {
       res.json({ invoices });

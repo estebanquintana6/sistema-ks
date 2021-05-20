@@ -8,7 +8,7 @@ const secretKey = require("../config/config")
 
 const Insurance = require("../models/InsuranceForm");
 const Invoice = require("../models/InvoiceForm");
-
+const User = require("../models/UserForm");
 
 relateInsuranceToInvoice = (invoice) => {
   Insurance.findOne({ _id: invoice.insurance }).then((insurance) => {
@@ -43,8 +43,15 @@ router.post("/save", (req, res) => {
   const invoices = insuranceData.invoices;
   delete insuranceData.invoices;
 
-  jwt.verify(token, secretKey, function (err, _) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
+
     const insurance = new Insurance(insuranceData);
 
     insurance.save().then((insurance, err) => {
@@ -82,8 +89,15 @@ router.get("/fetch/:type", (req, res) => {
 
 router.get("/fetchOne/:id", (req, res) => {
   const token = req.headers.authorization;
-  jwt.verify(token, secretKey, function (err) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) return res.status(401).json({ email: "no permissions" });
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
+
     Insurance.findById(req.params.id).populate('client').populate('insurance_company').populate('invoices').then((insurance) => {
       res.json(insurance);
     }).catch(err => {
@@ -95,7 +109,14 @@ router.get("/fetchOne/:id", (req, res) => {
 // Obtener todos las pólizas del tipo que se consulta
 router.get("/fetch_all", (req, res) => {
   const token = req.headers.authorization;
-  jwt.verify(token, secretKey, function (err) {
+  jwt.verify(token, secretKey, function (err, decoded) {
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
+
     if (err) return res.status(401).json({ email: "no permissions" });
     Insurance.find({}).populate('client').populate('insurance_company').populate('invoices').then((insurances) => {
       res.json({ insurances });
@@ -114,10 +135,17 @@ router.post("/update", (req, res) => {
   const invoices = insuranceData.invoices;
   delete insuranceData.invoices;
 
-  jwt.verify(token, secretKey, function (err, _) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
     }
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
+
     Insurance.findOne({ _id: id }).then((insurance) => {
       if (insurance) {
         invoices.map(invoice => {
@@ -152,8 +180,15 @@ router.post("/update", (req, res) => {
 router.post("/:id/delete", (req, res) => {
   const token = req.headers.authorization;
 
-  jwt.verify(token, secretKey, function (err, _) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
+
     Insurance.findOne({ _id: req.params.id }).then((company) => {
       const exists = company;
       if (exists) {
@@ -178,8 +213,15 @@ router.post("/:id/cancel", (req, res) => {
   const body = req.body;
   const token = req.headers.authorization;
 
-  jwt.verify(token, secretKey, function (err, _) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
+
     Insurance.findOne({ _id: req.params.id }).then((company) => {
       const exists = company;
       if (exists) {
@@ -203,8 +245,15 @@ router.post("/:id/activate", (req, res) => {
   const body = req.body;
   const token = req.headers.authorization;
 
-  jwt.verify(token, secretKey, function (err, _) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
+
     Insurance.findOne({ _id: req.params.id }).then((company) => {
       const exists = company;
       if (exists) {
@@ -229,8 +278,15 @@ router.post("/:id/payStatus", (req, res) => {
   const token = req.headers.authorization;
   const status = req.body.status;
 
-  jwt.verify(token, secretKey, function (err, _) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
+    
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
+
     Insurance.findOne({ _id: req.params.id }).then((insurance) => {
       insurance.pay_status = status;
       insurance.save();
@@ -247,10 +303,17 @@ router.post("/upload", (req, res) => {
 
   const validTypes = ['pdf', 'docx', 'xlsx', 'jpeg', 'jpg', 'gif', 'png'];
 
-  jwt.verify(token, secretKey, function (err, _) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
     }
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
+
     if (req.files === null) {
       return res.status(400).json({ msg: 'No file uploaded' });
     }
@@ -296,10 +359,17 @@ router.post("/download", (req, res) => {
   const token = body.token;
   const path = body.path
 
-  jwt.verify(token, secretKey, function (err, _) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
     }
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
+
     const pathArray = path.split('/')
     const name = pathArray[pathArray.length - 1]
     const nameArray = name.split('.')
@@ -318,10 +388,17 @@ router.post("/remove_file", (req, res) => {
   const token = body.token;
   const id = body.id;
   const fileroute = body.path;
-  jwt.verify(token, secretKey, function (err, _) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
     }
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
+
     Insurance.findOne({ _id: id }).then((insurance) => {
       if (insurance) {
         let doc = Insurance.findById(insurance.id);
@@ -353,10 +430,17 @@ router.post("/save_file", (req, res) => {
   const fileData = body.fileData
   const id = body.id
 
-  jwt.verify(token, secretKey, function (err, _) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
     }
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
+    
     Insurance.findOne({ _id: id }).then((insurance) => {
       if (insurance) {
         let doc = Insurance.findById(insurance.id);

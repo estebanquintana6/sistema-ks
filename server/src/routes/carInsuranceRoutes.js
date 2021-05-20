@@ -7,6 +7,7 @@ const secretKey = require("../config/config")
 const Insurance = require("../models/InsuranceForm");
 const Client = require("../models/ClientForm");
 const Company = require("../models/CompanyForm")
+const User = require("../models/UserForm")
 
 const { substractYears } = require("../utils/dateUtils");
 const { removeDiacritics } = require("../utils/bulkUtils");
@@ -22,8 +23,14 @@ router.post("/bulk", (req, res) => {
     const token = body.token;
     let insertedElements = 0;
 
-    jwt.verify(token, secretKey, function (err, _) {
+    jwt.verify(token, secretKey, function (err, decoded) {
         if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
+        User.findById(decoded.id).then(user => {
+            if (!user) {
+                return res.status(402);
+            }
+        })
+
         const allData = body.bulkData;
 
 

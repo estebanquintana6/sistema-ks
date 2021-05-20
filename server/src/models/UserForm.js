@@ -29,6 +29,10 @@ const UserSchema = new Schema({
   role: {
     type: String,
     default: "user"
+  },
+  active: {
+    type: Boolean,
+    default: false
   }
 });
 

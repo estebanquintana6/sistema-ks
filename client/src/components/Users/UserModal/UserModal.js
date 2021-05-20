@@ -34,6 +34,9 @@ class UserModal extends Component {
                         <td>
                         <Button variant="danger" onClick={this.props.deleteUser.bind(this, user._id, user.name)}>ELIMINAR</Button>
                         </td>
+                        <td>
+                            <Button variant="success" onClick={this.props.activateUser.bind(this, user._id, user.name)}>ACTIVAR</Button>
+                        </td>
                     </tr>
                     </table>
                 </Row>

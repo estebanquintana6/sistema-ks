@@ -6,6 +6,7 @@ const User = require("../models/UserForm");
 const Client = require("../models/ClientForm");
 const secretKey = require("../config/config")
 const fs = require('fs');
+const User = require("../models/UserForm");
 
 
 const { isEmpty, removeDiacritics } = require("../utils/bulkUtils");
@@ -16,6 +17,11 @@ router.post("/save", (req, res) => {
 
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
     const userEmail = decoded.email;
     const clientForm = body.clientData;
 
@@ -42,8 +48,13 @@ router.post("/bulk", (req, res) => {
   const body = req.body;
   const token = body.token;
 
-  jwt.verify(token, secretKey, function (err, _) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
     const allData = body.bulkData;
 
     allData.map((clientData) => {
@@ -90,10 +101,15 @@ router.post("/update", (req, res) => {
   const token = body.token;
   const clientData = body.clientData;
   const id = clientData._id;
-  jwt.verify(token, secretKey, function (err, _) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
     }
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
     Client.findOne({ _id: id }).then((client) => {
       if (client) {
         let doc = Client.findById(client.id);
@@ -114,10 +130,15 @@ router.post("/upload", (req, res) => {
   const validTypes = ['pdf', 'docx', 'xlsx', 'jpeg', 'jpg', 'gif', 'png'];
 
 
-  jwt.verify(token, secretKey, function (err, _) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
     }
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
     if (req.files === null) {
       return res.status(400).json({ msg: 'No file uploaded' });
     }
@@ -163,10 +184,15 @@ router.post("/remove_file", (req, res) => {
   const id = body.id;
   const fileroute = body.path;
 
-  jwt.verify(token, secretKey, function (err, _) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
     }
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
     Client.findOne({ _id: id }).then((client) => {
       if (client) {
         let doc = Client.findById(client.id);
@@ -197,10 +223,15 @@ router.post("/download", (req, res) => {
   const token = body.token;
   const path = body.path
 
-  jwt.verify(token, secretKey, function (err, _) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
     }
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
     console.log('AUTHORIZED AND', token, path)
     const pathArray = path.split('/')
     const name = pathArray[pathArray.length - 1]
@@ -220,10 +251,15 @@ router.post("/save_file", (req, res) => {
   const fileData = body.fileData
   const id = body.id
 
-  jwt.verify(token, secretKey, function (err, _) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
     }
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
     Client.findOne({ _id: id }).then((insurance) => {
       if (insurance) {
         let doc = Client.findById(insurance.id);
@@ -246,6 +282,11 @@ router.post("/delete", (req, res) => {
 
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) return res.status(401).json({ email: "no permissions" });
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
     Client.findOne({ _id: id }).then((client) => {
       const exists = client;
       if (exists) {
@@ -260,10 +301,15 @@ router.post("/delete", (req, res) => {
 
 router.get("/fetch", (req, res) => {
   const token = req.headers.authorization;
-  jwt.verify(token, secretKey, function (err) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
     }
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
     // This is the way I found to make a get all from model.
     Client.find({}).then((clients) => {
       res.json({ clients });
@@ -275,6 +321,11 @@ router.get("/fetch/:id", (req, res) => {
   const token = req.headers.authorization;
   jwt.verify(token, secretKey, function (err) {
     if (err) return res.status(401).json({ email: "no permissions" });
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
     Client.findById(req.params.id).then((client) => {
       res.json(client);
     }).catch(err => {

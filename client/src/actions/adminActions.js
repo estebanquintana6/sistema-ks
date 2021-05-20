@@ -31,3 +31,16 @@ export const deleteUser = (id) => dispatch => {
     return res;
   })
 }
+
+export const activateUser = (id) => dispatch => {
+  const data = {
+    id
+  }
+
+  axios
+    .post("/api/users/activate", data)
+    .then((res) => {
+    console.log(res);
+    return res;
+  })
+}

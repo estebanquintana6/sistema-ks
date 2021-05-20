@@ -76,9 +76,9 @@ router.post("/login", (req, res) => {
   // Find user by email
   User.findOne({ email }).then(user => {
     // Check if user exists
-    if (!user) {
-      return res.status(404).json({ emailnotfound: "El email no existe" });
-    }
+    if (!user) return res.status(404).json({ emailnotfound: "El email no existe" });
+
+    if (!user.active) return res.status(404).json({ emailnotfound: "El usuario no esta activado" });
 
     // Check password
     bcrypt.compare(password, user.password).then(isMatch => {
@@ -221,6 +221,13 @@ router.post("/list", (req, res) => {
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) res.status(402);
     const role = decoded.role;
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
+    
     if (role) {
       User.find().select(["-password", "-referidos", "-secoms", "-clients"]).then((users) => {
         res.status(200).json(users);
@@ -245,6 +252,13 @@ router.post("/changeRol", (req, res) => {
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) res.status(402);
     const role = decoded.role;
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
+
     if (role === "admin") {
       User.findOneAndUpdate({ _id: userId }, { role: newRole }).then((err, doc) => {
         if (err) res.status(500, { error: "El rol no se modifico" })
@@ -263,6 +277,13 @@ router.post("/delete", (req, res) => {
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) res.status(402);
     const role = decoded.role;
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
+
     if (role === "admin") {
       User.findByIdAndDelete(userId).then((err, doc) => {
         if (err) res.status(500, { error: "El usuario no se elimino" })
@@ -273,5 +294,33 @@ router.post("/delete", (req, res) => {
     }
   });
 });
+
+router.post("/activate", (req, res) => {
+  const body = req.body;
+  const token = req.headers.authorization;
+  const userId = body.id;
+
+  jwt.verify(token, secretKey, function (err, decoded) {
+    if (err) res.status(402);
+    const role = decoded.role;
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+    })
+
+
+    if (role === "admin") {
+      User.findByIdAndUpdate(userId, { active: true }).then((err, doc) => {
+        if (err) res.status(500, { error: "El usuario no se activó" })
+        res.status(200, { message: "Usuario activado" });
+      })
+    } else {
+      res.status(402);
+    }
+  });
+
+})
 
 module.exports = router;
