@@ -18,7 +18,6 @@ relateInsuranceToInvoice = (invoice) => {
 }
 
 updateInvoice = (invoice, client) => {
-  console.log(client);
   const update = {
     invoice: invoice.invoice,
     due_date: invoice.due_date,
@@ -159,17 +158,25 @@ router.post("/update", (req, res) => {
         Invoice.deleteMany({ _id: { $in: n } }).exec()
         let doc = Insurance.findById(insurance.id);
         doc.updateOne(insuranceData).then((err, _) => {
+          if (err) res.status(500);
           invoices.map(invoice => {
             invoice.client = insurance.client;
             invoice.insurance = insurance._id;
-
-            const newInvoice = new Invoice(invoice);
-
-            newInvoice.save().then((invoiceResponse, err) => {
-              relateInsuranceToInvoice(invoiceResponse);
-            });
+            try {
+              Invoice.findById(invoice._id).then((res, err) => {
+                if (res) {
+                  res.update(invoice).then(() => console.log("updated invoice"))
+                } else {
+                  const newInvoice = new Invoice(invoice);
+                  newInvoice.save().then((invoiceResponse, err) => {
+                    relateInsuranceToInvoice(invoiceResponse);
+                  });
+                }
+              })
+            } catch (err) {
+              res.status(500).json({ message: "Error al actualizar recibos" })
+            }
           });
-          if (err) res.status(500);
           res.status(200).json({ message: "Elemento modificado" });
         });
       }
@@ -280,7 +287,7 @@ router.post("/:id/payStatus", (req, res) => {
 
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
-    
+
     User.findById(decoded.id).then(user => {
       if (!user) {
         return res.status(402);
@@ -440,7 +447,7 @@ router.post("/save_file", (req, res) => {
         return res.status(402);
       }
     })
-    
+
     Insurance.findOne({ _id: id }).then((insurance) => {
       if (insurance) {
         let doc = Insurance.findById(insurance.id);
