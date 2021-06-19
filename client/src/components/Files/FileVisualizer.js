@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  Accordion,
   Button,
   Card,
   Col,
@@ -8,7 +9,7 @@ import {
 } from 'react-bootstrap';
 import { formatShortDate } from '../component-utils';
 
-import swal from '@sweetalert/with-react';
+import './FileVisualizer.css';
 
 class FileVisualizer extends Component {
   constructor(props) {
@@ -48,6 +49,75 @@ class FileVisualizer extends Component {
   }
 
   render() {
+    const distinct = (value, index, self) => self.indexOf(value) === index;
+
+    const years = this.state.entity.files.map((file) =>
+      new Date(file.created_at).getFullYear()
+    ).filter(distinct);
+
+
+    const { entity: { files } } = this.state;
+
+    const yearAccordions = years.map((year, index) => {
+      const filteredFiles = files.filter((file) => {
+        const fileYear = new Date(file.created_at).getFullYear();
+        return fileYear === year;
+      })
+      return (
+        <Accordion style={{ width: "100%" }}>
+          <Card>
+            <Accordion.Toggle as={Card.Header} eventKey={`${index}`}>
+              {year}
+            </Accordion.Toggle>
+            <Accordion.Collapse eventKey={`${index}`}>
+              <div className="filebox-flex">
+                {filteredFiles.filter((file) => {
+                  let { description } = file;
+                  if (this.state.search === "") return true;
+                  return description.toLowerCase().includes(this.state.search.toLowerCase());
+                }).map((file, index) => {
+                  const i = this.state.entity.files.map(function (e) { return e.path; }).indexOf(file.path);
+                  return (
+                    <div className="card-wrapper">
+                      <Card className="file-card">
+                        <Card.Body>
+                          <h6>{file.path.replace(/^.*[\\\/]/, '')}</h6>
+                          {(this.state.editingFile === i) ? (<div>
+                            <Form.Group as={Col} md="12">
+                              <Form.Label onClick={() => this.editFile(null)}>Descripcion</Form.Label>
+                              <Form.Control required onChange={(e) => { this.onChange(i, e) }} value={this.state.entity.files[i].description} />
+                              <Button className="mt-2" variant='success' onClick={() => this.saveFile(file, this.state.entity._id)}>Guardar</Button>
+                            </Form.Group>
+                          </div>) : <Card.Text onClick={() => this.editFile(i)}>
+                            {`Descripción: ${file.description}`}
+                          </Card.Text>}
+                          <Card.Text>
+                            {`Fecha de subida: ${formatShortDate(file.created_at)}`}
+                          </Card.Text>
+                        </Card.Body>
+                        <Card.Footer>
+                          <Row>
+                            <Col>
+                              <Button variant="info" onClick={this.props.downloadFile.bind(this, file.path)}><i className="fa fa-arrow-down" aria-hidden="true"></i></Button>
+                            </Col>
+                            <Col>
+                              <Button variant="danger" onClick={this.props.removeFile.bind(this, file.path, this.state.entity._id)}><i className="fa fa-trash" aria-hidden="true"></i></Button>
+                            </Col>
+                          </Row>
+                        </Card.Footer>
+                      </Card>
+                    </div>
+                  )
+                })}
+              </div>
+            </Accordion.Collapse>
+          </Card>
+        </Accordion>
+      )
+    })
+
+    console.log(yearAccordions)
+
     return (
       <div>
         <Row>
@@ -56,47 +126,14 @@ class FileVisualizer extends Component {
         <Row>
           <Form.Group as={Col} md="12">
             <Form.Label>Búsqueda</Form.Label>
-            <Form.Control required onChange={this.onSearchChange} value={this.state.search} placeholder="Búsqueda por descripción..."/>
+            <Form.Control required onChange={this.onSearchChange} value={this.state.search} placeholder="Búsqueda por descripción..." />
           </Form.Group>
         </Row>
         <Row>
-          {this.state.entity.files.filter((file) => {
-            let { description } = file;
-            if(this.state.search === "") return true;
-            return description.toLowerCase().includes(this.state.search.toLowerCase());
-          }).map((file, index) => {
-            const i = this.state.entity.files.map(function (e) { return e.path; }).indexOf(file.path);
-
-            return (<React.Fragment key={i}>
-              <Card style={{ width: '18rem' }} className="ml-3 mt-3">
-                <Card.Body>
-                  <Card.Title>{file.path.replace(/^.*[\\\/]/, '')}</Card.Title>
-                  {(this.state.editingFile === i) ? (<div>
-                    <Form.Group as={Col} md="12">
-                      <Form.Label onClick={() => this.editFile(null)}>Descripcion</Form.Label>
-                      <Form.Control required onChange={(e) => { this.onChange(i, e) }} value={this.state.entity.files[i].description} />
-                      <Button className="mt-2" variant='success' onClick={() => this.saveFile(file, this.state.entity._id)}>Guardar</Button>
-                    </Form.Group>
-                  </div>) : <Card.Text onClick={() => this.editFile(i)}>
-                      {`Descripción: ${file.description}`}
-                    </Card.Text>}
-                  <Card.Text>
-                    {`Fecha de subida: ${formatShortDate(file.created_at)}`}
-                  </Card.Text>
-                </Card.Body>
-                <Card.Footer>
-                  <Row>
-                    <Col>
-                      <Button variant="info" onClick={this.props.downloadFile.bind(this, file.path)}><i className="fa fa-arrow-down" aria-hidden="true"></i></Button>
-                    </Col>
-                    <Col>
-                      <Button variant="danger" onClick={this.props.removeFile.bind(this, file.path, this.state.entity._id)}><i className="fa fa-trash" aria-hidden="true"></i></Button>
-                    </Col>
-                  </Row>
-                </Card.Footer>
-              </Card>
-            </React.Fragment>)
-          })}
+          <h4 className="swal-title form-title align-left">Archivos por año: </h4>
+        </Row>
+        <Row>
+          {yearAccordions}
         </Row>
       </div>
     )
