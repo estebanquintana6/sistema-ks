@@ -308,7 +308,7 @@ router.post("/upload", (req, res) => {
   const token = body.token;
   const id = body.id
 
-  const validTypes = ['pdf', 'docx', 'xlsx', 'jpeg', 'jpg', 'gif', 'png'];
+  const validTypes = ['pdf', 'docx', 'xlsx', 'jpeg', 'jpg', 'gif', 'png', 'zip'];
 
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) {
@@ -330,7 +330,7 @@ router.post("/upload", (req, res) => {
     let extensionRe = /(?:\.([^.]+))?$/;
     let ext = extensionRe.exec(file.name.toLowerCase())[1];
 
-    if (!validTypes.includes(ext)) return res.status(500).send("El archivo recibo no es valido");
+    if (!validTypes.includes(ext)) return res.status(402).send("El archivo recibo no es valido");
 
     const path = `/insurances/${id}/${file.name}`
     // const path =`/app/client/public/uploads/clients/${id}/${file.name}`

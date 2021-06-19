@@ -87,19 +87,19 @@ const mailOptions = (invoice, situation, destinations) => {
 
   if (language === 'Coreano') {
     if (situation === 'vencido') {
-      subjectText = `워드로 메일 내용 줄것`
+      subjectText = `보험료 납부 안내 메일`
       languageText = `안녕하세요.
         \n항상 평안하시고 건강하시기를 바랍니다.
         \n다름이 아니라  보험료 납부기간이 지나 보험효력지 중지 상태임을 알려드립니다. 지금 납부를 하시면 보험을 다시 되살릴수 있습니다 납부를 원하시면 연락을 주시기 바랍니다. 만약 페이가 되었다면 납부한 증빙서를 보내주시기 바랍니다
         \n감사합니다 편안한 하루 되시기 바랍니다`
     } else if (situation === 'proximo5') {
-      subjectText = `워드로 메일 내용 줄것`
+      subjectText = `보험료 납부 안내 메일`
       languageText = `안녕하세요.
         \n항상 평안하시고 건강하시기를 바랍니다.
         \n다름이 아니라  보험료 납부기간이 얼마남지(5일) 않아 알려드립니다. 기간내에 납부가 될수 있도록 부탁드립니다 만약 페이가 되었다면 납부한 증빙서를 보내주시기 바랍니다 .
         \n감사합니다 편안한 하루 되시기 바랍니다`
     } else if (situation === 'proximo10') {
-      subjectText = `워드로 메일 내용 줄것`
+      subjectText = `보험료 납부 안내 메일`
       languageText = `안녕하세요.
         \n항상 평안하시고 건강하시기를 바랍니다.
         \n다름이 아니라  보험료 납부기간이 얼마남지(10일)  않아 알려드립니다. 기간내에 납부가 될수 있도록 부탁드립니다 만약 페이가 되었다면 납부한 증빙서를 보내주시기 바랍니다.

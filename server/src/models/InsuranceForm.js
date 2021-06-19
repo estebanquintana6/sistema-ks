@@ -55,6 +55,10 @@ var InsuranceSchema = new Schema({
     type: String,
     required: false
   },
+  net_bounty: {
+    type: String,
+    required: false
+  },
   payment_type: {
     type: String,
     enum: ['ANUAL', 'SEMESTRAL', 'TRIMESTRAL', 'MENSUAL'],

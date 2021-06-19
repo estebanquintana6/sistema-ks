@@ -20,6 +20,14 @@ var InvoiceSchema = new Schema({
     type: String,
     required: false
   },
+  net_bounty: {
+    type: String,
+    required: false 
+  },
+  payment_method: {
+    type: String,
+    required: false
+  },
   invoice: {
     type: String,
     required: true
@@ -47,6 +55,11 @@ var InvoiceSchema = new Schema({
   pay_limit2: {
     type: Date,
     required: false
+  },
+  promoter: {
+    type: String,
+    required: false,
+    default: ""
   },
   insurance: {
     type: Schema.Types.ObjectId,

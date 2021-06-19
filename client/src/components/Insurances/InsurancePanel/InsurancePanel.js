@@ -630,14 +630,14 @@ const InsurancePanel = (props) => {
         Header: "Aseguradora",
         id: "insurance_company",
         width: 90,
-        accessor: d => validateField(d.insurance_company.name)
+        accessor: d => validateField(d?.insurance_company?.name)
       },
       {
         Header: "Cliente",
         id: "client",
         accessor: d => {
           if (d.client) {
-            return validateField(d.client.name)
+            return validateField(d?.client?.name)
           } else {
             return '';
           }
@@ -647,13 +647,13 @@ const InsurancePanel = (props) => {
         Header: "Poliza No.",
         id: "policy",
         width: 140,
-        accessor: d => validateField(d.policy)
+        accessor: d => validateField(d?.policy)
       },
       {
         Header: "Forma de pago",
         id: "payment_type",
         width: 140,
-        accessor: d => validateField(d.payment_type)
+        accessor: d => validateField(d?.payment_type)
       },
       {
         Header: "Fecha inicio",

@@ -14,10 +14,14 @@ router.post("/save", (req, res) => {
   const token = body.token;
 
   jwt.verify(token, secretKey, function (err, decoded) {
-    if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
+    if (err) {
+      res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
+      return;
+    }
     User.findById(decoded.id).then(user => {
       if (!user) {
-        return res.status(402);
+        res.status(402);
+        return;
       }
     })
     const userEmail = decoded.email;
@@ -29,16 +33,12 @@ router.post("/save", (req, res) => {
     client.save()
       .then((result) => {
         User.findOne({ email: userEmail }).then(user => {
-          user.clients.push(client);
           user.save();
+          res.json({ message: 'Forma de cliente guardada.' });
         }).catch((error) => {
           res.status(500).json({ error });
         });
-
-
       });
-    res.json({ message: 'Forma de cliente guardada.' });
-
   });
 });
 

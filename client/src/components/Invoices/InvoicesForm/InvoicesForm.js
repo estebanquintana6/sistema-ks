@@ -95,9 +95,21 @@ class InvoicesForm extends Component {
                 <Form.Control type="date" onChange={this.onChange} value={this.formatDate(this.state.pay_limit2)}>
                 </Form.Control>
               </Form.Group>
+          </Row>
+          <Row>
               <Form.Group as={Col} controlId="bounty">
-                <Form.Label>Prima</Form.Label>
+                <Form.Label>Prima total</Form.Label>
                 <Form.Control onChange={this.onChange} value={this.state.bounty}>
+                </Form.Control>
+              </Form.Group>
+              <Form.Group as={Col} controlId="net_bounty">
+                <Form.Label>Prima neta</Form.Label>
+                <Form.Control onChange={this.onChange} value={this.state.net_bounty}>
+                </Form.Control>
+              </Form.Group>
+              <Form.Group as={Col} controlId="payment_method">
+                <Form.Label>Forma de pago</Form.Label>
+                <Form.Control onChange={this.onChange} value={this.state.payment_method}>
                 </Form.Control>
               </Form.Group>
           </Row>
@@ -118,6 +130,14 @@ class InvoicesForm extends Component {
                 </Form.Group>
               </Form.Row>
             </Col>
+          </Row>
+          <Row>
+            <Form.Row>
+            <Form.Group as={Col} md="4" controlId="promoter">
+            </Form.Group>
+                <Form.Label>Promotora</Form.Label>
+                <Form.Control onChange={this.onChange} value={this.state.promoter} />
+            </Form.Row>
           </Row>
           <Row>
             <Col>

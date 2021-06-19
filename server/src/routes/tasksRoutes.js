@@ -65,9 +65,13 @@ router.get("/fetch", (req, res) => {
     if (err) return res.status(401).json({ email: "no permissions" });
     // This is the way I found to make a get all from model.
 
-    Task.find().populate('assignee').populate('initiator').then((tasks) => {
-      res.json({ tasks });
-    });
+    Task.find()
+      .populate('assignee')
+      .populate('initiator')
+      .populate('insurance_company')
+      .then((tasks) => {
+        res.json({ tasks });
+      });
   });
 });
 

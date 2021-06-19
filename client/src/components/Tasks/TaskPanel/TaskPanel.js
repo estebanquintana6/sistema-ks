@@ -5,6 +5,7 @@ import { Container } from 'react-bootstrap'
 import swal from '@sweetalert/with-react';
 import { Row } from 'react-bootstrap'
 import { getTasks, registerTask, deleteTask, updateTask } from '../../../actions/taskAction'
+import { getCompanies } from "../../../actions/companyActions"
 import { listUsers } from '../../../actions/userActions'
 
 import "react-table/react-table.css";
@@ -23,6 +24,7 @@ class TaskPanel extends Component {
       select2: undefined,
       data: [],
       users: [],
+      companies: [],
     };
   }
 
@@ -34,6 +36,7 @@ class TaskPanel extends Component {
 
   async componentDidMount() {
     this.prepareUsersForForm();
+    this.prepareCompaniesForForm();
     this.refresh();
     this.interval = setInterval(() => this.refresh(), 2000);
   }
@@ -73,6 +76,12 @@ class TaskPanel extends Component {
   prepareUsersForForm = () => {
     this.props.listUsers().then(data => {
       this.setState({ users: data });
+    });
+  }
+
+  prepareCompaniesForForm = () => {
+    this.props.getCompanies().then(data => {
+      this.setState({ companies: data.companies})
     });
   }
 
@@ -122,6 +131,7 @@ class TaskPanel extends Component {
       content:
         <TaskForm
           users={this.state.users}
+          companies={this.state.companies}
           save={this.registerTask}
           updateTask={this.updateTask}
           deleteTask={this.deleteTask}
@@ -151,6 +161,7 @@ class TaskPanel extends Component {
       content: <TaskModal
         task={task}
         users={this.state.users}
+        companies={this.state.companies}
         updateTask={this.updateTask}
         deleteTask={this.deleteTask}>
       </TaskModal>,
@@ -228,12 +239,17 @@ class TaskPanel extends Component {
                 Header: "Datos",
                 columns: [
                   {
-                    Header: "Nombre",
+                    Header: "Tipo S.",
+                    id: "insurance_type",
+                    accessor: d => d.insurance_type
+                  },
+                  {
+                    Header: "Cliente",
                     id: "title",
                     accessor: d => d.title
                   },
                   {
-                    Header: "Asunto",
+                    Header: "Estatus",
                     id: "status",
                     accessor: d => d.status
                   },
@@ -302,5 +318,12 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getTasks, registerTask, deleteTask, updateTask, listUsers }
+  { 
+    getCompanies,
+    getTasks,
+    registerTask, 
+    deleteTask, 
+    updateTask, 
+    listUsers 
+  }
 )(TaskPanel);

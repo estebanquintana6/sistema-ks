@@ -399,17 +399,24 @@ const GeneralInsurancePanel = (props) => {
     Header: "Datos",
     columns: [
       {
+        Header: "Tipo S.",
+        id: "insurance_type",
+        accessor: d => {
+          return d.insurance_type
+        }
+      },
+      {
         Header: "Aseguradora",
         id: "insurance_company",
         width: 90,
-        accessor: d => validateField(d.insurance_company.name)
+        accessor: d => validateField(d?.insurance_company?.name)
       },
       {
         Header: "Cliente",
         id: "client",
         accessor: d => {
           if (d.client) {
-            return validateField(d.client.name)
+            return validateField(d?.client?.name)
           } else {
             return '';
           }

@@ -209,6 +209,26 @@ class InsuranceForm extends Component {
     this.setState({ invoices });
   }
 
+  onChangeInvoiceNetBounty = (index, e) => {
+    let invoices = [...this.state.invoices];
+    let invoice = { ...invoices[index] };
+
+    invoice.net_bounty = e.target.value;
+
+    invoices[index] = invoice;
+    this.setState({ invoices });
+  }
+
+  onChangeInvoicePaymentMethod = (index, e) => {
+    let invoices = [...this.state.invoices];
+    let invoice = { ...invoices[index] };
+
+    invoice.payment_method = e.target.value;
+
+    invoices[index] = invoice;
+    this.setState({ invoices });
+  }
+
   onChangeInvoiceStatus = (index, e) => {
     let invoices = [...this.state.invoices];
     let invoice = { ...invoices[index] };
@@ -249,8 +269,19 @@ class InsuranceForm extends Component {
     this.setState({ invoices });
   }
 
+  onChangePromoter = (index, e) => {
+    let invoices = [...this.state.invoices];
+    let invoice = { ...invoices[index] };
+
+    invoice.promoter = e.target.value;
+
+    invoices[index] = invoice;
+    this.setState({ invoices });
+  }
+
   onSubmit = e => {
     e.preventDefault();
+    console.log("here")
     if (!this.state.edit) {
       this.props.save(this.state);
       return;
@@ -368,7 +399,7 @@ class InsuranceForm extends Component {
 
 
     return (
-      <Form onSubmit={this.onSubmit}>
+      <Form>
         <Row>
           <Col md="12" className="pull-right profile-right-section">
           </Col>
@@ -473,11 +504,18 @@ class InsuranceForm extends Component {
 
                     <hr></hr>
                     <Form.Row>
-                      <Form.Group as={Col} md="4" controlId="bounty">
+                      <Form.Group as={Col} md="5" controlId="net_bounty">
+                        <Form.Label>Prima Neta</Form.Label>
+                        <Form.Control onChange={this.onChange} value={this.state.net_bounty}>
+                        </Form.Control>
+                      </Form.Group>
+                      <Form.Group as={Col} md="5" controlId="bounty">
                         <Form.Label>Prima Total</Form.Label>
                         <Form.Control onChange={this.onChange} value={this.state.bounty}>
                         </Form.Control>
                       </Form.Group>
+                    </Form.Row>
+                    <Form.Row>
                       <Form.Group as={Col} md="4" controlId="payment_type">
                         <Form.Label>Forma de pago</Form.Label>
                         <Form.Control as="select" onChange={this.onInvoicesChange} value={this.state.payment_type}>
@@ -658,6 +696,10 @@ class InsuranceForm extends Component {
                           <Form.Control required onChange={(e) => { this.onChangeInvoice(i, e) }} value={this.state.invoices[i].invoice} />
                         </Form.Group>
                         <Form.Group as={Col}>
+                          <Form.Label>Fecha límite de pago</Form.Label>
+                          <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(i, e) }} value={this.formatDate(this.state.invoices[i].due_date)} />
+                        </Form.Group>
+                        <Form.Group as={Col}>
                           <Form.Label>Estatus</Form.Label>
                           <Form.Control as="select" onChange={(e) => { this.onChangeInvoiceStatus(i, e) }} value={this.state.invoices[i].payment_status}>
                             <option></option>
@@ -671,11 +713,6 @@ class InsuranceForm extends Component {
                       </Form.Row>
 
                       <Form.Row>
-
-                        <Form.Group as={Col}>
-                          <Form.Label>Fecha límite de pago</Form.Label>
-                          <Form.Control required type="date" onChange={(e) => { this.onChangeInvoiceDate(i, e) }} value={this.formatDate(this.state.invoices[i].due_date)} />
-                        </Form.Group>
                         {(this.isMedicInsurance() || this.isDamageInsurance()) &&
                           <React.Fragment>
                             <Form.Group as={Col}>
@@ -690,13 +727,23 @@ class InsuranceForm extends Component {
                             </Form.Group>
                           </React.Fragment>
                         }
-                        <Form.Group as={Col}>
-                          <Form.Label>Prima</Form.Label>
+                      </Form.Row>
+                      <Form.Row>
+                      <Form.Group as={Col}>
+                          <Form.Label>Prima total</Form.Label>
                           <Form.Control onChange={(e) => { this.onChangeInvoiceBounty(i, e) }} value={this.state.invoices[i].bounty} />
                         </Form.Group>
-
+                        <Form.Group as={Col} controlId="invoice_net_bounty">
+                          <Form.Label>Prima neta</Form.Label>
+                          <Form.Control onChange={(e) => this.onChangeInvoiceNetBounty(i, e)} value={this.state.invoices[i].net_bounty}>
+                          </Form.Control>
+                        </Form.Group>
+                        <Form.Group as={Col} controlId="invoice_payment_method">
+                          <Form.Label>Forma de pago</Form.Label>
+                          <Form.Control onChange={(e) => this.onChangeInvoicePaymentMethod(i, e)} value={this.state.invoices[i].payment_method}>
+                          </Form.Control>
+                        </Form.Group>
                       </Form.Row>
-
                       <Form.Row>
                         <Form.Group as={Col} md="6">
                           <Form.Label>Comentarios</Form.Label>
@@ -705,6 +752,12 @@ class InsuranceForm extends Component {
                         <Form.Group as={Col} md="6">
                           <Form.Label>Correo</Form.Label>
                           <Form.Control onChange={(e) => { this.onChangeInvoiceEmail(i, e) }} value={this.state.invoices[i].email} />
+                        </Form.Group>
+                      </Form.Row>
+                      <Form.Row>
+                        <Form.Group as={Col} md="4" controlId="promoter">
+                          <Form.Label>Promotora</Form.Label>
+                          <Form.Control onChange={(e) => this.onChangePromoter(i, e)} value={this.state.invoices[i].promoter} />
                         </Form.Group>
                       </Form.Row>
                       <Form.Row>
@@ -759,7 +812,13 @@ class InsuranceForm extends Component {
         </Row>
         <Row className="d-flex">
           <div className="ml-auto mr-4">
-            <Button variant="primary" type="submit" className="btn-primary"><i className="fas fa-save"></i></Button>
+            <Button 
+            variant="primary" 
+            type="submit" 
+            className="btn-primary"
+            onClick={this.onSubmit}>
+              <i className="fas fa-save"></i>
+            </Button>
           </div>
         </Row>
       </Form >

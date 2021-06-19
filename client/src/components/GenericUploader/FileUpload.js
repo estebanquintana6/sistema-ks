@@ -83,7 +83,7 @@ const FileUpload = (props) => {
         <div className='custom-file mb-4'>
           <input
             type='file'
-            accept="image/jpg, image/png, image/jpeg, application/pdf, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            accept=".zip, image/jpg, image/png, image/jpeg, application/pdf, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             className='custom-file-input'
             id='customFile'
             onChange={onChange}

@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 
 const Invoice = require("../models/InvoiceForm");
 const User = require("../models/UserForm");
+const Company = require("../models/CompanyForm");
 
 const secretKey = require("../config/config")
 
@@ -71,7 +72,13 @@ router.get("/fetch", (req, res) => {
     })
     // This is the way I found to make a get all from model.
     Invoice.find({}).populate('client').populate('insurance').then((invoices) => {
-      res.json({ invoices });
+      Company.populate(invoices, {
+        path: 'insurance.insurance_company',
+        select: 'name'
+      }).then((inv) => {
+        res.json({ invoices: inv });
+
+      })
     });
   });
 });

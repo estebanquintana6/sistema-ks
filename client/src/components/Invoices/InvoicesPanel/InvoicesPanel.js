@@ -206,6 +206,22 @@ class InvoicePanel extends Component {
                             Header: "Datos",
                             columns: [
                             {
+                                Header: "Tipo S.",
+                                id: "insurance_type",
+                                width: 90,
+                                accessor: d => {
+                                  if(d.insurance){
+                                    return this.validateField(d.insurance?.insurance_type)
+                                  }
+                                }
+                            },
+                            {
+                              Header: "Aseguradora",
+                              id: "insurance_company",
+                              width: 90,
+                              accessor: d => this.validateField(d?.insurance?.insurance_company?.name)
+                            },
+                            {
                                 Header: "Cliente",
                                 id: "client_name",
                                 accessor: d => {

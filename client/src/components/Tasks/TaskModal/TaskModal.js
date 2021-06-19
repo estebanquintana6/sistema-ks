@@ -20,10 +20,17 @@ class TaskModal extends Component {
   }
 
   editTask = (task) => {
+    console.log(this.props.companies)
     swal({
       title: `Editar pendiente`,
       text: `Modifica los campos del pendiente`,
-      content: <TaskForm task={this.props.task} users={this.props.users} edit={true} updateTask={this.props.updateTask} ></TaskForm>,
+      content: <TaskForm 
+      task={this.props.task} 
+      users={this.props.users} 
+      edit={true} 
+      updateTask={this.props.updateTask}
+      companies={this.props.companies}
+      / >,
       buttons: false,
       className: "width-800pt-100h"
     })

@@ -9,6 +9,15 @@ var TaskSchema = new Schema({
     type: String,
     required: true
   },
+  insurance_type: {
+    type: String,
+    required: false
+  },
+  insurance_company: {
+    type: Schema.Types.ObjectId,
+    ref: 'Companies',
+    required: false
+  },
   created_date: {
     type: Date,
     default: Date.now
