@@ -24,8 +24,10 @@ class InsuranceForm extends Component {
       filterArray: [],
       insurance_type: this.props.type || this.props.insurance.insurance_type,
       invoices: [],
+      car_float: [],
       endorsements: [],
       begin_date: moment().startOf('day').format('YYYY-MM-DD'),
+      colective_insurance: false,
       due_date: moment().clone().add(1, 'year').startOf('day').format('YYYY-MM-DD'),
       pay_due_date: moment().startOf('day').format('YYYY-MM-DD'),
     };
@@ -83,15 +85,12 @@ class InsuranceForm extends Component {
     this.setState({ pay_due_date: moment(this.state.begin_date).add(daysToAdd, 'days').format('YYYY-MM-DD') })
   }
 
-  shouldModifyDate = (param) => {
-    return param === 'begin_date' || param === 'insurance_company'
-  }
-
   getFullCompany = () => {
     return this.props.companies.find(company => company._id === this.state.insurance_company) || null
   }
 
   onChange = e => {
+    console.log(e.target.id, e.target.value)
     this.setState({ [e.target.id]: e.target.value });
   }
 
@@ -147,9 +146,46 @@ class InsuranceForm extends Component {
     this.setState({ invoices });
   }
 
+  createCar = () => {
+    this.setState({
+      car_float: [
+        ...this.state.car_float,
+        {
+          car_brand: "",
+          car_year: null,
+          car_series_number: "",
+          car_placas: "",
+          car_color: "",
+          car_motor: ""
+        }
+      ]
+    });
+  }
+
+  deleteCar = (index) => {
+    const car_float = [...this.state.car_float];
+    car_float.splice(index, 1);
+    this.setState({ car_float });
+  }
+
+  onChangeCar = (index, field, e) => {
+    const car_float = [...this.state.car_float];
+    let car = { ...car_float[index] };
+
+    car[field] = e.target.value;
+
+    car_float[index] = car;
+    this.setState({ car_float });
+  }
+
   isCarInsurance = () => {
     return this.props.type === "AUTOS";
   }
+
+  isColectiveCarInsurance = () =>
+    this.props.type === "AUTOS" &&
+    (this.state.colective_insurance === "true" || 
+    this.state.colective_insurance === true);
 
   isMedicInsurance = () => {
     return this.props.type === "GM";
@@ -410,6 +446,13 @@ class InsuranceForm extends Component {
                   <li className="nav-item" onClick={this.update}>
                     <a className="nav-link active" href="#i-types" role="tab" data-toggle="tab"><i className="fas fa-building"></i>Generales</a>
                   </li>
+                  {this.isColectiveCarInsurance() &&
+                    <li className="nav-item">
+                      <a className="nav-link" href="#float" role="tab" data-toggle="tab">
+                        <i className="fas fa-car"></i>Flotilla
+                      </a>
+                    </li>
+                  }
                   <li className="nav-item">
                     <a className="nav-link" href="#invoices" role="tab" data-toggle="tab"><i className="fas fa-receipt"></i> Recibos</a>
                   </li>
@@ -537,7 +580,7 @@ class InsuranceForm extends Component {
                     </Form.Row>
                   </Col>
                   <Col>
-                    {this.isCarInsurance() &&
+                    {!this.isColectiveCarInsurance() &&
                       <>
                         <Row>
                           <h5 className="swal-title form-title align-left">DATOS AUTO</h5>
@@ -655,6 +698,113 @@ class InsuranceForm extends Component {
                 </Row>
               </div>
 
+              <div role="tabpanel" className={`tab-pane fade`} id="float">
+                <Row>
+                  <h5 className="swal-title form-title align-left">FLOTILLA</h5>
+                </Row>
+                {this.state.car_float.map((car, i) =>
+                  <Jumbotron>
+                    <h6 className="invoice-title">Coche {i + 1}</h6>
+                    <Button variant="danger" className="buttonjumbotron" onClick={() => { this.deleteCar(i) }}><i className="fa fa-trash" /></Button>
+                    <Form.Row>
+                      <Form.Group as={Col}>
+                        <Form.Label>Marca</Form.Label>
+                        <input type="text"
+                          id="float_car_brand"
+                          list="data"
+                          onChange={(e) => this.onChangeCar(i, "car_brand", e)}
+                          className="form-control"
+                          value={this.state.car_float[i].car_brand} />
+                        <datalist id="data">
+                          <option></option>
+                          <option value="VOLKSWAGEN">VOLKSWAGEN</option>
+                          <option value="MITSUBISHI">MITSUBISHI</option>
+                          <option value="FORD">FORD</option>
+                          <option value="CHEVROLET">CHEVROLET</option>
+                          <option value="NISSAN">NISSAN</option>
+                          <option value="MAZDA">MAZDA</option>
+                          <option value="TOYOTA">TOYOTA</option>
+                          <option value="HONDA">HONDA</option>
+                          <option value="HYUNDAI">HYUNDAI</option>
+                          <option value="SUZUKI">SUZUKI</option>
+                          <option value="BMW">BMW</option>
+                          <option value="MERCEDES BENZ">MERCEDES BENZ</option>
+                          <option value="LINCOLN">LINCOLN</option>
+                          <option value="CADILLAC">CADILLAC</option>
+                          <option value="GENERAL MOTORS">GENERAL MOTORS</option>
+                          <option value="KIA">KIA</option>
+                          <option value="SEAT">SEAT</option>
+                          <option value="AUDI">AUDI</option>
+                          <option value="JEEP">JEEP</option>
+                          <option value="VOLVO">VOLVO</option>
+                          <option value="TESLA">TESLA</option>
+                          <option value="RAM">RAM</option>
+                        </datalist>
+                      </Form.Group>
+                      <Form.Group as={Col} md="6" controlId="car_year">
+                        <Form.Label>Año</Form.Label>
+                        <Form.Control
+                          as="select"
+                          onChange={(e) => this.onChangeCar(i, "car_year", e)}
+                          value={this.state.car_float[i].car_year}>
+                          <option></option>
+                          {this.composeCarYears().map(year => <option value={year}>{year}</option>)}
+                        </Form.Control>
+                      </Form.Group>
+                    </Form.Row>
+
+                    <Form.Row>
+                      <Form.Group as={Col} md="6" controlId="float_car_series_number">
+                        <Form.Label>No. Serie</Form.Label>
+                        <Form.Control
+                          onChange={(e) => this.onChangeCar(i, "car_series_number", e)}
+                          value={this.state.car_float[i].car_series_number}>
+                        </Form.Control>
+                      </Form.Group>
+                      <Form.Group as={Col} md="6" controlId="float_car_placas">
+                        <Form.Label>Placas</Form.Label>
+                        <Form.Control
+                          onChange={(e) => this.onChangeCar(i, "car_placas", e)}
+                          value={this.state.car_float[i].car_placas}>
+                        </Form.Control>
+                      </Form.Group>
+                    </Form.Row>
+                    <Form.Row>
+                      <Form.Group as={Col} md="6" controlId="float_car_color">
+                        <Form.Label>Color</Form.Label>
+                        <Form.Control
+                          onChange={(e) => this.onChangeCar(i, "car_color", e)}
+                          value={this.state.car_float[i].car_color}>
+                        </Form.Control>
+                      </Form.Group>
+                      <Form.Group as={Col} md="6" controlId="float_car_motor">
+                        <Form.Label>No. Motor</Form.Label>
+                        <Form.Control
+                          onChange={(e) => this.onChangeCar(i, "car_motor", e)}
+                          value={this.state.car_float[i].car_motor}>
+                        </Form.Control>
+                      </Form.Group>
+                    </Form.Row>
+
+                    <Form.Row>
+                      <Form.Group as={Col} md="12" controlId="float_car_description">
+                        <Form.Label>Descripción</Form.Label>
+                        <Form.Control
+                          onChange={(e) => this.onChangeCar(i, "car_description", e)}
+                          value={this.state.car_float[i].car_description}>
+                        </Form.Control>
+                      </Form.Group>
+                    </Form.Row>
+                  </Jumbotron>
+                )
+                }
+                <Row className="pt-1 pb-2">
+                  <Col md="12">
+                    <Button variant="info" onClick={this.createCar}><i class="fas fa-plus"></i></Button>
+                  </Col>
+                </Row>
+              </div>
+
               <div role="tabpanel" className={`tab-pane fade ${invoicesActive}`} id="invoices">
                 <Row>
                   <h5 className="swal-title form-title align-left">RECIBOS</h5>
@@ -729,7 +879,7 @@ class InsuranceForm extends Component {
                         }
                       </Form.Row>
                       <Form.Row>
-                      <Form.Group as={Col}>
+                        <Form.Group as={Col}>
                           <Form.Label>Prima total</Form.Label>
                           <Form.Control onChange={(e) => { this.onChangeInvoiceBounty(i, e) }} value={this.state.invoices[i].bounty} />
                         </Form.Group>
@@ -812,11 +962,11 @@ class InsuranceForm extends Component {
         </Row>
         <Row className="d-flex">
           <div className="ml-auto mr-4">
-            <Button 
-            variant="primary" 
-            type="submit" 
-            className="btn-primary"
-            onClick={this.onSubmit}>
+            <Button
+              variant="primary"
+              type="submit"
+              className="btn-primary"
+              onClick={this.onSubmit}>
               <i className="fas fa-save"></i>
             </Button>
           </div>

@@ -111,6 +111,54 @@ var InsuranceSchema = new Schema({
     required: false
   },
   // campos unicos de seguros de auto
+  car_float: {
+    type: [
+      new mongoose.Schema({
+        car_brand: {
+          type: String,
+          required: () => false,
+          uppercase: true,
+          default: null
+        },
+        car_year: {
+          type: Number,
+          required: () => false,
+          default: null
+        },
+        car_description: {
+          type: String,
+          required: () => false,
+          uppercase: true,
+          default: null
+        },
+        car_series_number: {
+          type: String,
+          required: () => false,
+          uppercase: true,
+          default: null
+        },
+        car_placas: {
+          type: String,
+          required: false,
+          uppercase: true,
+          default: null
+        },
+        car_color: {
+          type: String,
+          required: false,
+          uppercase: true,
+          default: null
+        },
+        car_motor: {
+          type: String,
+          required: false,
+          uppercase: true,
+          default: null
+        },
+      })
+    ],
+    default: []
+  },
   cis: {
     type: String,
     required: () => false,

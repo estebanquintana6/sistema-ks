@@ -50,7 +50,6 @@ router.post("/save", (req, res) => {
         return res.status(402);
       }
     })
-
     const insurance = new Insurance(insuranceData);
 
     insurance.save().then((insurance, err) => {
@@ -78,11 +77,15 @@ router.get("/fetch/:type", (req, res) => {
   const token = req.headers.authorization;
   jwt.verify(token, secretKey, function (err) {
     if (err) return res.status(401).json({ email: "no permissions" });
-    Insurance.find({ insurance_type: req.params.type }).populate('client').populate('insurance_company').populate('invoices').then((insurances) => {
-      res.json({ insurances });
-    }).catch(err => {
-      res.json(err)
-    });
+    Insurance.find({ insurance_type: req.params.type })
+      .populate('client')
+      .populate('insurance_company')
+      .populate('invoices')
+      .then((insurances) => {
+        res.json({ insurances });
+      }).catch(err => {
+        res.json(err)
+      });
   });
 });
 
@@ -97,11 +100,15 @@ router.get("/fetchOne/:id", (req, res) => {
       }
     })
 
-    Insurance.findById(req.params.id).populate('client').populate('insurance_company').populate('invoices').then((insurance) => {
-      res.json(insurance);
-    }).catch(err => {
-      res.json(err)
-    });
+    Insurance.findById(req.params.id)
+      .populate('client')
+      .populate('insurance_company')
+      .populate('invoices')
+      .then((insurance) => {
+        res.json(insurance);
+      }).catch(err => {
+        res.json(err)
+      });
   });
 });
 
@@ -117,11 +124,15 @@ router.get("/fetch_all", (req, res) => {
     })
 
     if (err) return res.status(401).json({ email: "no permissions" });
-    Insurance.find({}).populate('client').populate('insurance_company').populate('invoices').then((insurances) => {
-      res.json({ insurances });
-    }).catch(err => {
-      res.json(err)
-    });
+    Insurance.find({})
+      .populate('client')
+      .populate('insurance_company')
+      .populate('invoices')
+      .then((insurances) => {
+        res.json({ insurances });
+      }).catch(err => {
+        res.json(err)
+      });
   });
 });
 
@@ -145,15 +156,18 @@ router.post("/update", (req, res) => {
       }
     })
 
-    Insurance.findOne({ _id: id }).then((insurance) => {
+    Insurance.findOne({ _id: id }).then(async (insurance) => {
       if (insurance) {
+
         invoices.map(invoice => {
           updateInvoice(invoice, insuranceData.client);
         })
+
         const toD = invoices.map(inv => inv._id).filter(e => e)
         const t = insurance.invoices.filter(e => e).map(inv => {
           return String(inv)
         })
+
         const n = arr.difference(t, toD);
         Invoice.deleteMany({ _id: { $in: n } }).exec()
         let doc = Insurance.findById(insurance.id);
