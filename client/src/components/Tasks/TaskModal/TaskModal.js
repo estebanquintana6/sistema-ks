@@ -43,7 +43,7 @@ class TaskModal extends Component {
         <React.Fragment>
           <Row>
             <Col>
-              <Button variant="info" className="option-button" onClick={this.editTask.bind(this, task)}>EDITAR</Button>
+              <Button variant="info" className="option-button" onClick={this.editTask.bind(this, task)}>VER</Button>
             </Col>
             <Col>
               <Button variant="danger" className="option-button" onClick={this.props.deleteTask.bind(this, task._id)}>ELIMINAR</Button>
