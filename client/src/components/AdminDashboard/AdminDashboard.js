@@ -7,6 +7,7 @@ import "./AdminDashboard.css";
 import InsuranceTypesPanel from "./InsuranceType/InsuranceTypesPanel/InsuranceTypesPanel";
 import CompaniesPanel from "./Companies/CompaniesPanel/CompaniesPanel";
 import UserPanel from "../Users/UserPanel/UserPanel";
+import EmailPanel from "./Email/EmailPanel/EmailPanel";
 
 
 class AdminDashboard extends Component {
@@ -39,6 +40,9 @@ class AdminDashboard extends Component {
                           <a className="nav-link active" href="#i-types" role="tab" data-toggle="tab"><i className="fas fa-building"></i> Ramos</a>
                         </li>
                         <li className="nav-item">
+                          <a className="nav-link" href="#emails" role="tab" data-toggle="tab"><i className="fas fa-envelope"></i> Correos</a>
+                        </li>
+                        <li className="nav-item">
                           <a className="nav-link" href="#companies" role="tab" data-toggle="tab"><i className="fas fa-user-tie"></i> Aseguradoras</a>
                         </li>
                         <li className="nav-item">
@@ -47,13 +51,16 @@ class AdminDashboard extends Component {
                       </ul>
                       <div className="tab-content">
                         <div role="tabpanel" className="tab-pane fade show active" id="i-types">
-                          <InsuranceTypesPanel change={this.state.change}></InsuranceTypesPanel>
+                          <InsuranceTypesPanel change={this.state.change} />
+                        </div>
+                        <div role="tabpanel" className="tab-pane fade" id="emails">
+                          <EmailPanel />
                         </div>
                         <div role="tabpanel" className="tab-pane fade" id="companies">
-                          <CompaniesPanel></CompaniesPanel>
+                          <CompaniesPanel />
                         </div>
                         <div role="tabpanel" className="tab-pane fade" id="users">
-                          <UserPanel></UserPanel>
+                          <UserPanel />
                         </div>
                       </div>
                     </Col>

@@ -12,12 +12,14 @@ const insurances = require('./routes/insurancesRoutes')
 const tasks = require('./routes/tasksRoutes')
 const invoices = require('./routes/invoicesRoutes');
 const sinesters = require('./routes/sinesterRoutes');
+const emails = require('./routes/emailRoutes');
 
 const cars = require('./routes/carInsuranceRoutes');
 const medics = require('./routes/medicInsuranceRoutes');
 const danos = require('./routes/danosRoutes');
 
-const initializeDb = require('./createInsuranceTypes')
+const initializeDb = require('./createInsuranceTypes');
+const initializeEmails = require('./createEmails');
 
 const app = express();
 const regular_jobs = require('./node_regular_job')
@@ -54,6 +56,7 @@ db.on("error", err => {
 });
 db.once("open", () => {
   initializeDb();
+  initializeEmails();
   console.log("Successfully connected to mongo");
 });
 
@@ -74,6 +77,7 @@ app.use('/api/companies', companies);
 app.use('/api/insurances', insurances);
 app.use('/api/tasks', tasks);
 app.use('/api/invoices', invoices);
+app.use('/api/emails', emails);
 
 app.use('/api/cars', cars);
 app.use('/api/medics', medics);
