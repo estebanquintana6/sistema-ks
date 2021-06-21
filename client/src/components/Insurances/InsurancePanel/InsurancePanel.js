@@ -292,12 +292,9 @@ const InsurancePanel = (props) => {
     }
 
     const tableContent = reactTable.current;
-    const allData = tableContent.getResolvedState().sortedData;
-    console.log(allData)
-    const excelToExport = allData.map((data) => data._original)
-    console.log("excelToExport", excelToExport)
+    const allData = tableContent?.getResolvedState().sortedData;
+    const excelToExport = allData?.map((data) => data._original)
     setExcelData(excelToExport)
-    console.log(excelRef.current)
   }
 
 
@@ -855,7 +852,7 @@ const InsurancePanel = (props) => {
           <div className="col-md-4 center mt-4">
             {props.variant &&
               <ExportDataToCSV
-                csvData={excelData.length > 0 ? excelData : data}
+                csvData={excelData?.length > 0 ? excelData : data}
                 fileName={`reporteSeguros_${props.variant}`}
                 onComplete={refresh}
                 fieldTranslation={generateFieldsTranslation()}
