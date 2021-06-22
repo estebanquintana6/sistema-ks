@@ -45,6 +45,8 @@ const GeneralInsurancePanel = (props) => {
   const excludedFields = [
     '__v',
     '_id',
+    'files',
+    'car_float',
     'active_status',
     'endorsements',
     'comments',
@@ -74,7 +76,8 @@ const GeneralInsurancePanel = (props) => {
     endorsements: "Endosos",
     insurance: "Compañia",
     email: "Email",
-    bounty: "Prima",
+    bounty: "Prima total",
+    net_bounty: "Prima neta",
     insurance_company: "Aseguradora",
     insurance_type: "Producto",
     invoice: "Número de recibo",

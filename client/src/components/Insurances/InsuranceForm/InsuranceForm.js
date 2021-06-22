@@ -391,6 +391,8 @@ class InsuranceForm extends Component {
       due_date: "",
       pay_limit: "",
       pay_limit2: "",
+      payment_method: this.state.currency,
+      promoter: this.state.promoter
     })
     this.setState({ invoices });
   }
@@ -576,6 +578,10 @@ class InsuranceForm extends Component {
                           <option value="PESO">Peso</option>
                           <option value="DOLAR">Dólar</option>
                         </Form.Control>
+                      </Form.Group>
+                      <Form.Group as={Col} md="4" controlId="promoter">
+                        <Form.Label>Promotora</Form.Label>
+                        <Form.Control onChange={this.onChange} value={this.state.promoter} />
                       </Form.Group>
                     </Form.Row>
                   </Col>
@@ -890,7 +896,11 @@ class InsuranceForm extends Component {
                         </Form.Group>
                         <Form.Group as={Col} controlId="invoice_payment_method">
                           <Form.Label>Forma de pago</Form.Label>
-                          <Form.Control onChange={(e) => this.onChangeInvoicePaymentMethod(i, e)} value={this.state.invoices[i].payment_method}>
+                          <Form.Control 
+                          onChange={(e) => this.onChangeInvoicePaymentMethod(i, e)} 
+                          value={this.state.invoices[i].payment_method ? 
+                          this.state.invoices[i].payment_method :
+                          this.state.currency}>
                           </Form.Control>
                         </Form.Group>
                       </Form.Row>
@@ -907,7 +917,12 @@ class InsuranceForm extends Component {
                       <Form.Row>
                         <Form.Group as={Col} md="4" controlId="promoter">
                           <Form.Label>Promotora</Form.Label>
-                          <Form.Control onChange={(e) => this.onChangePromoter(i, e)} value={this.state.invoices[i].promoter} />
+                          <Form.Control 
+                          onChange={(e) => this.onChangePromoter(i, e)} 
+                          value={this.state.invoices[i].promoter ? 
+                            this.state.invoices[i].promoter :
+                            this.state.promoter
+                          } />
                         </Form.Group>
                       </Form.Row>
                       <Form.Row>

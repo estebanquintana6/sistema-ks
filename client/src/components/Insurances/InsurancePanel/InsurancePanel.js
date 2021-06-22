@@ -62,6 +62,8 @@ const InsurancePanel = (props) => {
       '_id',
       'files',
       'active_status',
+      'promoter',
+      'car_float',
       'endorsements',
       'comments',
       'status',
@@ -85,6 +87,8 @@ const InsurancePanel = (props) => {
       '_id',
       'files',
       'active_status',
+      'promoter',
+      'car_float',
       'endorsements',
       'comments',
       'status',
@@ -155,7 +159,8 @@ const InsurancePanel = (props) => {
     if (props.variant !== 'GM') {
       resObj = {
         ...resObj,
-        bounty: "Prima",
+        net_bounty: "Prima neta",
+        bounty: "Prima total",
         currency: "Moneda"
       }
     }

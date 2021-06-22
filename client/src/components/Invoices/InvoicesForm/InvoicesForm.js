@@ -52,6 +52,7 @@ class InvoicesForm extends Component {
   }
 
   render() {
+    console.log(this.state)
     return (
       <Form id="InvoicesForm" onSubmit={this.onSubmit}>
         <Row>
@@ -109,7 +110,13 @@ class InvoicesForm extends Component {
             </Form.Group>
             <Form.Group as={Col} controlId="payment_method">
               <Form.Label>Forma de pago</Form.Label>
-              <Form.Control onChange={this.onChange} value={this.state.payment_method}>
+              <Form.Control
+                onChange={this.onChange}
+                value={
+                  this.state.payment_method ?
+                    this.state.payment_method :
+                    this.state.insurance.currency
+                }>
               </Form.Control>
             </Form.Group>
           </Row>
@@ -136,7 +143,14 @@ class InvoicesForm extends Component {
               <Form.Row>
                 <Form.Group as={Col} md="6" controlId="promoter">
                   <Form.Label>Promotora</Form.Label>
-                  <Form.Control onChange={this.onChange} value={this.state.promoter} />
+                  <Form.Control
+                    onChange={this.onChange}
+                    value={
+                      this.state.promoter ?
+                        this.state.promoter :
+                        this.state.insurance.promoter
+                    }
+                  />
                 </Form.Group>
               </Form.Row>
             </Col>
