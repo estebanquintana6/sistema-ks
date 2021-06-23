@@ -131,7 +131,7 @@ const GeneralInsurancePanel = (props) => {
   const onFilteredChangeCustom = (value, accessor) => {
     const notFilterable = ['begin_date', 'due_date', 'pay_due_date']
     // if (Object.keys(value).includes(null)) return;
-    let filters = filterRef.current;
+    let filters = filtered;
 
     let insertNewFilter = 1;
 
@@ -147,14 +147,15 @@ const GeneralInsurancePanel = (props) => {
     }
 
     if (insertNewFilter || notFilterable.includes(accessor)) {
-      setFiltered([
-        ...filters,
-        {
-          id: accessor,
-          value: value
-        }
-      ])
+      filters.push({
+        id: accessor,
+        value: value
+      })
     }
+
+    setFiltered(
+      filters
+    )
 
     const tableContent = reactTable.current;
     const allData = tableContent?.getResolvedState().sortedData;
