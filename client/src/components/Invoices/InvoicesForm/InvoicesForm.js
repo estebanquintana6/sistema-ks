@@ -115,7 +115,7 @@ class InvoicesForm extends Component {
                 value={
                   this.state.payment_method ?
                     this.state.payment_method :
-                    this.state.insurance.currency
+                    `${this.state.insurance.payment_type}/${this.state.insurance.currency}`
                 }>
               </Form.Control>
             </Form.Group>

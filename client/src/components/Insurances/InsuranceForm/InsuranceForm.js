@@ -900,7 +900,8 @@ class InsuranceForm extends Component {
                           onChange={(e) => this.onChangeInvoicePaymentMethod(i, e)} 
                           value={this.state.invoices[i].payment_method ? 
                           this.state.invoices[i].payment_method :
-                          this.state.currency}>
+                          `${this.state.payment_type}/${this.state.currency}`
+                          }>
                           </Form.Control>
                         </Form.Group>
                       </Form.Row>
