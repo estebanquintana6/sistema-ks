@@ -182,6 +182,12 @@ class InsuranceForm extends Component {
     return this.props.type === "AUTOS";
   }
 
+  isCarIndividualInsurance = () => 
+  this.props.type === "AUTOS" &&
+  (this.state.colective_insurance === "false" || 
+  this.state.colective_insurance === false);
+  
+
   isColectiveCarInsurance = () =>
     this.props.type === "AUTOS" &&
     (this.state.colective_insurance === "true" || 
@@ -517,7 +523,7 @@ class InsuranceForm extends Component {
                         <Form.Control onChange={this.onChange} value={this.state.policy}>
                         </Form.Control>
                       </Form.Group>
-                      {this.isCarInsurance() &&
+                      {this.isCarIndividualInsurance() &&
                         <>
                           <Form.Group as={Col} md="6" controlId="cis">
                             <Form.Label>CIS</Form.Label>
@@ -586,7 +592,7 @@ class InsuranceForm extends Component {
                     </Form.Row>
                   </Col>
                   <Col>
-                    {!this.isCarInsurance() &&
+                    {!this.isCarIndividualInsurance() &&
                       <>
                         <Row>
                           <h5 className="swal-title form-title align-left">DATOS AUTO</h5>
