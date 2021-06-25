@@ -97,16 +97,16 @@ class InsuranceTypesPanel extends Component {
     return (
       <React.Fragment>
         <Row>
-          {this.state.data?.map((insuranceType, index) => {
-            return (<InsuranceTypeComponent
-              addUser={this.addUser}
-              deleteUser={this.deleteUser}
-              users={this.state.users}
-              key={index}
-              insuranceType={insuranceType}>
-
-            </InsuranceTypeComponent>)
-          })
+          {this.state.data?.filter(
+            (insuranceType) => insuranceType.name !== 'TRANSPORTE')
+            .map((insuranceType, index) =>
+              <InsuranceTypeComponent
+                addUser={this.addUser}
+                deleteUser={this.deleteUser}
+                users={this.state.users}
+                key={index}
+                insuranceType={insuranceType}>
+              </InsuranceTypeComponent>)
           }
         </Row>
       </React.Fragment>
