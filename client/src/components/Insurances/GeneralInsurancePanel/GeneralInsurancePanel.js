@@ -1,9 +1,20 @@
 /* eslint-disable */
 import React, { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
-import { Container, Row } from 'react-bootstrap'
+import { Form, Col, Container, Row } from 'react-bootstrap'
 import { connect } from "react-redux";
-import { createInsurance, deleteInsurance, updateInsurance, getAllInsurances, cancelInsurance, activateInsurance, changePayStatus, removeFile, download, saveFile } from "../../../actions/insuraceActions";
+import {
+  activateInsurance,
+  cancelInsurance,
+  changePayStatus,
+  createInsurance,
+  deleteInsurance,
+  download,
+  getAllInsurances,
+  removeFile,
+  saveFile,
+  updateInsurance
+} from "../../../actions/insuraceActions";
 import { getClients } from "../../../actions/registerClient";
 import { getCompanies } from "../../../actions/companyActions";
 import swal from '@sweetalert/with-react';
@@ -38,7 +49,7 @@ const GeneralInsurancePanel = (props) => {
   const [companies, setCompanies] = useState([])
 
   const [excelData, setExcelData] = useState([]);
-  
+
   const excelRef = useRef(excelData)
   const filterRef = useRef(filtered)
 
@@ -64,7 +75,7 @@ const GeneralInsurancePanel = (props) => {
     'car_model',
     'languages'
   ]
-  
+
   const fieldsTraslation = {
     _id: "id",
     client: "Contratante",
@@ -103,15 +114,15 @@ const GeneralInsurancePanel = (props) => {
   }
 
   const excelHeaders = [
-    'Contratante Tipo de persona', 
-    'Contratante', 
-    'Contratante RFC', 
-    'Póliza', 
-    'Producto', 
-    'Tipo de póliza', 
-    'Moneda', 
-    'Fecha de vencimiento', 
-    'Tipo de pago', 
+    'Contratante Tipo de persona',
+    'Contratante',
+    'Contratante RFC',
+    'Póliza',
+    'Producto',
+    'Tipo de póliza',
+    'Moneda',
+    'Fecha de vencimiento',
+    'Tipo de pago',
     'Aseguradora'
   ]
 
@@ -289,15 +300,29 @@ const GeneralInsurancePanel = (props) => {
   }
 
   const changePayStatus = (insurance, e) => {
+    let newStatus;
+
     swal({
-      title: `¿Estas seguro de querer cambiar el estatus de pago de ${insurance.policy}?`,
+      title: `Cambiar status de ${insurance.policy}`,
       icon: "warning",
+      content: <React.Fragment>
+        <Form.Group as={Col} md="12">
+          <Form.Control required as="select" onChange={(e) => { newStatus = e.target.value }} value={newStatus}>
+            <option></option>
+            <option value="PENDIENTE">PENDIENTE</option>
+            <option value="PAGADO">PAGADA</option>
+            <option value="COTIZACION">COTIZACION</option>
+            <option value="RENOVACION">RENOVACION</option>
+            <option value="CANCELADA">CANCELADA</option>
+          </Form.Control>
+        </Form.Group>
+      </React.Fragment>,
       buttons: true,
       sucessMode: true,
     })
-      .then((willDelete) => {
-        if (willDelete) {
-          confirmPayChange(insurance._id);
+      .then((willUpdate) => {
+        if (willUpdate) {
+          confirmPayChange(insurance._id, newStatus);
           swal("Tu poliza ha cambiado!", {
             icon: "success",
           }).then(() => {
@@ -324,8 +349,8 @@ const GeneralInsurancePanel = (props) => {
     props.activateInsurance(id);
   }
 
-  const confirmPayChange = (id) => {
-    props.changePayStatus(id);
+  const confirmPayChange = (id, status) => {
+    props.changePayStatus(id, status);
   }
 
   const confirmDownload = async (file) => {
@@ -636,14 +661,14 @@ const GeneralInsurancePanel = (props) => {
 
         <div className="row">
           <div className="col-md-4 center mt-4">
-            <ExportDataToCSV 
-            csvData={excelData?.length > 0 ? excelData: data} 
-            fileName={`reporteSeguros_${props.variant}`} 
-            onComplete={refresh} 
-            fieldTranslation={fieldsTraslation} 
-            excludedFields={excludedFields} 
-            header={excelHeaders} 
-            sortableColumn={'Contratante'} />
+            <ExportDataToCSV
+              csvData={excelData?.length > 0 ? excelData : data}
+              fileName={`reporteSeguros_${props.variant}`}
+              onComplete={refresh}
+              fieldTranslation={fieldsTraslation}
+              excludedFields={excludedFields}
+              header={excelHeaders}
+              sortableColumn={'Contratante'} />
           </div>
         </div>
       </div>
@@ -663,17 +688,18 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getClients, 
-    getCompanies, 
-    createInsurance, 
-    deleteInsurance, 
-    updateInsurance, 
-    getAllInsurances, 
-    cancelInsurance, 
-    activateInsurance, 
-    changePayStatus, 
-    removeFile, 
-    download, 
-    saveFile 
+  {
+    getClients,
+    getCompanies,
+    createInsurance,
+    deleteInsurance,
+    updateInsurance,
+    getAllInsurances,
+    cancelInsurance,
+    activateInsurance,
+    changePayStatus,
+    removeFile,
+    download,
+    saveFile
   }
 )(GeneralInsurancePanel);
