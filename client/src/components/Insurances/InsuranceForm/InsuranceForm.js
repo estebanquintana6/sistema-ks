@@ -586,7 +586,7 @@ class InsuranceForm extends Component {
                     </Form.Row>
                   </Col>
                   <Col>
-                    {!this.isColectiveCarInsurance() &&
+                    {!this.isCarInsurance() &&
                       <>
                         <Row>
                           <h5 className="swal-title form-title align-left">DATOS AUTO</h5>
