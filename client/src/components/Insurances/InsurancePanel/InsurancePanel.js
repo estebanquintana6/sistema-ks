@@ -271,7 +271,7 @@ const InsurancePanel = (props) => {
   const onFilteredChangeCustom = (value, accessor) => {
     const notFilterable = ['begin_date', 'due_date', 'pay_due_date']
     // if (Object.keys(value).includes(null)) return;
-    let filters = filtered;
+    let filters = filterRef.current;
 
     let insertNewFilter = 1;
 
@@ -462,8 +462,6 @@ const InsurancePanel = (props) => {
 
 
   const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
-    console.log('B64', b64Data)
-    console.log(contentType)
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
 
@@ -478,7 +476,6 @@ const InsurancePanel = (props) => {
       const byteArray = new Uint8Array(byteNumbers);
       byteArrays.push(byteArray);
     }
-    console.log('BA', byteArrays)
 
     const blob = new Blob(byteArrays, { type: contentType });
     return blob;
@@ -508,10 +505,8 @@ const InsurancePanel = (props) => {
     try {
       const response = await props.download(file)
       const data = response.data
-      console.log(data);
 
       const { encoded, fullName, extension } = data
-      console.log('DATA', data)
       const contentType = determineContentType(extension)
       const blob = b64toBlob(encoded, contentType);
       const blobUrl = URL.createObjectURL(blob);
@@ -679,9 +674,9 @@ const InsurancePanel = (props) => {
             startDate={dueDateStartDate}
             endDate={dueDateEndDate}
             onDatesChange={({ startDate, endDate }) => {
-              setDueDateStartDate(startDate)
-              setDueDateEndDate(endDate)
               onChange({ startDate, endDate });
+              setDueDateStartDate(startDate);
+              setDueDateEndDate(endDate);
             }}
             focusedInput={focusedInput2}
             onFocusChange={focusedInput => setFocusedInput2(focusedInput)}
@@ -691,12 +686,23 @@ const InsurancePanel = (props) => {
           />
         ),
         filterMethod: (filter, row) => {
-          if (filter.value.startDate === null || filter.value.endDate === null) {
-            // Incomplet or cleared date picker
+          if (dueDateStartDate && dueDateEndDate) {
+            const res = row[filter.id] !== undefined ?
+              moment.unix(row[filter.id])
+                .clone()
+                .startOf('day')
+                .isBetween(
+                  moment(dueDateStartDate)
+                    .clone()
+                    .startOf('day'),
+                  moment(dueDateEndDate)
+                    .clone()
+                    .startOf('day'), null, '[]'
+                ) : true
+            return res
+          } else {
             return true
           }
-          const res = row[filter.id] !== undefined ? moment.unix(row[filter.id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'), null, '[]') : true
-          return res
         }
       },
       {
@@ -769,10 +775,11 @@ const InsurancePanel = (props) => {
             endDateId="end2"
             startDate={payDueDateStartDate}
             endDate={payDueDateEndDate}
+            onChange
             onDatesChange={({ startDate, endDate }) => {
-              setPayDueDateStartDate(startDate)
-              setPayDueDateEndDate(endDate);
               onChange({ startDate, endDate });
+              setPayDueDateStartDate(startDate);
+              setPayDueDateEndDate(endDate);
             }}
             focusedInput={focusedInput}
             onFocusChange={focusedInput => setFocusedInput(focusedInput)}
@@ -782,16 +789,25 @@ const InsurancePanel = (props) => {
           />
         ),
         filterMethod: (filter, row) => {
-          if (filter.value.startDate === null || filter.value.endDate === null) {             // Incomplet or cleared date picker
+          if (payDueDateStartDate && payDueDateEndDate) {
+            if (Number.isInteger(row[filter.id])) {
+              row[filter.id] = moment(row[filter.id]);
+            }
+
+            const res = row[filter.id] !== undefined ?
+              moment.unix(row[filter.id]).clone()
+                .startOf('day')
+                .isBetween(moment(payDueDateStartDate)
+                  .clone()
+                  .startOf('day'),
+                  moment(payDueDateEndDate)
+                    .clone()
+                    .startOf('day'), null, '[]')
+              : true
+            return res
+          } else {
             return true
           }
-
-          if (Number.isInteger(row[filter.id])) {
-            row[filter.id] = moment(row[filter.id]);
-          }
-
-          const res = row[filter.id] !== undefined ? moment.unix(row[filter.id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'), null, '[]') : true
-          return res
         }
       },
       {
@@ -819,7 +835,7 @@ const InsurancePanel = (props) => {
           ref={reactTable}
           data={data}
           filterable
-          filtered={filtered}
+          filtered={filterRef.current}
           onFilteredChange={(filtered, column, value) => {
             onFilteredChangeCustom(value, column.id || column.accessor);
           }}
@@ -828,7 +844,6 @@ const InsurancePanel = (props) => {
 
             if (notFilterable.includes(filter.id)) {
               const id = filter.pivotId || filter.id;
-              console.log(row[id]);
               const res = row[id] !== undefined ? moment.unix(row[id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'), null, '[]') : true
               return res
             }

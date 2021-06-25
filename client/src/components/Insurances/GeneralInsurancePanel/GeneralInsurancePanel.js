@@ -214,8 +214,6 @@ const GeneralInsurancePanel = (props) => {
   }
 
   const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
-    console.log('B64', b64Data)
-    console.log(contentType)
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
 
@@ -230,7 +228,6 @@ const GeneralInsurancePanel = (props) => {
       const byteArray = new Uint8Array(byteNumbers);
       byteArrays.push(byteArray);
     }
-    console.log('BA', byteArrays)
 
     const blob = new Blob(byteArrays, { type: contentType });
     return blob;
@@ -358,11 +355,9 @@ const GeneralInsurancePanel = (props) => {
       const response = await props.download(file)
       const data = response.data
       const { encoded, fullName, extension } = data
-      console.log('DATA', data)
       const contentType = determineContentType(extension)
       const blob = b64toBlob(encoded, contentType);
       const blobUrl = URL.createObjectURL(blob);
-      console.log('RESPONSE', blobUrl, contentType, blob)
       var a = document.createElement('A');
       a.href = blobUrl;
       a.download = `${fullName}.${extension}`;
@@ -493,12 +488,21 @@ const GeneralInsurancePanel = (props) => {
           />
         ),
         filterMethod: (filter, row) => {
-          if (filter.value.startDate === null || filter.value.endDate === null) {
-            // Incomplet or cleared date picker
+          if (dueDateStartDate && dueDateEndDate) {
+            const res = row[filter.id] !== undefined ?
+              moment.unix(row[filter.id]).clone()
+                .startOf('day')
+                .isBetween(moment(dueDateStartDate)
+                  .clone()
+                  .startOf('day'),
+                  moment(dueDateEndDate).clone()
+                    .startOf('day'),
+                  null, '[]') :
+              true
+            return res
+          } else {
             return true
           }
-          const res = row[filter.id] !== undefined ? moment.unix(row[filter.id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'), null, '[]') : true
-          return res
         }
       },
       {
@@ -584,12 +588,21 @@ const GeneralInsurancePanel = (props) => {
           />
         ),
         filterMethod: (filter, row) => {
-          if (filter.value.startDate === null || filter.value.endDate === null) {
-            // Incomplet or cleared date picker
+          if (payDueDateStartDate && payDueDateEndDate) {
+            const res = row[filter.id] !== undefined ?
+              moment.unix(row[filter.id]).clone()
+                .startOf('day')
+                .isBetween(moment(payDueDateStartDate)
+                  .clone()
+                  .startOf('day'),
+                  moment(payDueDateEndDate).clone()
+                    .startOf('day'),
+                  null, '[]') :
+              true
+            return res
+          } else {
             return true
           }
-          const res = row[filter.id] !== undefined ? moment.unix(row[filter.id]).clone().startOf('day').isBetween(moment(filter.value.startDate).clone().startOf('day'), moment(filter.value.endDate).clone().startOf('day'), null, '[]') : true
-          return res
         }
       },
       {
