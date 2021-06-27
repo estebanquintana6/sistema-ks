@@ -20,15 +20,16 @@ import Select from 'react-select';
 class InsuranceForm extends Component {
   constructor(props) {
     super(props);
+    const today = moment();
     this.state = {
       filterArray: [],
       insurance_type: this.props.type || this.props.insurance.insurance_type,
       invoices: [],
       car_float: [],
       endorsements: [],
-      begin_date: moment().startOf('day').format('YYYY-MM-DD'),
+      begin_date: today.startOf('day').format('YYYY-MM-DD'),
       colective_insurance: false,
-      due_date: moment().clone().add(1, 'year').startOf('day').format('YYYY-MM-DD'),
+      due_date: today.set({ year: today.year() + 1 }).startOf('day').format('YYYY-MM-DD'),
       pay_due_date: moment().startOf('day').format('YYYY-MM-DD'),
     };
   }
@@ -182,16 +183,16 @@ class InsuranceForm extends Component {
     return this.props.type === "AUTOS";
   }
 
-  isCarIndividualInsurance = () => 
-  this.props.type === "AUTOS" &&
-  (this.state.colective_insurance === "false" || 
-  this.state.colective_insurance === false);
-  
+  isCarIndividualInsurance = () =>
+    this.props.type === "AUTOS" &&
+    (this.state.colective_insurance === "false" ||
+      this.state.colective_insurance === false);
+
 
   isColectiveCarInsurance = () =>
     this.props.type === "AUTOS" &&
-    (this.state.colective_insurance === "true" || 
-    this.state.colective_insurance === true);
+    (this.state.colective_insurance === "true" ||
+      this.state.colective_insurance === true);
 
   isMedicInsurance = () => {
     return this.props.type === "GM";
@@ -902,12 +903,12 @@ class InsuranceForm extends Component {
                         </Form.Group>
                         <Form.Group as={Col} controlId="invoice_payment_method">
                           <Form.Label>Forma de pago</Form.Label>
-                          <Form.Control 
-                          onChange={(e) => this.onChangeInvoicePaymentMethod(i, e)} 
-                          value={this.state.invoices[i].payment_method ? 
-                          this.state.invoices[i].payment_method :
-                          `${this.state.payment_type}/${this.state.currency}`
-                          }>
+                          <Form.Control
+                            onChange={(e) => this.onChangeInvoicePaymentMethod(i, e)}
+                            value={this.state.invoices[i].payment_method ?
+                              this.state.invoices[i].payment_method :
+                              `${this.state.payment_type}/${this.state.currency}`
+                            }>
                           </Form.Control>
                         </Form.Group>
                       </Form.Row>
@@ -924,12 +925,12 @@ class InsuranceForm extends Component {
                       <Form.Row>
                         <Form.Group as={Col} md="4" controlId="promoter">
                           <Form.Label>Promotora</Form.Label>
-                          <Form.Control 
-                          onChange={(e) => this.onChangePromoter(i, e)} 
-                          value={this.state.invoices[i].promoter ? 
-                            this.state.invoices[i].promoter :
-                            this.state.promoter
-                          } />
+                          <Form.Control
+                            onChange={(e) => this.onChangePromoter(i, e)}
+                            value={this.state.invoices[i].promoter ?
+                              this.state.invoices[i].promoter :
+                              this.state.promoter
+                            } />
                         </Form.Group>
                       </Form.Row>
                       <Form.Row>

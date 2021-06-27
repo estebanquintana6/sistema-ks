@@ -5,6 +5,7 @@ import {
   Card,
   Col,
   Form,
+  Table,
   Row,
 } from 'react-bootstrap';
 import { formatShortDate } from '../component-utils';
@@ -70,46 +71,60 @@ class FileVisualizer extends Component {
               {year}
             </Accordion.Toggle>
             <Accordion.Collapse eventKey={`${index}`}>
-              <div className="filebox-flex">
-                {filteredFiles.filter((file) => {
-                  let { description } = file;
-                  if (this.state.search === "") return true;
-                  return description.toLowerCase().includes(this.state.search.toLowerCase());
-                }).map((file, index) => {
-                  const i = this.state.entity.files.map(function (e) { return e.path; }).indexOf(file.path);
-                  return (
-                    <div className="card-wrapper">
-                      <Card className="file-card">
-                        <Card.Body>
-                          <h6>{file.path.replace(/^.*[\\\/]/, '')}</h6>
-                          {(this.state.editingFile === i) ? (<div>
+              <Table
+                striped
+                bordered
+                hover
+                style={{ marginTop: '16px' }}>
+                <thead>
+                  <tr>
+                    <th>Archivo</th>
+                    <th>Descripción</th>
+                    <th>Fecha de subida</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredFiles.filter((file) => {
+                    let { description } = file;
+                    if (this.state.search === "") return true;
+                    return description.toLowerCase().includes(this.state.search.toLowerCase());
+                  }).map((file, index) => {
+                    const i = this.state.entity.files.map(function (e) { return e.path; }).indexOf(file.path);
+                    return (
+                      <tr>
+                        <td style={{ width: '25rem' }}>{file.path.replace(/^.*[\\\/]/, '')}</td>
+                        {(this.state.editingFile === i) ? (
+                          <td style={{ maxWidth: '15rem' }}>
                             <Form.Group as={Col} md="12">
-                              <Form.Label onClick={() => this.editFile(null)}>Descripcion</Form.Label>
                               <Form.Control required onChange={(e) => { this.onChange(i, e) }} value={this.state.entity.files[i].description} />
                               <Button className="mt-2" variant='success' onClick={() => this.saveFile(file, this.state.entity._id)}>Guardar</Button>
                             </Form.Group>
-                          </div>) : <Card.Text onClick={() => this.editFile(i)}>
-                            {`Descripción: ${file.description}`}
-                          </Card.Text>}
-                          <Card.Text>
-                            {`Fecha de subida: ${formatShortDate(file.created_at)}`}
-                          </Card.Text>
-                        </Card.Body>
-                        <Card.Footer>
-                          <Row>
-                            <Col>
-                              <Button variant="info" onClick={this.props.downloadFile.bind(this, file.path)}><i className="fa fa-arrow-down" aria-hidden="true"></i></Button>
-                            </Col>
-                            <Col>
-                              <Button variant="danger" onClick={this.props.removeFile.bind(this, file.path, this.state.entity._id)}><i className="fa fa-trash" aria-hidden="true"></i></Button>
-                            </Col>
-                          </Row>
-                        </Card.Footer>
-                      </Card>
-                    </div>
-                  )
-                })}
-              </div>
+                          </td>) :
+                          <td
+                            style={{ maxWidth: '15rem' }}
+                            onClick={() => this.editFile(i)}>
+                            {` ${file.description} `}
+                          </td>
+                        }
+                        <td>{formatShortDate(file.created_at)}</td>
+                        <td>
+                          <Button
+                            variant="info"
+                            onClick={this.props.downloadFile.bind(this, file.path)}>
+                            <i className="fa fa-arrow-down" aria-hidden="true" />
+                          </Button>
+                          <Button
+                            variant="danger"
+                            onClick={this.props.removeFile.bind(this, file.path, this.state.entity._id)}>
+                            <i className="fa fa-trash" aria-hidden="true" />
+                          </Button>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </Table>
             </Accordion.Collapse>
           </Card>
         </Accordion>

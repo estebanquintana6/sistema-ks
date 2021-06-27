@@ -1,5 +1,6 @@
 .filebox-flex {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     padding: 25px;
 }
@@ -16,8 +17,7 @@
 }
 
 .card-wrapper {
-    flex: 1 0 20%;
-    margin: 8px;
+    margin: 16px;
 }
 
 .file-card {
