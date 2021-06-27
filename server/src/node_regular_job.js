@@ -5,12 +5,20 @@ const config = require('./config/email');
 const Invoice = require("./models/InvoiceForm");
 const Company = require("./models/CompanyForm");
 const InsuranceType = require("./models/InsuranceTypeForm");
+const Email = require("./models/EmailForm");
 
-const { hasExpired, willExpireFive, willExpireTen, daysFromNow } = require('./utils/dateUtils');
+const {
+  hasExpired,
+  willExpireFive,
+  willExpireTen,
+  daysFromNow
+} = require('./utils/dateUtils');
 
 const nodemailer = require('nodemailer');
 
 let companies;
+let spanishEmail;
+let coreanEmail;
 
 Array.prototype.unique = function () {
   var a = this.concat();
@@ -44,14 +52,14 @@ const composeInvoiceDetailsSpanish = (invoice) => {
 
   return `\n\n
   Datos de la Póliza: \n
-  - Contratante: ${invoice.client.name}
-  - Aseguradora: ${company.name}
-  - No de poliza: ${invoice.insurance.policy}
-  - Tipo de poliza: ${invoice.insurance.insurance_type}
-  - No. Recibo: ${invoice.invoice}
-  - Prima: ${invoice.bounty}
-  - Fecha de vencimiento: ${moment(invoice.due_date).format('DD/MM/YYYY')}
-  - Moneda: ${invoice.insurance.currency}
+  - Contratante: ${invoice?.client?.name}
+  - Aseguradora: ${company?.name}
+  - No de poliza: ${invoice?.insurance?.policy}
+  - Tipo de poliza: ${invoice?.insurance?.insurance_type}
+  - No. Recibo: ${invoice?.invoice}
+  - Prima: ${invoice?.bounty}
+  - Fecha de vencimiento: ${moment(invoice?.due_date).format('DD/MM/YYYY')}
+  - Moneda: ${invoice?.insurance?.currency}
   `
 }
 
@@ -67,14 +75,14 @@ const composeInvoiceDetailsCorean = (invoice) => {
 
   return `\n\n
   정책 정보: \n
-  - 계약자: ${invoice.client.name}
-  - 보험 회사: ${company.name}
-  - 정책 번호: ${invoice.insurance.policy}
-  - 정책 유형: ${invoice.insurance.insurance_type}
-  - 영수증 번호: ${invoice.invoice}
-  - 공유: ${invoice.bounty}
-  -	마감일: ${moment(invoice.due_date).format('DD/MM/YYYY')}
-  - 통화: ${invoice.insurance.currency}
+  - 계약자: ${invoice?.client?.name}
+  - 보험 회사: ${company?.name}
+  - 정책 번호: ${invoice?.insurance?.policy}
+  - 정책 유형: ${invoice?.insurance?.insurance_type}
+  - 영수증 번호: ${invoice?.invoice}
+  - 공유: ${invoice?.bounty}
+  -	마감일: ${moment(invoice?.due_date).format('DD/MM/YYYY')}
+  - 통화: ${invoice?.insurance?.currency}
   `
 }
 
@@ -87,59 +95,23 @@ const mailOptions = (invoice, situation, destinations) => {
 
   if (language === 'Coreano') {
     if (situation === 'vencido') {
-      subjectText = `보험료 납부 안내 메일`
-      languageText = `안녕하세요.
-        \n항상 평안하시고 건강하시기를 바랍니다.
-        \n다름이 아니라  보험료 납부기간이 지나 보험효력지 중지 상태임을 알려드립니다. 지금 납부를 하시면 보험을 다시 되살릴수 있습니다 납부를 원하시면 연락을 주시기 바랍니다. 만약 페이가 되었다면 납부한 증빙서를 보내주시기 바랍니다
-        \n감사합니다 편안한 하루 되시기 바랍니다`
-    } else if (situation === 'proximo5') {
-      subjectText = `보험료 납부 안내 메일`
-      languageText = `안녕하세요.
-        \n항상 평안하시고 건강하시기를 바랍니다.
-        \n다름이 아니라  보험료 납부기간이 얼마남지(5일) 않아 알려드립니다. 기간내에 납부가 될수 있도록 부탁드립니다 만약 페이가 되었다면 납부한 증빙서를 보내주시기 바랍니다 .
-        \n감사합니다 편안한 하루 되시기 바랍니다`
-    } else if (situation === 'proximo10') {
-      subjectText = `보험료 납부 안내 메일`
-      languageText = `안녕하세요.
-        \n항상 평안하시고 건강하시기를 바랍니다.
-        \n다름이 아니라  보험료 납부기간이 얼마남지(10일)  않아 알려드립니다. 기간내에 납부가 될수 있도록 부탁드립니다 만약 페이가 되었다면 납부한 증빙서를 보내주시기 바랍니다.
-        \n감사합니다 편안한 하루 되시기 바랍니다`
+      subjectText = coreanEmail.lapsedEmail.header;
+      languageText = coreanEmail.lapsedEmail.content;
+    } else {
+      subjectText = coreanEmail.reminderEmail.header;
+      languageText = coreanEmail.reminderEmail.content;
     }
   } else {
-    if (insuranceType === "AUTOS") {
-      if (situation === 'vencido') {
-        subjectText = `Pago de recibo ${invoice.invoice} VENCIDO`
-        languageText = `Buen día Estimado cliente,\n
-          Nos dirijimos a usted para notificarle que se venció la fecha límite de pago de su póliza, por lo que en caso de siniestro estaría sin cobertura. Solicitamos de su apoyo con el comprobante de pago para poder rehabilitar la póliza lo antes posible. Agradecemos su preferencia. Saludos cordiales.`
-      }
-      if (situation === "proximo5" || situation === 'proximo10') {
-        subjectText = `Pago de recibo ${invoice.invoice} próximo a vencer`
-        languageText = `Buen día Estimado cliente, \n
-          Le enviamos éste correo como recordatorio para el pago de ésta póliza, solicitamos de su valioso apoyo con el comprobante del mismo. Seguimos a sus órdenes. Saludos cordiales.`
-      }
-    } else {
-      if (situation === 'vencido') {
-        subjectText = `Pago de recibo ${invoice.invoice} VENCIDO`
-        languageText = `Por medio del presente me permito informarle que su recibo: ${invoice.invoice} venció el día: ${moment(invoice.due_date).format('DD/MM/YYYY')} a las 12:00pm, por lo que a partir de dicho momento queda sin cobertura las familias correspondientes a tu recibo antes mencionado. \n
-          Si usted realizo su pago favor de hacernos llegar su comprobante, o ponerse en contacto con el equipo de KS SEGUROS, agradecemos su gran apoyo y confianza.`
-      }
-      else if (situation === 'proximo5') {
-        subjectText = `Pago de recibo ${invoice.invoice} próximo a vencer`
-        languageText = `Buen día Estimado cliente,\n
-          Nos dirijimos a usted para recordarle que el pago de  ésta póliza 
-          esta próximo a vencer por lo que solicitamos de su valioso apoyo con el comprobante de pago.
-          Agradecemos su preferencia.
-          \nSaludos cordiales`
-      } else if (situation === 'proximo10') {
-        subjectText = `Pago de recibo ${invoice.invoice} próximo a vencer`
-        languageText = `Buen día Estimado cliente,\n
-          Le enviamos éste correo como recordatorio para el pago de ésta póliza, 
-          solicitamos de su valioso apoyo con el comprobante del mismo. 
-          Seguimos a sus órdenes.
-          \nSaludos cordiales.`
-      }
+    if (situation === 'vencido') {
+      subjectText = spanishEmail.lapsedEmail.header;
+      languageText = spanishEmail.lapsedEmail.content;
+    }
+    else {
+      subjectText = spanishEmail.reminderEmail.header;
+      languageText = spanishEmail.reminderEmail.content;
     }
   }
+
   if (language === 'Coreano') {
     languageText += composeInvoiceDetailsCorean(invoice)
   } else {
@@ -187,7 +159,6 @@ const func = (invoice, situation) => {
       const regex = /\S+[a-z0-9]@[a-z0-9\.]+/img
 
       const emails = invoice.email.match(regex).concat(insurance_type.emails).unique();
-      console.log(emails);
       transporter.sendMail(mailOptions(invoice, situation, emails), function (error, info) {
         if (error) {
           console.log(error);
@@ -209,6 +180,8 @@ var myRule = {
 
 var j = schedule.scheduleJob(myRule, async function () {
   companies = await Company.find().exec();
+  spanishEmail = await Email.findOne({ language: 'ESPANOL' }).exec();
+  coreanEmail = await Email.findOne({ language: 'COREANO' }).exec();
 
   Invoice.find({ payment_status: 'PENDIENTE' }).populate('insurance').populate('client').then((invoices, err) => {
 
