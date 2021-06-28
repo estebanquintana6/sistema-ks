@@ -38,6 +38,11 @@ var Client = new Schema({
           type: String,
           required: true
         },
+        uploader: {
+          type: String,
+          required: false,
+          default: ""
+        },
         created_at: {
           type: Date,
           required: false,

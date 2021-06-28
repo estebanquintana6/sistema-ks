@@ -17,7 +17,7 @@ router.post("/save", (req, res) => {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
     User.findById(decoded.id).then(user => {
       if (!user) {
-          return res.status(402);
+        return res.status(402);
       }
     })
     const data = body.sinesterData;
@@ -73,7 +73,7 @@ router.get("/fetch/:type", (req, res) => {
     if (err) res.status(401).json({ email: "no permissions" });
 
     let query = { ramo: { $ne: "AUTOS" } };
-    if(req.params.type === "AUTOS") query = { "ramo":  "AUTOS"}
+    if (req.params.type === "AUTOS") query = { "ramo": "AUTOS" }
     // This is the way I found to make a get all from model.
     Sinester.find(query).populate('client').populate('company').then((sinesters) => {
       res.json({ sinesters });
@@ -91,7 +91,7 @@ router.post("/upload", (req, res) => {
   const validTypes = ['pdf', 'docx', 'xlsx', 'jpeg', 'jpg', 'gif', 'png'];
 
 
-  jwt.verify(token, secretKey, function (err, _) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
     }
@@ -99,36 +99,40 @@ router.post("/upload", (req, res) => {
       return res.status(400).json({ msg: 'No file uploaded' });
     }
 
-    const file = req.files.file;
+    User.findById(decoded.id).then(user => {
 
-    let extensionRe = /(?:\.([^.]+))?$/;
-    let ext = extensionRe.exec(file.name.toLowerCase())[1];
+      const file = req.files.file;
 
-    if (!validTypes.includes(ext)) return res.status(500).send("El archivo recibo no es valido");
+      let extensionRe = /(?:\.([^.]+))?$/;
+      let ext = extensionRe.exec(file.name.toLowerCase())[1];
 
-    const path = `/sinesters/${id}/${file.name}`
-    file.mv(path, err => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send(err);
-      }
-    });
+      if (!validTypes.includes(ext)) return res.status(500).send("El archivo recibo no es valido");
 
-    Sinester.findOne({ _id: id }).then((sinester) => {
-      if (sinester) {
-        const doc = Sinester.findById(sinester.id);
-
-        const newFile = {
-          path: path
+      const path = `/sinesters/${id}/${file.name}`
+      file.mv(path, err => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send(err);
         }
+      });
 
-        const files = [...sinester.files, newFile];
-        doc.updateOne({ files: files }).then((err, _) => {
-          if (err) res.status(500);
-          res.status(200).json({ fileName: file.name, filePath: path });
-        });
-      }
-    });
+      Sinester.findOne({ _id: id }).then((sinester) => {
+        if (sinester) {
+          const doc = Sinester.findById(sinester.id);
+
+          const newFile = {
+            path: path,
+            uploader: `${user.name} ${user.last_name}`
+          }
+
+          const files = [...sinester.files, newFile];
+          doc.updateOne({ files: files }).then((err, _) => {
+            if (err) res.status(500);
+            res.status(200).json({ fileName: file.name, filePath: path });
+          });
+        }
+      });
+    })
   });
 });
 

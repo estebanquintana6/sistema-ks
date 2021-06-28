@@ -80,6 +80,7 @@ class FileVisualizer extends Component {
                   <tr>
                     <th>Archivo</th>
                     <th>Descripción</th>
+                    <th>Creador</th>
                     <th>Fecha de subida</th>
                     <th>Acciones</th>
                   </tr>
@@ -93,7 +94,7 @@ class FileVisualizer extends Component {
                     const i = this.state.entity.files.map(function (e) { return e.path; }).indexOf(file.path);
                     return (
                       <tr>
-                        <td style={{ width: '25rem' }}>{file.path.replace(/^.*[\\\/]/, '')}</td>
+                        <td style={{ maxWidth: '200px' }}>{file.path.replace(/^.*[\\\/]/, '')}</td>
                         {(this.state.editingFile === i) ? (
                           <td style={{ maxWidth: '15rem' }}>
                             <Form.Group as={Col} md="12">
@@ -107,6 +108,7 @@ class FileVisualizer extends Component {
                             {` ${file.description} `}
                           </td>
                         }
+                        <td>{file.uploader}</td>
                         <td>{formatShortDate(file.created_at)}</td>
                         <td>
                           <Button

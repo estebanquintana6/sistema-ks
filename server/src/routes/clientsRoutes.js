@@ -136,44 +136,45 @@ router.post("/upload", (req, res) => {
       if (!user) {
         return res.status(402);
       }
-    })
-    if (req.files === null) {
-      return res.status(400).json({ msg: 'No file uploaded' });
-    }
-
-    const file = req.files.file;
-
-    let extensionRe = /(?:\.([^.]+))?$/;
-    let ext = extensionRe.exec(file.name.toLowerCase())[1];
-
-    if (!validTypes.includes(ext)) return res.status(500).send("El archivo recibo no es valido");
-
-    const path = `/clients/${id}/${file.name}`
-    // const path =`/app/client/public/uploads/clients/${id}/${file.name}`
-    // const downloadPath = `/uploads/clients/${id}/${file.name}`
-    file.mv(path, err => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send(err);
+      if (req.files === null) {
+        return res.status(400).json({ msg: 'No file uploaded' });
       }
-    });
 
-    Client.findOne({ _id: id }).then((client) => {
-      if (client) {
-        const doc = Client.findById(client.id);
+      const file = req.files.file;
 
-        const newFile = {
-          path: path
+      let extensionRe = /(?:\.([^.]+))?$/;
+      let ext = extensionRe.exec(file.name.toLowerCase())[1];
+
+      if (!validTypes.includes(ext)) return res.status(500).send("El archivo recibo no es valido");
+
+      const path = `/clients/${id}/${file.name}`
+      // const path =`/app/client/public/uploads/clients/${id}/${file.name}`
+      // const downloadPath = `/uploads/clients/${id}/${file.name}`
+      file.mv(path, err => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send(err);
         }
+      });
 
-        const files = [...client.files, newFile];
-        doc.updateOne({ files: files }).then((err, _) => {
-          if (err) res.status(500);
-          res.status(200).json({ fileName: file.name, filePath: path });
-        });
-      }
+      Client.findOne({ _id: id }).then((client) => {
+        if (client) {
+          const doc = Client.findById(client.id);
+
+          const newFile = {
+            path: path,
+            uploader: `${user.name} ${user.last_name}`
+          }
+
+          const files = [...client.files, newFile];
+          doc.updateOne({ files: files }).then((err, _) => {
+            if (err) res.status(500);
+            res.status(200).json({ fileName: file.name, filePath: path });
+          });
+        }
+      });
     });
-  });
+  })
 });
 
 router.post("/remove_file", (req, res) => {

@@ -223,6 +223,11 @@ var InsuranceSchema = new Schema({
           required: false,
           default: Date.now
         },
+        uploader: {
+          type: String,
+          required: false,
+          default: ""
+        },
         description: {
           type: String,
           required: false,

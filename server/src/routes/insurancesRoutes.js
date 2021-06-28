@@ -156,7 +156,7 @@ router.get("/fetch_all", (req, res) => {
       let mappedPermissions = permissions.map((per) => insuranceTypeMapper[per])
 
       Insurance.find({
-        insurance_type: { $in : mappedPermissions }
+        insurance_type: { $in: mappedPermissions }
       })
         .populate('client')
         .populate('insurance_company')
@@ -368,45 +368,46 @@ router.post("/upload", (req, res) => {
       if (!user) {
         return res.status(402);
       }
-    })
 
-    if (req.files === null) {
-      return res.status(400).json({ msg: 'No file uploaded' });
-    }
-
-    const file = req.files.file;
-
-    let extensionRe = /(?:\.([^.]+))?$/;
-    let ext = extensionRe.exec(file.name.toLowerCase())[1];
-
-    if (!validTypes.includes(ext)) return res.status(402).send("El archivo recibo no es valido");
-
-    const path = `/insurances/${id}/${file.name}`
-    // const path =`/app/client/public/uploads/clients/${id}/${file.name}`
-    // const downloadPath = `/uploads/clients/${id}/${file.name}`
-    file.mv(path, err => {
-      if (err) {
-        return res.status(500).send(err);
+      if (req.files === null) {
+        return res.status(400).json({ msg: 'No file uploaded' });
       }
-    });
 
-    Insurance.findOne({ _id: id }).then((insurance) => {
-      if (insurance) {
-        const doc = Insurance.findById(insurance.id);
+      const file = req.files.file;
 
-        const newFile = {
-          path: path
+      let extensionRe = /(?:\.([^.]+))?$/;
+      let ext = extensionRe.exec(file.name.toLowerCase())[1];
+
+      if (!validTypes.includes(ext)) return res.status(402).send("El archivo recibo no es valido");
+
+      const path = `/insurances/${id}/${file.name}`
+      // const path =`/app/client/public/uploads/clients/${id}/${file.name}`
+      // const downloadPath = `/uploads/clients/${id}/${file.name}`
+      file.mv(path, err => {
+        if (err) {
+          return res.status(500).send(err);
         }
+      });
 
-        const files = [...insurance.files, newFile];
+      Insurance.findOne({ _id: id }).then((insurance) => {
+        if (insurance) {
+          const doc = Insurance.findById(insurance.id);
 
-        doc.updateOne({ files: files }).then((err, _) => {
-          if (err) res.status(500);
-          res.status(200).json({ fileName: file.name, filePath: path });
-        });
-      }
+          const newFile = {
+            path: path,
+            uploader: `${user.name} ${user.last_name}`
+          }
+
+          const files = [...insurance.files, newFile];
+
+          doc.updateOne({ files: files }).then((err, _) => {
+            if (err) res.status(500);
+            res.status(200).json({ fileName: file.name, filePath: path });
+          });
+        }
+      });
     });
-  });
+  })
 });
 
 
