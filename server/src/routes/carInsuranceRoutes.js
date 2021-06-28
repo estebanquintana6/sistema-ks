@@ -54,25 +54,36 @@ router.post("/bulk", (req, res) => {
                     delete car.client;
                     delete car.insurance_company;
 
+                    const colective_insurance = car.colective_insurance === 'Individual' ? false : true;
+
                     const due_date = new Date(car.due_date);
                     const begin_date = substractYears(due_date, 1);
                     const pay_due_date = begin_date.addDays(30);
+
+                    let companyId;
+
+                    if(!company) {
+                        const missingCompany = new Company({
+                            name: (car.insurance_company || 'SIN NOMBRE'),
+                            tolerance: 30
+                        })
+                        missingCompany.save().then((c) => {
+                            companyId = c._id;
+                        })
+                    } else {
+                        companyId = company._id;
+                    }
 
                     Insurance.findOne({ policy: car.policy }).then((insurance) => {
                         if (!insurance) {
                             let insurance = new Insurance({
                                 client: clientId,
-                                insurance_company: company._id,
+                                insurance_company: companyId,
                                 policy: car.policy,
-                                colective_insurance: !!car.type,
-                                payment_type: car.payment_type,
+                                colective_insurance: colective_insurance,
                                 insurance_type: "AUTOS",
-                                due_date: car.due_date,
-                                begin_date: begin_date,
-                                pay_due_date: pay_due_date,
-                                car_description: car.car_description,
-                                car_year: car.car_year,
-                                car_brand: car.car_brand
+                                due_date: new Date(car.due_date),
+                                pay_due_date: new Date(pay_due_date),
                             });
 
                             insurance.save();

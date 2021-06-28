@@ -11,7 +11,7 @@ const replaceKeys = (translationTable, dataEntry) => {
 
 export const bulkData = (bulkData, endPoint, translationTable) => dispatch => {
   const token = localStorage.getItem("jwtToken");
-  const resultArray = bulkData.map(data => replaceKeys(translationTable, data));
+  const resultArray = bulkData.map(data => replaceKeys(translationTable, data)).slice(0, 100);
   const data = {
     token,
     bulkData: resultArray

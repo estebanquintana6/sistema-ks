@@ -60,7 +60,7 @@ const Sidebar = ({ history, getActiveUser }) => {
                                 <a onClick={() => goToPage('/dashboard/autos')}>Panel de seguro</a>
                             </li>
                             <li>
-                                <a onClick={() => goToPage('/dashboard/autos/upload')}>Cargar datos de autos</a>
+                                <a onClick={() => goToPage('/dashboard/autos/upload')}>Subir datos</a>
                             </li>
                         </ul>
                     </li>
@@ -74,7 +74,7 @@ const Sidebar = ({ history, getActiveUser }) => {
                                 <a onClick={() => goToPage('/dashboard/gm')}>Panel de seguro</a>
                             </li>
                             <li>
-                                <a onClick={() => goToPage('/dashboard/gm/upload')}>Cargar datos de gastos medicos</a>
+                                <a onClick={() => goToPage('/dashboard/gm/upload')}>Subir datos</a>
                             </li>
                         </ul>
                     </li>
@@ -87,7 +87,7 @@ const Sidebar = ({ history, getActiveUser }) => {
                                 <a onClick={() => goToPage('/dashboard/danos')}>Panel de seguro</a>
                             </li>
                             <li>
-                                <a onClick={() => goToPage('/dashboard/danos/upload')}>Cargar datos de daños</a>
+                                <a onClick={() => goToPage('/dashboard/danos/upload')}>Subir datos</a>
                             </li>
                         </ul>
                     </li>
@@ -98,6 +98,9 @@ const Sidebar = ({ history, getActiveUser }) => {
                         <ul className="collapse list-unstyled" id="vidaSubmenu">
                             <li>
                                 <a onClick={() => goToPage('/dashboard/vida')}>Panel de seguro</a>
+                            </li>
+                            <li>
+                                <a onClick={() => goToPage('/dashboard/vida/upload')}>Subir datos</a>
                             </li>
                         </ul>
                     </li>

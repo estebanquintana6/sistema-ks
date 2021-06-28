@@ -318,7 +318,7 @@ router.get("/fetch", (req, res) => {
 
 router.get("/fetch/:id", (req, res) => {
   const token = req.headers.authorization;
-  jwt.verify(token, secretKey, function (err) {
+  jwt.verify(token, secretKey, function (err, decoded) {
     if (err) return res.status(401).json({ email: "no permissions" });
     User.findById(decoded.id).then(user => {
       if (!user) {
