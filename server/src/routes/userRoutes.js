@@ -282,10 +282,17 @@ router.post("/changeRol", (req, res) => {
     })
 
     if (role === "admin" || role === "superadmin") {
-      User.findOneAndUpdate({ _id: userId }, { role: newRole }).then((err, doc) => {
-        if (err) res.status(500, { error: "El rol no se modifico" })
-        res.status(200, { message: "Rol modificado" });
-      });
+      User.findById(userId).then((u) => {
+        if (u.role === 'superadmin') {
+          return res.status(200).json('No se realizaron cambios')
+        } else {
+          u.updateOne({ role: newRole }).then(() => {
+            res.status(200, { message: "Rol modificado" });
+          }).catch(err => {
+            res.status(500).json(err)
+          })
+        }
+      })
     }
   });
 
