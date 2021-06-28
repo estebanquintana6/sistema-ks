@@ -1,20 +1,28 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Container } from 'react-bootstrap'
+
+import { Container } from 'react-bootstrap';
+import ReactTable from "react-table";
+
+import moment from 'moment';
 import swal from '@sweetalert/with-react';
+
 import { Row } from 'react-bootstrap'
+
+import TaskModal from "../TaskModal/TaskModal";
+import TaskForm from "../TaskForm/TaskForm";
+import { ExportDataToCSV } from "../../ExportCSV/ExportCSV";
+
 import { getTasks, registerTask, deleteTask, updateTask } from '../../../actions/taskAction'
 import { getCompanies } from "../../../actions/companyActions"
 import { listUsers } from '../../../actions/userActions'
 
+
+import { formatShortDate } from '../../component-utils'
+
 import "react-table/react-table.css";
-import ReactTable from "react-table";
 import "./TaskPanel.css";
-import TaskModal from "../TaskModal/TaskModal";
-import TaskForm from "../TaskForm/TaskForm";
-import {formatShortDate} from '../../component-utils'
-import moment from 'moment';
 
 class TaskPanel extends Component {
   constructor(props) {
@@ -81,7 +89,7 @@ class TaskPanel extends Component {
 
   prepareCompaniesForForm = () => {
     this.props.getCompanies().then(data => {
-      this.setState({ companies: data.companies})
+      this.setState({ companies: data.companies })
     });
   }
 
@@ -124,7 +132,7 @@ class TaskPanel extends Component {
       });
   }
 
-  addTask = e  => {
+  addTask = e => {
     swal({
       title: `Registro de pendiente`,
       text: "Captura los datos del pendiente",
@@ -194,7 +202,7 @@ class TaskPanel extends Component {
   }
 
   validateField = (field) => {
-    if(field) return field;
+    if (field) return field;
     return '';
   }
 
@@ -257,7 +265,7 @@ class TaskPanel extends Component {
                     Header: "Responsables",
                     id: "assignee",
                     accessor: d => {
-                      if(d.assignee){
+                      if (d.assignee) {
                         let list = d.assignee.map((assignee) => {
                           return assignee.name;
                         })
@@ -270,8 +278,8 @@ class TaskPanel extends Component {
                     Header: "Creador",
                     id: "initiator",
                     accessor: d => {
-                      if(d.initiator){
-                          return this.validateField(d.initiator.name);
+                      if (d.initiator) {
+                        return this.validateField(d.initiator.name);
                       }
                       return '';
                     }
@@ -300,6 +308,16 @@ class TaskPanel extends Component {
               </div>
             </div>
           </div>
+          <div className="row">
+            <div className="col-md-4 center mt-4">
+              <ExportDataToCSV
+                csvData={this.state.data}
+                fileName={`pendientes`}
+                type="tasks"
+                onComplete={this.refresh}
+              />
+            </div>
+          </div>
         </Container>
       </React.Fragment>
     );
@@ -318,12 +336,12 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { 
+  {
     getCompanies,
     getTasks,
-    registerTask, 
-    deleteTask, 
-    updateTask, 
-    listUsers 
+    registerTask,
+    deleteTask,
+    updateTask,
+    listUsers
   }
 )(TaskPanel);

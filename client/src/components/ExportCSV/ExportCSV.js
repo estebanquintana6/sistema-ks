@@ -120,6 +120,26 @@ export const ExportDataToCSV = (props) => {
         return mappedObj;
     }
 
+    const taskDataToObj = (dataObj) => {
+        return dataObj.map((task) => {
+            //EMPRESA	PRIMA 	RECIBOS	STATUS
+            let result = {}
+            task.insurance_type ? result["TIPO DE SEGURO"] = task.insurance_type : result["TIPO DE SEGURO"] = "";
+            task.title ? result["CLIENTE"] = task.title : result["CLIENTE"] = "";
+            task.created_date ? result["FECHA CREACIÓN"] = formatShortDate(task.created_date) : result["FECHA CREACIÓN"] = "";
+            task.comments ? result["COMENTARIO"] = task.comments : result["COMENTARIO"] = "";
+            task.initiator ? result["CREADOR DE TAREA"] = `${task.initiator.name} ${task.initiator.last_name}` : result["CREADOR DE TAREA"] = "";
+
+            let assignee_names = task?.assignee?.map((a) => `${a.name} ${a.last_name}`).join(', ')
+
+            task.assignee ? result["RESPONSABLES"] =
+                assignee_names
+                : result["RESPONSABLES"] = "";
+
+            return result;
+        });
+    }
+
     const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header, type = "", sortableColumn = '', refresh) => {
         if (!csvData.length) {
             refresh();
@@ -128,6 +148,10 @@ export const ExportDataToCSV = (props) => {
         const dataToWrite = [];
         if (type === "invoices") {
             let obj = invoiceToObj(csvData);
+            obj.map((ob) => dataToWrite.push(ob))
+        } else if (type === 'tasks') {
+            console.log(csvData)
+            let obj = taskDataToObj(csvData);
             obj.map((ob) => dataToWrite.push(ob))
         } else {
             for (let i in csvData) {
