@@ -15,6 +15,7 @@ const validateChangePassword = require("../validation/changePassword");
 
 // Load User model
 const User = require("../models/UserForm");
+const InsuranceType = require("../models/InsuranceTypeForm");
 const ResetPassword = require("../models/ResetPassword");
 
 // @route POST api/users/register
@@ -227,7 +228,7 @@ router.post("/list", (req, res) => {
         return res.status(402);
       }
     })
-    
+
     if (role) {
       User.find().select(["-password", "-referidos", "-secoms", "-clients"]).then((users) => {
         res.status(200).json(users);
@@ -259,7 +260,7 @@ router.post("/changeRol", (req, res) => {
       }
     })
 
-    if (role === "admin") {
+    if (role === "admin" || role === "superadmin") {
       User.findOneAndUpdate({ _id: userId }, { role: newRole }).then((err, doc) => {
         if (err) res.status(500, { error: "El rol no se modifico" })
         res.status(200, { message: "Rol modificado" });
@@ -284,7 +285,7 @@ router.post("/delete", (req, res) => {
       }
     })
 
-    if (role === "admin") {
+    if (role === "admin" || user.role === "admin") {
       User.findByIdAndDelete(userId).then((err, doc) => {
         if (err) res.status(500, { error: "El usuario no se elimino" })
         res.status(200, { message: "Usuario eliminado" });
@@ -302,7 +303,6 @@ router.post("/activate", (req, res) => {
 
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) res.status(402);
-    const role = decoded.role;
 
     User.findById(decoded.id).then(user => {
       if (!user) {
@@ -311,7 +311,7 @@ router.post("/activate", (req, res) => {
     })
 
 
-    if (role === "admin") {
+    if (user.role === "superadmin" || user.role === "admin") {
       User.findByIdAndUpdate(userId, { active: true }).then((err, doc) => {
         if (err) res.status(500, { error: "El usuario no se activó" })
         res.status(200, { message: "Usuario activado" });
@@ -320,7 +320,128 @@ router.post("/activate", (req, res) => {
       res.status(402);
     }
   });
+})
 
+router.get("/get_permissions", (req, res) => {
+  const token = req.headers.authorization;
+
+  jwt.verify(token, secretKey, function (err, decoded) {
+    if (err) res.status(402);
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+
+      if (user.role === "superadmin") {
+        res.status(200).json(user.permissions)
+      } else {
+        res.status(402)
+      }
+    })
+  })
+})
+
+router.get("/get_users_by_permissions", (req, res) => {
+  const token = req.headers.authorization;
+
+  jwt.verify(token, secretKey, function (err, decoded) {
+    if (err) res.status(402);
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+
+      if (user.role === "superadmin") {
+        InsuranceType.find().then(async (insurances) => {
+          if (!insurances) {
+            return res.status(404);
+          }
+
+          let result = {}
+
+          for (let i = 0; i < insurances.length; i++) {
+            let insurance = insurances[i]
+            const users = await User.find({ permissions: insurance.name }).exec()
+            result = {
+              ...result,
+              [insurance.name]: users
+            }
+          }
+
+          res.status(200).json(result)
+
+        })
+      } else {
+        return res.status(402);
+      }
+    })
+  })
+})
+
+router.post("/assign_permission", (req, res) => {
+  const token = req.headers.authorization;
+  const { user: assigneeId, insuranceType } = req.body;
+
+  jwt.verify(token, secretKey, function (err, decoded) {
+    if (err) res.status(402);
+
+    User.findById(decoded.id).then(async (userFound) => {
+      if (!userFound) {
+        return res.status(402);
+      }
+
+      if (userFound.role === "superadmin") {
+        let assignee = await User.findById(assigneeId).exec()
+        if (!assignee.permissions?.includes(insuranceType)) {
+          assignee.permissions = [
+            ...assignee.permissions,
+            insuranceType
+          ]
+          assignee.save().then((response) => {
+            res.status(200).json({ message: 'Usuario actualizado' })
+          })
+        } else {
+          res.status(200)
+        }
+      } else {
+        return res.status(402);
+      }
+    })
+  })
+})
+
+router.post("/remove_permission", (req, res) => {
+  const token = req.headers.authorization;
+  const { user: assigneeId, insuranceType } = req.body;
+
+  console.log(req.body);
+
+  jwt.verify(token, secretKey, function (err, decoded) {
+    if (err) res.status(402);
+
+    User.findById(decoded.id).then(async (userFound) => {
+      if (!userFound) {
+        return res.status(402);
+      }
+
+      if (userFound.role === "superadmin") {
+        let assignee = await User.findById(assigneeId).exec()
+        if (assignee.permissions?.includes(insuranceType)) {
+          console.log(assignee.permissions.filter((p) => p !== insuranceType))
+          assignee.permissions = assignee.permissions.filter((p) => p !== insuranceType)
+          assignee.save().then((response) => {
+            res.status(200).json({ message: 'Usuario actualizado' })
+          })
+        } else {
+          res.status(200)
+        }
+      } else {
+        return res.status(402);
+      }
+    })
+  })
 })
 
 module.exports = router;

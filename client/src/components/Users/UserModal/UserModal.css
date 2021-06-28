@@ -1,0 +1,10 @@
+.user-button-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 16px;
+}
+
+.action-btn {
+    margin-top: 8px;
+}

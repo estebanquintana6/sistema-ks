@@ -18,7 +18,7 @@ router.get("/fetch", (req, res) => {
         }
 
         User.findById(decoded.id).then(user => {
-            if (!user || user.role !== 'admin') {
+            if (!user || user.role !== ('admin' || 'superadmin')) {
                 res.status(402);
                 return;
             }
@@ -44,7 +44,7 @@ router.post("/update", (req, res) => {
         }
 
         User.findById(decoded.id).then(user => {
-            if (!user || user.role !== 'admin') {
+            if (!user || user.role !== ('admin' || 'superadmin')) {
                 res.status(402);
                 return;
             }
@@ -60,7 +60,7 @@ router.post("/update", (req, res) => {
             }).catch((err) => {
                 res.status(500).json(err)
             })
-          });
+        });
 
     })
 });

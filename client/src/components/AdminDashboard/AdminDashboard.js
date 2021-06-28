@@ -8,6 +8,7 @@ import InsuranceTypesPanel from "./InsuranceType/InsuranceTypesPanel/InsuranceTy
 import CompaniesPanel from "./Companies/CompaniesPanel/CompaniesPanel";
 import UserPanel from "../Users/UserPanel/UserPanel";
 import EmailPanel from "./Email/EmailPanel/EmailPanel";
+import PermissionPanel from "./PermissionPanel/PermissionPanel";
 
 
 class AdminDashboard extends Component {
@@ -22,6 +23,8 @@ class AdminDashboard extends Component {
   update = () => {
     this.setState({ change: Number(this.state.change) + 1 })
   }
+
+  isSuperAdmin = () => (this.props.auth.user.role === 'superadmin')
 
   render() {
     return (
@@ -48,6 +51,11 @@ class AdminDashboard extends Component {
                         <li className="nav-item">
                           <a className="nav-link" href="#users" role="tab" data-toggle="tab"><i className="fas fa-users"></i> Usuarios</a>
                         </li>
+                        {this.isSuperAdmin() &&
+                          <li className="nav-item">
+                            <a className="nav-link" href="#permissions" role="tab" data-toggle="tab"><i className="fas fa-edit"></i> Permisos</a>
+                          </li>
+                        }
                       </ul>
                       <div className="tab-content">
                         <div role="tabpanel" className="tab-pane fade show active" id="i-types">
@@ -62,6 +70,11 @@ class AdminDashboard extends Component {
                         <div role="tabpanel" className="tab-pane fade" id="users">
                           <UserPanel />
                         </div>
+                        {this.isSuperAdmin() &&
+                          <div role="tabpanel" className="tab-pane fade" id="permissions">
+                            <PermissionPanel />
+                          </div>
+                        }
                       </div>
                     </Col>
                   </Row>

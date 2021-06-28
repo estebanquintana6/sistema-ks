@@ -68,7 +68,7 @@ const EmailPanel = ({ getEmails, updateEmail }) => {
             </Row>
             <br />
             <div className="full-width">
-                {emails.map((email) =>
+                {emails?.map((email) =>
                     <Card className="m-4">
                         <Card.Header>
                             {email.language}

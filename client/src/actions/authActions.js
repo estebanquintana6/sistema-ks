@@ -6,7 +6,7 @@ import jwt_decode from "jwt-decode";
 
 import swal from '@sweetalert/with-react';
 
-import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from "./types";
+import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING, SET_PERMISSIONS } from "./types";
 
 // Register User
 export const registerUser = (userData, history) => dispatch => {
@@ -77,3 +77,17 @@ export const logoutUser = (history) => dispatch => {
   dispatch(setCurrentUser({}));
   history.push("/login")
 };
+
+
+export const getPermissions = () => dispatch => {  
+  axios
+    .get("/api/users/get_permissions")
+    .then(res => {
+      dispatch({
+        type: SET_PERMISSIONS,
+        payload: res.data
+      })
+    }).catch(err => {
+      return err;
+    });
+}

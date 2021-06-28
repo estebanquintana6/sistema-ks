@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 
-import { setCurrentUser, logoutUser } from "./actions/authActions";
+import { setCurrentUser, logoutUser, getPermissions } from "./actions/authActions";
 import { Provider } from "react-redux";
 import store from "./store";
 
@@ -38,6 +38,8 @@ if (localStorage.jwtToken) {
     // Redirect to login
     window.location.href = "./login";
   }
+
+  store.dispatch(getPermissions());
 }
 const isUserAuthenticated = () => store.getState().isAuthenticated
 

@@ -33,6 +33,11 @@ const UserSchema = new Schema({
   active: {
     type: Boolean,
     default: false
+  },
+  permissions: {
+    type: [String],
+    enum: ['AUTO', 'DAÑOS', 'GMM', 'VIDA'],
+    default: []
   }
 });
 

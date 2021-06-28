@@ -9,7 +9,11 @@ import InsuranceTypeComponent from "../InsuranceTypeComponent/InsuranceTypeCompo
 
 import { Row } from 'react-bootstrap'
 
-import { getInsuranceTypes, addCompanyToInsuranceType, deleteCompanyFromInsuranceType } from '../../../../actions/insuranceTypesActions'
+import {
+  getInsuranceTypes,
+  addCompanyToInsuranceType,
+  deleteCompanyFromInsuranceType
+} from '../../../../actions/insuranceTypesActions'
 import { listUsers } from '../../../../actions/userActions';
 
 import "react-table/react-table.css";

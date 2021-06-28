@@ -4,9 +4,7 @@ import React, { Component } from "react";
 import "./Sidebar.css";
 
 class Sidebar extends Component {
-    isUserAdmin = () => {
-        return this.props.user.role === 'admin'
-    }
+    isUserAdmin = () => (this.props.user.role === 'admin' || this.props.user.role === 'superadmin')
 
     goToPage = (route) => {
         this.props.history.push(route);

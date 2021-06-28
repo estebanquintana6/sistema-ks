@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 
 import {
-  Button,
-  Container,
-  Row
+    Button,
+    Container,
+    Row
 } from 'react-bootstrap';
+
+import './UserModal.css';
 
 class UserModal extends Component {
     constructor(props) {
@@ -19,26 +21,37 @@ class UserModal extends Component {
             <Container>
                 <Row className="mt-4">
                     <h5 className="text-center">{user.email}</h5>
-                    <table className="buttons">
-                    <tr>
+                    <div className="user-button-wrapper">
                         {user.role === "user" &&
-                        <td>
-                            <Button onClick={this.props.changeRol.bind(this, user._id, "admin", user.name)}>HACER ADMIN</Button>
-                        </td>
+                            <Button
+                                className="action-btn"
+                                onClick={this.props.changeRol.bind(this, user._id, "admin", user.name)}>
+                                HACER ADMIN
+                            </Button>
                         }
-                        {user.role === "admin" &&
-                        <td>
-                            <Button onClick={this.props.changeRol.bind(this, user._id, "user", user.name)}>HACER USUARIO</Button>
-                        </td>
+                        {user.role === "admin" || user.role === "superadmin" &&
+                            <Button
+                                className="action-btn"
+                                onClick={this.props.changeRol.bind(this, user._id, "user", user.name)}>
+                                HACER USUARIO
+                            </Button>
                         }
-                        <td>
-                        <Button variant="danger" onClick={this.props.deleteUser.bind(this, user._id, user.name)}>ELIMINAR</Button>
-                        </td>
-                        <td>
-                            <Button variant="success" onClick={this.props.activateUser.bind(this, user._id, user.name)}>ACTIVAR</Button>
-                        </td>
-                    </tr>
-                    </table>
+                        <Button
+                            variant="danger"
+                            className="action-btn"
+                            onClick={this.props.deleteUser.bind(this, user._id, user.name)}>
+                            ELIMINAR
+                        </Button>
+                        {!user.active &&
+
+                            <Button
+                                variant="success"
+                                className="action-btn"
+                                onClick={this.props.activateUser.bind(this, user._id, user.name)}>
+                                ACTIVAR
+                            </Button>
+                        }
+                    </div>
                 </Row>
             </Container>
         )
