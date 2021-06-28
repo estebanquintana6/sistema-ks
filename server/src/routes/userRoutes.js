@@ -18,6 +18,27 @@ const User = require("../models/UserForm");
 const InsuranceType = require("../models/InsuranceTypeForm");
 const ResetPassword = require("../models/ResetPassword");
 
+
+// @route GET api/users/:id
+router.get("/active_user", (req, res) => {
+  const token = req.headers.authorization;
+
+  jwt.verify(token, secretKey, async (err, decoded) => {
+    if (err) {
+      res.status(401).json({ email: "no permissions" });
+      return;
+    }
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        res.status(402)
+      } else {
+        res.status(200).json(user)
+      }
+    })
+  })
+})
+
 // @route POST api/users/register
 // @desc Register user
 // @access Public
@@ -415,8 +436,6 @@ router.post("/assign_permission", (req, res) => {
 router.post("/remove_permission", (req, res) => {
   const token = req.headers.authorization;
   const { user: assigneeId, insuranceType } = req.body;
-
-  console.log(req.body);
 
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) res.status(402);

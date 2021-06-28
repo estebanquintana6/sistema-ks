@@ -10,6 +10,20 @@ const Insurance = require("../models/InsuranceForm");
 const Invoice = require("../models/InvoiceForm");
 const User = require("../models/UserForm");
 
+const permissionMapper = {
+  DANOS: 'DAÑOS',
+  AUTOS: 'AUTO',
+  GM: 'GMM',
+  VIDA: 'VIDA'
+}
+
+const insuranceTypeMapper = {
+  DAÑOS: 'DANOS',
+  AUTO: 'AUTOS',
+  GMM: 'GM',
+  VIDA: 'VIDA'
+}
+
 relateInsuranceToInvoice = (invoice) => {
   Insurance.findOne({ _id: invoice.insurance }).then((insurance) => {
     insurance.invoices.push(invoice._id);
@@ -75,17 +89,31 @@ router.post("/save", (req, res) => {
 // Obtener todos las pólizas del tipo que se consulta
 router.get("/fetch/:type", (req, res) => {
   const token = req.headers.authorization;
-  jwt.verify(token, secretKey, function (err) {
-    if (err) return res.status(401).json({ email: "no permissions" });
-    Insurance.find({ insurance_type: req.params.type })
-      .populate('client')
-      .populate('insurance_company')
-      .populate('invoices')
-      .then((insurances) => {
-        res.json({ insurances });
-      }).catch(err => {
-        res.json(err)
-      });
+  jwt.verify(token, secretKey, (err, decoded) => {
+    if (err) {
+      res.status(401).json({ email: "no permissions" });
+      return
+    }
+
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+
+      if (user.permissions.includes(permissionMapper[req.params.type])) {
+        Insurance.find({ insurance_type: req.params.type })
+          .populate('client')
+          .populate('insurance_company')
+          .populate('invoices')
+          .then((insurances) => {
+            res.status(200).json({ insurances });
+          }).catch(err => {
+            res.status(500).json(err)
+          });
+      } else {
+        res.status(200).json({ insurances: [] });
+      }
+    })
   });
 });
 
@@ -121,19 +149,26 @@ router.get("/fetch_all", (req, res) => {
       if (!user) {
         return res.status(402);
       }
-    })
 
-    if (err) return res.status(401).json({ email: "no permissions" });
-    Insurance.find({})
-      .populate('client')
-      .populate('insurance_company')
-      .populate('invoices')
-      .then((insurances) => {
-        res.json({ insurances });
-      }).catch(err => {
-        res.json(err)
-      });
-  });
+      if (err) return res.status(401).json({ email: "no permissions" });
+
+      let permissions = user.permissions;
+      let mappedPermissions = permissions.map((per) => insuranceTypeMapper[per])
+
+      Insurance.find({
+        insurance_type: { $in : mappedPermissions }
+      })
+        .populate('client')
+        .populate('insurance_company')
+        .populate('invoices')
+        .then((insurances) => {
+          res.json({ insurances });
+        }).catch(err => {
+          res.json(err)
+        });
+    });
+  })
+
 });
 
 router.post("/update", (req, res) => {

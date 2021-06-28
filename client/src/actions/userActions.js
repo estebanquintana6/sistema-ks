@@ -38,3 +38,10 @@ export const removePermission = (user, insuranceType) => dispatch => {
     });
 };
 
+export const getActiveUser = () => dispatch => {
+  return axios
+    .get("/api/users/active_user")
+    .then(res => {
+      return res;
+    });
+};
