@@ -190,7 +190,9 @@ const InsurancePanel = (props) => {
         'Producto',
         'Tipo de póliza',
         'Contratante RFC',
-        'Contratante Tipo de persona'
+        'Contratante Tipo de persona',
+        'Prima neta',
+        'Prima total',
       ];
     }
     if (props.variant === 'AUTOS') {
@@ -202,7 +204,8 @@ const InsurancePanel = (props) => {
         "Descripción de coche",
         "Modelo",
         "Número de placas",
-        'Prima',
+        'Prima neta',
+        'Prima total',
         'Status',
         'Fecha vto. pago',
         'Tipo de pago',
@@ -231,6 +234,8 @@ const InsurancePanel = (props) => {
         'Tipo de póliza',
         'Contratante Tipo de persona',
         'Contratante RFC',
+        'Prima neta',
+        'Prima total',
       ];
     } if (props.variant === "VIDA") {
       resArr = [
@@ -247,6 +252,8 @@ const InsurancePanel = (props) => {
         'Moneda',
         'Contratante RFC',
         'Contratante Tipo de persona',
+        'Prima neta',
+        'Prima total',
       ];
     }
     return resArr

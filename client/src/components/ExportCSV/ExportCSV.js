@@ -9,8 +9,8 @@ function renameLabel(json, oldLabel, newLabel) {
     json["" + newLabel] = json["" + oldLabel]
     const tmp = json["" + oldLabel]
     const tmpDate = moment(tmp, moment.ISO_8601)
-    if (tmpDate.isValid()) {
-        json[oldLabel] = tmpDate.format('DD-MM-YYYY')
+    if (tmpDate.isValid() && !oldLabel.includes('bounty')) {
+        json[oldLabel] = tmpDate.add(1, 'days').format('DD-MM-YYYY')
     }
     const res = { [newLabel]: json[oldLabel] }
     delete json["" + oldLabel];
