@@ -74,14 +74,11 @@ const InsurancePanel = (props) => {
       'postal_code',
       'gender',
       'contacts',
-      'begin_date',
       'invoices',
       'cancelation_note',
       'car_model',
       'languages',
       'damage_product',
-      'bounty',
-      'currency',
       'Moneda'] :
     ['__v',
       '_id',
@@ -99,7 +96,6 @@ const InsurancePanel = (props) => {
       'postal_code',
       'gender',
       'contacts',
-      'begin_date',
       'invoices',
       'cancelation_note',
       'car_model',
@@ -140,6 +136,10 @@ const InsurancePanel = (props) => {
       pay_status: "Status",
       payment_type: "Tipo de pago",
       policy: "Póliza",
+      bounty: "Prima total",
+      begin_date: "Fecha inicio",
+      net_bounty: "Prima neta",
+      currency: "Moneda"
     }
 
     if (props.variant === 'AUTOS') {
@@ -153,15 +153,6 @@ const InsurancePanel = (props) => {
         car_series_number: "Número de serie",
         car_year: "Modelo",
         cis: "CIS"
-      }
-    }
-
-    if (props.variant !== 'GM') {
-      resObj = {
-        ...resObj,
-        net_bounty: "Prima neta",
-        bounty: "Prima total",
-        currency: "Moneda"
       }
     }
 
@@ -184,6 +175,7 @@ const InsurancePanel = (props) => {
       'Contratante RFC',
       'Contratante Tipo de persona',
       'Moneda',
+      'Fecha inicio',
     ];
 
     if (props.variant === "GM") {
@@ -219,7 +211,11 @@ const InsurancePanel = (props) => {
         "Número de motor",
         "Color de coche",
         "CIS",
-        'Contratante Tipo de persona', 'Contratante RFC', 'Producto', 'Tipo de póliza', 'Tipo de pago', 'Moneda'
+        'Contratante Tipo de persona', 
+        'Contratante RFC', 
+        'Producto', 
+        'Tipo de póliza', 
+        'Moneda'
       ]
     }
     if (props.variant === 'DANOS') {
@@ -247,6 +243,7 @@ const InsurancePanel = (props) => {
         'Aseguradora',
         'Producto',
         'Tipo de póliza',
+        'Tipo de pago',
         'Moneda',
         'Contratante RFC',
         'Contratante Tipo de persona',
