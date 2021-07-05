@@ -54,6 +54,8 @@ router.post("/bulk", (req, res) => {
         })
 
         const dataToBulk = body.bulkData;
+        const data_type = body.type;
+
         const parsedData = translateBulkData(dataToBulk)
         let insertedElements = 0;
 
@@ -96,7 +98,7 @@ router.post("/bulk", (req, res) => {
                             insurance_company: insuranceCompanyId,
                             policy: dataObj.policy,
                             colective_insurance: dataObj.colective_insurance === 'Colectivo' ? true : false,
-                            insurance_type: dataObj.insurance_type,
+                            insurance_type: data_type,
                             begin_date: parseDate(dataObj.begin_date),
                             payment_type: dataObj.payment_type,
                             due_date: parseDate(dataObj.due_date),

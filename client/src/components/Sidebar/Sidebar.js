@@ -39,9 +39,6 @@ const Sidebar = ({ history, getActiveUser }) => {
                         <li>
                             <a onClick={() => goToPage('/dashboard/clientes')}>Panel de clientes</a>
                         </li>
-                        <li>
-                            <a onClick={() => goToPage('/dashboard/clientes/upload')}>Cargar datos de clientes</a>
-                        </li>
                     </ul>
                 </li>
                 <li>

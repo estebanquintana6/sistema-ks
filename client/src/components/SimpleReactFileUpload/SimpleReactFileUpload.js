@@ -71,14 +71,6 @@ class SimpleReactFileUpload extends React.Component {
       self.setState({jsonInfo: excelJson})
       const translation = self.createTranslationTable();
       
-      let uploadUrl = "";
-      switch(self.props.type){
-        case 'CLIENTES' : uploadUrl = 'clients'; break;
-        case 'AUTOS' : uploadUrl = 'cars'; break;
-        case 'GMM' : uploadUrl = 'medics'; break;
-        case 'DANOS': uploadUrl = 'danos'; break;
-        default: uploadUrl = ""
-      }
 
       const chunkedArray = self.sliceIntoChunks(excelJson, 100)
       
@@ -86,7 +78,7 @@ class SimpleReactFileUpload extends React.Component {
       console.log(chunkedArray)
 
       chunkedArray.map(async (arr) => {
-        const response = await self.props.bulkData(arr, uploadUrl, translation);
+        const response = await self.props.bulkData(arr, self.props.type, translation);
         console.log(response)
       })
 
