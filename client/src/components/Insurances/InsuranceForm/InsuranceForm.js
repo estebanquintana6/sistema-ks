@@ -720,6 +720,15 @@ class InsuranceForm extends Component {
                     <h6 className="invoice-title">Coche {i + 1}</h6>
                     <Button variant="danger" className="buttonjumbotron" onClick={() => { this.deleteCar(i) }}><i className="fa fa-trash" /></Button>
                     <Form.Row>
+                    <Form.Group as={Col} controlId="car_year">
+                        <Form.Label>Póliza</Form.Label>
+                        <Form.Control
+                          onChange={(e) => this.onChangeCar(i, "policy", e)}
+                          value={this.state.car_float[i].policy ? 
+                            this.state.car_float[i].policy : 
+                            this.state.policy}>
+                        </Form.Control>
+                      </Form.Group>
                       <Form.Group as={Col}>
                         <Form.Label>Marca</Form.Label>
                         <input type="text"
@@ -754,7 +763,7 @@ class InsuranceForm extends Component {
                           <option value="RAM">RAM</option>
                         </datalist>
                       </Form.Group>
-                      <Form.Group as={Col} md="6" controlId="car_year">
+                      <Form.Group as={Col} controlId="car_year">
                         <Form.Label>Año</Form.Label>
                         <Form.Control
                           as="select"

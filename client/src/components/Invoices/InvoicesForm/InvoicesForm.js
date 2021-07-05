@@ -52,7 +52,6 @@ class InvoicesForm extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <Form id="InvoicesForm" onSubmit={this.onSubmit}>
         <Row>

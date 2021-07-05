@@ -117,6 +117,11 @@ var InsuranceSchema = new Schema({
   car_float: {
     type: [
       new mongoose.Schema({
+        policy: {
+          type: String,
+          required: () => false,
+          default: null
+        },
         car_brand: {
           type: String,
           required: () => false,
