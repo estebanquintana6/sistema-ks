@@ -8,7 +8,6 @@ var InsuranceSchema = new Schema({
   client: {
     type: Schema.Types.ObjectId,
     ref: 'Clients',
-    required: true
   },
   comments: {
     type: String,
@@ -18,7 +17,7 @@ var InsuranceSchema = new Schema({
   insurance_company: {
     type: Schema.Types.ObjectId,
     ref: 'Companies',
-    required: true
+    required: false
   },
   invoices: [{
     type: Schema.Types.ObjectId,

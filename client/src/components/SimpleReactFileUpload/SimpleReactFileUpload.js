@@ -49,6 +49,15 @@ class SimpleReactFileUpload extends React.Component {
     this.props.history.push(route);
 }
 
+  sliceIntoChunks = (arr, chunkSize) => {
+    const res = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+        const chunk = arr.slice(i, i + chunkSize);
+        res.push(chunk);
+    }
+    return res;
+  }
+
   fileUpload(file){
     var reader = new FileReader();
     const self = this
@@ -71,10 +80,22 @@ class SimpleReactFileUpload extends React.Component {
         default: uploadUrl = ""
       }
 
-      self.props.bulkData(excelJson, uploadUrl, translation);
+      const chunkedArray = self.sliceIntoChunks(excelJson, 100)
+      
+      console.log(excelJson)
+      console.log(chunkedArray)
+
+      chunkedArray.map(async (arr) => {
+        const response = await self.props.bulkData(arr, uploadUrl, translation);
+        console.log(response)
+      })
+
       swal({
         icon: "success",
-        content: <h2>Carga realizada</h2>
+        content: <h2>
+          Carga realizada, 
+          espera un minuto a que se reflejen los cambios
+          </h2>
       });
     };
     reader.readAsBinaryString(file);
@@ -92,29 +113,7 @@ class SimpleReactFileUpload extends React.Component {
       <Row>
         <p>Haz click en el botón SELECCIONAR ARCHIVO y escoge un archivo tipo .xslx (Excel) para subirlo al sistema.</p>
       </Row>
-      <Row className="mt-4">
-        <h5>Puntos a considerar:</h5>
-      </Row>
-      <Row className="ml-4">
-        <ul>
-          <li>1. El sistema no subirá datos en donde se repita el Nombre y RFC en un mismo cliente con el fin de evitar duplicados.</li>
-          <li>2. El sistema sólo garantiza que se lean archivos xlsx.</li>
-          <li>3. El sistema sólo leerá la primera hoja de la página de Excel. En caso de que se requiera subir los datos de las demás hojas, éstas deberán ser puestas en hojas de Excel aparte o unificarse en un solo documento de Excel.</li>
-          <li>4. El sistema deberá recibir un archivo de Excel con el formato de columnas correcto mencionado a continuación.
-          </li>
-        </ul>
-      </Row>
 
-      <Row className="mt-4">
-      <h6>Las columnas que deberá contener para este caso son: </h6>
-      </Row>
-      <Row className="ml-4">
-        <ul>
-          {this.props.originalKeys.map((key) => {
-            return (<li>{key}</li>)
-          })}
-        </ul>
-      </Row>
       <Row className="mt-4 justify-content-md-center">
         <Form onSubmit={this.onFormSubmit}>
           <Form.Row>
