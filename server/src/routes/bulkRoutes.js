@@ -26,9 +26,9 @@ const insuranceTypeMapper = {
     "AUTOS": "AUTO"
 }
 
-const parseDate = (dateStr) => {
-    const splittedStr = dateStr.split('-')
-    if (splittedStr.length < 3) {
+const parseDate = (dateStr = '') => {
+    const splittedStr = dateStr?.split('-')
+    if (splittedStr?.length < 3) {
         return new Date()
     } else {
         return new Date(+splittedStr[2],
