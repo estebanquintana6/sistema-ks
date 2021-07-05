@@ -14,9 +14,7 @@ const invoices = require('./routes/invoicesRoutes');
 const sinesters = require('./routes/sinesterRoutes');
 const emails = require('./routes/emailRoutes');
 
-const cars = require('./routes/carInsuranceRoutes');
-const medics = require('./routes/medicInsuranceRoutes');
-const danos = require('./routes/danosRoutes');
+const bulk = require('./routes/bulkRoutes');
 
 const initializeDb = require('./createInsuranceTypes');
 const initializeEmails = require('./createEmails');
@@ -79,9 +77,7 @@ app.use('/api/tasks', tasks);
 app.use('/api/invoices', invoices);
 app.use('/api/emails', emails);
 
-app.use('/api/cars', cars);
-app.use('/api/medics', medics);
-app.use('/api/danos', danos);
+app.use('/api/bulk', bulk);
 
 app.use('/api/sinesters', sinesters);
 

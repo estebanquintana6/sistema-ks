@@ -18,7 +18,7 @@ export const bulkData = (bulkData, endPoint, translationTable) => dispatch => {
 
 
   return axios
-    .post(`/api/cars/bulk`, data)
+    .post(`/api/bulk/bulk`, data)
     .then(res => {
       return res;
     }).catch(err => {
