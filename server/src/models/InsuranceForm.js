@@ -111,7 +111,8 @@ var InsuranceSchema = new Schema({
   },
   promoter: {
     type: String,
-    required: false
+    required: false,
+    default: ""
   },
   // campos unicos de seguros de auto
   car_float: {

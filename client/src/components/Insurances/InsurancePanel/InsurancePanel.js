@@ -903,7 +903,7 @@ const InsurancePanel = (props) => {
           <div className="col-md-4 center mt-4">
             {props.variant &&
               <ExportDataToCSV
-                csvData={excelData.length > 0 ? excelData : data}
+                csvData={excelData?.length > 0 ? excelData : data}
                 fileName={`reporteSeguros_${props.variant}`}
                 onComplete={refresh}
                 fieldTranslation={generateFieldsTranslation()}
