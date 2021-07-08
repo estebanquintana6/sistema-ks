@@ -86,6 +86,7 @@ const InsurancePanel = (props) => {
       'active_status',
       'promoter',
       'car_float',
+      'car_color',
       'endorsements',
       'comments',
       'status',
@@ -214,10 +215,10 @@ const InsurancePanel = (props) => {
         "Número de motor",
         "Color de coche",
         "CIS",
-        'Contratante Tipo de persona', 
-        'Contratante RFC', 
-        'Producto', 
-        'Tipo de póliza', 
+        'Contratante Tipo de persona',
+        'Contratante RFC',
+        'Producto',
+        'Tipo de póliza',
         'Moneda'
       ]
     }
@@ -303,8 +304,11 @@ const InsurancePanel = (props) => {
 
     const tableContent = reactTable.current;
     const allData = tableContent?.getResolvedState().sortedData;
+    console.log('all', allData)
     const excelToExport = allData?.map((data) => data._original)
+    console.log(excelToExport)
     setExcelData(excelToExport)
+    console.log(excelRef.current)
   }
 
 
@@ -624,204 +628,226 @@ const InsurancePanel = (props) => {
     props.changePayStatus(id, status);
   }
 
-
-  const columns = [{
-    Header: "Datos",
-    columns: [
-      {
-        Header: "Aseguradora",
-        id: "insurance_company",
-        width: 90,
-        accessor: d => validateField(d?.insurance_company?.name)
-      },
-      {
-        Header: "Cliente",
-        id: "client",
-        accessor: d => {
-          if (d.client) {
-            return validateField(d?.client?.name)
-          } else {
-            return '';
-          }
+  let columnSpecification = [
+    {
+      Header: "Aseguradora",
+      id: "insurance_company",
+      width: 90,
+      accessor: d => validateField(d?.insurance_company?.name)
+    },
+    {
+      Header: "Cliente",
+      id: "client",
+      accessor: d => {
+        if (d.client) {
+          return validateField(d?.client?.name)
+        } else {
+          return '';
         }
-      },
-      {
-        Header: "Poliza No.",
-        id: "policy",
-        width: 140,
-        accessor: d => validateField(d?.policy)
-      },
-      {
-        Header: "Forma de pago",
-        id: "payment_type",
-        width: 140,
-        accessor: d => validateField(d?.payment_type)
-      },
-      {
-        Header: "Fecha inicio",
-        id: "begin_date",
-        width: 130,
-        Cell: c => <span>{c.original.begin_date && formatShortDate(c.original.begin_date)}</span>,
-        accessor: d => moment(d.begin_date).unix(),
-        filterable: false
-      },
-      {
-        Header: "Fecha vto. poliza",
-        id: "due_date",
-        Cell: c => <span>{c.original.due_date && formatShortDate(c.original.due_date)}</span>,
-        accessor: d => moment(d.due_date).unix(),
-        width: 300,
-        Filter: ({ filter, onChange }) => (
-          <DateRangePicker
-            startDateId="start3"
-            endDateId="end3"
-            startDate={dueDateStartDate}
-            endDate={dueDateEndDate}
-            onDatesChange={({ startDate, endDate }) => {
-              onChange({ startDate, endDate });
-              setDueDateStartDate(startDate);
-              setDueDateEndDate(endDate);
-            }}
-            focusedInput={focusedInput2}
-            onFocusChange={focusedInput => setFocusedInput2(focusedInput)}
-            isOutsideRange={() => false}
-            withPortal={true}
-            showClearDates={true}
-          />
-        ),
-        filterMethod: (filter, row) => {
-          if (dueDateStartDate && dueDateEndDate) {
-            const res = row[filter.id] !== undefined ?
-              moment.unix(row[filter.id])
-                .clone()
-                .startOf('day')
-                .isBetween(
-                  moment(dueDateStartDate)
-                    .clone()
-                    .startOf('day'),
-                  moment(dueDateEndDate)
-                    .clone()
-                    .startOf('day'), null, '[]'
-                ) : true
-            return res
-          } else {
-            return true
-          }
-        }
-      },
-      {
-        Header: "Vto. pago",
-        id: "pay_due_date",
-        Cell: c => {
-          if (c.original.invoices.length > 0) {
-            const currentDate = new Date();
-            currentDate.setHours(0, 0, 0);
-
-            const dates = [];
-            const allDates = [];
-
-            c.original.invoices.map((invoice) => {
-              let due_date = new Date(invoice.due_date);
-              due_date.setDate(due_date.getDate() + 1);
-              due_date.setHours(0, 0, 0);
-
-              if (due_date >= currentDate) dates.push(due_date);
-              allDates.push(due_date);
-            });
-
-            if (dates.length !== 0) {
-              const minDate = new Date(Math.min.apply(null, dates));
-              return <span>{formatDateObj(minDate)}</span>
-            } else {
-              const maxDate = new Date(Math.max.apply(null, allDates));
-              return <span>{formatDateObj(maxDate)}</span>
-            }
-          }
-
-        },
-        accessor: d => {
-          if (d.invoices.length === 1) {
-            return moment(d.invoices[0].due_date).unix();
-          }
-          else if (d.invoices.length > 0) {
-            const currentDate = new Date();
-            currentDate.setHours(0, 0, 0);
-
-            const dates = [];
-            const allDates = [];
-
-            d.invoices.map((invoice) => {
-              let due_date = new Date(invoice.due_date);
-              due_date.setDate(due_date.getDate() + 1);
-              due_date.setHours(0, 0, 0);
-
-              if (due_date >= currentDate) dates.push(due_date);
-              allDates.push(due_date);
-            });
-
-            if (dates.length !== 0) {
-              const minDate = new Date(Math.min.apply(null, dates));
-              return moment(minDate).unix();
-            } else {
-              const maxDate = new Date(Math.max.apply(null, allDates));
-              return moment(maxDate).unix();
-            }
-
-          } else {
-            return "";
-          }
-
-        },
-        width: 300,
-        Filter: ({ filter, onChange }) => (
-          <DateRangePicker
-            startDateId="start2"
-            endDateId="end2"
-            startDate={payDueDateStartDate}
-            endDate={payDueDateEndDate}
-            onChange
-            onDatesChange={({ startDate, endDate }) => {
-              onChange({ startDate, endDate });
-              setPayDueDateStartDate(startDate);
-              setPayDueDateEndDate(endDate);
-            }}
-            focusedInput={focusedInput}
-            onFocusChange={focusedInput => setFocusedInput(focusedInput)}
-            isOutsideRange={() => false}
-            withPortal={true}
-            showClearDates={true}
-          />
-        ),
-        filterMethod: (filter, row) => {
-          if (payDueDateStartDate && payDueDateEndDate) {
-            if (Number.isInteger(row[filter.id])) {
-              row[filter.id] = moment(row[filter.id]);
-            }
-
-            const res = row[filter.id] !== undefined ?
-              moment.unix(row[filter.id]).clone()
-                .startOf('day')
-                .isBetween(moment(payDueDateStartDate)
+      }
+    },
+    {
+      Header: "Poliza No.",
+      id: "policy",
+      width: 140,
+      accessor: d => validateField(d?.policy)
+    },
+    {
+      Header: "Forma de pago",
+      id: "payment_type",
+      width: 140,
+      accessor: d => validateField(d?.payment_type)
+    },
+    {
+      Header: "Fecha inicio",
+      id: "begin_date",
+      width: 130,
+      Cell: c => <span>{c.original.begin_date && formatShortDate(c.original.begin_date)}</span>,
+      accessor: d => moment(d.begin_date).unix(),
+      filterable: false
+    },
+    {
+      Header: "Fecha vto. poliza",
+      id: "due_date",
+      Cell: c => <span>{c.original.due_date && formatShortDate(c.original.due_date)}</span>,
+      accessor: d => moment(d.due_date).unix(),
+      width: 300,
+      Filter: ({ filter, onChange }) => (
+        <DateRangePicker
+          startDateId="start3"
+          endDateId="end3"
+          startDate={dueDateStartDate}
+          endDate={dueDateEndDate}
+          onDatesChange={({ startDate, endDate }) => {
+            onChange({ startDate, endDate });
+            setDueDateStartDate(startDate);
+            setDueDateEndDate(endDate);
+          }}
+          focusedInput={focusedInput2}
+          onFocusChange={focusedInput => setFocusedInput2(focusedInput)}
+          isOutsideRange={() => false}
+          withPortal={true}
+          showClearDates={true}
+        />
+      ),
+      filterMethod: (filter, row) => {
+        if (dueDateStartDate && dueDateEndDate) {
+          const res = row[filter.id] !== undefined ?
+            moment.unix(row[filter.id])
+              .clone()
+              .startOf('day')
+              .isBetween(
+                moment(dueDateStartDate)
                   .clone()
                   .startOf('day'),
-                  moment(payDueDateEndDate)
-                    .clone()
-                    .startOf('day'), null, '[]')
-              : true
-            return res
+                moment(dueDateEndDate)
+                  .clone()
+                  .startOf('day'), null, '[]'
+              ) : true
+          return res
+        } else {
+          return true
+        }
+      }
+    },
+    {
+      Header: "Vto. pago",
+      id: "pay_due_date",
+      Cell: c => {
+        if (c.original.invoices.length > 0) {
+          const currentDate = new Date();
+          currentDate.setHours(0, 0, 0);
+
+          const dates = [];
+          const allDates = [];
+
+          c.original.invoices.map((invoice) => {
+            let due_date = new Date(invoice.due_date);
+            due_date.setDate(due_date.getDate() + 1);
+            due_date.setHours(0, 0, 0);
+
+            if (due_date >= currentDate) dates.push(due_date);
+            allDates.push(due_date);
+          });
+
+          if (dates.length !== 0) {
+            const minDate = new Date(Math.min.apply(null, dates));
+            return <span>{formatDateObj(minDate)}</span>
           } else {
-            return true
+            const maxDate = new Date(Math.max.apply(null, allDates));
+            return <span>{formatDateObj(maxDate)}</span>
           }
         }
+
+      },
+      accessor: d => {
+        if (d.invoices.length === 1) {
+          return moment(d.invoices[0].due_date).unix();
+        }
+        else if (d.invoices.length > 0) {
+          const currentDate = new Date();
+          currentDate.setHours(0, 0, 0);
+
+          const dates = [];
+          const allDates = [];
+
+          d.invoices.map((invoice) => {
+            let due_date = new Date(invoice.due_date);
+            due_date.setDate(due_date.getDate() + 1);
+            due_date.setHours(0, 0, 0);
+
+            if (due_date >= currentDate) dates.push(due_date);
+            allDates.push(due_date);
+          });
+
+          if (dates.length !== 0) {
+            const minDate = new Date(Math.min.apply(null, dates));
+            return moment(minDate).unix();
+          } else {
+            const maxDate = new Date(Math.max.apply(null, allDates));
+            return moment(maxDate).unix();
+          }
+
+        } else {
+          return "";
+        }
+
+      },
+      width: 300,
+      Filter: ({ filter, onChange }) => (
+        <DateRangePicker
+          startDateId="start2"
+          endDateId="end2"
+          startDate={payDueDateStartDate}
+          endDate={payDueDateEndDate}
+          onChange
+          onDatesChange={({ startDate, endDate }) => {
+            onChange({ startDate, endDate });
+            setPayDueDateStartDate(startDate);
+            setPayDueDateEndDate(endDate);
+          }}
+          focusedInput={focusedInput}
+          onFocusChange={focusedInput => setFocusedInput(focusedInput)}
+          isOutsideRange={() => false}
+          withPortal={true}
+          showClearDates={true}
+        />
+      ),
+      filterMethod: (filter, row) => {
+        if (payDueDateStartDate && payDueDateEndDate) {
+          if (Number.isInteger(row[filter.id])) {
+            row[filter.id] = moment(row[filter.id]);
+          }
+
+          const res = row[filter.id] !== undefined ?
+            moment.unix(row[filter.id]).clone()
+              .startOf('day')
+              .isBetween(moment(payDueDateStartDate)
+                .clone()
+                .startOf('day'),
+                moment(payDueDateEndDate)
+                  .clone()
+                  .startOf('day'), null, '[]')
+            : true
+          return res
+        } else {
+          return true
+        }
+      }
+    },
+    {
+      Header: "Status",
+      id: "pay_status",
+      accessor: d => validateField(d.pay_status)
+    },
+  ]
+
+  if (props.variant === 'AUTOS') {
+    columnSpecification = [
+      ...columnSpecification,
+      {
+        Header: "Auto año",
+        id: "car_year",
+        accessor: d => validateField(d.car_year)
       },
       {
-        Header: "Status",
-        id: "pay_status",
-        accessor: d => validateField(d.pay_status)
+        Header: "Auto marca",
+        id: "car_brand",
+        accessor: d => validateField(d.car_brand)
+      },
+      {
+        Header: "Auto descripcion",
+        id: "car_description",
+        accessor: d => validateField(d.car_description)
       },
     ]
   }
-  ];
+
+  let columns = [{
+    Header: "Datos",
+    columns: columnSpecification
+  }];
+
 
   return (
     <React.Fragment>
@@ -877,7 +903,7 @@ const InsurancePanel = (props) => {
           <div className="col-md-4 center mt-4">
             {props.variant &&
               <ExportDataToCSV
-                csvData={excelData?.length > 0 ? excelData : data}
+                csvData={excelData.length > 0 ? excelData : data}
                 fileName={`reporteSeguros_${props.variant}`}
                 onComplete={refresh}
                 fieldTranslation={generateFieldsTranslation()}

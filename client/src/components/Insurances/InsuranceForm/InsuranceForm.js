@@ -720,12 +720,12 @@ class InsuranceForm extends Component {
                     <h6 className="invoice-title">Coche {i + 1}</h6>
                     <Button variant="danger" className="buttonjumbotron" onClick={() => { this.deleteCar(i) }}><i className="fa fa-trash" /></Button>
                     <Form.Row>
-                    <Form.Group as={Col} controlId="car_year">
+                      <Form.Group as={Col} controlId="car_year">
                         <Form.Label>Póliza</Form.Label>
                         <Form.Control
                           onChange={(e) => this.onChangeCar(i, "policy", e)}
-                          value={this.state.car_float[i].policy ? 
-                            this.state.car_float[i].policy : 
+                          value={this.state.car_float[i].policy ?
+                            this.state.car_float[i].policy :
                             this.state.policy}>
                         </Form.Control>
                       </Form.Group>
@@ -776,6 +776,16 @@ class InsuranceForm extends Component {
                     </Form.Row>
 
                     <Form.Row>
+                      <Form.Group as={Col} md="12" controlId="float_car_description">
+                        <Form.Label>Descripción</Form.Label>
+                        <Form.Control
+                          onChange={(e) => this.onChangeCar(i, "car_description", e)}
+                          value={this.state.car_float[i].car_description}>
+                        </Form.Control>
+                      </Form.Group>
+                    </Form.Row>
+
+                    <Form.Row>
                       <Form.Group as={Col} md="6" controlId="float_car_series_number">
                         <Form.Label>No. Serie</Form.Label>
                         <Form.Control
@@ -804,16 +814,6 @@ class InsuranceForm extends Component {
                         <Form.Control
                           onChange={(e) => this.onChangeCar(i, "car_motor", e)}
                           value={this.state.car_float[i].car_motor}>
-                        </Form.Control>
-                      </Form.Group>
-                    </Form.Row>
-
-                    <Form.Row>
-                      <Form.Group as={Col} md="12" controlId="float_car_description">
-                        <Form.Label>Descripción</Form.Label>
-                        <Form.Control
-                          onChange={(e) => this.onChangeCar(i, "car_description", e)}
-                          value={this.state.car_float[i].car_description}>
                         </Form.Control>
                       </Form.Group>
                     </Form.Row>
