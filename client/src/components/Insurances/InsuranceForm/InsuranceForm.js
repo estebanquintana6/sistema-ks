@@ -127,7 +127,7 @@ class InsuranceForm extends Component {
 
     const jump = num_invoices === 0 ? 12 / 1 : 12 / num_invoices;
 
-    const startGenDate = this.state.pay_due_date;
+    const startGenDate = this.state.begin_date;
 
     let prevDate = startGenDate
     prevDate = prevDate.split('T')[0]
