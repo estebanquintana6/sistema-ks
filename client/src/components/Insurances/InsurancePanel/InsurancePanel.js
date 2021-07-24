@@ -57,29 +57,68 @@ const InsurancePanel = (props) => {
   const excelRef = useRef(excelData)
   const filterRef = useRef(filtered)
 
-  const excludedFields = props.variant === 'GM' ?
-    ['__v',
-      '_id',
-      'files',
-      'active_status',
-      'car_float',
-      'endorsements',
-      'comments',
-      'created_at',
-      'tolerance',
-      'state',
-      'city',
-      'postal_code',
-      'gender',
-      'contacts',
-      'invoices',
-      'cancelation_note',
-      'car_model',
-      'languages',
-      'damage_product',
-      'insurance_type',
-      'Moneda'] :
-    ['__v',
+  useEffect(() => {
+    prepareClientsForForm();
+    prepareCompaniesForForm();
+    refresh();
+  }, [props.variant])
+
+
+  const refresh = () => {
+    props.getInsurances(props.variant).then(data => {
+      setData(data.insurances)
+    });
+  }
+
+  const generateExcludedFields = () => {
+    if (props.variant == 'GM') {
+      return ['__v',
+        '_id',
+        'files',
+        'active_status',
+        'car_float',
+        'endorsements',
+        'comments',
+        'created_at',
+        'tolerance',
+        'state',
+        'city',
+        'postal_code',
+        'gender',
+        'contacts',
+        'invoices',
+        'cancelation_note',
+        'car_model',
+        'languages',
+        'damage_product',
+        'insurance_type',
+        'Moneda']
+    } else if (props.variant == 'VIDA') {
+      return ['__v',
+        '_id',
+        'files',
+        'active_status',
+        'car_float',
+        'endorsements',
+        'comments',
+        'created_at',
+        'tolerance',
+        'product',
+        'state',
+        'city',
+        'postal_code',
+        'gender',
+        'contacts',
+        'invoices',
+        'cancelation_note',
+        'car_model',
+        'languages',
+        'damage_product',
+        'insurance_type',
+        'Moneda']
+    }
+
+    return ['__v',
       '_id',
       'files',
       'active_status',
@@ -102,19 +141,6 @@ const InsurancePanel = (props) => {
       'insurance_type',
       'insured_number'
     ]
-
-
-  useEffect(() => {
-    prepareClientsForForm();
-    prepareCompaniesForForm();
-    refresh();
-  }, [props.variant])
-
-
-  const refresh = () => {
-    props.getInsurances(props.variant).then(data => {
-      setData(data.insurances)
-    });
   }
 
   const generateFieldsTranslation = () => {
@@ -256,14 +282,13 @@ const InsurancePanel = (props) => {
         'Fecha vto. pago',
         'Tipo de pago',
         'Aseguradora',
-        'Producto',
         'Tipo de póliza',
         'Tipo de pago',
         'Moneda',
-        'Contratante RFC',
-        'Contratante Tipo de persona',
         'Prima neta',
         'Prima total',
+        'Contratante RFC',
+        'Contratante Tipo de persona',
       ];
     }
     return resArr
@@ -928,7 +953,7 @@ const InsurancePanel = (props) => {
                         fileName={`reporteSeguros_${props.variant}`}
                         onComplete={refresh}
                         fieldTranslation={generateFieldsTranslation()}
-                        excludedFields={excludedFields}
+                        excludedFields={generateExcludedFields()}
                         header={generateHeaders()}
                         sortableColumn={'Contratante'} />
                     }
