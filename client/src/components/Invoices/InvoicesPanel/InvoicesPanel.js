@@ -319,6 +319,16 @@ const InvoicePanel = ({
                 accessor: d => d.bounty
               },
               {
+                Header: "Tipo pago",
+                id: "payment_method",
+                accessor: d => d.payment_method
+              },
+              {
+                Header: "Moneda",
+                id: "payment_currency",
+                accessor: d => d.payment_currency
+              },
+              {
                 Header: "Promotora",
                 id: "promoter",
                 accessor: d =>
