@@ -842,6 +842,15 @@ const InsurancePanel = (props) => {
         accessor: d => validateField(d.car_description)
       },
     ]
+  } else if (props.variant === 'DANOS') {
+    columnSpecification = [
+      ...columnSpecification,
+      {
+        Header: "Producto",
+        id: "damage_product",
+        accesor: d => validateField(d.damage_product)
+      }
+    ]
   }
 
   let columns = [{

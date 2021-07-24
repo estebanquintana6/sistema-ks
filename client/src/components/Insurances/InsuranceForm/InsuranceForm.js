@@ -27,6 +27,8 @@ class InsuranceForm extends Component {
       invoices: [],
       car_float: [],
       endorsements: [],
+      bounty: '$',
+      net_bounty: '$',
       begin_date: today.startOf('day').format('YYYY-MM-DD'),
       colective_insurance: false,
       due_date: today.set({ year: today.year() + 1 }).startOf('day').format('YYYY-MM-DD'),
@@ -523,13 +525,19 @@ class InsuranceForm extends Component {
                         </Form.Control>
                       </Form.Group>
                       {this.isCarIndividualInsurance() &&
-                        <>
-                          <Form.Group as={Col} md="6" controlId="cis">
-                            <Form.Label>CIS</Form.Label>
-                            <Form.Control onChange={this.onChange} value={this.state.cis}>
-                            </Form.Control>
-                          </Form.Group>
-                        </>}
+                        <Form.Group as={Col} md="6" controlId="cis">
+                          <Form.Label>CIS</Form.Label>
+                          <Form.Control onChange={this.onChange} value={this.state.cis}>
+                          </Form.Control>
+                        </Form.Group>
+                      }
+                      {this.isMedicInsurance() &&
+                        <Form.Group as={Col} md="6" controlId="insured_number">
+                          <Form.Label># de asegurados</Form.Label>
+                          <Form.Control onChange={this.onChange} value={this.state.insured_number}>
+                          </Form.Control>
+                        </Form.Group>
+                      }
                     </Form.Row>
 
                     <Form.Row>
@@ -556,12 +564,16 @@ class InsuranceForm extends Component {
                     <Form.Row>
                       <Form.Group as={Col} md="5" controlId="net_bounty">
                         <Form.Label>Prima Neta</Form.Label>
-                        <Form.Control onChange={this.onChange} value={this.state.net_bounty}>
+                        <Form.Control
+                          onChange={this.onChange}
+                          value={this.state.net_bounty}>
                         </Form.Control>
                       </Form.Group>
                       <Form.Group as={Col} md="5" controlId="bounty">
                         <Form.Label>Prima Total</Form.Label>
-                        <Form.Control onChange={this.onChange} value={this.state.bounty}>
+                        <Form.Control
+                          onChange={this.onChange}
+                          value={this.state.bounty}>
                         </Form.Control>
                       </Form.Group>
                     </Form.Row>
@@ -683,10 +695,18 @@ class InsuranceForm extends Component {
                     {this.props.type === "DANOS" &&
                       <Form.Group as={Col} md="6" controlId="damage_product">
                         <Form.Label>Producto</Form.Label>
-                        <Form.Control onChange={this.onChange} value={this.state.damage_product}>
+                        <Form.Control as="select" onChange={this.onChange} value={this.state.damage_product}>
+                          <option></option>
+                          <option value="EM">EM</option>
+                          <option value="R/C">R/C</option>
+                          <option value="COMERCIAL">COMERCIAL</option>
+                          <option value="TRANSPORTE">TRANSPORTE</option>
+                          <option value="HOGAR">HOGAR</option>
+                          <option value="VIAJE">VIAJE</option>
+                          <option value="OTRO">OTRO</option>
                         </Form.Control>
-                      </Form.Group>}
-
+                      </Form.Group>
+                    }
                     <Form.Group as={Col} controlId="comments" className={this.state.comments}>
                       <Form.Label>Comentarios</Form.Label>
                       <Form.Control as="textarea" onChange={this.onChange} value={this.state.comments} />

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -22,116 +22,108 @@ import Navbar from "../Navbar/Navbar";
 import "./Dashboard.css";
 import TaskPanel from "../Tasks/TaskPanel/TaskPanel";
 
-class Dashboard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedForm: null,
-      selected: ""
-    };
+const Dashboard = ({ auth, logoutUser, history }) => {
+
+  const [showSidebar, setShowSidebar] = useState(true)
+
+  if (!auth.isAuthenticated) {
+    logoutUser(history)
   }
 
-  componentDidMount() {
-    if (!this.props.auth.isAuthenticated) {
-      this.props.logoutUser(this.props.history)
-      return
-    }
-  }
+  const user = auth.user;
 
-  chooseForm = (e, key) => {
-    this.setState({ selectedForm: key })
-  }
-
-  render() {
-    const user = this.props.auth.user;
-    return (
-      <div className="wrapper">
-        <Sidebar user={user} history={this.props.history}></Sidebar>
-        <div id="content">
-          <Navbar history={this.props.history}></Navbar>
-          <Switch>
-            <Route exact path="/dashboard/admin">
-              <AdminDashboard history={this.props.history}></AdminDashboard>
-            </Route>
-            <Route exact path="/dashboard/clientes">
-              <ClientsPanel history={this.props.history}></ClientsPanel>
-            </Route>
-            <Route exact path="/dashboard/clientes/upload">
-              <UploadPanel
-                history={this.props.history}
-                type="CLIENTES"
-                resultKeys={['no', 'person_type', 'name', 'rfc', 'contact1', 'correo1', 'tel1', 'contact2', 'correo2', 'tel2', 'contact3', 'correo3', 'tel3', 'state', 'city']}
-                originalKeys={['No', 'Tipo de persona', 'CONTRATANTE', 'RFC', 'Contacto', 'CORREO', 'TEL', 'Contacto2', 'CORREO2', 'TEL2', 'Contacto3', 'CORREO3', 'TEL3', 'ESTADO', 'CIUDAD']}
-              ></UploadPanel>
-            </Route>
-            <Route exact path="/dashboard/pendientes">
-              <TaskPanel history={this.props.history}></TaskPanel>
-            </Route>
-            <Route exact path="/dashboard/autos">
-              <InsurancePanel history={this.props.history} variant="AUTOS"></InsurancePanel>
-            </Route>
-            <Route exact path="/dashboard/general">
-              <GeneralInsurancePanel history={this.props.history} variant="GENERAL"></GeneralInsurancePanel>
-            </Route>
-            <Route exact path="/dashboard/autos/upload">
-              <UploadPanel
-                history={this.props.history}
-                type="AUTOS"
-                originalKeys={['Contratante', 'Póliza', 'Fecha de vencimiento', 'Fecha vto. pago', 'Aseguradora', 'Producto', 'Tipo de póliza', 'Contratante Tipo de persona', 'Contratante RFC', 'Moneda', 'Prima total']}
-                resultKeys={['client', 'policy', 'due_date', 'pay_due_date', 'insurance_company', '', 'colective_insurance', '', '', 'currency', 'bounty']}
-              />
-            </Route>
-            <Route exact path="/dashboard/vida">
-              <InsurancePanel history={this.props.history} variant="VIDA"></InsurancePanel>
-            </Route>
-            <Route exact path="/dashboard/vida/upload">
-              <UploadPanel
-                history={this.props.history}
-                type="VIDA"
-                resultKeys={['insurance_company', 'client', 'policy', 'car_year', 'car_brand', 'car_description', 'due_date', 'cis', 'payment_type', 'type']}
-                originalKeys={['ASEGURADORA', 'CONTRATANTE', 'POLIZA', 'MODELO', 'MARCA', 'CARROCERIA', 'F. VENCIMIENTO', 'CIS', 'FORMA DE PAGO', 'TIPO']}
-              />
-            </Route>
-            <Route exact path="/dashboard/gm">
-              <InsurancePanel history={this.props.history} variant="GM"></InsurancePanel>
-            </Route>
-            <Route exact path="/dashboard/gm/upload">
-              <UploadPanel
-                history={this.props.history}
-                type="GM"
-                resultKeys={['no', 'person_type', 'name', 'rfc', 'policy', 'product', 'colective_type', 'coin', 'due_date', 'receipt_type', 'payment_type', 'contact', 'email', 'telephone', 'insurance_company']}
-                originalKeys={['NO', 'TIPO DE PERSONA', 'CONTRATANTE', 'RFC', 'POLIZA', 'PRODUCTO', 'TIPO DE POLIZA', 'MONEDA', 'FECHA DE VENCIMIENTO', 'TIPO DE RECIBO', 'TIPO DE PAGO', 'CONTACTO', 'MAIL', 'TELEFONO', 'ASEGURADORA']}
-              />
-            </Route>
-            <Route exact path="/dashboard/danos">
-              <InsurancePanel history={this.props.history} variant="DANOS"></InsurancePanel>
-            </Route>
-            <Route exact path="/dashboard/danos/upload">
-              <UploadPanel
-                history={this.props.history}
-                type="DANOS"
-                resultKeys={['no', 'person_type', 'name', 'rfc', 'policy', 'product', 'coin', 'due_date', 'payment_type', 'prima', 'contact', 'email', 'telephone', 'insurance_company']}
-                originalKeys={['NO', 'TIPO DE PERSONA', 'CONTRATANTE', 'RFC', 'POLIZA', 'PRODUCTO', 'MONEDA', 'FECHA DE VENCIMIENTO', 'TIPO DE PAGO', 'PRIMA', 'CONTACTO', 'MAIL', 'TELEFONO', 'ASEGURADORA']}
-              >
-              </UploadPanel>
-            </Route>
-            <Route exact path="/dashboard/invoices">
-              <InvoicesPanel history={this.props.history}></InvoicesPanel>
-            </Route>
-            <Route exact path="/dashboard/siniestros">
-              <SinesterPanel history={this.props.history}></SinesterPanel>
-            </Route>
-            <Route exact path="/dashboard/siniestros">
-              <SinesterPanel history={this.props.history}></SinesterPanel>
-            </Route>
-            <Route exact path="/dashboard/siniestrosautos">
-              <SinesterAutosPanel history={this.props.history}></SinesterAutosPanel>
-            </Route>
-          </Switch>
-        </div>
+  return (
+    <div className="wrapper">
+      <Sidebar
+        user={user}
+        history={history}
+        show={showSidebar} />
+      <div id="content">
+        <Navbar
+          history={history}
+          showSidebar={showSidebar}
+          setShowSidebar={setShowSidebar} />
+        <Switch>
+          <Route exact path="/dashboard/admin">
+            <AdminDashboard history={history} />
+          </Route>
+          <Route exact path="/dashboard/clientes">
+            <ClientsPanel history={history} />
+          </Route>
+          <Route exact path="/dashboard/clientes/upload">
+            <UploadPanel
+              history={history}
+              type="CLIENTES"
+              resultKeys={['no', 'person_type', 'name', 'rfc', 'contact1', 'correo1', 'tel1', 'contact2', 'correo2', 'tel2', 'contact3', 'correo3', 'tel3', 'state', 'city']}
+              originalKeys={['No', 'Tipo de persona', 'CONTRATANTE', 'RFC', 'Contacto', 'CORREO', 'TEL', 'Contacto2', 'CORREO2', 'TEL2', 'Contacto3', 'CORREO3', 'TEL3', 'ESTADO', 'CIUDAD']}
+            ></UploadPanel>
+          </Route>
+          <Route exact path="/dashboard/pendientes">
+            <TaskPanel history={history} />
+          </Route>
+          <Route exact path="/dashboard/autos">
+            <InsurancePanel history={history} variant="AUTOS" />
+          </Route>
+          <Route exact path="/dashboard/general">
+            <GeneralInsurancePanel history={history} variant="GENERAL" />
+          </Route>
+          <Route exact path="/dashboard/autos/upload">
+            <UploadPanel
+              history={history}
+              type="AUTOS"
+              originalKeys={['Contratante', 'Póliza', 'Fecha de vencimiento', 'Fecha vto. pago', 'Aseguradora', 'Producto', 'Tipo de póliza', 'Contratante Tipo de persona', 'Contratante RFC', 'Moneda', 'Prima total']}
+              resultKeys={['client', 'policy', 'due_date', 'pay_due_date', 'insurance_company', '', 'colective_insurance', '', '', 'currency', 'bounty']}
+            />
+          </Route>
+          <Route exact path="/dashboard/vida">
+            <InsurancePanel history={history} variant="VIDA" />
+          </Route>
+          <Route exact path="/dashboard/vida/upload">
+            <UploadPanel
+              history={history}
+              type="VIDA"
+              resultKeys={['insurance_company', 'client', 'policy', 'car_year', 'car_brand', 'car_description', 'due_date', 'cis', 'payment_type', 'type']}
+              originalKeys={['ASEGURADORA', 'CONTRATANTE', 'POLIZA', 'MODELO', 'MARCA', 'CARROCERIA', 'F. VENCIMIENTO', 'CIS', 'FORMA DE PAGO', 'TIPO']}
+            />
+          </Route>
+          <Route exact path="/dashboard/gm">
+            <InsurancePanel history={history} variant="GM" />
+          </Route>
+          <Route exact path="/dashboard/gm/upload">
+            <UploadPanel
+              history={history}
+              type="GM"
+              resultKeys={['no', 'person_type', 'name', 'rfc', 'policy', 'product', 'colective_type', 'coin', 'due_date', 'receipt_type', 'payment_type', 'contact', 'email', 'telephone', 'insurance_company']}
+              originalKeys={['NO', 'TIPO DE PERSONA', 'CONTRATANTE', 'RFC', 'POLIZA', 'PRODUCTO', 'TIPO DE POLIZA', 'MONEDA', 'FECHA DE VENCIMIENTO', 'TIPO DE RECIBO', 'TIPO DE PAGO', 'CONTACTO', 'MAIL', 'TELEFONO', 'ASEGURADORA']}
+            />
+          </Route>
+          <Route exact path="/dashboard/danos">
+            <InsurancePanel history={history} variant="DANOS" />
+          </Route>
+          <Route exact path="/dashboard/danos/upload">
+            <UploadPanel
+              history={history}
+              type="DANOS"
+              resultKeys={['no', 'person_type', 'name', 'rfc', 'policy', 'product', 'coin', 'due_date', 'payment_type', 'prima', 'contact', 'email', 'telephone', 'insurance_company']}
+              originalKeys={['NO', 'TIPO DE PERSONA', 'CONTRATANTE', 'RFC', 'POLIZA', 'PRODUCTO', 'MONEDA', 'FECHA DE VENCIMIENTO', 'TIPO DE PAGO', 'PRIMA', 'CONTACTO', 'MAIL', 'TELEFONO', 'ASEGURADORA']}
+            />
+          </Route>
+          <Route exact path="/dashboard/invoices">
+            <InvoicesPanel history={history} />
+          </Route>
+          <Route exact path="/dashboard/siniestros">
+            <SinesterPanel history={history} />
+          </Route>
+          <Route exact path="/dashboard/siniestros">
+            <SinesterPanel history={history} />
+          </Route>
+          <Route exact path="/dashboard/siniestrosautos">
+            <SinesterAutosPanel history={history} />
+          </Route>
+        </Switch>
       </div>
-    );
-  }
+    </div >
+  );
 }
 
 Dashboard.propTypes = {

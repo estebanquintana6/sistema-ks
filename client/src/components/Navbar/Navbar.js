@@ -1,38 +1,49 @@
-import React, { Component } from "react";
+import React from "react";
 
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 
+import './Navbar.css'
 
-class Navbar extends Component {
+const Navbar = ({
+    history,
+    logoutUser,
+    showSidebar,
+    setShowSidebar
+}) => {
 
-    onLogoutClick = e => {
+    const onLogoutClick = e => {
         e.preventDefault();
-        this.props.logoutUser(this.props.history);
+        logoutUser(history);
     }
 
-    render() {
-        return (
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <div className="container-fluid">
+    const changeShowSidebarState = () => {
+        setShowSidebar(!showSidebar)
+    }
 
-                    <button className="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <i className="fas fa-align-justify"></i>
-                    </button>
+    return (
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <div className="container-fluid">
 
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="nav navbar-nav ml-auto">
-                            <li className="nav-item">
-                                <a className="nav-link" onClick={this.onLogoutClick}>Cerrar sesión</a>
-                            </li>
-                        </ul>
-                    </div>
+                <button className="btn btn-dark d-inline-block d-lg-none" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <i className="fas fa-align-justify"></i>
+                </button>
+
+                <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul className="nav navbar-nav nav-width">
+                        <li className="nav-item sidebar_li" onClick={changeShowSidebarState}>
+                            <i className="fa fa-bars" aria-hidden="true"/>
+                        </li>
+                        <li className="nav-item logout_li">
+                            <a className="nav-link" onClick={onLogoutClick}>Cerrar sesión</a>
+                        </li>
+                    </ul>
                 </div>
-            </nav>
-        );
-    }
+            </div>
+        </nav>
+    );
 }
 
 Navbar.propTypes = {

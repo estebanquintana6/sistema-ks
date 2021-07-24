@@ -7,7 +7,7 @@ import { getActiveUser } from '../../actions/userActions'
 
 import "./Sidebar.css";
 
-const Sidebar = ({ history, getActiveUser }) => {
+const Sidebar = ({ history, getActiveUser, show }) => {
     const [user, setUser] = useState({
         role: 'user',
         permissions: []
@@ -28,7 +28,9 @@ const Sidebar = ({ history, getActiveUser }) => {
     const { permissions } = user;
 
     return (
-        <nav id="sidebar">
+        <nav
+            id="sidebar"
+            style={{ display: `${show ? 'inline' : 'none'}` }}>
             <div className="sidebar-header">
                 <h3>KS Seguros</h3>
             </div>

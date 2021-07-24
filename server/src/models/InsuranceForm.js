@@ -223,6 +223,12 @@ var InsuranceSchema = new Schema({
     uppercase: true,
     default: null
   },
+  //gm
+  insured_number: {
+    type: Number,
+    required: false,
+    default: null
+  },
   //files
   files: {
     type: [

@@ -1,0 +1,14 @@
+.nav-width {
+    width: 100%;
+}
+
+.sidebar_li {
+    margin-top: auto;
+    margin-bottom: auto;
+    align-self: start;
+    cursor: pointer;
+}
+
+.logout_li {
+    margin-left: auto;
+}
