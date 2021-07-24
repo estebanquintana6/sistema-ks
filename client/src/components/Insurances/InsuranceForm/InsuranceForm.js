@@ -15,6 +15,7 @@ import moment from 'moment';
 import { cloneDeep } from 'lodash';
 import Select from 'react-select';
 
+import { ExportDataToCSV } from "../../ExportCSV/ExportCSV";
 
 
 class InsuranceForm extends Component {
@@ -157,6 +158,7 @@ class InsuranceForm extends Component {
       car_float: [
         ...this.state.car_float,
         {
+          policy: this.state.policy,
           car_brand: "",
           car_year: null,
           car_series_number: "",
@@ -743,6 +745,26 @@ class InsuranceForm extends Component {
                 <Row>
                   <h5 className="swal-title form-title align-left">FLOTILLA</h5>
                 </Row>
+                <Row className="pt-1 pb-2">
+                  <Col md="12">
+                    <Button variant="info" onClick={this.createCar}><i class="fas fa-plus"></i></Button>
+                  </Col>
+                </Row>
+                {this.props.edit &&
+                  <div className="row mb-2">
+                    <div className="col-md-12 center mt-4">
+                      <ExportDataToCSV
+                        csvData={this.state.car_float}
+                        fileName={`flotilla_${this.state.policy}`}
+                        type="car_float"
+                        onComplete={() => { return }}
+                        fieldTranslation={() => { return [] }}
+                        excludedFields={() => { return [] }}
+                        header={[]}>
+                      </ExportDataToCSV>
+                    </div>
+                  </div>
+                }
                 {this.state.car_float.map((car, i) =>
                   <Jumbotron>
                     <h6 className="invoice-title">Coche {i + 1}</h6>
@@ -848,11 +870,6 @@ class InsuranceForm extends Component {
                   </Jumbotron>
                 )
                 }
-                <Row className="pt-1 pb-2">
-                  <Col md="12">
-                    <Button variant="info" onClick={this.createCar}><i class="fas fa-plus"></i></Button>
-                  </Col>
-                </Row>
               </div>
 
               <div role="tabpanel" className={`tab-pane fade ${invoicesActive}`} id="invoices">

@@ -321,12 +321,24 @@ const InvoicePanel = ({
               {
                 Header: "Tipo pago",
                 id: "payment_method",
-                accessor: d => d.payment_method
+                accessor: d => { 
+                  if(d.payment_method) {
+                    return d.payment_method
+                  } else {
+                    return d.insurance.payment_type
+                  }
+                }
               },
               {
                 Header: "Moneda",
                 id: "payment_currency",
-                accessor: d => d.payment_currency
+                accessor: d => { 
+                  if(d.payment_currency) {
+                    return d.payment_currency
+                  } else {
+                    return d.insurance.currency
+                  }
+                }
               },
               {
                 Header: "Promotora",

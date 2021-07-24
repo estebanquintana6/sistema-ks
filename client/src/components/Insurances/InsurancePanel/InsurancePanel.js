@@ -62,11 +62,9 @@ const InsurancePanel = (props) => {
       '_id',
       'files',
       'active_status',
-      'promoter',
       'car_float',
       'endorsements',
       'comments',
-      'status',
       'created_at',
       'tolerance',
       'state',
@@ -79,12 +77,12 @@ const InsurancePanel = (props) => {
       'car_model',
       'languages',
       'damage_product',
+      'insurance_type',
       'Moneda'] :
     ['__v',
       '_id',
       'files',
       'active_status',
-      'promoter',
       'car_float',
       'car_color',
       'endorsements',
@@ -101,7 +99,9 @@ const InsurancePanel = (props) => {
       'cancelation_note',
       'car_model',
       'languages',
-      'damage_product']
+      'insurance_type',
+      'insured_number'
+    ]
 
 
   useEffect(() => {
@@ -129,7 +129,6 @@ const InsurancePanel = (props) => {
       insurance: "Compañia",
       email: "Email",
       insurance_company: "Aseguradora",
-      insurance_type: "Producto",
       invoice: "Número de recibo",
       payment_status: "Estatus de pago",
       pay_due_date: "Fecha vto. pago",
@@ -140,20 +139,28 @@ const InsurancePanel = (props) => {
       bounty: "Prima total",
       begin_date: "Fecha inicio",
       net_bounty: "Prima neta",
-      currency: "Moneda"
+      currency: "Moneda",
+      promoter: "Promotora",
+      damage_product: "Producto"
     }
 
     if (props.variant === 'AUTOS') {
       resObj = {
         ...resObj,
         car_brand: "Marca",
-        car_color: "Color de coche",
         car_description: "Descripción de coche",
         car_motor: "Número de motor",
         car_placas: "Número de placas",
         car_series_number: "Número de serie",
         car_year: "Modelo",
         cis: "CIS"
+      }
+    }
+
+    if (props.variant === 'GM') {
+      resObj = {
+        ...resObj,
+        insured_number: "No. Asegurados"
       }
     }
 
@@ -182,18 +189,21 @@ const InsurancePanel = (props) => {
     if (props.variant === "GM") {
       resArr = [
         'Contratante',
-        'Póliza',
-        'Fecha de vencimiento',
-        'Status',
-        'Fecha vto. pago',
-        'Tipo de pago',
         'Aseguradora',
-        'Producto',
+        'Promotora',
+        'Póliza',
+        'Fecha inicio',
+        'Fecha de vencimiento',
+        'Fecha vto. pago',
+        'No. Asegurados',
+        'Prima neta',
+        'Prima total',
+        'Moneda',
+        'Tipo de pago',
+        'Status',
         'Tipo de póliza',
         'Contratante RFC',
         'Contratante Tipo de persona',
-        'Prima neta',
-        'Prima total',
       ];
     }
     if (props.variant === 'AUTOS') {
@@ -213,7 +223,6 @@ const InsurancePanel = (props) => {
         'Aseguradora',
         "Número de serie",
         "Número de motor",
-        "Color de coche",
         "CIS",
         'Contratante Tipo de persona',
         'Contratante RFC',
@@ -233,10 +242,10 @@ const InsurancePanel = (props) => {
         'Aseguradora',
         'Producto',
         'Tipo de póliza',
-        'Contratante Tipo de persona',
-        'Contratante RFC',
         'Prima neta',
         'Prima total',
+        'Contratante RFC',
+        'Contratante Tipo de persona',
       ];
     } if (props.variant === "VIDA") {
       resArr = [

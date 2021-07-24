@@ -92,6 +92,7 @@ export const ExportDataToCSV = (props) => {
             const translation = whiteListNames.includes(key) ? `${parentKey}` : `${parentKey} ${fieldTranslation[key]}`;
             resultObj = { ...resultObj, ...renameLabel(cleanObj, key, translation) }
         })
+        console.log(resultObj)
         return resultObj
     }
 
@@ -140,6 +141,20 @@ export const ExportDataToCSV = (props) => {
         });
     }
 
+    const floatDataToObj = (dataObj) => {
+        return dataObj.map((car) => {
+            let result = {}
+            car.car_brand ? result["MARCA"] = car.car_brand : result["MARCA"] = "";
+            car.car_year ? result["AÑO"] = car.car_year : result["AÑO"] = "";
+            car.car_placas ? result["PLACAS"] = car.car_placas : result["PLACAS"] = "";
+            car.car_motor ? result["NO. MOTOR"] = car.car_motor : result["NO. MOTOR"] = "";
+            car.car_series_number ? result["NO. SERIE"] = car.car_series_number : result["AÑO"] = "";
+            car.car_description ? result["DESCRIPCIÓN"] = car.car_description : result["DESCRIPCIÓN"] = "";
+            car.car_color ? result["COLOR"] = car.car_color : result["COLOR"] = "";
+            return result;
+        })
+    }
+
     const exportToCSV = (
         csvData,
         fileName,
@@ -158,6 +173,9 @@ export const ExportDataToCSV = (props) => {
             console.log(csvData)
             let obj = taskDataToObj(csvData);
             obj.map((ob) => dataToWrite.push(ob))
+        } else if (type === 'car_float') {
+            let obj = floatDataToObj(csvData);
+            obj.map((ob) => dataToWrite.push(ob))
         } else {
             for (let i in csvData) {
                 let resultData = {}
@@ -173,6 +191,7 @@ export const ExportDataToCSV = (props) => {
                         }
                     } else if (typeof (data[key]) === 'object' && !!data[key]) {
                         // treat object
+                        console.log(key)
                         resultData = { ...resultData, ...spreadInnerObject(data[key], fieldTranslation, excludedFields, fieldTranslation[key]) }
                         delete resultData[key]
                     } else {
