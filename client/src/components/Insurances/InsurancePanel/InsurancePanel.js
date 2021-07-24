@@ -276,32 +276,26 @@ const InsurancePanel = (props) => {
   const onFilteredChangeCustom = (value, accessor) => {
     const notFilterable = ['begin_date', 'due_date', 'pay_due_date']
     // if (Object.keys(value).includes(null)) return;
+
     let filters = filterRef.current;
+    console.log(filters)
+    let filterToUpdate = filters.findIndex((f) => f.id === accessor)
 
-    let insertNewFilter = 1;
-
-    if (filters.length) {
-      filters.forEach((filter, i) => {
-        if (filter["id"] === accessor) {
-          if (value === "" || !value.length) filters.splice(i, 1);
-          else filter["value"] = value;
-
-          insertNewFilter = 0;
+    if (filterToUpdate !== -1) {
+      filters[filterToUpdate].value = value;
+    } else if (
+      filterToUpdate === -1 ||
+      notFilterable.includes(accessor)
+    ) {
+      filters.push(
+        {
+          id: accessor,
+          value: value
         }
-      });
+      )
     }
 
-    if (insertNewFilter || notFilterable.includes(accessor)) {
-      filters.push({
-        id: accessor,
-        value: value
-      })
-    }
-
-    setFiltered(
-      filters
-    )
-
+    setFiltered(filters)
     const tableContent = reactTable.current;
     const allData = tableContent?.getResolvedState().sortedData;
     console.log('all', allData)
@@ -908,21 +902,34 @@ const InsurancePanel = (props) => {
           defaultPageSize={10}
           className="-striped -highlight"
           getTrProps={getTrProps}
-        />
-        <div className="row">
-          <div className="col-md-4 center mt-4">
-            {props.variant &&
-              <ExportDataToCSV
-                csvData={excelData?.length > 0 ? excelData : data}
-                fileName={`reporteSeguros_${props.variant}`}
-                onComplete={refresh}
-                fieldTranslation={generateFieldsTranslation()}
-                excludedFields={excludedFields}
-                header={generateHeaders()}
-                sortableColumn={'Contratante'}></ExportDataToCSV>
-            }
-          </div>
-        </div>
+        >
+          {(state, makeTable, instance) => {
+            // take data from state, resolvedData, or sortedData, if order matters (for export and similar)
+            // you need to call makeTable to render the table
+            const excelToExport = state.sortedData.map((data) => data._original)
+            //setExcelData(excelToExport)
+            return (
+              <>
+                {makeTable()}
+                <div className="row">
+                  <div className="col-md-4 center mt-4">
+                    {props.variant &&
+                      <ExportDataToCSV
+                        csvData={excelToExport?.length > 0 ? excelToExport : data}
+                        fileName={`reporteSeguros_${props.variant}`}
+                        onComplete={refresh}
+                        fieldTranslation={generateFieldsTranslation()}
+                        excludedFields={excludedFields}
+                        header={generateHeaders()}
+                        sortableColumn={'Contratante'} />
+                    }
+                  </div>
+                </div>
+              </>
+            );
+          }}
+        </ReactTable>
+
 
       </div>
     </React.Fragment>

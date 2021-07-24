@@ -321,7 +321,7 @@ const InvoicePanel = ({
               {
                 Header: "Promotora",
                 id: "promoter",
-                accessor: d => 
+                accessor: d =>
                   d.promoter ? d.promoter : d.insurance?.promoter
               },
               {
@@ -335,28 +335,39 @@ const InvoicePanel = ({
           defaultPageSize={10}
           className="-striped -highlight"
           getTrProps={getTrProps}
-        />
-      </div>
-      <div className="row">
-        <div className="col-md-4 center mt-4">
-          <ExportDataToCSV
-            csvData={excelData?.length > 0 ? excelData : data}
-            fileName={'reporteRecibos'}
-            type="invoices"
-            onComplete={refresh}
-            fieldTranslation={() => { return [] }}
-            excludedFields={() => { return [] }}
-            header={[
-              'EMPRESA',
-              'RECIBO',
-              'PRODUCTO',
-              'PRIMA NETA',
-              'PRIMA TOTAL',
-              'STATUS',
-              'VENCIMIENTO DE PAGO'
-            ]}>
-          </ExportDataToCSV>
-        </div>
+        >
+          {(state, makeTable, instance) => {
+            // take data from state, resolvedData, or sortedData, if order matters (for export and similar)
+            // you need to call makeTable to render the table
+            const excelToExport = state.sortedData.map((data) => data._original)
+            //setExcelData(excelToExport)
+            return (
+              <>
+                {makeTable()}
+                <div className="row">
+                  <div className="col-md-4 center mt-4">
+                    <ExportDataToCSV
+                      csvData={excelToExport?.length > 0 ? excelToExport : data}
+                      fileName={'reporteRecibos'}
+                      type="invoices"
+                      onComplete={refresh}
+                      fieldTranslation={() => { return [] }}
+                      excludedFields={() => { return [] }}
+                      header={[
+                        'EMPRESA',
+                        'RECIBO',
+                        'PRODUCTO',
+                        'PRIMA NETA',
+                        'PRIMA TOTAL',
+                        'STATUS',
+                        'VENCIMIENTO DE PAGO'
+                      ]}>
+                    </ExportDataToCSV>
+                  </div>
+                </div>
+              </>)
+          }}
+        </ReactTable>
       </div>
     </React.Fragment>
   );

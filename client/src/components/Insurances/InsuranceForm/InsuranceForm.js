@@ -277,6 +277,16 @@ class InsuranceForm extends Component {
     this.setState({ invoices });
   }
 
+  onChangeInvoiceCurrency = (index, e) => {
+    let invoices = [...this.state.invoices];
+    let invoice = { ...invoices[index] };
+
+    invoice.payment_currency = e.target.value;
+
+    invoices[index] = invoice;
+    this.setState({ invoices });
+  }
+
   onChangeInvoiceStatus = (index, e) => {
     let invoices = [...this.state.invoices];
     let invoice = { ...invoices[index] };
@@ -934,7 +944,17 @@ class InsuranceForm extends Component {
                             onChange={(e) => this.onChangeInvoicePaymentMethod(i, e)}
                             value={this.state.invoices[i].payment_method ?
                               this.state.invoices[i].payment_method :
-                              `${this.state.payment_type}/${this.state.currency}`
+                              this.state.payment_type
+                            }>
+                          </Form.Control>
+                        </Form.Group>
+                        <Form.Group as={Col} controlId="invoice_payment_method">
+                          <Form.Label>Moneda</Form.Label>
+                          <Form.Control
+                            onChange={(e) => this.onChangeInvoiceCurrency(i, e)}
+                            value={this.state.invoices[i].payment_currency ?
+                              this.state.invoices[i].payment_currency :
+                              this.state.currency
                             }>
                           </Form.Control>
                         </Form.Group>

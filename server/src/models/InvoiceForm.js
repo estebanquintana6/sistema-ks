@@ -22,7 +22,11 @@ var InvoiceSchema = new Schema({
   },
   net_bounty: {
     type: String,
-    required: false 
+    required: false
+  },
+  payment_currency: {
+    type: String,
+    required: false
   },
   payment_method: {
     type: String,

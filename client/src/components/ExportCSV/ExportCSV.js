@@ -140,11 +140,16 @@ export const ExportDataToCSV = (props) => {
         });
     }
 
-    const exportToCSV = (csvData, fileName, fieldTranslation, excludedFields, header, type = "", sortableColumn = '', refresh) => {
-        if (!csvData.length) {
-            refresh();
-            return;
-        }
+    const exportToCSV = (
+        csvData,
+        fileName,
+        fieldTranslation,
+        excludedFields,
+        header,
+        type = "",
+        sortableColumn = '',
+        refresh) => {
+
         const dataToWrite = [];
         if (type === "invoices") {
             let obj = invoiceToObj(csvData);
@@ -200,6 +205,18 @@ export const ExportDataToCSV = (props) => {
     }
 
     return (
-        <Button variant="warning" onClick={(e) => exportToCSV(props.csvData, props.fileName, props.fieldTranslation, props.excludedFields, props.header, props.type, props.sortableColumn, props.onComplete)}>Exportar a Excel</Button>
+        <Button
+            variant="warning"
+            onClick={(e) => exportToCSV(
+                props.csvData,
+                props.fileName,
+                props.fieldTranslation,
+                props.excludedFields,
+                props.header,
+                props.type,
+                props.sortableColumn,
+                props.onComplete)}>
+            Exportar a Excel
+        </Button>
     )
 }
