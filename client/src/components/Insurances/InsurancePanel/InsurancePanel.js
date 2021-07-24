@@ -569,6 +569,7 @@ const InsurancePanel = (props) => {
             <option value="PAGADO">PAGADA</option>
             <option value="COTIZACION">COTIZACION</option>
             <option value="RENOVACION">RENOVACION</option>
+            <option value="CON ASEGURADORA">CON ASEGURADORA</option>
             <option value="CANCELADA">CANCELADA</option>
           </Form.Control>
         </Form.Group>

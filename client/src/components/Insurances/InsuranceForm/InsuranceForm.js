@@ -468,11 +468,6 @@ class InsuranceForm extends Component {
                   <li className="nav-item">
                     <a className="nav-link" href="#invoices" role="tab" data-toggle="tab"><i className="fas fa-receipt"></i> Recibos</a>
                   </li>
-                  {this.props.edit &&
-                    <li className="nav-item">
-                      <a className="nav-link" href="#endor" role="tab" data-toggle="tab"><i className="fas fa-edit"></i>Endosos</a>
-                    </li>
-                  }
                 </React.Fragment>
                 : <li className="nav-item">
                   <a className="nav-link active" href="#invoices" role="tab" data-toggle="tab"><i className="fas fa-receipt"></i> Recibos</a>
@@ -959,38 +954,6 @@ class InsuranceForm extends Component {
                     <Button variant="info" onClick={this.createInvoice}><i class="fas fa-plus"></i></Button>
                   </Col>
                 </Row>
-              </div>
-              <div role="tabpanel" className="tab-pane fade" id="endor">
-                <Row>
-                  <h5 className="swal-title form-title align-left">ENDOSOS</h5>
-                </Row>
-                <Row>
-                  <Col md="12">
-                    <Button variant="info" onClick={this.createEndorsment}><i className="fa fa-plus" aria-hidden="true"></i></Button>
-                  </Col>
-                </Row>
-                {this.state.endorsements.map((value, index) => {
-                  return (
-                    <Form.Row>
-                      <Form.Group as={Col} md={{ span: 8 }}>
-                        <Form.Label>Comentario</Form.Label>
-                        <Form.Control onChange={(e) => { this.onChangeEndorsement(index, e) }} value={this.state.endorsements[index].comment} />
-                      </Form.Group>
-                      <Form.Group as={Col} md={{ span: 3 }}>
-                        <Form.Label>Fecha</Form.Label>
-                        <Form.Control type="date" disabled value={this.state.endorsements[index].date} />
-                      </Form.Group>
-                      <Col md={1}>
-                        <Button
-                          variant="danger"
-                          className="button-margin"
-                          onClick={() => { this.deleteEndorsement(index) }}>
-                          <i className="fa fa-trash" />
-                        </Button>
-                      </Col>
-                    </Form.Row>
-                  );
-                })}
               </div>
             </div>
           </Col>

@@ -66,7 +66,15 @@ var InsuranceSchema = new Schema({
   },
   pay_status: {
     type: String,
-    enum: ['', 'PENDIENTE', 'PAGADO', 'COTIZACION', 'RENOVACION', 'CANCELADA'],
+    enum: [
+      '',
+      'PENDIENTE',
+      'PAGADO',
+      'COTIZACION',
+      'RENOVACION',
+      'CANCELADA',
+      'CON ASEGURADORA'
+    ],
     required: false,
     default: 'PENDIENTE',
   },
