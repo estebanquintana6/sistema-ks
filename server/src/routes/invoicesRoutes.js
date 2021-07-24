@@ -9,6 +9,19 @@ const Company = require("../models/CompanyForm");
 
 const secretKey = require("../config/config")
 
+const permissionMapper = {
+  DANOS: 'DAÑOS',
+  AUTOS: 'AUTO',
+  GM: 'GMM',
+  VIDA: 'VIDA'
+}
+
+const insuranceTypeMapper = {
+  DAÑOS: 'DANOS',
+  AUTO: 'AUTOS',
+  GMM: 'GM',
+  VIDA: 'VIDA'
+}
 
 router.post("/update", (req, res) => {
   const body = req.body;
@@ -61,7 +74,7 @@ router.post("/delete", (req, res) => {
 
 router.get("/fetch", (req, res) => {
   const token = req.headers.authorization;
-  jwt.verify(token, secretKey, function (err, decoded) {
+  jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
       return res.status(401).json({ email: "no permissions" });
     }
@@ -69,18 +82,29 @@ router.get("/fetch", (req, res) => {
       if (!user) {
         return res.status(402);
       }
-    })
-    // This is the way I found to make a get all from model.
-    Invoice.find({}).populate('client').populate('insurance').then((invoices) => {
-      Company.populate(invoices, {
-        path: 'insurance.insurance_company',
-        select: 'name'
-      }).then((inv) => {
-        res.json({ invoices: inv });
 
-      })
+      let permissions = user.permissions;
+      let mappedPermissions = permissions.map((per) => insuranceTypeMapper[per])
+
+      Invoice
+        .find({})
+        .populate('client')
+        .populate('insurance')
+        .then((invoices) => {
+          invoices = invoices.filter(({ insurance: { insurance_type } }) =>
+            mappedPermissions.includes(insurance_type)
+          )
+          Company.populate(invoices, {
+            path: 'insurance.insurance_company',
+            select: 'name'
+          }).then((inv) => {
+            res.json({ invoices: inv });
+
+          })
+        });
     });
-  });
+  })
+  // This is the way I found to make a get all from model.
 });
 
 module.exports = router;

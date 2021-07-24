@@ -135,6 +135,7 @@ class InsuranceForm extends Component {
       invoices.push({
         invoice: "",
         bounty: (e.target.value === 'ANUAL' ? this.state.bounty : ''),
+        promoter: this.state.promoter,
         net_bounty: (e.target.value === 'ANUAL' ? this.state.net_bounty : ''),
         due_date: moment(prevDate).startOf('day').format('YYYY-MM-DD'),
         pay_limit: moment(prevDate).startOf('day').format('YYYY-MM-DD'),
