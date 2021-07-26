@@ -238,7 +238,7 @@ router.post("/changePassword", (req, res) => {
 
 router.post("/list", (req, res) => {
   const body = req.body;
-  const token = body.token;
+  const token = req.headers.authorization;
 
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) res.status(402);
@@ -263,7 +263,7 @@ router.post("/list", (req, res) => {
 
 router.post("/changeRol", (req, res) => {
   const body = req.body;
-  const token = body.token;
+  const token = req.headers.authorization;
   const userId = body.id;
   const newRole = body.role;
 
@@ -302,6 +302,7 @@ router.post("/delete", (req, res) => {
   const body = req.body;
   const token = body.token;
   const userId = body.id;
+  console.log(userId)
 
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) res.status(402);
@@ -311,16 +312,16 @@ router.post("/delete", (req, res) => {
       if (!user) {
         return res.status(402);
       }
+      if (role === "admin" || user.role === "admin") {
+        User.findByIdAndDelete(userId).then((err, doc) => {
+          if (err) res.status(500, { error: "El usuario no se elimino" })
+          res.status(200, { message: "Usuario eliminado" });
+        })
+      } else {
+        res.status(402);
+      }
     })
 
-    if (role === "admin" || user.role === "admin") {
-      User.findByIdAndDelete(userId).then((err, doc) => {
-        if (err) res.status(500, { error: "El usuario no se elimino" })
-        res.status(200, { message: "Usuario eliminado" });
-      })
-    } else {
-      res.status(402);
-    }
   });
 });
 

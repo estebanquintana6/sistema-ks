@@ -7,7 +7,7 @@ const secretKey = require("../config/config")
 
 router.post("/save", (req, res) => {
   const body = req.body;
-  const token = body.token;
+  const token = req.headers.authorization;
 
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) return res.status(401).json({ emailnotfound: "No tienes permisos para esta accion" });
@@ -23,7 +23,7 @@ router.post("/save", (req, res) => {
 
 router.post("/update", (req, res) => {
   const body = req.body;
-  const token = body.token;
+  const token = req.headers.authorization;
   const taskData = body.taskData;
   const id = taskData._id;
   jwt.verify(token, secretKey, function (err, _) {
@@ -42,7 +42,7 @@ router.post("/update", (req, res) => {
 
 router.post("/delete", (req, res) => {
   const body = req.body;
-  const token = body.token;
+  const token = req.headers.authorization;
   const id = body.id;
 
   jwt.verify(token, secretKey, function (err, decoded) {
