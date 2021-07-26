@@ -965,7 +965,7 @@ class InsuranceForm extends Component {
                             }>
                           </Form.Control>
                         </Form.Group>
-                        <Form.Group as={Col} controlId="invoice_payment_method">
+                        <Form.Group as={Col} controlId="invoice_payment_currency">
                           <Form.Label>Moneda</Form.Label>
                           <Form.Control
                             onChange={(e) => this.onChangeInvoiceCurrency(i, e)}

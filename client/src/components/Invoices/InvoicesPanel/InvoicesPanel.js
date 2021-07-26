@@ -311,18 +311,39 @@ const InvoicePanel = ({
               {
                 Header: "Prima neta",
                 id: "net_bounty",
-                accessor: d => d.net_bounty
+                accessor: d => {
+                  if (d.net_bounty) {
+                    return d.net_bounty
+                  } else {
+                    if (d.insurance.payment_type === 'ANUAL') {
+                      return d.insurance.net_bounty
+                    } else {
+                      return ''
+                    }
+                  }
+                }
               },
               {
                 Header: "Prima total",
                 id: "bounty",
-                accessor: d => d.bounty
+                accessor: d => {
+                  if (d.bounty) {
+                    return d.bounty
+                  } else {
+                    if (d.insurance.payment_type === 'ANUAL') {
+                      return d.insurance.bounty
+                    } else {
+                      return ''
+                    }
+
+                  }
+                }
               },
               {
                 Header: "Tipo pago",
                 id: "payment_method",
-                accessor: d => { 
-                  if(d.payment_method) {
+                accessor: d => {
+                  if (d.payment_method) {
                     return d.payment_method
                   } else {
                     return d.insurance.payment_type
@@ -332,8 +353,8 @@ const InvoicePanel = ({
               {
                 Header: "Moneda",
                 id: "payment_currency",
-                accessor: d => { 
-                  if(d.payment_currency) {
+                accessor: d => {
+                  if (d.payment_currency) {
                     return d.payment_currency
                   } else {
                     return d.insurance.currency

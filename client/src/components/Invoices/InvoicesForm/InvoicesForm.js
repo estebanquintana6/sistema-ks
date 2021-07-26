@@ -111,10 +111,19 @@ class InvoicesForm extends Component {
               <Form.Label>Forma de pago</Form.Label>
               <Form.Control
                 onChange={this.onChange}
-                value={
-                  this.state.payment_method ?
-                    this.state.payment_method :
-                    `${this.state.insurance.payment_type}/${this.state.insurance.currency}`
+                value={this.state.payment_method ?
+                  this.state.payment_method :
+                  this.state.insurance.payment_type
+                }>
+              </Form.Control>
+            </Form.Group>
+            <Form.Group as={Col} controlId="payment_currency">
+              <Form.Label>Moneda</Form.Label>
+              <Form.Control
+                onChange={this.onChange}
+                value={this.state.payment_currency ?
+                  this.state.payment_currency :
+                  this.state.insurance.currency
                 }>
               </Form.Control>
             </Form.Group>
