@@ -300,7 +300,7 @@ router.post("/changeRol", (req, res) => {
 
 router.post("/delete", (req, res) => {
   const body = req.body;
-  const token = body.token;
+  const token = req.headers.authorization;
   const userId = body.id;
   console.log(userId)
 
