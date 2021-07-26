@@ -336,17 +336,16 @@ router.post("/activate", (req, res) => {
       if (!user) {
         return res.status(402);
       }
+
+      if (user.role === "superadmin" || user.role === "admin") {
+        User.findByIdAndUpdate(userId, { active: true }).then((err, doc) => {
+          if (err) res.status(500, { error: "El usuario no se activó" })
+          res.status(200, { message: "Usuario activado" });
+        })
+      } else {
+        res.status(402);
+      }
     })
-
-
-    if (user.role === "superadmin" || user.role === "admin") {
-      User.findByIdAndUpdate(userId, { active: true }).then((err, doc) => {
-        if (err) res.status(500, { error: "El usuario no se activó" })
-        res.status(200, { message: "Usuario activado" });
-      })
-    } else {
-      res.status(402);
-    }
   });
 })
 
