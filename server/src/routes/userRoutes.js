@@ -273,14 +273,13 @@ router.post("/changeRol", (req, res) => {
 
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) res.status(402);
-    const role = decoded.role;
 
     User.findById(decoded.id).then(user => {
       if (!user) {
         return res.status(402);
       }
 
-      if (role === "admin" || role === "superadmin") {
+      if (user.role === "admin" || user.role === "superadmin") {
         User.findById(userId).then((u) => {
           if (u.role === 'superadmin') {
             return res.status(200).json('No se realizaron cambios')
@@ -305,13 +304,12 @@ router.post("/delete", (req, res) => {
 
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) res.status(402);
-    const role = decoded.role;
 
     User.findById(decoded.id).then(user => {
       if (!user) {
         return res.status(402);
       }
-      if (role === "admin" || user.role === "admin") {
+      if (user.role === "admin") {
         User.findByIdAndDelete(userId).then((err, doc) => {
           if (err) res.status(500, { error: "El usuario no se elimino" })
           res.status(200, { message: "Usuario eliminado" });
