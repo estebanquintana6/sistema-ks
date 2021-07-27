@@ -96,6 +96,17 @@ class InsuranceForm extends Component {
   onChange = e => {
     console.log(e.target.id, e.target.value)
     this.setState({ [e.target.id]: e.target.value });
+    if (
+      (e.target.id === 'net_bounty' || e.target.id === 'bounty')
+      && this.state.payment_type === 'ANUAL'
+    ) {
+      let { invoices } = this.state
+      const newInvoices = invoices
+        .map((i) => ({ ...i, [e.target.id]: e.target.value }))
+      this.setState({
+        invoices: newInvoices
+      })
+    }
   }
 
   onChangeClient = e => {
