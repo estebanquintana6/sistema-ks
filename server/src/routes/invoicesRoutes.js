@@ -23,9 +23,31 @@ const insuranceTypeMapper = {
   VIDA: 'VIDA'
 }
 
+router.post('/status', (req, res) => {
+  const body = req.body;
+  const token = req.headers.authorization;
+  const { id, status } = body;
+
+  jwt.verify(token, secretKey, (err, decoded) => {
+    if (err) return res.status(401).json({ email: "no permissions" });
+    User.findById(decoded.id).then(user => {
+      if (!user) {
+        return res.status(402);
+      }
+      Invoice.findOneAndUpdate(
+        { _id: id },
+        { payment_status: status }).then(() => {
+          res.status(200).json({ message: "Recibo actualizado" })
+        }).catch((err) => {
+          res.status(500).json(err)
+        })
+    })
+  })
+})
+
 router.post("/update", (req, res) => {
   const body = req.body;
-  const token = body.token;
+  const token = req.headers.authorization;
   const invoiceData = body.invoiceData;
   const id = invoiceData._id;
   jwt.verify(token, secretKey, function (err, decoded) {
@@ -49,7 +71,7 @@ router.post("/update", (req, res) => {
 
 router.post("/delete", (req, res) => {
   const body = req.body;
-  const token = body.token;
+  const token = req.headers.authorization;
   const id = body.id;
 
   jwt.verify(token, secretKey, function (err, decoded) {

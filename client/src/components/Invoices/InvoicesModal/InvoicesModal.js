@@ -20,16 +20,16 @@ class InvoicesModal extends Component {
   }
 
   getClientName = (client) => {
-    if(client){
-      if(client.hasOwnProperty('name')) return client.name;
+    if (client) {
+      if (client.hasOwnProperty('name')) return client.name;
       return "";
     }
     return "";
   }
 
   getInsurancePolicy = (insurance) => {
-    if(insurance){
-      if(insurance.hasOwnProperty('policy')) return insurance.policy;
+    if (insurance) {
+      if (insurance.hasOwnProperty('policy')) return insurance.policy;
       return "";
     }
     return "";
@@ -51,11 +51,36 @@ class InvoicesModal extends Component {
       < Container >
         <React.Fragment>
           <Row>
-            <Col>
-              <Button variant="info" className="option-button" onClick={this.editInvoice.bind(this, invoice)}>EDITAR</Button>
+            <Col md={12}>
+              <Button
+                style={{ width: "100%", margin: "5px 0px" }}
+                variant="info"
+                className="option-button"
+                onClick={this.props.changePayStatus.bind(this, invoice)}>
+                CAMBIAR STATUS DE PAGO
+              </Button>
             </Col>
-            <Col>
-              <Button variant="danger" className="option-button" onClick={this.props.deleteInvoice.bind(this, invoice._id)}>ELIMINAR</Button>
+          </Row>
+          <Row>
+            <Col md={12}>
+              <Button
+                style={{ width: "100%", margin: "5px 0px" }}
+                variant="info"
+                className="option-button"
+                onClick={this.editInvoice.bind(this, invoice)}>
+                EDITAR
+              </Button>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={12}>
+              <Button
+                style={{ width: "100%", margin: "5px 0px" }}
+                variant="danger"
+                className="option-button"
+                onClick={this.props.deleteInvoice.bind(this, invoice._id)}>
+                ELIMINAR
+              </Button>
             </Col>
           </Row>
         </React.Fragment>

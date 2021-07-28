@@ -1,10 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 
-import { Container, Row } from 'react-bootstrap'
+import { Form, Col, Container, Row } from 'react-bootstrap'
 
 import { connect } from "react-redux";
-import { getInvoices, updateInvoice, deleteInvoice } from "../../../actions/invoiceActions";
+import {
+  getInvoices,
+  updateInvoice,
+  deleteInvoice,
+  changeInvoiceStatus
+} from "../../../actions/invoiceActions";
 import { formatShortDate } from '../../component-utils'
 import { DateRangePicker } from 'react-dates';
 
@@ -23,7 +28,8 @@ import { ExportDataToCSV } from "../../ExportCSV/ExportCSV";
 const InvoicePanel = ({
   getInvoices,
   updateInvoice: updateInvoiceAction,
-  deleteInvoice: deleteInvoiceAction }
+  deleteInvoice: deleteInvoiceAction,
+  changeInvoiceStatus }
 ) => {
   const reactTable = React.createRef();
 
@@ -127,7 +133,8 @@ const InvoicePanel = ({
       content: <InvoicesModal
         invoice={invoice}
         updateInvoice={updateInvoice}
-        deleteInvoice={deleteInvoice}>
+        deleteInvoice={deleteInvoice}
+        changePayStatus={changePayStatus}>
       </InvoicesModal>,
       buttons: false,
       title: `Recibo: ${invoice.invoice}`
@@ -171,6 +178,39 @@ const InvoicePanel = ({
         }
       }).finally(() => {
         refresh();
+      });
+  }
+
+  //['PENDIENTE', 'PAGADO', 'VENCIDO', 'SALDO A FAVOR', 'CANCELADO']
+  const changePayStatus = (invoice, e) => {
+    let newStatus;
+    swal({
+      title: `Cambiar status de ${invoice.invoice}`,
+      icon: "warning",
+      content: <React.Fragment>
+        <Form.Group as={Col} md="12">
+          <Form.Control required as="select" onChange={(e) => { newStatus = e.target.value }} value={newStatus}>
+            <option></option>
+            <option value="PENDIENTE">PENDIENTE</option>
+            <option value="PAGADO">PAGADO</option>
+            <option value="VENCIDO">VENCIDO</option>
+            <option value="SALDO A FAVOR">SALDO A FAVOR</option>
+            <option value="CANCELADO">CANCELADO</option>
+          </Form.Control>
+        </Form.Group>
+      </React.Fragment>,
+      buttons: true,
+      sucessMode: true,
+    })
+      .then((willUpdate) => {
+        if (willUpdate) {
+          changeInvoiceStatus(invoice._id, newStatus);
+          swal("Tu recibo ha sido modificado!", {
+            icon: "success",
+          }).then(() => {
+            refresh();
+          });
+        }
       });
   }
 
@@ -430,5 +470,10 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getInvoices, updateInvoice, deleteInvoice }
+  {
+    getInvoices,
+    updateInvoice,
+    deleteInvoice,
+    changeInvoiceStatus
+  }
 )(InvoicePanel);
