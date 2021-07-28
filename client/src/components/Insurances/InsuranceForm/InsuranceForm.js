@@ -142,8 +142,10 @@ class InsuranceForm extends Component {
     const jump = num_invoices === 0 ? 12 / 1 : 12 / num_invoices;
 
     const startGenDate = this.state.begin_date;
+    const dueDate = this.state.pay_due_date
 
     let prevDate = startGenDate
+    let prevDueDate = dueDate
     prevDate = prevDate.split('T')[0]
     for (let i = 0; i < num_invoices; i++) {
       invoices.push({
@@ -151,7 +153,7 @@ class InsuranceForm extends Component {
         bounty: (e.target.value === 'ANUAL' ? this.state.bounty : ''),
         promoter: this.state.promoter,
         net_bounty: (e.target.value === 'ANUAL' ? this.state.net_bounty : ''),
-        due_date: moment(prevDate).startOf('day').format('YYYY-MM-DD'),
+        due_date: moment(prevDueDate).startOf('day').format('YYYY-MM-DD'),
         pay_limit: moment(prevDate).startOf('day').format('YYYY-MM-DD'),
         pay_limit2: moment(prevDate).add(1, 'years').startOf('day').format('YYYY-MM-DD')
       });
@@ -159,6 +161,8 @@ class InsuranceForm extends Component {
       let newDate = moment(prevDate).startOf('day').clone().startOf('day').add(jump, 'months')
       prevDate = moment(newDate).startOf('day').clone().startOf('day')
 
+      let newDueDate = moment(dueDate).startOf('day').clone().startOf('day').add(jump, 'months')
+      prevDueDate = moment(newDueDate).startOf('day').clone().startOf('day')
     }
 
     this.setState({ invoices });
