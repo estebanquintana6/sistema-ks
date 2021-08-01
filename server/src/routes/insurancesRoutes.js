@@ -33,14 +33,7 @@ relateInsuranceToInvoice = (invoice) => {
 
 updateInvoice = (invoice, client) => {
   const update = {
-    invoice: invoice.invoice,
-    due_date: invoice.due_date,
-    bounty: invoice.bounty,
-    payment_status: invoice.payment_status,
-    pay_limit: invoice.pay_limit,
-    pay_limit2: invoice.pay_limit2,
-    comments: invoice.comments,
-    email: invoice.email,
+    ...invoice,
     client: client
   }
   Invoice.findOneAndUpdate({ _id: invoice._id }, update).then((res, error) => {
@@ -173,7 +166,7 @@ router.get("/fetch_all", (req, res) => {
 
 router.post("/update", (req, res) => {
   const body = req.body;
-  const token = body.token;
+  const token = req.headers.authorization;
   const insuranceData = body.insuranceData;
   const id = insuranceData._id;
 
@@ -204,28 +197,10 @@ router.post("/update", (req, res) => {
         })
 
         const n = arr.difference(t, toD);
-        Invoice.deleteMany({ _id: { $in: n } }).exec()
+        await Invoice.deleteMany({ _id: { $in: n } }).exec()
         let doc = Insurance.findById(insurance.id);
         doc.updateOne(insuranceData).then((err, _) => {
           if (err) res.status(500);
-          invoices.map(invoice => {
-            invoice.client = insurance.client;
-            invoice.insurance = insurance._id;
-            try {
-              Invoice.findById(invoice._id).then((res, err) => {
-                if (res) {
-                  res.update(invoice).then(() => console.log("updated invoice"))
-                } else {
-                  const newInvoice = new Invoice(invoice);
-                  newInvoice.save().then((invoiceResponse, err) => {
-                    relateInsuranceToInvoice(invoiceResponse);
-                  });
-                }
-              })
-            } catch (err) {
-              res.status(500).json({ message: "Error al actualizar recibos" })
-            }
-          });
           res.status(200).json({ message: "Elemento modificado" });
         });
       }
