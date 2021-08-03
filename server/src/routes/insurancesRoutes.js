@@ -33,14 +33,7 @@ relateInsuranceToInvoice = (invoice) => {
 
 updateInvoice = (invoice, client) => {
   const update = {
-    invoice: invoice.invoice,
-    due_date: invoice.due_date,
-    bounty: invoice.bounty,
-    payment_status: invoice.payment_status,
-    pay_limit: invoice.pay_limit,
-    pay_limit2: invoice.pay_limit2,
-    comments: invoice.comments,
-    email: invoice.email,
+    ...invoice,
     client: client
   }
   Invoice.findOneAndUpdate({ _id: invoice._id }, update).then((res, error) => {
