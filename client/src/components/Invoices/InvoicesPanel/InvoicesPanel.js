@@ -195,7 +195,9 @@ const InvoicePanel = ({
             <option value="PAGADO">PAGADO</option>
             <option value="VENCIDO">VENCIDO</option>
             <option value="SALDO A FAVOR">SALDO A FAVOR</option>
+            <option value="CON ASEGURADORA">CON ASEGURADORA</option>
             <option value="CANCELADO">CANCELADO</option>
+            <option value="VENCIDO">VENCIDO</option>
           </Form.Control>
         </Form.Group>
       </React.Fragment>,

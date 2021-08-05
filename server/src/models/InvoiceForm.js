@@ -12,7 +12,15 @@ var InvoiceSchema = new Schema({
   },
   payment_status: {
     type: String,
-    enum: ['PENDIENTE', 'PAGADO', 'VENCIDO', 'SALDO A FAVOR', 'CANCELADO'],
+    enum: [
+      'PENDIENTE',
+      'PAGADO',
+      'VENCIDO',
+      'SALDO A FAVOR',
+      'CANCELADO',
+      'CON ASEGURADORA',
+      'VENCIDO'
+    ],
     required: true,
     default: 'PENDIENTE',
   },
