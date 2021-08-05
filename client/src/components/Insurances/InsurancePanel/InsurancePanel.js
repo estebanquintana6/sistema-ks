@@ -599,6 +599,7 @@ const InsurancePanel = (props) => {
             <option value="RENOVACION">RENOVACION</option>
             <option value="CON ASEGURADORA">CON ASEGURADORA</option>
             <option value="CANCELADA">CANCELADA</option>
+            <option value="VENCIDA">VENCIDA</option>
           </Form.Control>
         </Form.Group>
       </React.Fragment>,

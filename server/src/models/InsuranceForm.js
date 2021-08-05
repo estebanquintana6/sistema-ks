@@ -73,7 +73,8 @@ var InsuranceSchema = new Schema({
       'COTIZACION',
       'RENOVACION',
       'CANCELADA',
-      'CON ASEGURADORA'
+      'CON ASEGURADORA',
+      'VENCIDA'
     ],
     required: false,
     default: 'PENDIENTE',
