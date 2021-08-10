@@ -150,9 +150,11 @@ class InsuranceForm extends Component {
     for (let i = 0; i < num_invoices; i++) {
       invoices.push({
         invoice: "",
-        bounty: (e.target.value === 'ANUAL' ? this.state.bounty : ''),
+        bounty: (e.target.value === 'ANUAL' && this.isCarIndividualInsurance() ? this.state.bounty : ''),
         promoter: this.state.promoter,
-        net_bounty: (e.target.value === 'ANUAL' ? this.state.net_bounty : ''),
+        net_bounty: (e.target.value === 'ANUAL' && this.isCarIndividualInsurance() ? this.state.net_bounty : ''),
+        payment_currency: (e.target.value === 'ANUAL' && this.isCarIndividualInsurance() ? this.state.currency : ''),
+        payment_method: (e.target.value === 'ANUAL' && this.isCarIndividualInsurance() ? this.state.payment_type : ''),
         due_date: moment(prevDueDate).startOf('day').format('YYYY-MM-DD'),
         pay_limit: moment(prevDate).startOf('day').format('YYYY-MM-DD'),
         pay_limit2: moment(prevDate).add(1, 'years').startOf('day').format('YYYY-MM-DD')
@@ -974,10 +976,7 @@ class InsuranceForm extends Component {
                           <Form.Label>Forma de pago</Form.Label>
                           <Form.Control
                             onChange={(e) => this.onChangeInvoicePaymentMethod(i, e)}
-                            value={this.state.invoices[i].payment_method ?
-                              this.state.invoices[i].payment_method :
-                              this.state.payment_type
-                            }>
+                            value={this.state.invoices[i].payment_method}>
                           </Form.Control>
                         </Form.Group>
                         <Form.Group as={Col} controlId="invoice_payment_currency">
@@ -985,6 +984,10 @@ class InsuranceForm extends Component {
                           <Form.Control
                             onChange={(e) => this.onChangeInvoiceCurrency(i, e)}
                             value={this.state.invoices[i].payment_currency ?
+                              this.state.invoices[i].payment_currency :
+                              this.state.currency
+                            }
+                            defaultValue={this.state.invoices[i].payment_currency ?
                               this.state.invoices[i].payment_currency :
                               this.state.currency
                             }>
@@ -1009,6 +1012,11 @@ class InsuranceForm extends Component {
                             value={this.state.invoices[i].promoter ?
                               this.state.invoices[i].promoter :
                               this.state.promoter
+                            }
+                            defaultValue={
+                              this.state.invoices[i].promoter ?
+                                this.state.invoices[i].promoter :
+                                this.state.promoter
                             } />
                         </Form.Group>
                       </Form.Row>
