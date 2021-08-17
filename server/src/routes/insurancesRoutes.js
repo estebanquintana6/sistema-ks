@@ -26,8 +26,10 @@ const insuranceTypeMapper = {
 
 relateInsuranceToInvoice = (invoice) => {
   Insurance.findOne({ _id: invoice.insurance }).then((insurance) => {
-    insurance.invoices.push(invoice._id);
-    insurance.save();
+    if (!insurance.invoices.includes(invoice._id)) {
+      insurance.invoices.push(invoice._id);
+      insurance.save();
+    }
   });
 }
 
@@ -40,6 +42,11 @@ updateInvoice = (invoice, client) => {
     if (error) throw Error(error);
   });
 }
+
+onlyUnique = (value, index, self) => {
+  return self.indexOf(value) === index;
+}
+
 
 router.post("/save", (req, res) => {
   const token = req.headers.authorization;
@@ -186,41 +193,41 @@ router.post("/update", (req, res) => {
 
     Insurance.findOne({ _id: id }).then(async (insurance) => {
       if (insurance) {
-
-        invoices.map(invoice => {
-          updateInvoice(invoice, insuranceData.client);
-        })
-
-        const toD = invoices.map(inv => inv._id).filter(e => e)
-        const t = insurance.invoices.filter(e => e).map(inv => {
-          return String(inv)
-        })
-
-        const n = arr.difference(t, toD);
-        Invoice.deleteMany({ _id: { $in: n } }).exec()
-        let doc = Insurance.findById(insurance.id);
-        doc.updateOne(insuranceData).then((err, _) => {
-          if (err) res.status(500);
+        insurance.invoices = insurance.invoices.filter(onlyUnique)
+        insurance.save().then((insurance) => {
           invoices.map(invoice => {
-            invoice.client = insurance.client;
-            invoice.insurance = insurance._id;
-            try {
-              Invoice.findById(invoice._id).then((res, err) => {
-                if (res) {
-                  //res.update(invoice).then(() => console.log("updated invoice"))
-                } else {
-                  const newInvoice = new Invoice(invoice);
-                  newInvoice.save().then((invoiceResponse, err) => {
-                    relateInsuranceToInvoice(invoiceResponse);
-                  });
-                }
-              })
-            } catch (err) {
-              res.status(500).json({ message: "Error al actualizar recibos" })
-            }
+            updateInvoice(invoice, insuranceData.client);
+          })
+
+          const toD = invoices.map(inv => inv._id).filter(e => e)
+          const t = insurance.invoices.filter(e => e).map(inv => {
+            return String(inv)
+          })
+
+          const n = arr.difference(t, toD);
+          Invoice.deleteMany({ _id: { $in: n } }).exec()
+          let doc = Insurance.findById(insurance.id);
+          doc.updateOne(insuranceData).then((err, _) => {
+            if (err) res.status(500);
+            invoices.map(invoice => {
+              try {
+                invoice.client = insurance.client;
+                invoice.insurance = insurance._id;
+                Invoice.findById(invoice._id).then((res, err) => {
+                  if (!res) {
+                    const newInvoice = new Invoice(invoice);
+                    newInvoice.save().then((invoiceResponse, err) => {
+                      relateInsuranceToInvoice(invoiceResponse);
+                    });
+                  }
+                })
+              } catch (err) {
+                res.status(500).json({ message: "Error al actualizar recibos" })
+              }
+            });
+            res.status(200).json({ message: "Elemento modificado" });
           });
-          res.status(200).json({ message: "Elemento modificado" });
-        });
+        })
       }
     });
   });
