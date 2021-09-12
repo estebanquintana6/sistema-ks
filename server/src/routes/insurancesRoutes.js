@@ -182,12 +182,14 @@ router.post("/update", (req, res) => {
 
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) {
-      return res.status(401).json({ email: "no permissions" });
+      res.status(401).json({ email: "no permissions" });
+      return;
     }
 
     User.findById(decoded.id).then(user => {
       if (!user) {
-        return res.status(402);
+        res.status(402).json({ error: "Reinicie su sesión y vuelva a intentar"});
+        return;
       }
     })
 
@@ -207,8 +209,11 @@ router.post("/update", (req, res) => {
           const n = arr.difference(t, toD);
           Invoice.deleteMany({ _id: { $in: n } }).exec()
           let doc = Insurance.findById(insurance.id);
-          doc.updateOne(insuranceData).then((err, _) => {
-            if (err) res.status(500);
+          doc.updateOne(insuranceData).then((updatedInsurance, err) => {
+            if (err) { 
+              res.status(500).json(err); 
+              return;
+            }
             invoices.map(invoice => {
               try {
                 invoice.client = insurance.client;
@@ -223,9 +228,11 @@ router.post("/update", (req, res) => {
                 })
               } catch (err) {
                 res.status(500).json({ message: "Error al actualizar recibos" })
+                return;
               }
             });
-            res.status(200).json({ message: "Elemento modificado" });
+            res.status(200).json(updatedInsurance);
+            return;
           });
         })
       }
