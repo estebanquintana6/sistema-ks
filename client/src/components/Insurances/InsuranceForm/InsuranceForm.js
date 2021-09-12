@@ -432,7 +432,7 @@ class InsuranceForm extends Component {
       due_date: "",
       pay_limit: "",
       pay_limit2: "",
-      payment_method: this.state.currency,
+      payment_method: this.state.payment_type,
       promoter: this.state.promoter
     })
     this.setState({ invoices });
