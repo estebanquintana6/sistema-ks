@@ -154,7 +154,7 @@ class InsuranceForm extends Component {
         promoter: this.state.promoter,
         net_bounty: (e.target.value === 'ANUAL' && this.isCarIndividualInsurance() ? this.state.net_bounty : ''),
         payment_currency: (e.target.value === 'ANUAL' && this.isCarIndividualInsurance() ? this.state.currency : ''),
-        payment_method: (e.target.value === 'ANUAL' && this.isCarIndividualInsurance() ? this.state.payment_type : ''),
+        payment_method: this.state.payment_type,
         due_date: moment(prevDueDate).startOf('day').format('YYYY-MM-DD'),
         pay_limit: moment(prevDate).startOf('day').format('YYYY-MM-DD'),
         pay_limit2: moment(prevDate).add(1, 'years').startOf('day').format('YYYY-MM-DD')
@@ -976,7 +976,10 @@ class InsuranceForm extends Component {
                           <Form.Label>Forma de pago</Form.Label>
                           <Form.Control
                             onChange={(e) => this.onChangeInvoicePaymentMethod(i, e)}
-                            value={this.state.invoices[i].payment_method}>
+                            value={this.state.invoices[i].payment_method ?
+                              this.state.invoices[i].payment_method :
+                              this.state.payment_type
+                              }>
                           </Form.Control>
                         </Form.Group>
                         <Form.Group as={Col} controlId="invoice_payment_currency">
