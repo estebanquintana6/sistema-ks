@@ -208,7 +208,7 @@ router.post("/remove_file", (req, res) => {
         const index = files.map((file) => { return file.path }).indexOf(fileroute);
 
         files.splice(index, 1);
-        doc.updateOne({ files: files }).then((err, _) => {
+        doc.updateOne({ files: files }).then((_, err) => {
           if (err) res.status(500);
           res.status(200).json({ message: `${fileroute} eliminado` });
         });
