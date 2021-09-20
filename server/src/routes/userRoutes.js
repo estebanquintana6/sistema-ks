@@ -143,6 +143,54 @@ router.post("/recover", (req, res) => {
   const body = req.body;
   const email = body.email;
 
+  User.findOne({ email }).then(user => {
+    // Check if user exists
+    if (!user) {
+      return res.status(404).json({ errors: { email: "Email no existe" } });
+    }
+
+    ResetPassword.find({ userId: user.id, status: 0 }).remove().exec();
+
+    const token = crypto.randomBytes(32).toString('hex');
+
+    ResetPassword.create({
+      userId: user._id,
+      resetPasswordToken: token,
+      expire: moment.utc().add(86400, 'seconds')
+    }).then(function (item) {
+      if (!item)
+        return res.status(501).json({ error: "Error al crear token de recuperacion de contraseña" });
+      let transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true, // true for 465, false for other ports
+        auth: {
+          user: "norepy.omseguros@gmail.com", // generated ethereal user
+          pass: "Valentina09" // generated ethereal password
+        }, tls: {
+          rejectUnauthorized: false
+        }
+      });
+
+      const recoverLink = "http://www.omseguro.com/reset/" + email + "/" + token;
+
+      let mailOptions = {
+        to: email, // list of receivers
+        subject: "Recuperacion de contraseña", // Subject line
+        html: "<b>Hola " + user.name + "!</b><br/><p>Para recuperar tu contraseña del sistema OMSeguros haz click en el siguiente link:</p>" + recoverLink // html body
+      };
+
+
+      transporter.sendMail(mailOptions, (error) => {
+        if (error) {
+          res.status(500).json({ message: "Error mandando mail" });
+        }
+        res.status(200).json({ message: "Correo mandado." });
+      })
+
+    });
+
+  });
 });
 
 

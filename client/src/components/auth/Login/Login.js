@@ -104,12 +104,13 @@ class Login extends Component {
                       Recuérdame
                     </label>
                   </div>
-
+                  { /* }
                   <div>
                     <p onClick={this.toRecoverPassword} className="txt1">
                       Recuperar contraseña
                     </p>
                   </div>
+                  */ } 
                 </div>
 
                 <div className="container-login100-form-btn m-t-17">
