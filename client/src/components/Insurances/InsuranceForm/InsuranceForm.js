@@ -99,6 +99,7 @@ class InsuranceForm extends Component {
     if (
       (e.target.id === 'net_bounty' || e.target.id === 'bounty')
       && this.state.payment_type === 'ANUAL'
+      && this.state.invoices?.length === 1
     ) {
       let { invoices } = this.state
       const newInvoices = invoices
